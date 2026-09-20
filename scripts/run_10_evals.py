@@ -1,12 +1,12 @@
-"""Run ContextForge compilation benchmark across all 10 evaluation datasets."""
+"""Run ContextCull compilation benchmark across all 10 evaluation datasets."""
 
 import json
 import os
 import time
 from pathlib import Path
 
-from contextforge import CompileMode, CompilePolicy, ContextCompiler
-from tep.tokenize.profile import get_tokenizer
+from contextcull import CompileMode, CompilePolicy, ContextCompiler
+from contextcull.tokenize.profile import get_tokenizer
 
 EVAL_DIR = Path("examples/eval")
 OUTPUT_DIR = Path("scratch/eval")

@@ -2,8 +2,8 @@
 
 from pathlib import Path
 
-from tep.api import ContextCompiler
-from tep.ir.models import CompileMode
+from contextcull.api import ContextCompiler
+from contextcull.ir.models import CompileMode
 
 
 def test_provenance_roundtrip_sample_incident():

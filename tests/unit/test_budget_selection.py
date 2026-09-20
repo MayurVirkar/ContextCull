@@ -2,11 +2,11 @@
 
 import pytest
 
-from tep.errors import BudgetUnsafeError
-from tep.ir.models import Atom, CandidateUnit, CompilePolicy, TokenBudget
-from tep.ir.spans import ByteSpan
-from tep.select.budget import select_units, select_units_budget_free
-from tep.tokenize.profile import get_tokenizer
+from contextcull.errors import BudgetUnsafeError
+from contextcull.ir.models import Atom, CandidateUnit, CompilePolicy, TokenBudget
+from contextcull.ir.spans import ByteSpan
+from contextcull.select.budget import select_units, select_units_budget_free
+from contextcull.tokenize.profile import get_tokenizer
 
 
 def test_budget_free_natural_density_floor():

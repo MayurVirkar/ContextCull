@@ -3,7 +3,7 @@
 from hypothesis import given
 from hypothesis import strategies as st
 
-from tep.ir.spans import SourceMap
+from contextcull.ir.spans import SourceMap
 
 
 @given(st.text(min_size=1, max_size=1000))

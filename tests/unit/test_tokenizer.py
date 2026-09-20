@@ -1,6 +1,6 @@
 """Unit tests for tokenizer profiles."""
 
-from tep.tokenize.profile import HeuristicProfile, TiktokenProfile, get_tokenizer
+from contextcull.tokenize.profile import HeuristicProfile, TiktokenProfile, get_tokenizer
 
 
 def test_tiktoken_profile():

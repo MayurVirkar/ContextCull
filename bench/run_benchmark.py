@@ -1,4 +1,4 @@
-"""Reproducible empirical benchmark comparing ContextForge against Sumy (LexRank and LSA)."""
+"""Reproducible empirical benchmark comparing ContextCull against Sumy (LexRank and LSA)."""
 
 from __future__ import annotations
 
@@ -8,7 +8,7 @@ from pathlib import Path
 
 import tiktoken
 
-from contextforge import CompileMode, CompilePolicy, ContextCompiler
+from contextcull import CompileMode, CompilePolicy, ContextCompiler
 
 
 def run_benchmark(file_path: Path) -> None:
@@ -49,7 +49,7 @@ def run_benchmark(file_path: Path) -> None:
 
     results = []
 
-    # 1. ContextForge Deterministic Zero-Budget Compiler
+    # 1. ContextCull Deterministic Zero-Budget Compiler
     compiler = ContextCompiler(mode=CompileMode.COMPACT)
     policy = CompilePolicy(mode=CompileMode.COMPACT, discourse_pruning=True)
 
@@ -68,7 +68,7 @@ def run_benchmark(file_path: Path) -> None:
 
     results.append(
         {
-            "engine": "ContextForge (Zero-Budget, Generic)",
+            "engine": "ContextCull (Zero-Budget, Generic)",
             "latency_ms": tep_latency,
             "output_tokens": tep_tokens,
             "reduction_pct": tep_reduction,

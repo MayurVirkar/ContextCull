@@ -1,7 +1,7 @@
 """Unit tests for budget constraints and fail-closed safety."""
 
-from tep.api import ContextCompiler
-from tep.ir.models import CompileMode, CompilePolicy, TokenBudget
+from contextcull.api import ContextCompiler
+from contextcull.ir.models import CompileMode, CompilePolicy, TokenBudget
 
 
 def test_budget_unsafe_fail_closed():

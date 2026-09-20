@@ -7,9 +7,9 @@ from collections.abc import Sequence
 
 import numpy as np
 
-from tep.errors import BudgetUnsafeError
-from tep.ir.models import Atom, CandidateUnit, CompileMode, CompilePolicy, TokenBudget
-from tep.tokenize.profile import TokenizerProfile
+from contextcull.errors import BudgetUnsafeError
+from contextcull.ir.models import Atom, CandidateUnit, CompileMode, CompilePolicy, TokenBudget
+from contextcull.tokenize.profile import TokenizerProfile
 
 # Generic regex patterns for critical factual entities (no document-specific terms)
 CRITICAL_ENTITY_PATTERNS = [
@@ -110,7 +110,7 @@ def select_units_budget_free(
         scores_arr = np.ones(len(units))
 
     # Tokenizer for token cost estimation
-    from tep.tokenize.profile import get_tokenizer
+    from contextcull.tokenize.profile import get_tokenizer
 
     tok = tokenizer or get_tokenizer("openai:cl100k_base")
 

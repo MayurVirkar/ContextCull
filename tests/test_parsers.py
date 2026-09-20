@@ -7,15 +7,15 @@ import zipfile
 
 from pypdf import PdfWriter
 
-from tep.api import ContextCompiler
-from tep.ingest.decoder import ingest_bytes
-from tep.ir.models import BlockKind, CompileMode
-from tep.parse.docx import is_docx
-from tep.parse.html import is_html
-from tep.parse.pdf import is_pdf
-from tep.parse.structured import is_csv, is_json
-from tep.parse.xml import is_xml
-from tep.route.router import route_and_parse
+from contextcull.api import ContextCompiler
+from contextcull.ingest.decoder import ingest_bytes
+from contextcull.ir.models import BlockKind, CompileMode
+from contextcull.parse.docx import is_docx
+from contextcull.parse.html import is_html
+from contextcull.parse.pdf import is_pdf
+from contextcull.parse.structured import is_csv, is_json
+from contextcull.parse.xml import is_xml
+from contextcull.route.router import route_and_parse
 
 
 def test_html_parser():

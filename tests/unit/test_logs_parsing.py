@@ -1,7 +1,7 @@
 """Tests for log parsing and multi-failure isolation (Cargo, Pytest)."""
 
-from tep.ingest.decoder import ingest_bytes
-from tep.parse.logs import parse_test_log_blocks
+from contextcull.ingest.decoder import ingest_bytes
+from contextcull.parse.logs import parse_test_log_blocks
 
 
 def test_cargo_multi_failure_distinct_locations():

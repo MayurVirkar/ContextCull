@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
-# ContextForge Comprehensive Quality, Security, and Correctness Gate
+# ContextCull Comprehensive Quality, Security, and Correctness Gate
 set -euo pipefail
 
 echo "================================================================="
-echo "  ContextForge Quality & Security Gate"
+echo "  ContextCull Quality & Security Gate"
 echo "================================================================="
 
 echo -e "\n[1/6] Checking Code Formatting (Ruff)..."
@@ -22,7 +22,7 @@ echo -e "\n[5/6] Running Supply-Chain Security Audit (pip-audit)..."
 uv export --no-dev --no-emit-project | uv run pip-audit -r /dev/stdin
 
 echo -e "\n[6/6] Running Test Suite & Coverage Gate (Pytest >= 80%)..."
-uv run pytest --cov=tep --cov-report=term-missing
+uv run pytest --cov=contextcull --cov-report=term-missing
 
 echo -e "\n================================================================="
 echo "  ✓ All Quality, Security, and Correctness Gates Passed!"

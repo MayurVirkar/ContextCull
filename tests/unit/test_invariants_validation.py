@@ -2,11 +2,11 @@
 
 import pytest
 
-from tep.errors import InvariantViolationError
-from tep.ir.models import Atom, OutputSegment, TokenBudget
-from tep.ir.spans import ByteSpan
-from tep.tokenize.profile import TiktokenProfile, get_tokenizer
-from tep.validate.invariants import validate_invariants
+from contextcull.errors import InvariantViolationError
+from contextcull.ir.models import Atom, OutputSegment, TokenBudget
+from contextcull.ir.spans import ByteSpan
+from contextcull.tokenize.profile import TiktokenProfile, get_tokenizer
+from contextcull.validate.invariants import validate_invariants
 
 
 def test_unknown_tokenizer_raises_value_error():

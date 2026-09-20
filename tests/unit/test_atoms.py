@@ -1,7 +1,7 @@
 """Unit tests for protected atom detection against generic patterns and whitepaper benchmark terms."""
 
-from tep.detect.atoms import extract_atoms
-from tep.ingest.decoder import ingest_bytes
+from contextcull.detect.atoms import extract_atoms
+from contextcull.ingest.decoder import ingest_bytes
 
 
 def test_extract_generic_technical_atoms():

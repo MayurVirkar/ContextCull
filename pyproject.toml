@@ -1,7 +1,7 @@
 [project]
-name = "contextforge"
+name = "contextcull"
 version = "0.1.0"
-description = "ContextForge: Deterministic Context Compiler & Pre-Processor for Frontier LLMs"
+description = "ContextCull: Deterministic Context Compiler & Pre-Processor for Frontier LLMs"
 readme = "README.md"
 authors = [
     { name = "Mayur Virkar", email = "mayurvirkar@gmail.com" }
@@ -22,14 +22,13 @@ dependencies = [
 ]
 
 [project.scripts]
-contextforge = "tep.cli:main"
-forge = "tep.cli:main"
-tep = "tep.cli:main"
+contextcull = "contextcull.cli:main"
+cull = "contextcull.cli:main"
 
 [project.urls]
-Homepage = "https://github.com/MayurVirkar/ContextForge"
-Repository = "https://github.com/MayurVirkar/ContextForge.git"
-Issues = "https://github.com/MayurVirkar/ContextForge/issues"
+Homepage = "https://github.com/MayurVirkar/ContextCull"
+Repository = "https://github.com/MayurVirkar/ContextCull.git"
+Issues = "https://github.com/MayurVirkar/ContextCull/issues"
 
 [build-system]
 requires = ["uv_build>=0.12.13,<0.13.0"]
@@ -81,12 +80,12 @@ skips = [
 ]
 
 [tool.mutmut]
-source_paths = ["src/tep/"]
+source_paths = ["src/contextcull/"]
 runner = "python -m pytest -x -q"
 
 [tool.coverage.run]
-source = ["src/tep"]
-omit = ["src/tep/cli.py"]
+source = ["src/contextcull"]
+omit = ["src/contextcull/cli.py"]
 
 [tool.coverage.report]
 fail_under = 80

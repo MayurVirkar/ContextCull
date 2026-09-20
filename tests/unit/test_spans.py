@@ -1,7 +1,7 @@
 """Unit tests for SourceMap and ByteSpan exact provenance mapping."""
 
-from tep.ingest.decoder import clean_char_to_byte_span, ingest_bytes
-from tep.ir.spans import ByteSpan, SourceMap
+from contextcull.ingest.decoder import clean_char_to_byte_span, ingest_bytes
+from contextcull.ir.spans import ByteSpan, SourceMap
 
 
 def test_sourcemap_ascii():

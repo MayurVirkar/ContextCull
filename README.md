@@ -1,4 +1,4 @@
-# ContextForge
+# ContextCull
 
 [![Python 3.13+](https://img.shields.io/badge/python-3.13+-blue.svg)](https://www.python.org/downloads/)
 [![Deterministic](https://img.shields.io/badge/execution-100%25%20deterministic-green.svg)]()
@@ -13,21 +13,21 @@
 
 ## ⚡ TL;DR (In Plain English)
 
-- **What is it?** **ContextForge** (powered by the Token-Efficiency Protocol) is a fast, free, open-source pre-processor that sits between your raw data and your AI model (Google Gemini, Claude, OpenAI GPT).
+- **What is it?** **ContextCull** (powered by the Token-Efficiency Protocol) is a fast, free, open-source pre-processor that sits between your raw data and your AI model (Google Gemini, Claude, OpenAI GPT).
 - **What does it do?** It cuts document size by **50% to 85%** in under **35 milliseconds** by stripping away conversational fluff, repetitive email quote chains, and boilerplate, while **guaranteeing 100% preservation** of vital technical facts: CVE numbers, IP addresses, AWS ARNs, pod names, error codes, timestamps, and CLI commands.
 - **Why not just feed everything to the LLM?**
-  1. **Cost & Speed:** Feeding 20,000–100,000 tokens directly into frontier LLMs is slow and expensive. ContextForge reduces input tokens by up to 85%, cutting API costs and speeding up Time-To-First-Token (TTFT) by nearly **4×**.
-  2. **"Lost in the Middle":** When LLMs read giant documents, they often forget or hallucinate details buried in the middle. ContextForge extracts and surfaces every critical fact to the active context window.
-  3. **Classic summarizers fail:** Tools like LexRank or LSA look for "popular words." In technical reports, a critical security flaw or database IP only appears once, so classic tools drop up to 95% of them. ContextForge protects every unique technical entity by design.
+  1. **Cost & Speed:** Feeding 20,000–100,000 tokens directly into frontier LLMs is slow and expensive. ContextCull reduces input tokens by up to 85%, cutting API costs and speeding up Time-To-First-Token (TTFT) by nearly **4×**.
+  2. **"Lost in the Middle":** When LLMs read giant documents, they often forget or hallucinate details buried in the middle. ContextCull extracts and surfaces every critical fact to the active context window.
+  3. **Classic summarizers fail:** Tools like LexRank or LSA look for "popular words." In technical reports, a critical security flaw or database IP only appears once, so classic tools drop up to 95% of them. ContextCull protects every unique technical entity by design.
 - **How does it run?** 100% locally on your machine in standard Python 3.13. Zero GPUs, zero API keys, zero cloud dependencies, and zero compute costs.
 
 ---
 
-## 🥊 Head-to-Head: Direct LLM vs. ContextForge + LLM
+## 🥊 Head-to-Head: Direct LLM vs. ContextCull + LLM
 
 We benchmarked a Frontier LLM (Cloud Gemini) summarizing a 38-page incident report and a complex multi-turn security email thread under two conditions:
 
-| Dimension | Direct LLM (Raw Input) | ContextForge + LLM (Pre-processed) | The Difference / Benefit |
+| Dimension | Direct LLM (Raw Input) | ContextCull + LLM (Pre-processed) | The Difference / Benefit |
 | :--- | :--- | :--- | :--- |
 | **Input Tokens Fed to LLM** | 20,303 tokens (Report)<br>941 tokens (Email) | 8,473 tokens (Report)<br>429 tokens (Email) | **54% to 83% fewer tokens** sent to the LLM |
 | **LLM Response Latency (TTFT)** | ~3.5 seconds (quadratic attention over 20k+ tokens) | **<0.9 seconds** (sub-linear attention over clean context) | **3.8× faster** response time |
@@ -53,7 +53,7 @@ Evaluated on the 38-page incident report (`examples/sample_incident.txt`, 20,303
 
 | Summarizer Engine | Latency | Output Tokens | Token Reduction | Atoms Retained (19 Ground Truth) | Atoms Dropped |
 | :--- | :---: | :---: | :---: | :---: | :--- |
-| **ContextForge (Zero-Budget, Generic)** | **161 ms** | **8,473** | **58.3%** | **18 / 19 (94.7%)** | `14 write tokens` |
+| **ContextCull (Zero-Budget, Generic)** | **161 ms** | **8,473** | **58.3%** | **18 / 19 (94.7%)** | `14 write tokens` |
 | **Sumy LexRank (100 sentences)** | 2,978 ms | 3,746 | 81.5% | **3 / 19 (15.8%)** | `CVE-2026-66384`, `CVE-2026-53362`, `i-0622056ec3e996a7c`, `artifactory-3`, ... (16 total) |
 | **Sumy LSA (100 sentences)** | 667 ms | 2,758 | 86.4% | **3 / 19 (15.8%)** | `CVE-2026-53362`, `956 secrets`, `moon-bot`, `moon-landing`, ... (16 total) |
 | **Sumy LexRank (50 sentences)** | 2,915 ms | 2,002 | 90.1% | **3 / 19 (15.8%)** | `CVE-2026-66384`, `CVE-2026-53362`, `i-0622056ec3e996a7c`, `artifactory-3`, ... (16 total) |
@@ -68,7 +68,7 @@ uv run python bench/run_benchmark.py examples/sample_incident.txt
 
 ## 10-Format Real-World Benchmark Matrix
 
-ContextForge was evaluated across 10 distinct real-world formats spanning enterprise communication, unstructured literature, cloud telemetry, rich documents, and structured data (`examples/eval/`):
+ContextCull was evaluated across 10 distinct real-world formats spanning enterprise communication, unstructured literature, cloud telemetry, rich documents, and structured data (`examples/eval/`):
 
 | # | Format & Dataset | Raw Tokens | TEP Tokens | Token Reduction | TEP Latency | Critical Facts Retained | Status |
 | :-: | :--- | :---: | :---: | :---: | :---: | :---: | :---: |
@@ -92,7 +92,7 @@ uv run python scripts/run_10_evals.py
 
 ## End-to-End LLM Summarization Comparison (Subagent Evaluation)
 
-To evaluate downstream impact, an independent Frontier LLM subagent was tasked with generating summaries from both (A) raw source documents and (B) ContextForge compiled outputs.
+To evaluate downstream impact, an independent Frontier LLM subagent was tasked with generating summaries from both (A) raw source documents and (B) ContextCull compiled outputs.
 
 ### Test 1: P0 Security Incident Email Thread (RFC 822)
 - **Input Savings**: **54.4% token reduction** (941 → 429 tokens), eliminating conversational pleasantries, signatures, and duplicate quote chains.
@@ -115,7 +115,7 @@ To evaluate downstream impact, an independent Frontier LLM subagent was tasked w
 
 ## Architecture: 10-Stage Deterministic Pipeline
 
-ContextForge eliminates hallucination by operating as a pure compiler with zero neural weights at compile time:
+ContextCull eliminates hallucination by operating as a pure compiler with zero neural weights at compile time:
 
 ```mermaid
 flowchart TD
@@ -157,16 +157,16 @@ flowchart TD
 
 ---
 
-## Production Pipeline: ContextForge + Cloud Gemini
+## Production Pipeline: ContextCull + Cloud Gemini
 
-The recommended architecture pairs ContextForge as a deterministic pre-processor with Cloud Gemini as the synthesizer:
+The recommended architecture pairs ContextCull as a deterministic pre-processor with Cloud Gemini as the synthesizer:
 
 ```
 [Raw 38-page Doc / 20k tokens]
             │
             ▼  (161 ms, zero compute cost, 100% deterministic)
    ┌─────────────────┐
-   │  ContextForge   │ ──► Drops non-contributing scaffolding, locks in 95%+ critical facts
+   │  ContextCull   │ ──► Drops non-contributing scaffolding, locks in 95%+ critical facts
    └─────────────────┘
             │
             ▼  [Compiled Context: 7.8k - 12.9k tokens]
@@ -182,12 +182,12 @@ The recommended architecture pairs ContextForge as a deterministic pre-processor
 
 ## Installation
 
-ContextForge requires Python 3.13+. Install using `uv` (recommended) or `pip`:
+ContextCull requires Python 3.13+. Install using `uv` (recommended) or `pip`:
 
 ```bash
 # Clone the repository
-git clone https://github.com/MayurVirkar/ContextForge.git
-cd ContextForge
+git clone https://github.com/MayurVirkar/ContextCull.git
+cd ContextCull
 
 # Install dependencies using uv
 uv sync
@@ -200,40 +200,40 @@ pip install -e .
 
 ## CLI Usage
 
-ContextForge includes a high-speed command-line interface (`contextforge`, aliased to `forge` and `tep`):
+ContextCull includes a high-speed command-line interface (`contextcull`, aliased to `cull`):
 
 ### 1. Compile in Zero-Budget Mode (Natural Floor)
 Automatically compress a document to its natural information-dense floor without guessing token counts:
 
 ```bash
-contextforge compile examples/sample_incident.txt --output compiled.md --manifest manifest.json
+contextcull compile examples/sample_incident.txt --output compiled.md --manifest manifest.json
 ```
 
 ### 2. Compile with a Target Token Budget
 Enforce a hard token budget against a target tokenizer (e.g., `openai:cl100k_base`):
 
 ```bash
-contextforge compile examples/sample_incident.txt \
+contextcull compile examples/sample_incident.txt \
   --budget 8000 \
   --tokenizer openai:cl100k_base \
   --output summary_8k.md \
   --manifest manifest_8k.json
 ```
 
-If the requested budget is too small to safely retain all critical atoms, ContextForge raises `TARGET_BUDGET_UNSAFE` with the minimum safe token threshold.
+If the requested budget is too small to safely retain all critical atoms, ContextCull raises `TARGET_BUDGET_UNSAFE` with the minimum safe token threshold.
 
 ### 3. Inspect Blocks and Atoms
 View detected structural blocks and protected atoms:
 
 ```bash
-contextforge inspect examples/sample_incident.txt --show blocks,atoms
+contextcull inspect examples/sample_incident.txt --show blocks,atoms
 ```
 
 ### 4. Validate Provenance
 Verify that a compiled summary and manifest match the original source file 1:1:
 
 ```bash
-contextforge validate compiled.md --manifest manifest.json --source examples/sample_incident.txt
+contextcull validate compiled.md --manifest manifest.json --source examples/sample_incident.txt
 ```
 
 ---
@@ -241,8 +241,8 @@ contextforge validate compiled.md --manifest manifest.json --source examples/sam
 ## Python API Usage
 
 ```python
-from tep.api import ContextCompiler
-from tep.ir.models import CompilePolicy, TokenBudget
+from contextcull.api import ContextCompiler
+from contextcull.ir.models import CompilePolicy, TokenBudget
 
 compiler = ContextCompiler.from_profile("compact")
 
@@ -265,7 +265,7 @@ if result.ok:
 ## Project Structure
 
 ```
-ContextForge/
+ContextCull/
 ├── pyproject.toml              # Build configuration & dependencies
 ├── README.md                   # Project documentation & benchmarks
 ├── LICENSE                     # MIT License
@@ -275,7 +275,7 @@ ContextForge/
 ├── examples/
 │   └── sample_incident.txt     # Real-world 38-page benchmark incident report
 ├── src/
-│   └── tep/
+│   └── contextcull/
 │       ├── api.py              # ContextCompiler main entry point
 │       ├── cli.py              # Command-line interface
 │       ├── errors.py           # Protocol & budget error types
@@ -303,7 +303,7 @@ ContextForge/
 
 ## Quality, Security, and Correctness Gates
 
-ContextForge enforces zero-compromise code security, static verification, and quality standards:
+ContextCull enforces zero-compromise code security, static verification, and quality standards:
 
 | Tool | Purpose | Configuration / Command |
 | :--- | :--- | :--- |
@@ -311,7 +311,7 @@ ContextForge enforces zero-compromise code security, static verification, and qu
 | **Pyright** | Static typing & interface correctness | `uv run pyright` |
 | **Bandit** | AST-based security vulnerability scanner | `uv run bandit -c pyproject.toml -r src/` |
 | **pip-audit** | PyPA supply-chain vulnerability audit | `uv export --no-dev \| uv run pip-audit -r /dev/stdin` |
-| **Pytest + Coverage** | Unit, property, and differential tests | `uv run pytest --cov=tep` (80%+ coverage gate) |
+| **Pytest + Coverage** | Unit, property, and differential tests | `uv run pytest --cov=contextcull` (80%+ coverage gate) |
 | **Mutmut** | Mutation testing framework (Python Stryker equivalent) | `uv run mutmut run` |
 
 Run all quality and security gates locally with one command:

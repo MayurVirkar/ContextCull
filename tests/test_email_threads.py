@@ -1,7 +1,7 @@
 """Tests for multi-turn email thread parsing, CRLF line endings, and inverted header orders."""
 
-from tep.api import ContextCompiler
-from tep.ir.models import CompileMode
+from contextcull.api import ContextCompiler
+from contextcull.ir.models import CompileMode
 
 
 def test_email_thread_multi_turn():
@@ -53,9 +53,9 @@ def test_email_crlf_and_inverted_headers():
 
 
 def test_rewrite_engine_preserves_code_fences_and_inline_backticks():
-    from tep.ir.models import CandidateUnit, CompileMode, CompilePolicy
-    from tep.rewrite.engine import RewriteEngine
-    from tep.tokenize.profile import get_tokenizer
+    from contextcull.ir.models import CandidateUnit, CompileMode, CompilePolicy
+    from contextcull.rewrite.engine import RewriteEngine
+    from contextcull.tokenize.profile import get_tokenizer
 
     engine = RewriteEngine()
     policy = CompilePolicy(mode=CompileMode.COMPACT)

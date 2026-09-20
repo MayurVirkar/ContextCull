@@ -4,8 +4,8 @@ import os
 import subprocess
 from pathlib import Path
 
-from tep.api import ContextCompiler
-from tep.ir.models import CompileMode, CompilePolicy, TokenBudget
+from contextcull.api import ContextCompiler
+from contextcull.ir.models import CompileMode, CompilePolicy, TokenBudget
 
 RUST_BIN_PATH = os.environ.get(
     "TEP_RUST_BIN", "/home/mayur/projects/Summarizer/target/release/tep-test"

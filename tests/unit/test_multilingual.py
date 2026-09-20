@@ -2,12 +2,12 @@
 
 from __future__ import annotations
 
-from tep.detect.language import detect_document_language, detect_sentence_languages
-from tep.features.vectorizer import vectorize_units
-from tep.ir.models import CandidateUnit
-from tep.ir.spans import ByteSpan
-from tep.rewrite.discourse import prune_discourse_scaffolding
-from tep.segment.sentence import segment_sentences
+from contextcull.detect.language import detect_document_language, detect_sentence_languages
+from contextcull.features.vectorizer import vectorize_units
+from contextcull.ir.models import CandidateUnit
+from contextcull.ir.spans import ByteSpan
+from contextcull.rewrite.discourse import prune_discourse_scaffolding
+from contextcull.segment.sentence import segment_sentences
 
 
 def test_multilingual_sentence_segmentation() -> None:
