@@ -1,6 +1,6 @@
 [project]
 name = "contextcull"
-version = "0.1.0"
+version = "1.0.0"
 description = "ContextCull: Deterministic Context Compiler & Pre-Processor for Frontier LLMs"
 readme = "README.md"
 authors = [
@@ -9,6 +9,7 @@ authors = [
 requires-python = ">=3.13"
 dependencies = [
     "ahocorasick-rs>=1.0.3",
+    "defusedxml>=0.7.1",
     "lingua-language-detector>=2.0.2",
     "markdown-it-py>=4.2.0",
     "numpy>=2.5.3",

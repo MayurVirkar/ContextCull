@@ -1,4 +1,4 @@
-"""TEP Block Parsers package."""
+"""ContextCull Block Parsers package."""
 
 from contextcull.parse.code import is_code_input, parse_code_blocks
 from contextcull.parse.email import is_email, parse_email_blocks

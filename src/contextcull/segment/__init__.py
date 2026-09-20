@@ -1,4 +1,4 @@
-"""TEP Segmentation package."""
+"""ContextCull Segmentation package."""
 
 from contextcull.segment.sentence import SegmentSpan, segment_sentences
 

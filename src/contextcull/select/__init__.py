@@ -1,4 +1,4 @@
-"""TEP Selection package."""
+"""ContextCull Selection package."""
 
 from contextcull.select.budget import select_units
 

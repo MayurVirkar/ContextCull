@@ -1,4 +1,4 @@
-"""TEP Context Closure package."""
+"""ContextCull Context Closure package."""
 
 from contextcull.closure.context import apply_context_closure
 

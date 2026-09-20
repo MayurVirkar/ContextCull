@@ -1,4 +1,4 @@
-"""TEP Features package."""
+"""ContextCull Features package."""
 
 from contextcull.features.vectorizer import vectorize_units
 

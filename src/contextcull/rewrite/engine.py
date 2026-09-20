@@ -62,6 +62,7 @@ class RewriteEngine:
                 output_end=len(unit.text.encode("utf-8")),
                 kind=unit.kind,
                 sources=unit.sources,
+                rule_id="parser_structural" if unit.kind == "rewrite" else None,
                 text=unit.text,
             )
             return unit.text, [seg]
@@ -159,6 +160,7 @@ class RewriteEngine:
                 output_end=len(orig_text.encode("utf-8")),
                 kind=unit.kind,
                 sources=unit.sources,
+                rule_id="parser_structural" if unit.kind == "rewrite" else None,
                 text=orig_text,
             )
             return orig_text, [seg]

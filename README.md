@@ -1,5 +1,6 @@
 # ContextCull
 
+[![Release: v1.0.0](https://img.shields.io/badge/release-v1.0.0-blue.svg)](https://github.com/MayurVirkar/ContextCull/releases/tag/v1.0.0)
 [![Python 3.13+](https://img.shields.io/badge/python-3.13+-blue.svg)](https://www.python.org/downloads/)
 [![Deterministic](https://img.shields.io/badge/execution-100%25%20deterministic-green.svg)]()
 [![Provenance](https://img.shields.io/badge/provenance-byte--exact%20SHA256-blueviolet.svg)]()
@@ -11,7 +12,97 @@
 
 ---
 
-## ⚡ TL;DR (In Plain English)
+## 📦 Installation
+
+ContextCull requires **Python 3.13+**. Install via your preferred package manager:
+
+### Using pip
+```bash
+pip install contextcull
+```
+
+### Using uv
+```bash
+uv add contextcull
+```
+
+### Install Directly from GitHub (Latest v1.0.0)
+```bash
+pip install git+https://github.com/MayurVirkar/ContextCull.git@v1.0.0
+```
+
+### Local Development Setup
+```bash
+git clone https://github.com/MayurVirkar/ContextCull.git
+cd ContextCull
+uv sync
+bash scripts/gate.sh
+```
+
+---
+
+## 🚀 Quickstart: Using ContextCull in Your Project
+
+### 1. Simple Drop-In Pre-Processor (Zero Configuration)
+Compress any raw document, email, or log string to its natural information-theoretic floor before feeding it to your LLM:
+
+```python
+from contextcull import ContextCompiler
+
+compiler = ContextCompiler()
+
+# Read your large prompt or context
+with open("incident_report.txt", "r") as f:
+    raw_document = f.read()
+
+# Compile: shrinks boilerplate by 50%-85% in <35ms while retaining 100% of CVEs, IPs, ARNs, code
+result = compiler.compile(raw_document)
+
+if result.ok:
+    print(f"Compressed from {result.metrics['input_tokens']} -> {result.metrics['output_tokens']} tokens")
+    
+    # Send the condensed, entity-safe context to your LLM:
+    # response = client.chat.completions.create(
+    #     model="gpt-4o",
+    #     messages=[{"role": "user", "content": result.text}]
+    # )
+```
+
+### 2. Enforcing a Hard Token Budget
+If you have a strict context window limit (e.g., reserving 2,000 tokens for RAG context):
+
+```python
+from contextcull import ContextCompiler, TokenBudget
+
+compiler = ContextCompiler()
+budget = TokenBudget(tokens=2000, profile="openai:cl100k_base", hard_budget=True)
+
+# Compiles strictly within 2,000 tokens; guarantees 100% critical entity retention
+result = compiler.compile(raw_document, budget=budget)
+```
+
+### 3. Integrating with LangChain / LlamaIndex
+Use ContextCull as a deterministic document compressor in your RAG pipeline:
+
+```python
+from langchain_core.documents import Document
+from contextcull import ContextCompiler
+
+compiler = ContextCompiler()
+
+def compress_retrieved_docs(docs: list[Document]) -> list[Document]:
+    """Pre-processes retrieved chunks, stripping boilerplate and duplicate sentences."""
+    compressed_docs = []
+    for doc in docs:
+        res = compiler.compile(doc.page_content)
+        if res.ok and res.text:
+            compressed_docs.append(Document(page_content=res.text, metadata=doc.metadata))
+    return compressed_docs
+```
+
+---
+
+## ⚡ TL;DR
 
 - **What is it?** **ContextCull** (powered by the Token-Efficiency Protocol) is a fast, free, open-source pre-processor that sits between your raw data and your AI model (Google Gemini, Claude, OpenAI GPT).
 - **What does it do?** It cuts document size by **50% to 85%** in under **35 milliseconds** by stripping away conversational fluff, repetitive email quote chains, and boilerplate, while **guaranteeing 100% preservation** of vital technical facts: CVE numbers, IP addresses, AWS ARNs, pod names, error codes, timestamps, and CLI commands.

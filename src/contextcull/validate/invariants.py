@@ -28,25 +28,47 @@ def validate_invariants(
     """
     violations: list[str] = []
 
+    clean_output = output_text.replace("\r\n", "\n")
+
     # 1. Byte-exact provenance check for copied segments and in-bounds check for aggregates/rewrites
     for seg in output_segments:
         if seg.kind == "copy":
+            seg_str = (seg.text or "").strip().replace("\r\n", "\n")
             for src in seg.sources:
                 if isinstance(src, ByteSpan):
                     span_bytes = raw_source_bytes[src.start : src.end]
-                    span_str = span_bytes.decode("utf-8", errors="replace").strip()
-                    if span_str and span_str not in output_text:
+                    span_str = (
+                        span_bytes.decode("utf-8", errors="replace").strip().replace("\r\n", "\n")
+                    )
+                    if span_str and span_str not in clean_output:
                         violations.append(
                             f"Provenance violation: copied source span [{src.start}, {src.end}) "
                             f"('{span_str[:30]}...') not found in output text"
                         )
-        elif seg.kind in ("aggregate", "rewrite"):
+                    if len(seg.sources) == 1 and seg_str and span_str and seg_str != span_str:
+                        violations.append(
+                            f"Provenance violation: copied segment text does not match source span "
+                            f"[{src.start}, {src.end}) bytes: '{seg_str[:30]}' != '{span_str[:30]}'"
+                        )
+        elif seg.kind == "rewrite":
+            if not seg.rule_id:
+                violations.append(
+                    "Provenance violation: rewrite segment missing rule_id transformation attribution"
+                )
             for src in seg.sources:
                 if isinstance(src, ByteSpan) and (
                     src.start < 0 or src.end > len(raw_source_bytes) or src.start > src.end
                 ):
                     violations.append(
-                        f"Provenance violation: {seg.kind} segment has out-of-bounds source span [{src.start}, {src.end})"
+                        f"Provenance violation: rewrite segment has out-of-bounds source span [{src.start}, {src.end})"
+                    )
+        elif seg.kind == "aggregate":
+            for src in seg.sources:
+                if isinstance(src, ByteSpan) and (
+                    src.start < 0 or src.end > len(raw_source_bytes) or src.start > src.end
+                ):
+                    violations.append(
+                        f"Provenance violation: aggregate segment has out-of-bounds source span [{src.start}, {src.end})"
                     )
 
     # 2. Required atom presence check (match surface form; allow quantity canonical normalization)

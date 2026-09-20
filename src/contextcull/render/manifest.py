@@ -99,7 +99,8 @@ def render_and_manifest(
             "byte_length": input_bytes,
         },
         "environment": {
-            "tep_version": "0.1.0",
+            "contextcull_version": "1.0.0",
+            "tep_version": "1.0.0",
             "python_version": f"{sys.version_info.major}.{sys.version_info.minor}.{sys.version_info.micro}",
             "mode": policy.mode.value,
         },

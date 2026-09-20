@@ -7,49 +7,10 @@ from collections.abc import Sequence
 
 import numpy as np
 
+from contextcull.detect.atoms import extract_unit_entities
 from contextcull.errors import BudgetUnsafeError
-from contextcull.ir.models import Atom, CandidateUnit, CompileMode, CompilePolicy, TokenBudget
+from contextcull.ir.models import Atom, CandidateUnit, CompilePolicy, TokenBudget
 from contextcull.tokenize.profile import TokenizerProfile
-
-# Generic regex patterns for critical factual entities (no document-specific terms)
-CRITICAL_ENTITY_PATTERNS = [
-    re.compile(r"\bCVE-\d{4}-\d{4,7}\b", re.IGNORECASE),
-    re.compile(r"\b\d{4}-\d{2}-\d{2}(?:[T\s]\d{2}:\d{2}(?::\d{2})?(?:\s*UTC)?)?\b"),
-    re.compile(r"\bi-[0-9a-f]{8,17}\b"),
-    re.compile(
-        r"\b(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(?:\.(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}\b"
-    ),
-    re.compile(r"\b[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}\b"),
-    re.compile(
-        r"\b[0-9a-fA-F]{40}\b|\b(?=[0-9a-f]{7,39}\b)(?=[0-9a-f]*\d)(?=[0-9a-f]*[a-f])[0-9a-f]{7,39}\b"
-    ),
-    re.compile(
-        r"\b\d+(?:\.\d+)?(?:\s*(?:MB|GB|TB|KB|kB|ms|µs|ns|s|%|x|min|mins|minutes?|hours?|hrs?|days?|weeks?))\b",
-        re.IGNORECASE,
-    ),
-    re.compile(r"\b[a-zA-Z][a-zA-Z0-9]*(?:-[a-zA-Z0-9]+)+\b"),
-    # URIs & endpoints
-    re.compile(r"\b[a-zA-Z][a-zA-Z0-9+.-]*://[^\s<>\"'()]+"),
-    # Absolute Unix paths
-    re.compile(r"(?:/[a-zA-Z0-9_\.\-]+){2,}"),
-    # AWS ARNs
-    re.compile(r"\barn:aws:[a-zA-Z0-9_\.\-]+:[a-zA-Z0-9_\.\-]*:\d{12}:[a-zA-Z0-9_\.\-/]+"),
-    # IP:port endpoints
-    re.compile(r"\b(?:\d{1,3}\.){3}\d{1,3}:\d{2,5}\b"),
-    # Critical compliance & security acronyms
-    re.compile(r"\b(?:PII|GDPR|HIPAA|SOC2|mTLS|CIDR|STS|IAM|ACL|RBAC)\b", re.IGNORECASE),
-    # Email addresses
-    re.compile(r"\b[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+\b"),
-]
-
-
-def extract_unit_entities(text: str) -> set[str]:
-    """Extracts critical domain entities from a unit text using generic patterns."""
-    entities: set[str] = set()
-    for pat in CRITICAL_ENTITY_PATTERNS:
-        for match in pat.finditer(text):
-            entities.add(match.group(0).strip())
-    return entities
 
 
 def select_units_budget_free(
@@ -111,11 +72,6 @@ def select_units_budget_free(
             uncovered_entities -= unit_entities[best_idx]
         else:
             break
-
-    # In COMPACT mode with discourse pruning, 100% entity and atom coverage is guaranteed
-    # at the minimal information-theoretic floor. Return the optimal entity floor directly.
-    if policy.mode == CompileMode.COMPACT and policy.discourse_pruning:
-        return [units[i] for i in sorted(mandatory_indices)]
 
     # 2. Dynamic Pareto Knee Selection for narrative context
     scores_arr = np.array(scores) if scores is not None else np.ones(len(units))
@@ -193,11 +149,16 @@ def select_units_budget_free(
         # Perpendicular distance from normalized chord y = x
         distances = y_norm - x_norm
         knee_idx = int(np.argmax(distances))
-        selected_narrative = chosen_order[:knee_idx]
+        if knee_idx <= 0 or distances[knee_idx] <= 0:
+            selected_narrative = chosen_order
+        else:
+            selected_narrative = chosen_order[:knee_idx]
     else:
         selected_narrative = chosen_order
 
     selected_indices = set(mandatory_indices) | set(selected_narrative)
+    if not selected_indices and units:
+        selected_indices = {0}
 
     # 3. Restore source chronological order
     return [units[i] for i in sorted(selected_indices)]

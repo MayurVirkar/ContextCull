@@ -162,3 +162,19 @@ def test_cve_atoms(text: str, expected_cve: str):
     atoms = extract_atoms(ingest)
     cve_atoms = [a for a in atoms if a.kind == "cve"]
     assert any(a.surface.upper() == expected_cve.upper() for a in cve_atoms)
+
+
+def test_semantic_relations_extraction():
+    """Verify semantic relation binding for negation, modality, condition, and causality."""
+    from contextcull.detect.relations import extract_semantic_relations
+
+    text = "We must not deploy unless tests pass because downtime occurred."
+    ingest = ingest_bytes(text.encode("utf-8"))
+    atoms = extract_atoms(ingest)
+    relations = extract_semantic_relations(atoms)
+
+    kinds = {r.kind for r in relations}
+    assert "negation_scope" in kinds
+    assert "modality_scope" in kinds
+    assert "condition" in kinds
+    assert "causality" in kinds

@@ -1,4 +1,4 @@
-"""TEP Render package."""
+"""ContextCull Render package."""
 
 from contextcull.render.manifest import render_and_manifest
 

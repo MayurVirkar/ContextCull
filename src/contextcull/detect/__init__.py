@@ -1,4 +1,4 @@
-"""TEP Detection package."""
+"""ContextCull Detection package."""
 
 from contextcull.detect.atoms import extract_atoms
 from contextcull.detect.relations import SemanticRelation

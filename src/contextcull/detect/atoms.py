@@ -42,11 +42,22 @@ FILE_LOCATION_RE = re.compile(
 )
 
 CODE_IDENTIFIER_RE = re.compile(
-    r"\b(?:[A-Z][a-z0-9]+(?:[A-Z][a-z0-9]*)+|[a-zA-Z0-9]+::[a-zA-Z0-9_:]+|[a-zA-Z][a-zA-Z0-9]*(?:-[a-zA-Z0-9]+)+)\b"
+    r"\b(?:"
+    r"[A-Z][a-z0-9]+(?:[A-Z][a-z0-9]+)+"  # PascalCase (e.g. ContextCompiler)
+    r"|[a-z][a-z0-9]*(?:[A-Z][a-z0-9]+)+"  # camelCase (e.g. getNextToken)
+    r"|[a-zA-Z0-9_]+::[a-zA-Z0-9_:]+"  # C++/Rust namespaced (e.g. std::vector)
+    r"|[a-z0-9]+(?:_[a-z0-9]+)+"  # snake_case (e.g. parse_code_blocks)
+    r"|[a-zA-Z0-9]+-[a-zA-Z0-9-]*(?:\d[a-zA-Z0-9-]*)"  # Technical hyphenated with digits (e.g. k8s-worker-1, srv-01)
+    r")\b"
 )
 
 ISO_TIMESTAMP_RE = re.compile(
     r"\b\d{4}-\d{2}-\d{2}(?:[T\s]\d{2}:\d{2}(?::\d{2})?(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})?)?\b|\b\d{2}:\d{2}(?::\d{2})?(?:\s*UTC)\b"
+)
+
+BOUND_NEGATION_RE = re.compile(
+    r"\b(no|not|never|without|neither|nor|cannot|zero)\s+([a-zA-Z0-9_\-]+(?:\s+[a-zA-Z0-9_\-]+){0,2})\b",
+    re.IGNORECASE,
 )
 
 NEGATION_RE = re.compile(
@@ -68,6 +79,41 @@ CAUSALITY_RE = re.compile(
     r"\b(because|therefore|caused by|results in|leads to)\b",
     re.IGNORECASE,
 )
+
+COMPLIANCE_ACRONYM_RE = re.compile(
+    r"\b(?:PII|GDPR|HIPAA|SOC2|mTLS|CIDR|STS|IAM|ACL|RBAC)\b",
+    re.IGNORECASE,
+)
+
+EMAIL_RE = re.compile(r"\b[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+\b")
+
+CRITICAL_ENTITY_PATTERNS: list[re.Pattern] = [
+    CVE_RE,
+    IPV4_RE,
+    IPV6_RE,
+    UUID_RE,
+    GIT_SHA_RE,
+    AWS_INSTANCE_RE,
+    QUANTITY_RE,
+    CURRENCY_RE,
+    PATH_OR_URL_RE,
+    FILE_LOCATION_RE,
+    CODE_IDENTIFIER_RE,
+    ISO_TIMESTAMP_RE,
+    BOUND_NEGATION_RE,
+    COMPLIANCE_ACRONYM_RE,
+    EMAIL_RE,
+]
+
+
+def extract_unit_entities(text: str) -> set[str]:
+    """Extracts critical domain entities from a unit text using unified atom patterns."""
+    entities: set[str] = set()
+    for pat in CRITICAL_ENTITY_PATTERNS:
+        for match in pat.finditer(text):
+            entities.add(match.group(0).strip())
+    return entities
+
 
 UNIT_CANONICAL_MAP = {
     "minute": "min",
@@ -229,27 +275,49 @@ def extract_atoms(
         start, end = match.span()
         add_atom("timestamp", clean_text[start:end], start, end)
 
-    # 7. Negations
+    # 7. Bound Negations (Protected semantic atoms to prevent statement inversion)
+    for match in BOUND_NEGATION_RE.finditer(clean_text):
+        start, end = match.span()
+        add_atom(
+            "bound_negation",
+            clean_text[start:end],
+            start,
+            end,
+            canonical=clean_text[start:end].lower(),
+            required=False,
+        )
+
+    # 8. Negations
     for match in NEGATION_RE.finditer(clean_text):
         start, end = match.span()
         add_atom(
             "negation", clean_text[start:end], start, end, canonical=clean_text[start:end].lower()
         )
 
-    # 8. Modalities
+    # 9. Modalities
     for match in MODALITY_RE.finditer(clean_text):
         start, end = match.span()
         add_atom("modality", clean_text[start:end], start, end)
 
-    # 9. Conditions
+    # 10. Conditions
     for match in CONDITION_RE.finditer(clean_text):
         start, end = match.span()
         add_atom("condition", clean_text[start:end], start, end)
 
-    # 10. Causality
+    # 11. Causality
     for match in CAUSALITY_RE.finditer(clean_text):
         start, end = match.span()
         add_atom("causality", clean_text[start:end], start, end)
+
+    # 12. Compliance Acronyms (Extracted for entity cover, optional by default)
+    for match in COMPLIANCE_ACRONYM_RE.finditer(clean_text):
+        start, end = match.span()
+        add_atom("compliance_acronym", clean_text[start:end], start, end, required=False)
+
+    # 13. Email Addresses (Extracted for entity cover, optional by default)
+    for match in EMAIL_RE.finditer(clean_text):
+        start, end = match.span()
+        add_atom("email", clean_text[start:end], start, end, required=False)
 
     # Filter out atoms originating in discarded non-content zones (e.g., <script>, <style> in HTML)
     if blocks is not None:

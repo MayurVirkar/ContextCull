@@ -1,4 +1,4 @@
-"""TEP Intermediate Representation package."""
+"""ContextCull Intermediate Representation package."""
 
 from contextcull.ir.models import (
     Atom,

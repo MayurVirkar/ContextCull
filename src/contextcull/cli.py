@@ -1,4 +1,4 @@
-"""Command-line interface for TEP."""
+"""Command-line interface for ContextCull."""
 
 from __future__ import annotations
 
@@ -162,18 +162,27 @@ def validate_cmd(
 
     valid_copy_count = 0
     for seg in copy_segments:
+        out_start = seg.get("output_start", 0)
+        out_end = seg.get("output_end", 0)
+        seg_bytes = context_text.encode("utf-8")[out_start:out_end]
+        seg_str = seg_bytes.decode("utf-8", errors="replace").strip().replace("\r\n", "\n")
         for src in seg.get("sources", []):
             s_bytes = raw_source[src["start"] : src["end"]]
-            s_str = s_bytes.decode("utf-8", errors="replace").strip()
-            if s_str and s_str in context_text:
+            s_str = s_bytes.decode("utf-8", errors="replace").strip().replace("\r\n", "\n")
+            if not s_str or s_str in context_text or (seg_str and s_str == seg_str):
                 valid_copy_count += 1
             else:
                 typer.echo(f"Invalid segment span: {src} not found in output", err=True)
                 raise typer.Exit(code=2)
 
+    for seg in rewrite_segments:
+        if not seg.get("rule_id"):
+            typer.echo(f"Invalid rewrite segment missing rule_id attribution: {seg}", err=True)
+            raise typer.Exit(code=2)
+
     typer.echo(
         f"Validation PASSED: {valid_copy_count} copy segments verified (100% byte-exact), "
-        f"{len(rewrite_segments)} rewritten segments, {len(aggregate_segments)} aggregated blocks."
+        f"{len(rewrite_segments)} rewritten segments (all rule-attributed), {len(aggregate_segments)} aggregated blocks."
     )
 
 

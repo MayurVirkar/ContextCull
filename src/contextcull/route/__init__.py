@@ -1,4 +1,4 @@
-"""TEP Routing package."""
+"""ContextCull Routing package."""
 
 from contextcull.route.router import route_and_parse
 

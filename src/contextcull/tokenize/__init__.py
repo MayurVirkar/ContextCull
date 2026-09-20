@@ -1,4 +1,4 @@
-"""TEP Tokenization package."""
+"""ContextCull Tokenization package."""
 
 from contextcull.tokenize.profile import (
     HeuristicProfile,

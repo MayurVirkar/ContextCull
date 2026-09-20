@@ -282,10 +282,11 @@ wheels = [
 
 [[package]]
 name = "contextcull"
-version = "0.1.0"
+version = "1.0.0"
 source = { editable = "." }
 dependencies = [
     { name = "ahocorasick-rs" },
+    { name = "defusedxml" },
     { name = "lingua-language-detector" },
     { name = "markdown-it-py" },
     { name = "numpy" },
@@ -318,6 +319,7 @@ dev = [
 [package.metadata]
 requires-dist = [
     { name = "ahocorasick-rs", specifier = ">=1.0.3" },
+    { name = "defusedxml", specifier = ">=0.7.1" },
     { name = "lingua-language-detector", specifier = ">=2.0.2" },
     { name = "markdown-it-py", specifier = ">=4.2.0" },
     { name = "numpy", specifier = ">=2.5.3" },

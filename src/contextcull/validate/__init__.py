@@ -1,4 +1,4 @@
-"""TEP Validation package."""
+"""ContextCull Validation package."""
 
 from contextcull.validate.invariants import validate_invariants
 

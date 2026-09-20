@@ -1,11 +1,14 @@
-"""Standard exceptions and status definitions for TEP."""
+"""Standard exceptions and status definitions for ContextCull."""
 
 
-class TepError(Exception):
-    """Base exception for all TEP operations."""
+class ContextCullError(Exception):
+    """Base exception for all ContextCull operations."""
 
 
-class BudgetUnsafeError(TepError):
+TepError = ContextCullError  # Backward-compatibility alias
+
+
+class BudgetUnsafeError(ContextCullError):
     """Raised when the requested token budget cannot safely contain mandatory units."""
 
     def __init__(
@@ -28,7 +31,7 @@ class BudgetUnsafeError(TepError):
         super().__init__(msg)
 
 
-class InvariantViolationError(TepError):
+class InvariantViolationError(ContextCullError):
     """Raised when invariant validation fails on candidate or emitted output."""
 
     def __init__(self, violations: list[str]) -> None:
@@ -36,9 +39,9 @@ class InvariantViolationError(TepError):
         super().__init__(f"Invariant validation failed: {'; '.join(violations)}")
 
 
-class SourceMapError(TepError):
+class SourceMapError(ContextCullError):
     """Raised when an offset or span lookup is invalid."""
 
 
-class ParseError(TepError):
+class ParseError(ContextCullError):
     """Raised when block or structural parsing fails."""

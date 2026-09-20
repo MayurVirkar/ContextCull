@@ -1,4 +1,4 @@
-"""Intermediate representation (IR) models for TEP compiler pipeline."""
+"""Intermediate representation (IR) models for ContextCull compiler pipeline."""
 
 from __future__ import annotations
 
@@ -115,7 +115,7 @@ class TokenBudget:
 class CompilePolicy:
     """Policy governing compiler safety levels and constraints."""
 
-    mode: CompileMode = CompileMode.STRICT
+    mode: CompileMode = CompileMode.COMPACT
     required_terms: tuple[str, ...] = ()
     preserve_failures: bool = True
     preserve_negation: bool = True

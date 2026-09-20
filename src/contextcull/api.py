@@ -39,12 +39,12 @@ logger = logging.getLogger(__name__)
 class ContextCompiler:
     """Deterministic, source-mapped context compiler with zero-budget optimization."""
 
-    def __init__(self, mode: CompileMode = CompileMode.STRICT) -> None:
+    def __init__(self, mode: CompileMode = CompileMode.COMPACT) -> None:
         self.default_mode = mode
         self._rewrite_engine = RewriteEngine()
 
     @classmethod
-    def from_profile(cls, mode: str = "strict") -> ContextCompiler:
+    def from_profile(cls, mode: str = "compact") -> ContextCompiler:
         clean_mode = CompileMode(mode.lower())
         return cls(mode=clean_mode)
 
@@ -66,7 +66,7 @@ class ContextCompiler:
     ) -> CompileResult:
         """Compiles raw text or bytes into a source-mapped, optimally compressed context package.
 
-        When budget is None, TEP operates in budget-free natural density mode:
+        When budget is None, ContextCull operates in budget-free natural density mode:
         guaranteeing 100% entity and atom coverage while pruning narrative scaffolding
         and stopping at the Pareto marginal entropy elbow.
         """
