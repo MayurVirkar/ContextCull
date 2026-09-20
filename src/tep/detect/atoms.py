@@ -6,7 +6,7 @@ import re
 from collections.abc import Sequence
 
 from tep.ingest.decoder import IngestionResult, clean_char_to_byte_span
-from tep.ir.models import Atom
+from tep.ir.models import Atom, Block
 from tep.ir.spans import ByteSpan
 
 # Generic regular expressions for critical technical identifiers & protected classes
@@ -81,6 +81,7 @@ UNIT_CANONICAL_MAP = {
 def extract_atoms(
     ingest: IngestionResult,
     required_terms: Sequence[str] = (),
+    blocks: Sequence[Block] | None = None,
 ) -> list[Atom]:
     """Extracts protected semantic atoms from the ingested document with exact byte spans.
 
@@ -220,5 +221,26 @@ def extract_atoms(
     for match in CAUSALITY_RE.finditer(clean_text):
         start, end = match.span()
         add_atom("causality", clean_text[start:end], start, end)
+
+    # Filter out atoms originating in discarded non-content zones (e.g., <script>, <style> in HTML)
+    if blocks is not None:
+        has_rewrites = any(b.metadata.get("kind") == "rewrite" for b in blocks)
+        if has_rewrites:
+            combined = "\n".join(b.text for b in blocks)
+            atoms = [a for a in atoms if a.surface in combined]
+        else:
+            valid_spans = [
+                (b.sources[0].start, b.sources[0].end)
+                for b in blocks
+                if b.sources and isinstance(b.sources[0], ByteSpan)
+            ]
+            if valid_spans:
+                atoms = [
+                    a for a in atoms
+                    if any(
+                        isinstance(a.sources[0], ByteSpan) and a.sources[0].start >= s_start and a.sources[0].end <= s_end
+                        for s_start, s_end in valid_spans
+                    )
+                ]
 
     return atoms

@@ -91,7 +91,7 @@ class ContextCompiler:
         blocks = route_and_parse(ingest)
 
         # Stage 3: Protected Atom Detection
-        atoms = extract_atoms(ingest, required_terms=policy.required_terms)
+        atoms = extract_atoms(ingest, required_terms=policy.required_terms, blocks=blocks)
 
         # Stage 4: Candidate Unit Segmentation
         candidate_units = self._build_candidate_units(ingest, blocks, atoms, policy)

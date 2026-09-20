@@ -61,7 +61,16 @@ flowchart TD
 
 ### Key Stages Explained
 1. **Immutable Ingestion & SourceMap:** Computes SHA-256 document fingerprint and byte-to-char translation table. Fast-paths ANSI-free inputs.
-2. **Block Parsing & Routing:** Classifies content blocks into Code, Logs (Cargo, Pytest, Vitest), Markdown, Headers, and Free Text.
+2. **Block Parsing & Routing:** Classifies and parses content across diverse document formats:
+   - **HTML / Web Pages** (`.html`, `.htm`): Cleans DOM, strips scripts/styles/navigation, extracts headings, prose, lists, tables with exact source spans.
+   - **XML** (`.xml`): Secure parsing of structured tags, attributes, and data elements via `defusedxml`.
+   - **DOCX** (`.docx`): Direct OpenXML zip extraction of Word paragraphs, headings, and tables.
+   - **PDF** (`.pdf`): Multi-page text extraction preserving document headings, paragraphs, and tables.
+   - **JSON & CSV** (`.json`, `.csv`): Structured key-value fields and tabular records.
+   - **Markdown** (`.md`): CommonMark AST parsing for headings, tables, code fences, and lists.
+   - **Source Code & Logs**: High-precision parsing for Python, Rust, TS, Go, Cargo, Pytest, Vitest.
+   - **RFC 822 Emails**: Header extraction (From, To, Subject, Date) and body segmentation.
+   - **Plain Text**: Universal sentence boundary detection across Western, CJK, Arabic, and Indic scripts.
 3. **Protected Atom Detection:** Regular expressions for critical identifiers (CVEs, IPv4/IPv6, UUIDs, Git SHAs, AWS Instance IDs, quantities, timestamps), automatically marking critical classes `required=True`.
 4. **Candidate Unit Segmentation:** Universal sentence segmentation across Western, CJK (`。！？`), Arabic, and Indic scripts.
 5. **Sparse LexRank Engine:** Computes top-$k$ cosine similarity graph via `sparse-dot-topn` and `scipy.sparse` power-iteration PageRank in ~15 ms.
@@ -202,7 +211,7 @@ TEPv2/
 │       ├── features/           # Universal TF-IDF vectorizer
 │       ├── ingest/             # SourceMap & byte-exact decoders
 │       ├── ir/                 # Intermediate representation & span models
-│       ├── parse/              # Specialized parsers (Code, Markdown, Logs, Email)
+│       ├── parse/              # Parsers (HTML, XML, DOCX, PDF, JSON, CSV, Code, Markdown, Logs, Email)
 │       ├── rank/               # Vectorized sparse LexRank / PageRank
 │       ├── render/             # Output renderer & provenance manifest
 │       ├── rewrite/            # Transactional discourse pruning & rule engine
