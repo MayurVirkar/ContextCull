@@ -11,6 +11,7 @@ from tep.tokenize.profile import TokenizerProfile
 
 try:
     import ahocorasick_rs
+
     HAS_AHOCORASICK_RS = True
 except ImportError:
     ahocorasick_rs = None
@@ -85,7 +86,9 @@ class RewriteEngine:
         # Fast pre-filtering with Aho-Corasick automaton if available
         if self._ac is not None:
             # m is a tuple (pattern_index, start, end)
-            matched_indices = sorted(set(m[0] for m in self._ac.find_matches_as_indexes(candidate_text.lower())))
+            matched_indices = sorted(
+                set(m[0] for m in self._ac.find_matches_as_indexes(candidate_text.lower()))
+            )
             rules_to_check = [
                 (self._patterns[i], self._replacements[i], self._rule_ids[i])
                 for i in matched_indices

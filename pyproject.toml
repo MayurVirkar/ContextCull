@@ -30,8 +30,11 @@ build-backend = "uv_build"
 
 [dependency-groups]
 dev = [
+    "bandit>=1.9.4",
     "coverage>=7.16.1",
     "hypothesis>=6.168.0",
+    "mutmut>=3.8.0",
+    "pip-audit>=2.10.1",
     "pyright>=1.1.414",
     "pytest>=9.1.1",
     "pytest-cov>=6.0.0",
@@ -61,3 +64,29 @@ venvPath = "."
 venv = ".venv"
 pythonVersion = "3.13"
 reportMissingTypeStubs = false
+
+[tool.bandit]
+exclude_dirs = [".venv", "tests", "bench", "scratch"]
+skips = [
+    "B105",  # hardcoded_password_string: false positive on "token" dictionary key
+    "B110",  # try_except_pass: deliberate fallback in parser detection
+    "B112",  # try_except_continue: deliberate resilient loop in PDF page parsing
+]
+
+[tool.mutmut]
+paths_to_mutate = ["src/tep/"]
+runner = "python -m pytest -x -q"
+tests_dir = ["tests/"]
+
+[tool.coverage.run]
+source = ["src/tep"]
+omit = ["src/tep/cli.py"]
+
+[tool.coverage.report]
+fail_under = 80
+show_missing = true
+exclude_lines = [
+    "pragma: no cover",
+    "if TYPE_CHECKING:",
+    "raise NotImplementedError",
+]

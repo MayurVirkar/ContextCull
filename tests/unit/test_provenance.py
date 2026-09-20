@@ -28,7 +28,9 @@ def test_provenance_roundtrip_sample_incident():
         for src in seg.get("sources", []):
             s_bytes = raw_bytes[src["start"] : src["end"]]
             s_str = s_bytes.decode("utf-8", errors="replace").strip()
-            assert s_str in output_text, f"Source span [{src['start']}, {src['end']}) not found in output"
+            assert s_str in output_text, (
+                f"Source span [{src['start']}, {src['end']}) not found in output"
+            )
 
         # Check output byte range matches emitted text exactly
         out_start = seg["output_start"]

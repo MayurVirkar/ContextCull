@@ -85,7 +85,15 @@ def get_tokenizer(profile: str) -> TokenizerProfile:
     if clean.startswith("openai:"):
         model_or_enc = profile.split(":", 1)[1]
         return TiktokenProfile(model_or_enc)
-    elif clean in ("cl100k_base", "o200k_base", "p50k_base", "r50k_base", "gpt-4", "gpt-4o", "gpt-3.5-turbo"):
+    elif clean in (
+        "cl100k_base",
+        "o200k_base",
+        "p50k_base",
+        "r50k_base",
+        "gpt-4",
+        "gpt-4o",
+        "gpt-3.5-turbo",
+    ):
         return TiktokenProfile(clean)
     elif clean.startswith("heuristic:") or clean == "heuristic":
         return HeuristicProfile(profile)

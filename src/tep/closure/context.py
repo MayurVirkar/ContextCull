@@ -28,13 +28,15 @@ def apply_context_closure(
     unit_map = {u.unit_id: u for u in all_units}
 
     # If any prose is selected, ensure preceding heading in document is included
-    heading_units = [u for u in all_units if block_map.get(u.block_id) and block_map[u.block_id].kind == BlockKind.HEADING]
+    heading_units = [
+        u
+        for u in all_units
+        if block_map.get(u.block_id) and block_map[u.block_id].kind == BlockKind.HEADING
+    ]
 
     for u in selected_units:
         # Find nearest preceding heading if not already selected
-        preceding_headings = [
-            h for h in heading_units if h.source_order < u.source_order
-        ]
+        preceding_headings = [h for h in heading_units if h.source_order < u.source_order]
         if preceding_headings:
             nearest_heading = max(preceding_headings, key=lambda h: h.source_order)
             closure_ids.add(nearest_heading.unit_id)

@@ -24,13 +24,27 @@ app = typer.Typer(
 @app.command(name="compile")
 def compile_cmd(
     input_file: Path = typer.Argument(..., help="Path to input file to compile"),
-    budget_tokens: int | None = typer.Option(None, "--budget", "-b", help="Target token budget (default: None, natural density floor)"),
-    tokenizer_profile: str = typer.Option("openai:cl100k_base", "--tokenizer", "-t", help="Target tokenizer profile"),
-    mode: str = typer.Option("compact", "--mode", "-m", help="Safety mode: verbatim, strict, compact, task"),
-    output_path: Path | None = typer.Option(None, "--output", "-o", help="Output path for compiled text"),
-    manifest_path: Path | None = typer.Option(None, "--manifest", help="Output path for JSON manifest"),
-    required_terms: list[str] = typer.Option([], "--require-term", "-r", help="Explicit terms that must be preserved"),
-    hard_budget: bool = typer.Option(True, "--hard-budget/--soft-budget", help="Fail if budget is unsafe"),
+    budget_tokens: int | None = typer.Option(
+        None, "--budget", "-b", help="Target token budget (default: None, natural density floor)"
+    ),
+    tokenizer_profile: str = typer.Option(
+        "openai:cl100k_base", "--tokenizer", "-t", help="Target tokenizer profile"
+    ),
+    mode: str = typer.Option(
+        "compact", "--mode", "-m", help="Safety mode: verbatim, strict, compact, task"
+    ),
+    output_path: Path | None = typer.Option(
+        None, "--output", "-o", help="Output path for compiled text"
+    ),
+    manifest_path: Path | None = typer.Option(
+        None, "--manifest", help="Output path for JSON manifest"
+    ),
+    required_terms: list[str] = typer.Option(
+        [], "--require-term", "-r", help="Explicit terms that must be preserved"
+    ),
+    hard_budget: bool = typer.Option(
+        True, "--hard-budget/--soft-budget", help="Fail if budget is unsafe"
+    ),
 ) -> None:
     """Compile input document into optimally condensed context without requiring a token budget."""
     if not input_file.exists():
@@ -85,7 +99,9 @@ def compile_cmd(
 @app.command(name="inspect")
 def inspect_cmd(
     input_file: Path = typer.Argument(..., help="Path to input file"),
-    show: str = typer.Option("blocks,atoms", "--show", help="Elements to inspect: blocks, atoms, all"),
+    show: str = typer.Option(
+        "blocks,atoms", "--show", help="Elements to inspect: blocks, atoms, all"
+    ),
 ) -> None:
     """Inspect detected structural blocks and protected atoms in an input file."""
     if not input_file.exists():
@@ -132,7 +148,10 @@ def validate_cmd(
     source_hash = f"sha256:{hashlib.sha256(raw_source).hexdigest()}"
     manifest_source_id = manifest.get("source", {}).get("document_id")
     if source_hash != manifest_source_id:
-        typer.echo(f"Validation FAILED: Source hash {source_hash} does not match manifest {manifest_source_id}", err=True)
+        typer.echo(
+            f"Validation FAILED: Source hash {source_hash} does not match manifest {manifest_source_id}",
+            err=True,
+        )
         raise typer.Exit(code=2)
 
     # Validate output segments

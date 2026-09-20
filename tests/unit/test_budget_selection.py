@@ -15,15 +15,47 @@ def test_budget_free_natural_density_floor():
     policy = CompilePolicy()
 
     atoms = [
-        Atom("a1", "cve", "CVE-2026-66384", "cve-2026-66384", (ByteSpan("d", 0, 14),), 1.0, required=True),
-        Atom("a2", "instance_id", "i-0622056ec3e996a7c", "i-0622056ec3e996a7c", (ByteSpan("d", 20, 39),), 1.0, required=True),
+        Atom(
+            "a1",
+            "cve",
+            "CVE-2026-66384",
+            "cve-2026-66384",
+            (ByteSpan("d", 0, 14),),
+            1.0,
+            required=True,
+        ),
+        Atom(
+            "a2",
+            "instance_id",
+            "i-0622056ec3e996a7c",
+            "i-0622056ec3e996a7c",
+            (ByteSpan("d", 20, 39),),
+            1.0,
+            required=True,
+        ),
     ]
 
     units = [
-        CandidateUnit("u1", "b1", (ByteSpan("d", 0, 30),), "Attacker exploited CVE-2026-66384 on the server.", atom_ids=("a1",)),
-        CandidateUnit("u2", "b2", (ByteSpan("d", 30, 60),), "The target instance was i-0622056ec3e996a7c in AWS.", atom_ids=("a2",)),
-        CandidateUnit("u3", "b3", (ByteSpan("d", 60, 90),), "We reviewed the internal logs thoroughly today."),
-        CandidateUnit("u4", "b4", (ByteSpan("d", 90, 120),), "We reviewed the internal logs thoroughly today."),
+        CandidateUnit(
+            "u1",
+            "b1",
+            (ByteSpan("d", 0, 30),),
+            "Attacker exploited CVE-2026-66384 on the server.",
+            atom_ids=("a1",),
+        ),
+        CandidateUnit(
+            "u2",
+            "b2",
+            (ByteSpan("d", 30, 60),),
+            "The target instance was i-0622056ec3e996a7c in AWS.",
+            atom_ids=("a2",),
+        ),
+        CandidateUnit(
+            "u3", "b3", (ByteSpan("d", 60, 90),), "We reviewed the internal logs thoroughly today."
+        ),
+        CandidateUnit(
+            "u4", "b4", (ByteSpan("d", 90, 120),), "We reviewed the internal logs thoroughly today."
+        ),
     ]
 
     selected = select_units_budget_free(units, atoms, policy, tokenizer=tokenizer)
@@ -42,11 +74,25 @@ def test_budget_constrained_fail_closed():
     policy = CompilePolicy()
 
     atoms = [
-        Atom("a1", "cve", "CVE-2026-66384", "cve-2026-66384", (ByteSpan("d", 0, 14),), 1.0, required=True),
+        Atom(
+            "a1",
+            "cve",
+            "CVE-2026-66384",
+            "cve-2026-66384",
+            (ByteSpan("d", 0, 14),),
+            1.0,
+            required=True,
+        ),
     ]
 
     units = [
-        CandidateUnit("u1", "b1", (ByteSpan("d", 0, 50),), "Attacker exploited CVE-2026-66384 on the primary cluster node.", atom_ids=("a1",)),
+        CandidateUnit(
+            "u1",
+            "b1",
+            (ByteSpan("d", 0, 50),),
+            "Attacker exploited CVE-2026-66384 on the primary cluster node.",
+            atom_ids=("a1",),
+        ),
     ]
 
     # Target budget of 2 tokens cannot hold unit u1 (~10 tokens)

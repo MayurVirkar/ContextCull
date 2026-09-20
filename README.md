@@ -228,16 +228,22 @@ TEPv2/
 
 ---
 
-## Testing & Quality Assurance
+## Quality, Security, and Correctness Gates
 
-Run the comprehensive test suite with `pytest`:
+TEP v2 enforces zero-compromise code security, static verification, and quality standards:
 
+| Tool | Purpose | Configuration / Command |
+| :--- | :--- | :--- |
+| **Ruff** | Code formatting & high-speed linting | `uv run ruff check` / `uv run ruff format --check` |
+| **Pyright** | Static typing & interface correctness | `uv run pyright` |
+| **Bandit** | AST-based security vulnerability scanner | `uv run bandit -c pyproject.toml -r src/` |
+| **pip-audit** | PyPA supply-chain vulnerability audit | `uv export --no-dev \| uv run pip-audit -r /dev/stdin` |
+| **Pytest + Coverage** | Unit, property, and differential tests | `uv run pytest --cov=tep` (80%+ coverage gate) |
+| **Mutmut** | Mutation testing framework (Python Stryker equivalent) | `uv run mutmut run` |
+
+Run all quality and security gates locally with one command:
 ```bash
-# Run all tests
-pytest
-
-# Run with coverage report
-pytest --cov=tep --cov-report=term-missing
+./scripts/gate.sh
 ```
 
 ---

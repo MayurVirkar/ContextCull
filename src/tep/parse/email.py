@@ -89,7 +89,11 @@ def parse_email_blocks(ingest: IngestionResult) -> list[Block]:
     for s in sentences:
         s_text = s.text.strip()
         # Skip trivial courtesy greetings
-        if len(s_text) <= 5 or s_text.lower().startswith("best regards") or s_text.lower().startswith("thanks"):
+        if (
+            len(s_text) <= 5
+            or s_text.lower().startswith("best regards")
+            or s_text.lower().startswith("thanks")
+        ):
             continue
 
         c_start = body_offset + s.start_char

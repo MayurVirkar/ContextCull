@@ -3,14 +3,15 @@
 from __future__ import annotations
 
 import re
-from typing import Any
 
 import defusedxml.ElementTree as ET
 
 from tep.ingest.decoder import IngestionResult, clean_char_to_byte_span
 from tep.ir.models import Block, BlockKind
 
-XML_DETECT_RE = re.compile(r"^\s*<\?xml\b|^\s*<[a-zA-Z_][a-zA-Z0-9_\-\.:]*(?:\s+[^>]*)?>", re.DOTALL)
+XML_DETECT_RE = re.compile(
+    r"^\s*<\?xml\b|^\s*<[a-zA-Z_][a-zA-Z0-9_\-\.:]*(?:\s+[^>]*)?>", re.DOTALL
+)
 
 
 def is_xml(text: str) -> bool:
@@ -53,7 +54,11 @@ def parse_xml_blocks(ingest: IngestionResult) -> list[Block]:
 
         # Attribute summary if present
         attrs_str = " ".join(f'{k}="{v}"' for k, v in elem.attrib.items())
-        block_text = f"<{tag_name} {attrs_str}>{text}</{tag_name}>" if attrs_str else f"<{tag_name}>{text}</{tag_name}>"
+        block_text = (
+            f"<{tag_name} {attrs_str}>{text}</{tag_name}>"
+            if attrs_str
+            else f"<{tag_name}>{text}</{tag_name}>"
+        )
 
         blocks.append(
             Block(

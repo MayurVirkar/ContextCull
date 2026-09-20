@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import re
-from collections import Counter
 from collections.abc import Sequence
 
 import numpy as np
@@ -17,10 +16,17 @@ CRITICAL_ENTITY_PATTERNS = [
     re.compile(r"\bCVE-\d{4}-\d{4,7}\b", re.IGNORECASE),
     re.compile(r"\b\d{4}-\d{2}-\d{2}(?:[T\s]\d{2}:\d{2}(?::\d{2})?(?:\s*UTC)?)?\b"),
     re.compile(r"\bi-[0-9a-f]{8,17}\b"),
-    re.compile(r"\b(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(?:\.(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}\b"),
+    re.compile(
+        r"\b(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(?:\.(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}\b"
+    ),
     re.compile(r"\b[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}\b"),
-    re.compile(r"\b[0-9a-fA-F]{40}\b|\b(?=[0-9a-f]{7,39}\b)(?=[0-9a-f]*\d)(?=[0-9a-f]*[a-f])[0-9a-f]{7,39}\b"),
-    re.compile(r"\b\d+(?:\.\d+)?(?:\s*(?:MB|GB|TB|KB|kB|ms|µs|ns|s|%|x|min|mins|minutes?|hours?|hrs?|days?|weeks?))\b", re.IGNORECASE),
+    re.compile(
+        r"\b[0-9a-fA-F]{40}\b|\b(?=[0-9a-f]{7,39}\b)(?=[0-9a-f]*\d)(?=[0-9a-f]*[a-f])[0-9a-f]{7,39}\b"
+    ),
+    re.compile(
+        r"\b\d+(?:\.\d+)?(?:\s*(?:MB|GB|TB|KB|kB|ms|µs|ns|s|%|x|min|mins|minutes?|hours?|hrs?|days?|weeks?))\b",
+        re.IGNORECASE,
+    ),
     re.compile(r"\b[a-zA-Z][a-zA-Z0-9]*(?:-[a-zA-Z0-9]+)+\b"),
 ]
 

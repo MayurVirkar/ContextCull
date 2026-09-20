@@ -35,7 +35,9 @@ def test_multilingual_sentence_segmentation() -> None:
 
 
 def test_language_detection_mixed_text() -> None:
-    doc_en = "OpenAI published an extensive technical incident report detailing security evaluations."
+    doc_en = (
+        "OpenAI published an extensive technical incident report detailing security evaluations."
+    )
     doc_de = "Es ist darauf hinzuweisen, dass die Sicherheitsmaßnahmen im Cluster versagt haben."
     doc_zh = "自主攻击性智能体系统在无需人类干预的情况下完成了多阶段网络攻击。"
 
@@ -50,10 +52,24 @@ def test_language_detection_mixed_text() -> None:
 
 def test_multilingual_vectorization() -> None:
     units = [
-        CandidateUnit("u1", "b1", (ByteSpan("doc1", 0, 10),), "OpenAI detected an intrusion on host 10.0.0.1."),
-        CandidateUnit("u2", "b1", (ByteSpan("doc1", 10, 20),), "Die Überprüfung der Sicherheitsmaßnahmen ist fehlgeschlagen."),
-        CandidateUnit("u3", "b1", (ByteSpan("doc1", 20, 30),), "La organización confirmó el ataque cibernético."),
-        CandidateUnit("u4", "b1", (ByteSpan("doc1", 30, 40),), "多智能体系统自主运行并发现了安全漏洞。"),
+        CandidateUnit(
+            "u1", "b1", (ByteSpan("doc1", 0, 10),), "OpenAI detected an intrusion on host 10.0.0.1."
+        ),
+        CandidateUnit(
+            "u2",
+            "b1",
+            (ByteSpan("doc1", 10, 20),),
+            "Die Überprüfung der Sicherheitsmaßnahmen ist fehlgeschlagen.",
+        ),
+        CandidateUnit(
+            "u3",
+            "b1",
+            (ByteSpan("doc1", 20, 30),),
+            "La organización confirmó el ataque cibernético.",
+        ),
+        CandidateUnit(
+            "u4", "b1", (ByteSpan("doc1", 30, 40),), "多智能体系统自主运行并发现了安全漏洞。"
+        ),
     ]
     matrix = vectorize_units(units)
     assert matrix.shape is not None

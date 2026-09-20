@@ -123,7 +123,9 @@ def parse_markdown_blocks(ingest: IngestionResult) -> list[Block]:
                         text=clean_text[c_start:c_end].strip(),
                     )
                 )
-            close_type = "bullet_list_close" if token.type == "bullet_list_open" else "ordered_list_close"
+            close_type = (
+                "bullet_list_close" if token.type == "bullet_list_open" else "ordered_list_close"
+            )
             while i < len(tokens) and tokens[i].type != close_type:
                 i += 1
 

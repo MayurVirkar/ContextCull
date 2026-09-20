@@ -56,7 +56,11 @@ def parse_json_blocks(ingest: IngestionResult) -> list[Block]:
             add_block(f"{k}: {val_str}", "field")
     elif isinstance(data, list):
         for i, item in enumerate(data):
-            val_str = json.dumps(item, ensure_ascii=False) if isinstance(item, (dict, list)) else str(item)
+            val_str = (
+                json.dumps(item, ensure_ascii=False)
+                if isinstance(item, (dict, list))
+                else str(item)
+            )
             add_block(f"[{i}] {val_str}", "item")
 
     return blocks
@@ -117,7 +121,12 @@ def parse_csv_blocks(ingest: IngestionResult) -> list[Block]:
                 kind=BlockKind.TABLE,
                 sources=(span,),
                 text="\n".join(row_lines),
-                metadata={"kind": "rewrite", "format": "csv", "chunk": chunk_idx, "row_count": len(rows)},
+                metadata={
+                    "kind": "rewrite",
+                    "format": "csv",
+                    "chunk": chunk_idx,
+                    "row_count": len(rows),
+                },
             )
         )
 

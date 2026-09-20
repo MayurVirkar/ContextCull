@@ -67,15 +67,17 @@ def run_benchmark(file_path: Path) -> None:
     tep_retained = [a for a in ground_truth_atoms if a in tep_res.text]
     tep_dropped = [a for a in ground_truth_atoms if a not in tep_res.text]
 
-    results.append({
-        "engine": "TEP v2 (Zero-Budget, Generic)",
-        "latency_ms": tep_latency,
-        "output_tokens": tep_tokens,
-        "reduction_pct": tep_reduction,
-        "retained_count": len(tep_retained),
-        "total_count": len(ground_truth_atoms),
-        "dropped": tep_dropped,
-    })
+    results.append(
+        {
+            "engine": "TEP v2 (Zero-Budget, Generic)",
+            "latency_ms": tep_latency,
+            "output_tokens": tep_tokens,
+            "reduction_pct": tep_reduction,
+            "retained_count": len(tep_retained),
+            "total_count": len(ground_truth_atoms),
+            "dropped": tep_dropped,
+        }
+    )
 
     # 2. Sumy LexRank & LSA (if sumy is installed)
     try:
@@ -99,15 +101,17 @@ def run_benchmark(file_path: Path) -> None:
             lex_retained = [a for a in ground_truth_atoms if a in lex_text]
             lex_dropped = [a for a in ground_truth_atoms if a not in lex_text]
 
-            results.append({
-                "engine": f"Sumy LexRank ({count} sent)",
-                "latency_ms": lex_latency,
-                "output_tokens": lex_tokens,
-                "reduction_pct": lex_reduction,
-                "retained_count": len(lex_retained),
-                "total_count": len(ground_truth_atoms),
-                "dropped": lex_dropped,
-            })
+            results.append(
+                {
+                    "engine": f"Sumy LexRank ({count} sent)",
+                    "latency_ms": lex_latency,
+                    "output_tokens": lex_tokens,
+                    "reduction_pct": lex_reduction,
+                    "retained_count": len(lex_retained),
+                    "total_count": len(ground_truth_atoms),
+                    "dropped": lex_dropped,
+                }
+            )
 
             # LSA
             lsa = LsaSummarizer()
@@ -121,21 +125,25 @@ def run_benchmark(file_path: Path) -> None:
             lsa_retained = [a for a in ground_truth_atoms if a in lsa_text]
             lsa_dropped = [a for a in ground_truth_atoms if a not in lsa_text]
 
-            results.append({
-                "engine": f"Sumy LSA ({count} sent)",
-                "latency_ms": lsa_latency,
-                "output_tokens": lsa_tokens,
-                "reduction_pct": lsa_reduction,
-                "retained_count": len(lsa_retained),
-                "total_count": len(ground_truth_atoms),
-                "dropped": lsa_dropped,
-            })
+            results.append(
+                {
+                    "engine": f"Sumy LSA ({count} sent)",
+                    "latency_ms": lsa_latency,
+                    "output_tokens": lsa_tokens,
+                    "reduction_pct": lsa_reduction,
+                    "retained_count": len(lsa_retained),
+                    "total_count": len(ground_truth_atoms),
+                    "dropped": lsa_dropped,
+                }
+            )
 
     except ImportError:
         print("Note: sumy and nltk not installed; skipping classic summarizer comparison.")
 
     # Print Table
-    print("| Summarizer Engine | Latency | Output Tokens | Token Reduction | Atoms Retained (19 Ground Truth) | Atoms Dropped |")
+    print(
+        "| Summarizer Engine | Latency | Output Tokens | Token Reduction | Atoms Retained (19 Ground Truth) | Atoms Dropped |"
+    )
     print("| :--- | :---: | :---: | :---: | :---: | :--- |")
     for r in results:
         dropped_str = ", ".join(f"`{d}`" for d in r["dropped"][:4])
@@ -146,7 +154,7 @@ def run_benchmark(file_path: Path) -> None:
 
         print(
             f"| **{r['engine']}** | {r['latency_ms']:.0f} ms | {r['output_tokens']:,} | "
-            f"{r['reduction_pct']:.1f}% | **{r['retained_count']} / {r['total_count']} ({r['retained_count']/r['total_count']*100:.1f}%)** | "
+            f"{r['reduction_pct']:.1f}% | **{r['retained_count']} / {r['total_count']} ({r['retained_count'] / r['total_count'] * 100:.1f}%)** | "
             f"{dropped_str} |"
         )
 

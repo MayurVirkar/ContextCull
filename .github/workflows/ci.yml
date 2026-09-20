@@ -7,7 +7,8 @@ on:
     branches: [ main ]
 
 jobs:
-  test:
+  quality-and-security:
+    name: Quality & Security Gate
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -27,11 +28,20 @@ jobs:
       - name: Install dependencies
         run: uv sync --all-groups
 
-      - name: Run Ruff Linter
+      - name: Code Formatting Check (Ruff)
+        run: uv run ruff format --check src tests bench
+
+      - name: Linting & Code Quality (Ruff)
         run: uv run ruff check src tests bench
 
-      - name: Run Pyright Typechecker
+      - name: Static Type Checking (Pyright)
         run: uv run pyright
 
-      - name: Run Pytest with Coverage
+      - name: AST Security Vulnerability Scan (Bandit)
+        run: uv run bandit -c pyproject.toml -r src/
+
+      - name: Supply-Chain Dependency Audit (pip-audit)
+        run: uv export --no-dev --no-emit-project | uv run pip-audit -r /dev/stdin
+
+      - name: Test Suite & Coverage Gate (Pytest >= 80%)
         run: uv run pytest --cov=tep --cov-report=term-missing

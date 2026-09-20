@@ -97,6 +97,8 @@ def segment_sentences(text: str) -> list[SegmentSpan]:
         if remaining_clean:
             actual_start = text.find(remaining_clean, start)
             actual_end = actual_start + len(remaining_clean)
-            spans.append(SegmentSpan(start_char=actual_start, end_char=actual_end, text=remaining_clean))
+            spans.append(
+                SegmentSpan(start_char=actual_start, end_char=actual_end, text=remaining_clean)
+            )
 
     return spans

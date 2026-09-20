@@ -1,7 +1,6 @@
 """Standard exceptions and status definitions for TEP."""
 
 
-
 class TepError(Exception):
     """Base exception for all TEP operations."""
 

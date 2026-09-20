@@ -11,10 +11,16 @@ from tep.ir.spans import ByteSpan
 
 # Generic regular expressions for critical technical identifiers & protected classes
 CVE_RE = re.compile(r"\bCVE-\d{4}-\d{4,7}\b", re.IGNORECASE)
-IPV4_RE = re.compile(r"\b(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(?:\.(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}\b")
+IPV4_RE = re.compile(
+    r"\b(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(?:\.(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}\b"
+)
 IPV6_RE = re.compile(r"\b(?:[0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}\b")
-UUID_RE = re.compile(r"\b[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}\b")
-GIT_SHA_RE = re.compile(r"\b[0-9a-fA-F]{40}\b|\b(?=[0-9a-f]{7,39}\b)(?=[0-9a-f]*\d)(?=[0-9a-f]*[a-f])[0-9a-f]{7,39}\b")
+UUID_RE = re.compile(
+    r"\b[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}\b"
+)
+GIT_SHA_RE = re.compile(
+    r"\b[0-9a-fA-F]{40}\b|\b(?=[0-9a-f]{7,39}\b)(?=[0-9a-f]*\d)(?=[0-9a-f]*[a-f])[0-9a-f]{7,39}\b"
+)
 AWS_INSTANCE_RE = re.compile(r"\bi-[0-9a-f]{8,17}\b")
 
 QUANTITY_RE = re.compile(
@@ -123,7 +129,9 @@ def extract_atoms(
     for term in required_terms:
         if not term:
             continue
-        term_re = re.compile(r"(?<![a-zA-Z0-9_])" + re.escape(term) + r"(?![a-zA-Z0-9_])", re.IGNORECASE)
+        term_re = re.compile(
+            r"(?<![a-zA-Z0-9_])" + re.escape(term) + r"(?![a-zA-Z0-9_])", re.IGNORECASE
+        )
         found = False
         for match in term_re.finditer(clean_text):
             found = True
@@ -141,7 +149,14 @@ def extract_atoms(
                 )
                 for match in flex_re.finditer(clean_text):
                     start, end = match.span()
-                    add_atom("required_term", clean_text[start:end], start, end, canonical=term.lower(), required=True)
+                    add_atom(
+                        "required_term",
+                        clean_text[start:end],
+                        start,
+                        end,
+                        canonical=term.lower(),
+                        required=True,
+                    )
 
     # 2. Critical Technical Identifiers (Always required by default)
     for match in CVE_RE.finditer(clean_text):
@@ -191,7 +206,9 @@ def extract_atoms(
         start, end = match.span()
         surface = clean_text[start:end]
         if not any(
-            isinstance(a.sources[0], ByteSpan) and start >= a.sources[0].start and end <= a.sources[0].end
+            isinstance(a.sources[0], ByteSpan)
+            and start >= a.sources[0].start
+            and end <= a.sources[0].end
             for a in atoms
             if a.kind in ("path_or_url", "file_location")
         ):
@@ -205,7 +222,9 @@ def extract_atoms(
     # 7. Negations
     for match in NEGATION_RE.finditer(clean_text):
         start, end = match.span()
-        add_atom("negation", clean_text[start:end], start, end, canonical=clean_text[start:end].lower())
+        add_atom(
+            "negation", clean_text[start:end], start, end, canonical=clean_text[start:end].lower()
+        )
 
     # 8. Modalities
     for match in MODALITY_RE.finditer(clean_text):
@@ -236,9 +255,12 @@ def extract_atoms(
             ]
             if valid_spans:
                 atoms = [
-                    a for a in atoms
+                    a
+                    for a in atoms
                     if any(
-                        isinstance(a.sources[0], ByteSpan) and a.sources[0].start >= s_start and a.sources[0].end <= s_end
+                        isinstance(a.sources[0], ByteSpan)
+                        and a.sources[0].start >= s_start
+                        and a.sources[0].end <= s_end
                         for s_start, s_end in valid_spans
                     )
                 ]

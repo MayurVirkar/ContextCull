@@ -36,7 +36,11 @@ test result: FAILED. 1 passed; 2 failed; 0 ignored; 0 measured; 0 filtered out; 
     blocks = parse_test_log_blocks(ingest)
 
     # 1 summary header + 2 failure blocks
-    fail_blocks = [b for b in blocks if b.metadata.get("runner") == "cargo" and b.block_id.endswith("_test_failure")]
+    fail_blocks = [
+        b
+        for b in blocks
+        if b.metadata.get("runner") == "cargo" and b.block_id.endswith("_test_failure")
+    ]
     assert len(fail_blocks) == 2, f"Expected 2 failure blocks, got {len(fail_blocks)}"
 
     auth_block = next(b for b in fail_blocks if "test_auth" in b.text)
@@ -83,7 +87,11 @@ FAILED tests/test_api.py::test_token - assert False == True
     ingest = ingest_bytes(pytest_log.encode("utf-8"))
     blocks = parse_test_log_blocks(ingest)
 
-    fail_blocks = [b for b in blocks if b.metadata.get("runner") == "pytest" and b.block_id.endswith("_test_failure")]
+    fail_blocks = [
+        b
+        for b in blocks
+        if b.metadata.get("runner") == "pytest" and b.block_id.endswith("_test_failure")
+    ]
     assert len(fail_blocks) == 2, f"Expected 2 failure blocks, got {len(fail_blocks)}"
 
     login_block = next(b for b in fail_blocks if "test_login" in b.text)

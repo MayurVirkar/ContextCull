@@ -237,7 +237,9 @@ class ContextCompiler:
                     s_char_start = c_start + s.start_char
                     s_char_end = c_start + s.end_char
 
-                    span = clean_char_to_byte_span(ingest, s_char_start, min(s_char_end, len(ingest.clean_text)))
+                    span = clean_char_to_byte_span(
+                        ingest, s_char_start, min(s_char_end, len(ingest.clean_text))
+                    )
                     bound_atom_ids = get_bound_atom_ids(span.start, span.end)
 
                     # Preserve short factual lines if they contain bound atoms or numbers

@@ -17,11 +17,15 @@ CARGO_SECTION_RE = re.compile(
     r"----\s+([^\s]+)\s+stdout\s+----(.*?)(?=----\s+[^\s]+\s+stdout\s+----|\nfailures:|\Z)",
     re.DOTALL,
 )
-CARGO_ASSERT_FAIL_RE = re.compile(r"assertion `left == right` failed\s*\n\s*left:\s*(.+)\s*\n\s*right:\s*(.+)")
+CARGO_ASSERT_FAIL_RE = re.compile(
+    r"assertion `left == right` failed\s*\n\s*left:\s*(.+)\s*\n\s*right:\s*(.+)"
+)
 CARGO_LOCATION_RE = re.compile(r"panicked at ([^:]+:\d+:\d+):")
 
 PYTEST_HEADER_RE = re.compile(r"==+ test session starts =+")
-PYTEST_RESULT_RE = re.compile(r"=+\s*(?:(\d+)\s*failed,?\s*)?(?:(\d+)\s*passed,?\s*)?.*in\s*([\d\.]+s)\s*=+")
+PYTEST_RESULT_RE = re.compile(
+    r"=+\s*(?:(\d+)\s*failed,?\s*)?(?:(\d+)\s*passed,?\s*)?.*in\s*([\d\.]+s)\s*=+"
+)
 PYTEST_SECTION_RE = re.compile(
     r"_{3,}\s*(\S+?)\s*_{3,}\n(.*?)(?=\n\s*_{3,}|\n\s*=+|\Z)",
     re.DOTALL,
@@ -32,7 +36,9 @@ PYTEST_ASSERT_RE = re.compile(r"E\s+assert\s+(.+)\s*==\s*(.+)")
 VITEST_FAIL_RE = re.compile(r"FAIL\s+([^\n]+)")
 VITEST_EXPECT_RE = re.compile(r"- Expected:\s*\n\s*([^\n]+)\s*\n\+\s*Received:\s*\n\s*([^\n]+)")
 VITEST_LOCATION_RE = re.compile(r"❯\s+([^\s:]+:\d+:\d+)")
-VITEST_RESULT_RE = re.compile(r"Tests\s+(?:(\d+)\s*failed)?\s*\|\s*(\d+)\s*passed.*Duration\s+([\d\.]+\w*)")
+VITEST_RESULT_RE = re.compile(
+    r"Tests\s+(?:(\d+)\s*failed)?\s*\|\s*(\d+)\s*passed.*Duration\s+([\d\.]+\w*)"
+)
 
 
 def is_test_log(text: str) -> bool:
@@ -73,7 +79,9 @@ def parse_test_log_blocks(ingest: IngestionResult) -> list[Block]:
                 assert_match = CARGO_ASSERT_FAIL_RE.search(body)
                 exp_actual = ""
                 if assert_match:
-                    exp_actual = f"exp: {assert_match.group(2).strip()} got: {assert_match.group(1).strip()}"
+                    exp_actual = (
+                        f"exp: {assert_match.group(2).strip()} got: {assert_match.group(1).strip()}"
+                    )
 
                 fail_desc = f"✗ {test_name}"
                 if location:
@@ -88,7 +96,12 @@ def parse_test_log_blocks(ingest: IngestionResult) -> list[Block]:
                         kind=BlockKind.LOG,
                         sources=(span,),
                         text=fail_desc,
-                        metadata={"runner": "cargo", "test_name": test_name, "location": location, "kind": "aggregate"},
+                        metadata={
+                            "runner": "cargo",
+                            "test_name": test_name,
+                            "location": location,
+                            "kind": "aggregate",
+                        },
                     )
                 )
         else:
@@ -118,7 +131,13 @@ def parse_test_log_blocks(ingest: IngestionResult) -> list[Block]:
                 kind=BlockKind.LOG,
                 sources=(span,),
                 text=summary_line,
-                metadata={"runner": "cargo", "passed": passed, "failed": failed, "duration": duration, "kind": "aggregate"},
+                metadata={
+                    "runner": "cargo",
+                    "passed": passed,
+                    "failed": failed,
+                    "duration": duration,
+                    "kind": "aggregate",
+                },
             ),
         )
         return blocks
@@ -145,7 +164,9 @@ def parse_test_log_blocks(ingest: IngestionResult) -> list[Block]:
             assert_match = PYTEST_ASSERT_RE.search(body)
             exp_actual = ""
             if assert_match:
-                exp_actual = f"exp: {assert_match.group(2).strip()} got: {assert_match.group(1).strip()}"
+                exp_actual = (
+                    f"exp: {assert_match.group(2).strip()} got: {assert_match.group(1).strip()}"
+                )
 
             fail_desc = f"✗ {test_name}"
             if location:
@@ -160,7 +181,12 @@ def parse_test_log_blocks(ingest: IngestionResult) -> list[Block]:
                     kind=BlockKind.LOG,
                     sources=(span,),
                     text=fail_desc,
-                    metadata={"runner": "pytest", "test_name": test_name, "location": location, "kind": "aggregate"},
+                    metadata={
+                        "runner": "pytest",
+                        "test_name": test_name,
+                        "location": location,
+                        "kind": "aggregate",
+                    },
                 )
             )
 
@@ -175,7 +201,13 @@ def parse_test_log_blocks(ingest: IngestionResult) -> list[Block]:
                 kind=BlockKind.LOG,
                 sources=(span_h,),
                 text=summary_line,
-                metadata={"runner": "pytest", "passed": passed, "failed": failed, "duration": duration, "kind": "aggregate"},
+                metadata={
+                    "runner": "pytest",
+                    "passed": passed,
+                    "failed": failed,
+                    "duration": duration,
+                    "kind": "aggregate",
+                },
             ),
         )
         return blocks
@@ -217,7 +249,12 @@ def parse_test_log_blocks(ingest: IngestionResult) -> list[Block]:
                 kind=BlockKind.LOG,
                 sources=(span,),
                 text=fail_desc,
-                metadata={"runner": "vitest", "test_name": test_name, "location": location, "kind": "aggregate"},
+                metadata={
+                    "runner": "vitest",
+                    "test_name": test_name,
+                    "location": location,
+                    "kind": "aggregate",
+                },
             )
         )
 
@@ -229,7 +266,13 @@ def parse_test_log_blocks(ingest: IngestionResult) -> list[Block]:
                 kind=BlockKind.LOG,
                 sources=(span_h,),
                 text=summary_line,
-                metadata={"runner": "vitest", "passed": passed, "failed": failed, "duration": duration, "kind": "aggregate"},
+                metadata={
+                    "runner": "vitest",
+                    "passed": passed,
+                    "failed": failed,
+                    "duration": duration,
+                    "kind": "aggregate",
+                },
             ),
         )
         return blocks

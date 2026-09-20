@@ -46,7 +46,9 @@ def test_required_atom_surface_dropping_raises_invariant_violation():
     ]
     tokenizer = get_tokenizer("openai:cl100k_base")
 
-    with pytest.raises(InvariantViolationError, match="Atom violation: required atom 'CVE-2026-66384'"):
+    with pytest.raises(
+        InvariantViolationError, match="Atom violation: required atom 'CVE-2026-66384'"
+    ):
         validate_invariants(
             output_text=output_text,
             output_segments=segments,

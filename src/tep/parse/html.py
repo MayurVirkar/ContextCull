@@ -33,7 +33,9 @@ def parse_html_blocks(ingest: IngestionResult) -> list[Block]:
         doc = lxml.html.fromstring(raw_text)
 
         # Drop non-content trees
-        for el in doc.xpath("//script | //style | //noscript | //svg | //nav | //header | //footer"):
+        for el in doc.xpath(
+            "//script | //style | //noscript | //svg | //nav | //header | //footer"
+        ):
             el.drop_tree()
 
         # Drop edit links and navigation elements
@@ -41,7 +43,9 @@ def parse_html_blocks(ingest: IngestionResult) -> list[Block]:
             el.drop_tree()
 
         blocks: list[Block] = []
-        elements = doc.xpath("//h1 | //h2 | //h3 | //h4 | //h5 | //h6 | //p | //li | //tr | //pre | //code | //blockquote")
+        elements = doc.xpath(
+            "//h1 | //h2 | //h3 | //h4 | //h5 | //h6 | //p | //li | //tr | //pre | //code | //blockquote"
+        )
 
         for el in elements:
             text = " ".join(el.text_content().split()).strip()
@@ -101,10 +105,16 @@ def parse_html_blocks(ingest: IngestionResult) -> list[Block]:
                 return
 
             tag = self.curr_tag or "p"
-            kind = BlockKind.HEADING if tag.startswith("h") else (
-                BlockKind.LIST if tag == "li" else (
-                    BlockKind.TABLE if tag in ("td", "th", "tr") else (
-                        BlockKind.CODE if tag in ("pre", "code") else BlockKind.PROSE
+            kind = (
+                BlockKind.HEADING
+                if tag.startswith("h")
+                else (
+                    BlockKind.LIST
+                    if tag == "li"
+                    else (
+                        BlockKind.TABLE
+                        if tag in ("td", "th", "tr")
+                        else (BlockKind.CODE if tag in ("pre", "code") else BlockKind.PROSE)
                     )
                 )
             )
@@ -120,14 +130,44 @@ def parse_html_blocks(ingest: IngestionResult) -> list[Block]:
 
         def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
             self.stack.append(tag.lower())
-            if tag.lower() in ("h1", "h2", "h3", "h4", "h5", "h6", "p", "li", "td", "th", "tr", "pre", "div", "blockquote"):
+            if tag.lower() in (
+                "h1",
+                "h2",
+                "h3",
+                "h4",
+                "h5",
+                "h6",
+                "p",
+                "li",
+                "td",
+                "th",
+                "tr",
+                "pre",
+                "div",
+                "blockquote",
+            ):
                 self._flush()
                 self.curr_tag = tag.lower()
 
         def handle_endtag(self, tag: str) -> None:
             if self.stack and self.stack[-1] == tag.lower():
                 self.stack.pop()
-            if tag.lower() in ("h1", "h2", "h3", "h4", "h5", "h6", "p", "li", "td", "th", "tr", "pre", "div", "blockquote"):
+            if tag.lower() in (
+                "h1",
+                "h2",
+                "h3",
+                "h4",
+                "h5",
+                "h6",
+                "p",
+                "li",
+                "td",
+                "th",
+                "tr",
+                "pre",
+                "div",
+                "blockquote",
+            ):
                 self._flush()
                 self.curr_tag = None
 

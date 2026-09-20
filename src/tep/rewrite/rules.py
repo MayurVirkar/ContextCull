@@ -41,7 +41,6 @@ ABBREVIATIONS: dict[str, str] = {
     "october": "Oct",
     "november": "Nov",
     "december": "Dec",
-
     # Units of Time
     "millisecond": "ms",
     "milliseconds": "ms",
@@ -61,7 +60,6 @@ ABBREVIATIONS: dict[str, str] = {
     "months": "mo",
     "year": "yr",
     "years": "yr",
-
     # Units of Data & Storage
     "kilobyte": "kB",
     "kilobytes": "kB",
@@ -71,7 +69,6 @@ ABBREVIATIONS: dict[str, str] = {
     "gigabytes": "GB",
     "terabyte": "TB",
     "terabytes": "TB",
-
     # Systems, Infrastructure & Architecture
     "database": "db",
     "databases": "dbs",
@@ -166,7 +163,6 @@ ABBREVIATIONS: dict[str, str] = {
     "documentation": "docs",
     "implementation": "impl",
     "implementations": "impls",
-
     # International Common Contractions (German, French, Spanish)
     "beziehungsweise": "bzw.",
     "circa": "ca.",
@@ -204,7 +200,6 @@ _WORDINESS_CATALOG: list[tuple[str, str, str]] = [
     ("in excess of", "over", "wg_in_excess_of"),
     ("in addition to", "besides", "wg_in_addition_to"),
     ("with the exception of", "except", "wg_with_exception_of"),
-
     # Temporal Wordiness
     ("at this point in time", "now", "wg_at_this_point"),
     ("at the present time", "now", "wg_at_present_time"),
@@ -219,7 +214,6 @@ _WORDINESS_CATALOG: list[tuple[str, str, str]] = [
     ("on a monthly basis", "monthly", "wg_on_monthly_basis"),
     ("period of time", "period", "pl_period_of_time"),
     ("point in time", "time", "pl_point_in_time"),
-
     # Quantities & Modifiers
     ("a large number of", "many", "wg_large_num_of"),
     ("a majority of", "most", "wg_majority_of"),
@@ -228,7 +222,6 @@ _WORDINESS_CATALOG: list[tuple[str, str, str]] = [
     ("the vast majority of", "most", "wg_vast_majority_of"),
     ("in close proximity to", "near", "wg_in_close_proximity"),
     ("close proximity", "proximity", "pl_close_proximity"),
-
     # Verbose Verb Phrases (Nominalizations)
     ("take into consideration", "consider", "pl_take_into_consideration"),
     ("give consideration to", "consider", "pl_give_consideration_to"),
@@ -249,7 +242,6 @@ _WORDINESS_CATALOG: list[tuple[str, str, str]] = [
     ("it is necessary that", "must", "pl_it_is_necessary"),
     ("it is crucial that", "must", "pl_it_is_crucial"),
     ("it is mandatory that", "must", "pl_it_is_mandatory"),
-
     # Redundant Doublets & Tautologies
     ("each and every", "every", "pl_each_and_every"),
     ("first and foremost", "first", "pl_first_and_foremost"),
@@ -279,24 +271,20 @@ _WORDINESS_CATALOG: list[tuple[str, str, str]] = [
     ("plan ahead", "plan", "pl_plan_ahead"),
     ("postpone until later", "postpone", "pl_postpone_until_later"),
     ("cancel out", "cancel", "pl_cancel_out"),
-
     ("parts per billion", "ppb", "rule_ppb"),
     ("less than or equal to", "≤", "rule_lte"),
     ("greater than or equal to", "≥", "rule_gte"),
     ("not equal to", "≠", "rule_neq"),
     ("does not equal", "≠", "rule_dneq"),
-
     # German Phrase Compaction
     ("zum beispiel", "z. B.", "de_zum_beispiel"),
     ("das heißt", "d. h.", "de_das_heisst"),
     ("unter umständen", "u. U.", "de_unter_umstaenden"),
     ("im vergleich zu", "ggü.", "de_im_vergleich_zu"),
-
     # French Phrase Compaction
     ("par exemple", "p. ex.", "fr_par_exemple"),
     ("c'est-à-dire", "c.-à-d.", "fr_cest_a_dire"),
     ("en ce qui concerne", "concernant", "fr_en_ce_qui_concerne"),
-
     # Spanish Phrase Compaction
     ("por ejemplo", "p. ej.", "es_por_ejemplo"),
     ("con respecto a", "respecto a", "es_con_respecto_a"),

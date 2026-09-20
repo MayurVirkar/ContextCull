@@ -81,9 +81,7 @@ def ingest_bytes(
     )
 
 
-def clean_char_to_byte_span(
-    ingest: IngestionResult, clean_start: int, clean_end: int
-) -> ByteSpan:
+def clean_char_to_byte_span(ingest: IngestionResult, clean_start: int, clean_end: int) -> ByteSpan:
     """Converts character indices in the clean (ANSI-free) view to an exact ByteSpan in original raw bytes."""
     if clean_start < 0 or clean_end > len(ingest.clean_text) or clean_start > clean_end:
         raise ValueError(f"Clean character range [{clean_start}, {clean_end}) is out of bounds")

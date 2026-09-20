@@ -5,17 +5,16 @@ from __future__ import annotations
 import io
 import zipfile
 
-import pytest
 from pypdf import PdfWriter
 
 from tep.api import ContextCompiler
 from tep.ingest.decoder import ingest_bytes
-from tep.ir.models import BlockKind, CompileMode, CompilePolicy
-from tep.parse.docx import is_docx, parse_docx_blocks
-from tep.parse.html import is_html, parse_html_blocks
-from tep.parse.pdf import is_pdf, parse_pdf_blocks
-from tep.parse.structured import is_csv, is_json, parse_csv_blocks, parse_json_blocks
-from tep.parse.xml import is_xml, parse_xml_blocks
+from tep.ir.models import BlockKind, CompileMode
+from tep.parse.docx import is_docx
+from tep.parse.html import is_html
+from tep.parse.pdf import is_pdf
+from tep.parse.structured import is_csv, is_json
+from tep.parse.xml import is_xml
 from tep.route.router import route_and_parse
 
 

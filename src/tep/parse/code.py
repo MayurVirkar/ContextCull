@@ -15,9 +15,7 @@ FN_SIGNATURE_RE = re.compile(
     r"(?:fn\s+([a-zA-Z0-9_]+)\s*\(|def\s+([a-zA-Z0-9_]+)\s*\(|(?:it|test)\(\s*['\"]([^'\"]+)['\"])"
 )
 
-ASSERT_RE = re.compile(
-    r"(?:assert_eq!\s*\(([^,]+),\s*([^)]+)\)|assert\s+([^;\n]+))"
-)
+ASSERT_RE = re.compile(r"(?:assert_eq!\s*\(([^,]+),\s*([^)]+)\)|assert\s+([^;\n]+))")
 
 
 def is_code_input(text: str) -> bool:
