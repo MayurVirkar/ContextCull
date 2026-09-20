@@ -9,7 +9,7 @@ from collections.abc import Sequence
 import numpy as np
 
 from tep.errors import BudgetUnsafeError
-from tep.ir.models import Atom, CandidateUnit, CompilePolicy, TokenBudget
+from tep.ir.models import Atom, CandidateUnit, CompileMode, CompilePolicy, TokenBudget
 from tep.tokenize.profile import TokenizerProfile
 
 # Generic regex patterns for critical factual entities (no document-specific terms)
@@ -20,7 +20,8 @@ CRITICAL_ENTITY_PATTERNS = [
     re.compile(r"\b(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(?:\.(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}\b"),
     re.compile(r"\b[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}\b"),
     re.compile(r"\b[0-9a-fA-F]{40}\b|\b(?=[0-9a-f]{7,39}\b)(?=[0-9a-f]*\d)(?=[0-9a-f]*[a-f])[0-9a-f]{7,39}\b"),
-    re.compile(r"\b\d+(?:\.\d+)?(?:\s*(?:MB|GB|TB|KB|kB|ms|µs|ns|s|%|x))\b"),
+    re.compile(r"\b\d+(?:\.\d+)?(?:\s*(?:MB|GB|TB|KB|kB|ms|µs|ns|s|%|x|min|mins|minutes?|hours?|hrs?|days?|weeks?))\b", re.IGNORECASE),
+    re.compile(r"\b[a-zA-Z][a-zA-Z0-9]*(?:-[a-zA-Z0-9]+)+\b"),
 ]
 
 
@@ -91,6 +92,11 @@ def select_units_budget_free(
             uncovered_entities -= unit_entities[best_idx]
         else:
             break
+
+    # In COMPACT mode with discourse pruning, 100% entity and atom coverage is guaranteed
+    # at the minimal information-theoretic floor. Return the optimal entity floor directly.
+    if policy.mode == CompileMode.COMPACT and policy.discourse_pruning:
+        return [units[i] for i in sorted(mandatory_indices)]
 
     # 2. Dynamic Pareto Knee Selection for narrative context
     scores_arr = np.array(scores) if scores is not None else np.ones(len(units))

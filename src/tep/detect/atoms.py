@@ -27,11 +27,11 @@ PATH_OR_URL_RE = re.compile(
 )
 
 FILE_LOCATION_RE = re.compile(
-    r"\b[a-zA-Z0-9_\.\-]+/[a-zA-Z0-9_\.\-/]+(?::\d+(?::\d+)?)?\b"
+    r"\b[a-zA-Z0-9_\.\-]+(?:\s*/\s*[a-zA-Z0-9_\.\-]+)+(?::\d+(?::\d+)?)?\b"
 )
 
 CODE_IDENTIFIER_RE = re.compile(
-    r"\b(?:[A-Z][a-z0-9]+(?:[A-Z][a-z0-9]*)+|[a-zA-Z0-9]+::[a-zA-Z0-9_:]+)\b"
+    r"\b(?:[A-Z][a-z0-9]+(?:[A-Z][a-z0-9]*)+|[a-zA-Z0-9]+::[a-zA-Z0-9_:]+|[a-zA-Z][a-zA-Z0-9]*(?:-[a-zA-Z0-9]+)+)\b"
 )
 
 ISO_TIMESTAMP_RE = re.compile(

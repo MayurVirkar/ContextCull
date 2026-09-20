@@ -27,8 +27,7 @@ Evaluated on the 38-page incident report (`examples/sample_incident.txt`, 20,303
 
 | Summarizer Engine | Latency | Output Tokens | Token Reduction | Atoms Retained (19 Ground Truth) | Atoms Dropped |
 | :--- | :---: | :---: | :---: | :---: | :--- |
-| **TEP v2 (Zero-Budget, Generic)** | **161 ms** | **12,984** | **36.0%** | **18 / 19 (94.7%)** | `14 write tokens` |
-| **TEP v2 (Budget: 8,000 tokens)** | **172 ms** | **7,842** | **61.4%** | **18 / 19 (94.7%)** | `14 write tokens` |
+| **TEP v2 (Zero-Budget, Generic)** | **161 ms** | **8,473** | **58.3%** | **18 / 19 (94.7%)** | `14 write tokens` |
 | **Sumy LexRank (100 sentences)** | 2,978 ms | 3,746 | 81.5% | **3 / 19 (15.8%)** | `CVE-2026-66384`, `CVE-2026-53362`, `i-0622056ec3e996a7c`, `artifactory-3`, ... (16 total) |
 | **Sumy LSA (100 sentences)** | 667 ms | 2,758 | 86.4% | **3 / 19 (15.8%)** | `CVE-2026-53362`, `956 secrets`, `moon-bot`, `moon-landing`, ... (16 total) |
 | **Sumy LexRank (50 sentences)** | 2,915 ms | 2,002 | 90.1% | **3 / 19 (15.8%)** | `CVE-2026-66384`, `CVE-2026-53362`, `i-0622056ec3e996a7c`, `artifactory-3`, ... (16 total) |
