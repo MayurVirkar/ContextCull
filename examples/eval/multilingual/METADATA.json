@@ -1,0 +1,83 @@
+{
+  "description": "Authentic 100% public-domain multilingual evaluation datasets covering the top 10 world languages + full books.",
+  "license": "Public Domain (Project Gutenberg / Pre-1929 Literature / Public Records)",
+  "datasets": [
+    {
+      "file": "01_en_literature_alice.txt",
+      "language": "en",
+      "author": "Lewis Carroll",
+      "title": "Alice in Wonderland",
+      "source": "Project Gutenberg #11"
+    },
+    {
+      "file": "02_en_math_calculus.txt",
+      "language": "en",
+      "author": "Silvanus P. Thompson",
+      "title": "Calculus Made Easy",
+      "source": "Project Gutenberg #35170"
+    },
+    {
+      "file": "03_zh_art_of_war.txt",
+      "language": "zh",
+      "author": "Sun Tzu",
+      "title": "The Art of War",
+      "source": "Project Gutenberg #2388"
+    },
+    {
+      "file": "04_hi_premchand_stories.txt",
+      "language": "hi",
+      "author": "Munshi Premchand",
+      "title": "Idgah & Classic Stories",
+      "source": "Public Domain Hindi Literature"
+    },
+    {
+      "file": "05_es_don_quijote.txt",
+      "language": "es",
+      "author": "Miguel de Cervantes",
+      "title": "Don Quijote de la Mancha",
+      "source": "Project Gutenberg #2000"
+    },
+    {
+      "file": "06_fr_tour_du_monde.txt",
+      "language": "fr",
+      "author": "Jules Verne",
+      "title": "Le Tour du monde en 80 jours",
+      "source": "Project Gutenberg #800"
+    },
+    {
+      "file": "07_ar_kalila_wa_dimna.txt",
+      "language": "ar",
+      "author": "Ibn al-Muqaffa",
+      "title": "Kalila wa Dimna & Arabian Nights",
+      "source": "Public Domain Classical Arabic"
+    },
+    {
+      "file": "08_bn_gitanjali.txt",
+      "language": "bn",
+      "author": "Rabindranath Tagore",
+      "title": "Gitanjali & Selected Works",
+      "source": "Public Domain Bengali Literature"
+    },
+    {
+      "file": "09_pt_dom_casmurro.txt",
+      "language": "pt",
+      "author": "Machado de Assis",
+      "title": "Dom Casmurro",
+      "source": "Project Gutenberg #55752"
+    },
+    {
+      "file": "10_ru_sevastopol_tolstoy.txt",
+      "language": "ru",
+      "author": "Leo Tolstoy",
+      "title": "Sevastopol Sketches",
+      "source": "Project Gutenberg #53434"
+    },
+    {
+      "file": "11_ja_soseki_kokoro.txt",
+      "language": "ja",
+      "author": "Natsume Soseki",
+      "title": "Kokoro",
+      "source": "Project Gutenberg #24816"
+    }
+  ]
+}

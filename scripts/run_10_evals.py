@@ -1,7 +1,6 @@
 """Run ContextCull compilation benchmark across all 10 evaluation datasets."""
 
 import json
-import os
 import time
 from pathlib import Path
 

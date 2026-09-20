@@ -4,6 +4,7 @@ import io
 import json
 import zipfile
 from pathlib import Path
+
 from pypdf import PdfWriter
 
 EVAL_DIR = Path("examples/eval")

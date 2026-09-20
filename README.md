@@ -12,6 +12,33 @@
 
 ---
 
+## ⚡ TL;DR
+
+- **What is it?** **ContextCull** (powered by the Token-Efficiency Protocol) is a fast, free, open-source pre-processor that sits between your raw data and your AI model (Google Gemini, Claude, OpenAI GPT).
+- **What does it do?** It cuts document size by **50% to 85%** in under **35 milliseconds** by stripping away conversational fluff, repetitive email quote chains, and boilerplate, while **guaranteeing 100% preservation** of vital technical facts: CVE numbers, IP addresses, AWS ARNs, pod names, error codes, timestamps, and CLI commands.
+- **Why not just feed everything to the LLM?**
+  1. **Cost & Speed:** Feeding 20,000–100,000 tokens directly into frontier LLMs is slow and expensive. ContextCull reduces input tokens by up to 85%, cutting API costs and speeding up Time-To-First-Token (TTFT) by nearly **4×**.
+  2. **"Lost in the Middle":** When LLMs read giant documents, they often forget or hallucinate details buried in the middle. ContextCull extracts and surfaces every critical fact to the active context window.
+  3. **Classic summarizers fail:** Tools like LexRank or LSA look for "popular words." In technical reports, a critical security flaw or database IP only appears once, so classic tools drop up to 95% of them. ContextCull protects every unique technical entity by design.
+- **How does it run?** 100% locally on your machine in standard Python 3.13. Zero GPUs, zero API keys, zero cloud dependencies, and zero compute costs.
+
+---
+
+## 🥊 Head-to-Head: Direct LLM vs. ContextCull + LLM
+
+We benchmarked a Frontier LLM (Cloud Gemini) summarizing massive technical documents under two conditions:
+
+| Dimension | Direct LLM (Raw Input) | ContextCull + LLM (Pre-processed) | The Difference / Benefit |
+| :--- | :--- | :--- | :--- |
+| **Input Tokens Fed to LLM** | 21,662 tokens (Email)<br>34,165 tokens (Text) | 962 tokens (Email)<br>2,057 tokens (Text) | **94% to 95.6% fewer tokens** sent to the LLM |
+| **LLM Response Latency (TTFT)** | ~3.8 seconds (quadratic attention over 20k–35k tokens) | **<0.8 seconds** (sub-linear attention over clean context) | **4.7× faster** response time |
+| **API Cost per Request** | Full price ($0.075 / 100k tokens) | **94% to 95% cheaper** | Immediate operational cost savings |
+| **Critical Entity Retention** | Drops buried IDs & patches | **100% technical atoms retained** | **Zero factual loss** |
+| **CLI & Syntax Fidelity** | Models often hallucinate or paraphrase flags | **100% verbatim copy spans** | Valid, copy-pasteable commands & code |
+| **Context Fading Risk** | High ("Lost in the Middle" drops buried facts) | **Zero** (critical facts locked into prompt floor) | Reliable, grounded outputs |
+
+---
+
 ## 📦 Installation
 
 ContextCull requires **Python 3.13+**. Install via your preferred package manager:
@@ -102,30 +129,23 @@ def compress_retrieved_docs(docs: list[Document]) -> list[Document]:
 
 ---
 
-## ⚡ TL;DR
+## 🌐 Multilingual Evaluation & Full Books (Top 10 Languages)
 
-- **What is it?** **ContextCull** (powered by the Token-Efficiency Protocol) is a fast, free, open-source pre-processor that sits between your raw data and your AI model (Google Gemini, Claude, OpenAI GPT).
-- **What does it do?** It cuts document size by **50% to 85%** in under **35 milliseconds** by stripping away conversational fluff, repetitive email quote chains, and boilerplate, while **guaranteeing 100% preservation** of vital technical facts: CVE numbers, IP addresses, AWS ARNs, pod names, error codes, timestamps, and CLI commands.
-- **Why not just feed everything to the LLM?**
-  1. **Cost & Speed:** Feeding 20,000–100,000 tokens directly into frontier LLMs is slow and expensive. ContextCull reduces input tokens by up to 85%, cutting API costs and speeding up Time-To-First-Token (TTFT) by nearly **4×**.
-  2. **"Lost in the Middle":** When LLMs read giant documents, they often forget or hallucinate details buried in the middle. ContextCull extracts and surfaces every critical fact to the active context window.
-  3. **Classic summarizers fail:** Tools like LexRank or LSA look for "popular words." In technical reports, a critical security flaw or database IP only appears once, so classic tools drop up to 95% of them. ContextCull protects every unique technical entity by design.
-- **How does it run?** 100% locally on your machine in standard Python 3.13. Zero GPUs, zero API keys, zero cloud dependencies, and zero compute costs.
+ContextCull includes **100% public domain, copyright-free** full books and evaluation corpora covering the top 10 languages of the world (`examples/eval/multilingual/`), verified across **1,000 automated multilingual tests** (100 tests per language):
 
----
-
-## 🥊 Head-to-Head: Direct LLM vs. ContextCull + LLM
-
-We benchmarked a Frontier LLM (Cloud Gemini) summarizing massive technical documents under two conditions:
-
-| Dimension | Direct LLM (Raw Input) | ContextCull + LLM (Pre-processed) | The Difference / Benefit |
-| :--- | :--- | :--- | :--- |
-| **Input Tokens Fed to LLM** | 21,662 tokens (Email)<br>34,165 tokens (Text) | 962 tokens (Email)<br>2,057 tokens (Text) | **94% to 95.6% fewer tokens** sent to the LLM |
-| **LLM Response Latency (TTFT)** | ~3.8 seconds (quadratic attention over 20k–35k tokens) | **<0.8 seconds** (sub-linear attention over clean context) | **4.7× faster** response time |
-| **API Cost per Request** | Full price ($0.075 / 100k tokens) | **94% to 95% cheaper** | Immediate operational cost savings |
-| **Critical Entity Retention** | Drops buried IDs & patches | **100% technical atoms retained** | **Zero factual loss** |
-| **CLI & Syntax Fidelity** | Models often hallucinate or paraphrase flags | **100% verbatim copy spans** | Valid, copy-pasteable commands & code |
-| **Context Fading Risk** | High ("Lost in the Middle" drops buried facts) | **Zero** (critical facts locked into prompt floor) | Reliable, grounded outputs |
+| # | Language | Script | Full Book / Corpus | Author / Source | License |
+| :-: | :--- | :--- | :--- | :--- | :--- |
+| **1** | **English (Literature)** | Latin | *Alice's Adventures in Wonderland* (174 KB) | Lewis Carroll (Gutenberg #11) | Public Domain |
+| **2** | **English (Mathematics)** | Latin | *Calculus Made Easy* (122 KB) | Silvanus P. Thompson (Gutenberg #35170) | Public Domain |
+| **3** | **Chinese (Simplified/Trad)** | Hanzi | *The Art of War* / 孙子兵法 (148 KB) | Sun Tzu (Gutenberg #2388) | Public Domain |
+| **4** | **Hindi** | Devanagari | *Idgah & Classic Stories* (43 KB) | Munshi Premchand | Public Domain |
+| **5** | **Spanish** | Latin | *Don Quijote de la Mancha* (2.2 MB full book) | Miguel de Cervantes (Gutenberg #2000) | Public Domain |
+| **6** | **French** | Latin | *Le Tour du monde en 80 jours* (462 KB) | Jules Verne (Gutenberg #800) | Public Domain |
+| **7** | **Arabic** | Arabic | *Kalila wa Dimna & Arabian Nights* (28 KB) | Ibn al-Muqaffa / Classical Arabic | Public Domain |
+| **8** | **Bengali** | Bengali | *Gitanjali & Selected Works* (37 KB) | Rabindranath Tagore | Public Domain |
+| **9** | **Portuguese** | Latin | *Dom Casmurro* (418 KB) | Machado de Assis (Gutenberg #55752) | Public Domain |
+| **10** | **Russian** | Cyrillic | *Sevastopol Sketches* (72 KB) | Leo Tolstoy (Gutenberg #53434) | Public Domain |
+| **11** | **Japanese** | Kanji/Kana | *Kokoro* / こころ (346 KB) | Natsume Soseki (Gutenberg #24816) | Public Domain |
 
 ---
 
@@ -397,8 +417,8 @@ ContextCull is designed for mission-critical production pipelines where dropped 
 ┌─────────────────────────────────────────────────────────────────────────────┐
 │                       ContextCull Verification Matrix                       │
 ├───────────────────────┬─────────────────────────────────────────────────────┤
-│ 1,067 Automated Tests │ 100% passing in < 3.2 seconds                       │
-│ 95.90% Test Coverage  │ 1,803 statements scanned, 74 missed                 │
+│ 2,053 Automated Tests │ 100% passing in < 4.5 seconds                       │
+│ 95.99% Test Coverage  │ 1,843 statements scanned, 74 missed                 │
 │ Mutation Testing      │ Mutmut: 4,366 mutants generated, 2,458 killed (0 un)│
 │ Invariant Guarantees  │ Strict transactional rollback & byte provenance     │
 │ Security & Quality    │ Ruff, Pyright, Bandit AST scan, pip-audit CVE scan  │
@@ -409,13 +429,14 @@ ContextCull is designed for mission-critical production pipelines where dropped 
 
 | Test Suite | Focus & Edge Cases Tested | Test Count |
 | :--- | :--- | :--- |
+| **Multilingual Top 10 Languages (`tests/multilingual/`)** | 100 tests per language (English, Chinese, Hindi, Spanish, French, Arabic, Bengali, Portuguese, Russian, Japanese) covering native script boundary detection, embedded technical entities, multi-byte coordinate translation, and negation preservation. | 1,000 tests |
 | **`test_adversarial_ingest_comprehensive.py`** | Multi-byte coordinate translation (UTF-8, UTF-16 BE/LE BOMs, Latin-1 fallback), ANSI sequence stripping (TrueColor, 256-color, OSC window titles), null-byte resilience, and slice-level provenance bounds. | 77 tests |
 | **`test_parsers_deep_edge_cases.py`** | Defused XML entity expansion (`billion laughs`), deeply nested HTML/DOM trees, generic Rust/TypeScript syntax (`fn test<T>()`, `export type`), polyglot test logs (Vitest, Jest, Pytest, Go, Cargo), and RFC 822 email MIME boundaries. | 55 tests |
-| **`test_atoms_and_entities_deep.py`** | Exact extraction of technical atoms: IPv4/IPv6 addresses, AWS ARNs, UUIDs, Git commit hashes, CVE identifiers, latencies (`ms`, `µs`, `ns`), and spaced currencies (`$ 100`, `€ 50`). | 49 tests |
+| **`test_atoms_and_entities_deep.py`** | Exact extraction of technical atoms: IPv4/IPv6 addresses, AWS ARNs, UUIDs, Git commit hashes, CVE identifiers, latencies (`ms`, `µs`, `ns`), and spaced currencies (`$ 100`, `€ 50`). | 50 tests |
 | **`test_rewrite_and_protection_deep.py`** | Aho-Corasick overlapping pattern matching (preventing prefix masking on plurals like `seconds` vs `second`), backtick code block shielding, CLI flag protection (`--policy-document`), and transactional rollback on atom violation. | 33 tests |
 | **`test_budget_concurrency_and_stress.py`** | 8-thread concurrent compilation stress, budget sweep (20 to 220 tokens) verifying atomic floor constraints, and `BudgetUnsafeError` diagnostic payload integrity. | 25 tests |
 | **`test_parameterized_abbreviations_stress.py`** | Exhaustive boundary and casing stress (lowercase, titlecase) across all 120+ technical abbreviations. | 288 tests |
-| **Core Unit, Property & Differential** | Property-based testing via `Hypothesis`, sentence segmentation, PageRank sparse graph centrality, and Rust baseline differential parity. | 540 tests |
+| **Core Unit, Property & Differential** | Property-based testing via `Hypothesis`, sentence segmentation, PageRank sparse graph centrality, and Rust baseline differential parity. | 525 tests |
 
 ### The 6 Quality & Security Gates
 
@@ -430,7 +451,7 @@ Every commit must clear all 6 automated verification steps in [`scripts/gate.sh`
 3. **Pyright Type Checking**: Strict static typing verification across all modules with zero type errors.
 4. **Bandit AST Security Scan**: Scans AST for security vulnerabilities (e.g., shell injections, insecure deserialization, defused XML handling).
 5. **pip-audit Supply-Chain Audit**: Verifies all dependencies against the PyPA vulnerability advisory database.
-6. **Pytest Coverage Gate**: Executes the full 1,067-test suite with a mandatory coverage threshold (currently operating at **95.90%**).
+6. **Pytest Coverage Gate**: Executes the full 2,053-test suite with a mandatory coverage threshold (currently operating at **95.99%**).
 
 ### Mutation Testing with Mutmut
 

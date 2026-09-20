@@ -36,8 +36,8 @@ _ABBREVIATION_SUFFIX_RE = re.compile(
 )
 
 # Universal sentence boundary terminators:
-# 1. Standard Western (.!?), CJK full-width (。！？), Arabic (؟۔), Indic (।), or double-newline paragraph break
-_PUNCTUATION_RE = re.compile(r"([\.!\?]+|[。！？\u061f\u06d4\u0964]|\n{2,})")
+# 1. Standard Western (.!?), CJK full-width (。！？), Arabic (؟۔), Indic (। ॥), or double-newline paragraph break
+_PUNCTUATION_RE = re.compile(r"([\.!\?]+|[。！？\u061f\u06d4\u0964\u0965]|\n{2,})")
 
 
 def segment_sentences(text: str) -> list[SegmentSpan]:
