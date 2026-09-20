@@ -1,7 +1,7 @@
 """Verifies that contextforge top-level package and aliases work identically to tep."""
 
 import contextforge
-from contextforge import CompileMode, CompilePolicy, ContextCompiler, TokenBudget
+from contextforge import CompileMode, ContextCompiler
 
 
 def test_contextforge_exports():
