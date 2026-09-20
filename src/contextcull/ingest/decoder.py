@@ -41,6 +41,21 @@ def ingest_bytes(
         digest = hashlib.sha256(raw_bytes).hexdigest()
         document_id = f"sha256:{digest}"
 
+    if encoding.lower() in ("utf-8", "utf8"):
+        if raw_bytes.startswith(b"\xef\xbb\xbf"):
+            encoding = "utf-8-sig"
+        elif raw_bytes.startswith((b"\xff\xfe", b"\xfe\xff")):
+            encoding = "utf-16"
+        else:
+            try:
+                raw_bytes.decode("utf-8")
+            except UnicodeDecodeError:
+                try:
+                    raw_bytes.decode("latin-1")
+                    encoding = "latin-1"
+                except Exception:
+                    pass
+
     source_map = SourceMap.from_bytes(raw_bytes, document_id=document_id, encoding=encoding)
     decoded = source_map.decoded_text
 

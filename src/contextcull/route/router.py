@@ -35,14 +35,10 @@ def route_and_parse(ingest: IngestionResult) -> list[Block]:
     try:
         # 1. Binary formats
         if is_pdf(raw_bytes):
-            blocks = parse_pdf_blocks(ingest)
-            if blocks:
-                return blocks
+            return parse_pdf_blocks(ingest)
 
         if is_docx(raw_bytes):
-            blocks = parse_docx_blocks(ingest)
-            if blocks:
-                return blocks
+            return parse_docx_blocks(ingest)
 
         # 2. Markup and Structured formats
         if is_html(clean_text):

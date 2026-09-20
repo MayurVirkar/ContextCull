@@ -26,8 +26,11 @@ GIT_SHA_RE = re.compile(
 AWS_INSTANCE_RE = re.compile(r"\bi-[0-9a-f]{8,17}\b")
 
 QUANTITY_RE = re.compile(
-    r"\b(\d+(?:[\.,]\d+)*)\s*(MB|GB|TB|kB|KB|ms|µs|ns|s|sec|second|seconds|min|mins|minute|minutes|h|hr|hrs|hour|hours|wk|week|weeks|mo|month|months|yr|year|years|\$|USD|EUR|billion|million|thousand|ppb|M|secrets|write tokens)\b|\b(\d+(?:[\.,]\d+)*)%",
+    r"\b(\d+(?:[\.,]\d+)*)\s*(MB|GB|TB|kB|KB|ms|µs|ns|s|sec|second|seconds|min|mins|minute|minutes|h|hr|hrs|hour|hours|d|day|days|wk|week|weeks|mo|month|months|yr|year|years|\$|USD|EUR|billion|million|thousand|ppb|M|secrets|write tokens)\b|\b(\d+(?:[\.,]\d+)*)%",
     re.IGNORECASE,
+)
+CURRENCY_RE = re.compile(
+    r"(?:[\$€£]\s*|(?:USD|EUR)\s*)(\d+(?:[\.,]\d+)*(?:\s*(?:billion|million|thousand|[MmkK]))?)\b"
 )
 
 PATH_OR_URL_RE = re.compile(
@@ -202,6 +205,11 @@ def extract_atoms(
         canonical_unit = UNIT_CANONICAL_MAP.get(raw_unit, raw_unit)
         canonical = f"{val} {canonical_unit}".strip()
         add_atom("quantity", clean_text[start:end], start, end, canonical=canonical)
+
+    for match in CURRENCY_RE.finditer(clean_text):
+        start, end = match.span()
+        surface = clean_text[start:end]
+        add_atom("quantity", surface, start, end, canonical=surface.lower())
 
     # 5. Technical code identifiers
     for match in CODE_IDENTIFIER_RE.finditer(clean_text):

@@ -8,7 +8,15 @@ from contextcull.ir.models import CompileMode
 
 def test_provenance_roundtrip_sample_incident():
     """Verify that every copy segment in the compiled manifest matches raw source bytes exactly."""
-    sample_path = Path("examples/sample_incident.txt")
+    sample_path = Path("examples/sample_incident.txt").resolve()
+    if not sample_path.exists():
+        curr = Path(__file__).resolve().parent
+        while curr != curr.parent:
+            candidate = curr / "examples" / "sample_incident.txt"
+            if candidate.exists():
+                sample_path = candidate
+                break
+            curr = curr.parent
     assert sample_path.exists(), "sample_incident.txt must exist"
 
     raw_bytes = sample_path.read_bytes()

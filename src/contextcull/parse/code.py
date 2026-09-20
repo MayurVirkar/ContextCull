@@ -14,7 +14,7 @@ CODE_INDICATOR_RE = re.compile(
     r"async\s+def\s+[a-zA-Z_]\w*\s*\(|"
     r"class\s+[a-zA-Z_]\w*[:\(]|"
     r"@\w+|"
-    r"fn\s+[a-zA-Z_]\w*\s*\(|"
+    r"fn\s+[a-zA-Z_]\w*(?:<[^>]+>)?\s*\(|"
     r"pub\s+(?:struct|fn|enum)\s+[a-zA-Z_]\w*|"
     r"struct\s+[a-zA-Z_]\w*\s*\{|"
     r"impl\s+[a-zA-Z_]\w*|"
@@ -24,14 +24,14 @@ CODE_INDICATOR_RE = re.compile(
     r"func\s+(?:\([^\)]+\)\s*)?[a-zA-Z_]\w*\s*\(|"
     r"import\s+[a-zA-Z_]\w*|"
     r"from\s+[a-zA-Z_]\w*\s+import|"
-    r"type\s+[a-zA-Z_]\w*\s+(?:struct|=)|"
+    r"type\s+[a-zA-Z_]\w*(?:<[^>]+>)?\s*(?:struct|=)|"
     r"(?:it|test)\s*\(\s*['\"]"
     r")",
     re.MULTILINE,
 )
 
 FN_SIGNATURE_RE = re.compile(
-    r"(?:fn\s+([a-zA-Z0-9_]+)\s*\(|def\s+([a-zA-Z0-9_]+)\s*\(|(?:it|test)\(\s*['\"]([^'\"]+)['\"])"
+    r"(?:fn\s+([a-zA-Z0-9_]+)(?:<[^>]+>)?\s*\(|def\s+([a-zA-Z0-9_]+)\s*\(|(?:it|test)\(\s*['\"]([^'\"]+)['\"])"
 )
 
 ASSERT_RE = re.compile(r"(?:assert_eq!\s*\(([^,]+),\s*([^)]+)\)|assert\s+([^;\n]+))")

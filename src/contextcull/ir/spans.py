@@ -89,9 +89,24 @@ class SourceMap:
         else:
             char_offsets = []
             byte_pos = 0
+            enc_for_char = encoding
+            if encoding.lower() in ("utf-16", "utf16"):
+                if raw.startswith(b"\xff\xfe"):
+                    byte_pos = 2
+                    enc_for_char = "utf-16-le"
+                elif raw.startswith(b"\xfe\xff"):
+                    byte_pos = 2
+                    enc_for_char = "utf-16-be"
+                else:
+                    enc_for_char = "utf-16-le"
+            elif encoding.lower() in ("utf-8-sig", "utf8-sig"):
+                if raw.startswith(b"\xef\xbb\xbf"):
+                    byte_pos = 3
+                enc_for_char = "utf-8"
+
             for char in text:
                 char_offsets.append(byte_pos)
-                byte_pos += len(char.encode(encoding))
+                byte_pos += len(char.encode(enc_for_char))
             char_offsets.append(byte_pos)
 
         return cls(

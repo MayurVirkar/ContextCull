@@ -97,7 +97,12 @@ class RewriteEngine:
         if self._ac is not None:
             # m is a tuple (pattern_index, start, end)
             matched_indices = sorted(
-                set(m[0] for m in self._ac.find_matches_as_indexes(masked_text.lower()))
+                set(
+                    m[0]
+                    for m in self._ac.find_matches_as_indexes(masked_text.lower(), overlapping=True)
+                ),
+                key=lambda i: len(self._patterns[i]),
+                reverse=True,
             )
             rules_to_check = [
                 (self._patterns[i], self._replacements[i], self._rule_ids[i])
@@ -130,7 +135,14 @@ class RewriteEngine:
         # Gate commit on both token reduction AND 100% required atom preservation
         atoms_preserved = all(a.surface in candidate_text for a in unit_required_atoms)
 
-        if new_tokens < orig_tokens and candidate_text != orig_text and atoms_preserved:
+        if (
+            (
+                new_tokens < orig_tokens
+                or (new_tokens == orig_tokens and len(candidate_text) < len(orig_text))
+            )
+            and candidate_text != orig_text
+            and atoms_preserved
+        ):
             rule_str = "+".join(used_rules)
             seg = OutputSegment(
                 output_start=0,

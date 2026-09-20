@@ -79,9 +79,13 @@ skips = [
     "B112",  # try_except_continue: deliberate resilient loop in PDF page parsing
 ]
 
+[tool.pytest.ini_options]
+pythonpath = ["src", "../src"]
+testpaths = ["tests"]
+
 [tool.mutmut]
 source_paths = ["src/contextcull/"]
-runner = "python -m pytest -x -q"
+runner = "python -m pytest tests/unit/ -x -q"
 
 [tool.coverage.run]
 source = ["src/contextcull"]
