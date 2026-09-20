@@ -159,7 +159,7 @@ def run_benchmark(file_path: Path) -> None:
 
 
 if __name__ == "__main__":
-    target = Path("examples/sample_incident.txt")
+    target = Path("examples/eval/01_email_thread.eml")
     if len(sys.argv) > 1:
         target = Path(sys.argv[1])
     run_benchmark(target)

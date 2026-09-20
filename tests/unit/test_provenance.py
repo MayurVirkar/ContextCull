@@ -1,25 +1,18 @@
-"""End-to-end provenance and byte-exact roundtrip tests."""
-
-from pathlib import Path
-
 from contextcull.api import ContextCompiler
 from contextcull.ir.models import CompileMode
+
+INCIDENT_FIXTURE = "INCIDENT REPORT: OUTAGE IN CLUSTER US-EAST-1\n\n" + "\n\n".join(
+    f"Section {i}: Server 10.0.0.{i} encountered an anomaly with CVE-2026-{1000 + i}. "
+    f"The primary pod data-worker-{i} in namespace processing reported high latency of {20 + i} ms. "
+    f"Engineers executed failover at 08:{i:02d}:00 UTC and verified that no data loss occurred. "
+    f"Resource utilization remained stable with memory at {50 + (i % 40)}% and CPU load at {40 + (i % 50)}%."
+    for i in range(1, 65)
+)
 
 
 def test_provenance_roundtrip_sample_incident():
     """Verify that every copy segment in the compiled manifest matches raw source bytes exactly."""
-    sample_path = Path("examples/sample_incident.txt").resolve()
-    if not sample_path.exists():
-        curr = Path(__file__).resolve().parent
-        while curr != curr.parent:
-            candidate = curr / "examples" / "sample_incident.txt"
-            if candidate.exists():
-                sample_path = candidate
-                break
-            curr = curr.parent
-    assert sample_path.exists(), "sample_incident.txt must exist"
-
-    raw_bytes = sample_path.read_bytes()
+    raw_bytes = INCIDENT_FIXTURE.encode("utf-8")
     compiler = ContextCompiler(mode=CompileMode.COMPACT)
     result = compiler.compile(raw_bytes)
 

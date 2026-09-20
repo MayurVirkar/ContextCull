@@ -1,2565 +1,1478 @@
-From: Bob Smith <bob.smith@sre.corp>
-To: Charlie Davis <charlie.davis@dev.corp>
-Subject: Re: Update on Pod Failures and Memory Leaks [Ref-1]
-Date: Tue, 14 Jul 2026 08:10:00 +0000
-Message-ID: <20260714.1@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-Checking the logs now. `kubectl logs -n production deployment/auth-gateway --tail=100` shows `Segmentation fault` followed by panic in Go runtime.
-
-Detailed Diagnostic Dump #1:
-- Node: ip-10-0-1-22.ec2.internal
-- Heap Usage: 65GB
-- Active Threads: 255
-------------------------------------------------------------------------
-
-From: Charlie Davis <charlie.davis@dev.corp>
-To: Diana Prince <diana.prince@ciso.corp>
-Subject: Re: CVE-2026-3891 Exploited in Ingress Gateway? [Ref-2]
-Date: Tue, 14 Jul 2026 08:20:00 +0000
-Message-ID: <20260714.2@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-Wait, look at this IP: 198.51.100.45. It's hammering the `/api/v1/auth/token` endpoint with anomalous payloads containing nested JSON structures.
-
-Detailed Diagnostic Dump #2:
-- Node: ip-10-0-2-22.ec2.internal
-- Heap Usage: 66GB
-- Active Threads: 260
-------------------------------------------------------------------------
-
-From: Diana Prince <diana.prince@ciso.corp>
-To: Eve Polastri <eve.polastri@infra.corp>
-Subject: Re: Forensic Analysis of AWS IAM Role Assumption [Ref-3]
-Date: Tue, 14 Jul 2026 08:30:00 +0000
-Message-ID: <20260714.3@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-Could this be related to the newly disclosed CVE-2026-3891? The vulnerability affects Envoy and custom ingress proxies handling malformed HTTP/2 headers.
-
-Detailed Diagnostic Dump #3:
-- Node: ip-10-0-3-22.ec2.internal
-- Heap Usage: 67GB
-- Active Threads: 265
-------------------------------------------------------------------------
-
-From: Eve Polastri <eve.polastri@infra.corp>
-To: Alice Vance <alice.vance@security.corp>
-Subject: Re: Patch Deployment and Rollback Plan [Ref-4]
-Date: Tue, 14 Jul 2026 08:40:00 +0000
-Message-ID: <20260714.4@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-Checking AWS CloudTrail... ARN `arn:aws:iam::123456789012:role/ProductionS3Accessor` was assumed from an unusual external IP at 07:42 UTC.
-
-Detailed Diagnostic Dump #4:
-- Node: ip-10-0-4-22.ec2.internal
-- Heap Usage: 68GB
-- Active Threads: 270
-------------------------------------------------------------------------
-
-From: Alice Vance <alice.vance@security.corp>
-To: Bob Smith <bob.smith@sre.corp>
-Subject: Re: CRITICAL: Production Outage in US-East-1 Cluster [Ref-5]
-Date: Tue, 14 Jul 2026 08:50:00 +0000
-Message-ID: <20260714.5@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-We are seeing high error rates (502/504) across all ingress gateways in us-east-1. Initial logs point to pod crashloops in deployment/auth-gateway.
-
-Detailed Diagnostic Dump #5:
-- Node: ip-10-0-5-22.ec2.internal
-- Heap Usage: 69GB
-- Active Threads: 275
-------------------------------------------------------------------------
-
-From: Bob Smith <bob.smith@sre.corp>
-To: Charlie Davis <charlie.davis@dev.corp>
-Subject: Re: Update on Pod Failures and Memory Leaks [Ref-6]
-Date: Tue, 14 Jul 2026 09:00:00 +0000
-Message-ID: <20260714.6@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-Checking the logs now. `kubectl logs -n production deployment/auth-gateway --tail=100` shows `Segmentation fault` followed by panic in Go runtime.
-
-Detailed Diagnostic Dump #6:
-- Node: ip-10-0-6-22.ec2.internal
-- Heap Usage: 70GB
-- Active Threads: 280
-------------------------------------------------------------------------
-
-From: Charlie Davis <charlie.davis@dev.corp>
-To: Diana Prince <diana.prince@ciso.corp>
-Subject: Re: CVE-2026-3891 Exploited in Ingress Gateway? [Ref-7]
-Date: Tue, 14 Jul 2026 09:10:00 +0000
-Message-ID: <20260714.7@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-Wait, look at this IP: 198.51.100.45. It's hammering the `/api/v1/auth/token` endpoint with anomalous payloads containing nested JSON structures.
-
-Detailed Diagnostic Dump #7:
-- Node: ip-10-0-7-22.ec2.internal
-- Heap Usage: 71GB
-- Active Threads: 285
-------------------------------------------------------------------------
-
-From: Diana Prince <diana.prince@ciso.corp>
-To: Eve Polastri <eve.polastri@infra.corp>
-Subject: Re: Forensic Analysis of AWS IAM Role Assumption [Ref-8]
-Date: Tue, 14 Jul 2026 09:20:00 +0000
-Message-ID: <20260714.8@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-Could this be related to the newly disclosed CVE-2026-3891? The vulnerability affects Envoy and custom ingress proxies handling malformed HTTP/2 headers.
-
-Detailed Diagnostic Dump #8:
-- Node: ip-10-0-8-22.ec2.internal
-- Heap Usage: 72GB
-- Active Threads: 290
-------------------------------------------------------------------------
-
-From: Eve Polastri <eve.polastri@infra.corp>
-To: Alice Vance <alice.vance@security.corp>
-Subject: Re: Patch Deployment and Rollback Plan [Ref-9]
-Date: Tue, 14 Jul 2026 09:30:00 +0000
-Message-ID: <20260714.9@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-Checking AWS CloudTrail... ARN `arn:aws:iam::123456789012:role/ProductionS3Accessor` was assumed from an unusual external IP at 07:42 UTC.
-
-Detailed Diagnostic Dump #9:
-- Node: ip-10-0-9-22.ec2.internal
-- Heap Usage: 73GB
-- Active Threads: 295
-------------------------------------------------------------------------
-
-From: Alice Vance <alice.vance@security.corp>
-To: Bob Smith <bob.smith@sre.corp>
-Subject: Re: CRITICAL: Production Outage in US-East-1 Cluster [Ref-10]
-Date: Tue, 14 Jul 2026 09:40:00 +0000
-Message-ID: <20260714.10@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-We are seeing high error rates (502/504) across all ingress gateways in us-east-1. Initial logs point to pod crashloops in deployment/auth-gateway.
-
-Detailed Diagnostic Dump #10:
-- Node: ip-10-0-10-22.ec2.internal
-- Heap Usage: 74GB
-- Active Threads: 300
-------------------------------------------------------------------------
-
-From: Bob Smith <bob.smith@sre.corp>
-To: Charlie Davis <charlie.davis@dev.corp>
-Subject: Re: Update on Pod Failures and Memory Leaks [Ref-11]
-Date: Tue, 14 Jul 2026 09:50:00 +0000
-Message-ID: <20260714.11@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-Checking the logs now. `kubectl logs -n production deployment/auth-gateway --tail=100` shows `Segmentation fault` followed by panic in Go runtime.
-
-Detailed Diagnostic Dump #11:
-- Node: ip-10-0-11-22.ec2.internal
-- Heap Usage: 75GB
-- Active Threads: 305
-------------------------------------------------------------------------
-
-From: Charlie Davis <charlie.davis@dev.corp>
-To: Diana Prince <diana.prince@ciso.corp>
-Subject: Re: CVE-2026-3891 Exploited in Ingress Gateway? [Ref-12]
-Date: Tue, 14 Jul 2026 10:00:00 +0000
-Message-ID: <20260714.12@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-Wait, look at this IP: 198.51.100.45. It's hammering the `/api/v1/auth/token` endpoint with anomalous payloads containing nested JSON structures.
-
-Detailed Diagnostic Dump #12:
-- Node: ip-10-0-12-22.ec2.internal
-- Heap Usage: 76GB
-- Active Threads: 310
-------------------------------------------------------------------------
-
-From: Diana Prince <diana.prince@ciso.corp>
-To: Eve Polastri <eve.polastri@infra.corp>
-Subject: Re: Forensic Analysis of AWS IAM Role Assumption [Ref-13]
-Date: Tue, 14 Jul 2026 10:10:00 +0000
-Message-ID: <20260714.13@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-Could this be related to the newly disclosed CVE-2026-3891? The vulnerability affects Envoy and custom ingress proxies handling malformed HTTP/2 headers.
-
-Detailed Diagnostic Dump #13:
-- Node: ip-10-0-13-22.ec2.internal
-- Heap Usage: 77GB
-- Active Threads: 315
-------------------------------------------------------------------------
-
-From: Eve Polastri <eve.polastri@infra.corp>
-To: Alice Vance <alice.vance@security.corp>
-Subject: Re: Patch Deployment and Rollback Plan [Ref-14]
-Date: Tue, 14 Jul 2026 10:20:00 +0000
-Message-ID: <20260714.14@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-Checking AWS CloudTrail... ARN `arn:aws:iam::123456789012:role/ProductionS3Accessor` was assumed from an unusual external IP at 07:42 UTC.
-
-Detailed Diagnostic Dump #14:
-- Node: ip-10-0-14-22.ec2.internal
-- Heap Usage: 78GB
-- Active Threads: 320
-------------------------------------------------------------------------
-
-From: Alice Vance <alice.vance@security.corp>
-To: Bob Smith <bob.smith@sre.corp>
-Subject: Re: CRITICAL: Production Outage in US-East-1 Cluster [Ref-15]
-Date: Tue, 14 Jul 2026 10:30:00 +0000
-Message-ID: <20260714.15@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-We are seeing high error rates (502/504) across all ingress gateways in us-east-1. Initial logs point to pod crashloops in deployment/auth-gateway.
-
-Detailed Diagnostic Dump #15:
-- Node: ip-10-0-15-22.ec2.internal
-- Heap Usage: 79GB
-- Active Threads: 325
-------------------------------------------------------------------------
-
-From: Bob Smith <bob.smith@sre.corp>
-To: Charlie Davis <charlie.davis@dev.corp>
-Subject: Re: Update on Pod Failures and Memory Leaks [Ref-16]
-Date: Tue, 14 Jul 2026 10:40:00 +0000
-Message-ID: <20260714.16@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-Checking the logs now. `kubectl logs -n production deployment/auth-gateway --tail=100` shows `Segmentation fault` followed by panic in Go runtime.
-
-Detailed Diagnostic Dump #16:
-- Node: ip-10-0-16-22.ec2.internal
-- Heap Usage: 80GB
-- Active Threads: 330
-------------------------------------------------------------------------
-
-From: Charlie Davis <charlie.davis@dev.corp>
-To: Diana Prince <diana.prince@ciso.corp>
-Subject: Re: CVE-2026-3891 Exploited in Ingress Gateway? [Ref-17]
-Date: Tue, 14 Jul 2026 10:50:00 +0000
-Message-ID: <20260714.17@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-Wait, look at this IP: 198.51.100.45. It's hammering the `/api/v1/auth/token` endpoint with anomalous payloads containing nested JSON structures.
-
-Detailed Diagnostic Dump #17:
-- Node: ip-10-0-17-22.ec2.internal
-- Heap Usage: 81GB
-- Active Threads: 335
-------------------------------------------------------------------------
-
-From: Diana Prince <diana.prince@ciso.corp>
-To: Eve Polastri <eve.polastri@infra.corp>
-Subject: Re: Forensic Analysis of AWS IAM Role Assumption [Ref-18]
-Date: Tue, 14 Jul 2026 11:00:00 +0000
-Message-ID: <20260714.18@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-Could this be related to the newly disclosed CVE-2026-3891? The vulnerability affects Envoy and custom ingress proxies handling malformed HTTP/2 headers.
-
-Detailed Diagnostic Dump #18:
-- Node: ip-10-0-18-22.ec2.internal
-- Heap Usage: 82GB
-- Active Threads: 340
-------------------------------------------------------------------------
-
-From: Eve Polastri <eve.polastri@infra.corp>
-To: Alice Vance <alice.vance@security.corp>
-Subject: Re: Patch Deployment and Rollback Plan [Ref-19]
-Date: Tue, 14 Jul 2026 11:10:00 +0000
-Message-ID: <20260714.19@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-Checking AWS CloudTrail... ARN `arn:aws:iam::123456789012:role/ProductionS3Accessor` was assumed from an unusual external IP at 07:42 UTC.
-
-Detailed Diagnostic Dump #19:
-- Node: ip-10-0-19-22.ec2.internal
-- Heap Usage: 83GB
-- Active Threads: 345
-------------------------------------------------------------------------
-
-From: Alice Vance <alice.vance@security.corp>
-To: Bob Smith <bob.smith@sre.corp>
-Subject: Re: CRITICAL: Production Outage in US-East-1 Cluster [Ref-20]
-Date: Tue, 14 Jul 2026 11:20:00 +0000
-Message-ID: <20260714.20@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-We are seeing high error rates (502/504) across all ingress gateways in us-east-1. Initial logs point to pod crashloops in deployment/auth-gateway.
-
-Detailed Diagnostic Dump #20:
-- Node: ip-10-0-20-22.ec2.internal
-- Heap Usage: 84GB
-- Active Threads: 350
-------------------------------------------------------------------------
-
-From: Bob Smith <bob.smith@sre.corp>
-To: Charlie Davis <charlie.davis@dev.corp>
-Subject: Re: Update on Pod Failures and Memory Leaks [Ref-21]
-Date: Tue, 14 Jul 2026 11:30:00 +0000
-Message-ID: <20260714.21@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-Checking the logs now. `kubectl logs -n production deployment/auth-gateway --tail=100` shows `Segmentation fault` followed by panic in Go runtime.
-
-Detailed Diagnostic Dump #21:
-- Node: ip-10-0-21-22.ec2.internal
-- Heap Usage: 85GB
-- Active Threads: 355
-------------------------------------------------------------------------
-
-From: Charlie Davis <charlie.davis@dev.corp>
-To: Diana Prince <diana.prince@ciso.corp>
-Subject: Re: CVE-2026-3891 Exploited in Ingress Gateway? [Ref-22]
-Date: Tue, 14 Jul 2026 11:40:00 +0000
-Message-ID: <20260714.22@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-Wait, look at this IP: 198.51.100.45. It's hammering the `/api/v1/auth/token` endpoint with anomalous payloads containing nested JSON structures.
-
-Detailed Diagnostic Dump #22:
-- Node: ip-10-0-22-22.ec2.internal
-- Heap Usage: 86GB
-- Active Threads: 360
-------------------------------------------------------------------------
-
-From: Diana Prince <diana.prince@ciso.corp>
-To: Eve Polastri <eve.polastri@infra.corp>
-Subject: Re: Forensic Analysis of AWS IAM Role Assumption [Ref-23]
-Date: Tue, 14 Jul 2026 11:50:00 +0000
-Message-ID: <20260714.23@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-Could this be related to the newly disclosed CVE-2026-3891? The vulnerability affects Envoy and custom ingress proxies handling malformed HTTP/2 headers.
-
-Detailed Diagnostic Dump #23:
-- Node: ip-10-0-23-22.ec2.internal
-- Heap Usage: 87GB
-- Active Threads: 365
-------------------------------------------------------------------------
-
-From: Eve Polastri <eve.polastri@infra.corp>
-To: Alice Vance <alice.vance@security.corp>
-Subject: Re: Patch Deployment and Rollback Plan [Ref-24]
-Date: Tue, 14 Jul 2026 12:00:00 +0000
-Message-ID: <20260714.24@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-Checking AWS CloudTrail... ARN `arn:aws:iam::123456789012:role/ProductionS3Accessor` was assumed from an unusual external IP at 07:42 UTC.
-
-Detailed Diagnostic Dump #24:
-- Node: ip-10-0-24-22.ec2.internal
-- Heap Usage: 88GB
-- Active Threads: 370
-------------------------------------------------------------------------
-
-From: Alice Vance <alice.vance@security.corp>
-To: Bob Smith <bob.smith@sre.corp>
-Subject: Re: CRITICAL: Production Outage in US-East-1 Cluster [Ref-25]
-Date: Tue, 14 Jul 2026 12:10:00 +0000
-Message-ID: <20260714.25@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-We are seeing high error rates (502/504) across all ingress gateways in us-east-1. Initial logs point to pod crashloops in deployment/auth-gateway.
-
-Detailed Diagnostic Dump #25:
-- Node: ip-10-0-25-22.ec2.internal
-- Heap Usage: 89GB
-- Active Threads: 375
-------------------------------------------------------------------------
-
-From: Bob Smith <bob.smith@sre.corp>
-To: Charlie Davis <charlie.davis@dev.corp>
-Subject: Re: Update on Pod Failures and Memory Leaks [Ref-26]
-Date: Tue, 14 Jul 2026 12:20:00 +0000
-Message-ID: <20260714.26@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-Checking the logs now. `kubectl logs -n production deployment/auth-gateway --tail=100` shows `Segmentation fault` followed by panic in Go runtime.
-
-Detailed Diagnostic Dump #26:
-- Node: ip-10-0-26-22.ec2.internal
-- Heap Usage: 90GB
-- Active Threads: 380
-------------------------------------------------------------------------
-
-From: Charlie Davis <charlie.davis@dev.corp>
-To: Diana Prince <diana.prince@ciso.corp>
-Subject: Re: CVE-2026-3891 Exploited in Ingress Gateway? [Ref-27]
-Date: Tue, 14 Jul 2026 12:30:00 +0000
-Message-ID: <20260714.27@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-Wait, look at this IP: 198.51.100.45. It's hammering the `/api/v1/auth/token` endpoint with anomalous payloads containing nested JSON structures.
-
-Detailed Diagnostic Dump #27:
-- Node: ip-10-0-27-22.ec2.internal
-- Heap Usage: 91GB
-- Active Threads: 385
-------------------------------------------------------------------------
-
-From: Diana Prince <diana.prince@ciso.corp>
-To: Eve Polastri <eve.polastri@infra.corp>
-Subject: Re: Forensic Analysis of AWS IAM Role Assumption [Ref-28]
-Date: Tue, 14 Jul 2026 12:40:00 +0000
-Message-ID: <20260714.28@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-Could this be related to the newly disclosed CVE-2026-3891? The vulnerability affects Envoy and custom ingress proxies handling malformed HTTP/2 headers.
-
-Detailed Diagnostic Dump #28:
-- Node: ip-10-0-28-22.ec2.internal
-- Heap Usage: 92GB
-- Active Threads: 390
-------------------------------------------------------------------------
-
-From: Eve Polastri <eve.polastri@infra.corp>
-To: Alice Vance <alice.vance@security.corp>
-Subject: Re: Patch Deployment and Rollback Plan [Ref-29]
-Date: Tue, 14 Jul 2026 12:50:00 +0000
-Message-ID: <20260714.29@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-Checking AWS CloudTrail... ARN `arn:aws:iam::123456789012:role/ProductionS3Accessor` was assumed from an unusual external IP at 07:42 UTC.
-
-Detailed Diagnostic Dump #29:
-- Node: ip-10-0-29-22.ec2.internal
-- Heap Usage: 93GB
-- Active Threads: 395
-------------------------------------------------------------------------
-
-From: Alice Vance <alice.vance@security.corp>
-To: Bob Smith <bob.smith@sre.corp>
-Subject: Re: CRITICAL: Production Outage in US-East-1 Cluster [Ref-30]
-Date: Tue, 14 Jul 2026 13:00:00 +0000
-Message-ID: <20260714.30@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-We are seeing high error rates (502/504) across all ingress gateways in us-east-1. Initial logs point to pod crashloops in deployment/auth-gateway.
-
-Detailed Diagnostic Dump #30:
-- Node: ip-10-0-30-22.ec2.internal
-- Heap Usage: 94GB
-- Active Threads: 400
-------------------------------------------------------------------------
-
-From: Bob Smith <bob.smith@sre.corp>
-To: Charlie Davis <charlie.davis@dev.corp>
-Subject: Re: Update on Pod Failures and Memory Leaks [Ref-31]
-Date: Tue, 14 Jul 2026 13:10:00 +0000
-Message-ID: <20260714.31@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-Checking the logs now. `kubectl logs -n production deployment/auth-gateway --tail=100` shows `Segmentation fault` followed by panic in Go runtime.
-
-Detailed Diagnostic Dump #31:
-- Node: ip-10-0-31-22.ec2.internal
-- Heap Usage: 95GB
-- Active Threads: 405
-------------------------------------------------------------------------
-
-From: Charlie Davis <charlie.davis@dev.corp>
-To: Diana Prince <diana.prince@ciso.corp>
-Subject: Re: CVE-2026-3891 Exploited in Ingress Gateway? [Ref-32]
-Date: Tue, 14 Jul 2026 13:20:00 +0000
-Message-ID: <20260714.32@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-Wait, look at this IP: 198.51.100.45. It's hammering the `/api/v1/auth/token` endpoint with anomalous payloads containing nested JSON structures.
-
-Detailed Diagnostic Dump #32:
-- Node: ip-10-0-32-22.ec2.internal
-- Heap Usage: 96GB
-- Active Threads: 410
-------------------------------------------------------------------------
-
-From: Diana Prince <diana.prince@ciso.corp>
-To: Eve Polastri <eve.polastri@infra.corp>
-Subject: Re: Forensic Analysis of AWS IAM Role Assumption [Ref-33]
-Date: Tue, 14 Jul 2026 13:30:00 +0000
-Message-ID: <20260714.33@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-Could this be related to the newly disclosed CVE-2026-3891? The vulnerability affects Envoy and custom ingress proxies handling malformed HTTP/2 headers.
-
-Detailed Diagnostic Dump #33:
-- Node: ip-10-0-33-22.ec2.internal
-- Heap Usage: 97GB
-- Active Threads: 415
-------------------------------------------------------------------------
-
-From: Eve Polastri <eve.polastri@infra.corp>
-To: Alice Vance <alice.vance@security.corp>
-Subject: Re: Patch Deployment and Rollback Plan [Ref-34]
-Date: Tue, 14 Jul 2026 13:40:00 +0000
-Message-ID: <20260714.34@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-Checking AWS CloudTrail... ARN `arn:aws:iam::123456789012:role/ProductionS3Accessor` was assumed from an unusual external IP at 07:42 UTC.
-
-Detailed Diagnostic Dump #34:
-- Node: ip-10-0-34-22.ec2.internal
-- Heap Usage: 98GB
-- Active Threads: 420
-------------------------------------------------------------------------
-
-From: Alice Vance <alice.vance@security.corp>
-To: Bob Smith <bob.smith@sre.corp>
-Subject: Re: CRITICAL: Production Outage in US-East-1 Cluster [Ref-35]
-Date: Tue, 14 Jul 2026 13:50:00 +0000
-Message-ID: <20260714.35@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-We are seeing high error rates (502/504) across all ingress gateways in us-east-1. Initial logs point to pod crashloops in deployment/auth-gateway.
-
-Detailed Diagnostic Dump #35:
-- Node: ip-10-0-35-22.ec2.internal
-- Heap Usage: 99GB
-- Active Threads: 425
-------------------------------------------------------------------------
-
-From: Bob Smith <bob.smith@sre.corp>
-To: Charlie Davis <charlie.davis@dev.corp>
-Subject: Re: Update on Pod Failures and Memory Leaks [Ref-36]
-Date: Tue, 14 Jul 2026 14:00:00 +0000
-Message-ID: <20260714.36@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-Checking the logs now. `kubectl logs -n production deployment/auth-gateway --tail=100` shows `Segmentation fault` followed by panic in Go runtime.
-
-Detailed Diagnostic Dump #36:
-- Node: ip-10-0-36-22.ec2.internal
-- Heap Usage: 100GB
-- Active Threads: 430
-------------------------------------------------------------------------
-
-From: Charlie Davis <charlie.davis@dev.corp>
-To: Diana Prince <diana.prince@ciso.corp>
-Subject: Re: CVE-2026-3891 Exploited in Ingress Gateway? [Ref-37]
-Date: Tue, 14 Jul 2026 14:10:00 +0000
-Message-ID: <20260714.37@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-Wait, look at this IP: 198.51.100.45. It's hammering the `/api/v1/auth/token` endpoint with anomalous payloads containing nested JSON structures.
-
-Detailed Diagnostic Dump #37:
-- Node: ip-10-0-37-22.ec2.internal
-- Heap Usage: 101GB
-- Active Threads: 435
-------------------------------------------------------------------------
-
-From: Diana Prince <diana.prince@ciso.corp>
-To: Eve Polastri <eve.polastri@infra.corp>
-Subject: Re: Forensic Analysis of AWS IAM Role Assumption [Ref-38]
-Date: Tue, 14 Jul 2026 14:20:00 +0000
-Message-ID: <20260714.38@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-Could this be related to the newly disclosed CVE-2026-3891? The vulnerability affects Envoy and custom ingress proxies handling malformed HTTP/2 headers.
-
-Detailed Diagnostic Dump #38:
-- Node: ip-10-0-38-22.ec2.internal
-- Heap Usage: 102GB
-- Active Threads: 440
-------------------------------------------------------------------------
-
-From: Eve Polastri <eve.polastri@infra.corp>
-To: Alice Vance <alice.vance@security.corp>
-Subject: Re: Patch Deployment and Rollback Plan [Ref-39]
-Date: Tue, 14 Jul 2026 14:30:00 +0000
-Message-ID: <20260714.39@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-Checking AWS CloudTrail... ARN `arn:aws:iam::123456789012:role/ProductionS3Accessor` was assumed from an unusual external IP at 07:42 UTC.
-
-Detailed Diagnostic Dump #39:
-- Node: ip-10-0-39-22.ec2.internal
-- Heap Usage: 103GB
-- Active Threads: 445
-------------------------------------------------------------------------
-
-From: Alice Vance <alice.vance@security.corp>
-To: Bob Smith <bob.smith@sre.corp>
-Subject: Re: CRITICAL: Production Outage in US-East-1 Cluster [Ref-40]
-Date: Tue, 14 Jul 2026 14:40:00 +0000
-Message-ID: <20260714.40@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-We are seeing high error rates (502/504) across all ingress gateways in us-east-1. Initial logs point to pod crashloops in deployment/auth-gateway.
-
-Detailed Diagnostic Dump #40:
-- Node: ip-10-0-40-22.ec2.internal
-- Heap Usage: 104GB
-- Active Threads: 450
-------------------------------------------------------------------------
-
-From: Bob Smith <bob.smith@sre.corp>
-To: Charlie Davis <charlie.davis@dev.corp>
-Subject: Re: Update on Pod Failures and Memory Leaks [Ref-41]
-Date: Tue, 14 Jul 2026 14:50:00 +0000
-Message-ID: <20260714.41@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-Checking the logs now. `kubectl logs -n production deployment/auth-gateway --tail=100` shows `Segmentation fault` followed by panic in Go runtime.
-
-Detailed Diagnostic Dump #41:
-- Node: ip-10-0-41-22.ec2.internal
-- Heap Usage: 105GB
-- Active Threads: 455
-------------------------------------------------------------------------
-
-From: Charlie Davis <charlie.davis@dev.corp>
-To: Diana Prince <diana.prince@ciso.corp>
-Subject: Re: CVE-2026-3891 Exploited in Ingress Gateway? [Ref-42]
-Date: Tue, 14 Jul 2026 15:00:00 +0000
-Message-ID: <20260714.42@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-Wait, look at this IP: 198.51.100.45. It's hammering the `/api/v1/auth/token` endpoint with anomalous payloads containing nested JSON structures.
-
-Detailed Diagnostic Dump #42:
-- Node: ip-10-0-42-22.ec2.internal
-- Heap Usage: 106GB
-- Active Threads: 460
-------------------------------------------------------------------------
-
-From: Diana Prince <diana.prince@ciso.corp>
-To: Eve Polastri <eve.polastri@infra.corp>
-Subject: Re: Forensic Analysis of AWS IAM Role Assumption [Ref-43]
-Date: Tue, 14 Jul 2026 15:10:00 +0000
-Message-ID: <20260714.43@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-Could this be related to the newly disclosed CVE-2026-3891? The vulnerability affects Envoy and custom ingress proxies handling malformed HTTP/2 headers.
-
-Detailed Diagnostic Dump #43:
-- Node: ip-10-0-43-22.ec2.internal
-- Heap Usage: 107GB
-- Active Threads: 465
-------------------------------------------------------------------------
-
-From: Eve Polastri <eve.polastri@infra.corp>
-To: Alice Vance <alice.vance@security.corp>
-Subject: Re: Patch Deployment and Rollback Plan [Ref-44]
-Date: Tue, 14 Jul 2026 15:20:00 +0000
-Message-ID: <20260714.44@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-Checking AWS CloudTrail... ARN `arn:aws:iam::123456789012:role/ProductionS3Accessor` was assumed from an unusual external IP at 07:42 UTC.
-
-Detailed Diagnostic Dump #44:
-- Node: ip-10-0-44-22.ec2.internal
-- Heap Usage: 108GB
-- Active Threads: 470
-------------------------------------------------------------------------
-
-From: Alice Vance <alice.vance@security.corp>
-To: Bob Smith <bob.smith@sre.corp>
-Subject: Re: CRITICAL: Production Outage in US-East-1 Cluster [Ref-45]
-Date: Tue, 14 Jul 2026 15:30:00 +0000
-Message-ID: <20260714.45@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-We are seeing high error rates (502/504) across all ingress gateways in us-east-1. Initial logs point to pod crashloops in deployment/auth-gateway.
-
-Detailed Diagnostic Dump #45:
-- Node: ip-10-0-45-22.ec2.internal
-- Heap Usage: 109GB
-- Active Threads: 475
-------------------------------------------------------------------------
-
-From: Bob Smith <bob.smith@sre.corp>
-To: Charlie Davis <charlie.davis@dev.corp>
-Subject: Re: Update on Pod Failures and Memory Leaks [Ref-46]
-Date: Tue, 14 Jul 2026 15:40:00 +0000
-Message-ID: <20260714.46@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-Checking the logs now. `kubectl logs -n production deployment/auth-gateway --tail=100` shows `Segmentation fault` followed by panic in Go runtime.
-
-Detailed Diagnostic Dump #46:
-- Node: ip-10-0-46-22.ec2.internal
-- Heap Usage: 110GB
-- Active Threads: 480
-------------------------------------------------------------------------
-
-From: Charlie Davis <charlie.davis@dev.corp>
-To: Diana Prince <diana.prince@ciso.corp>
-Subject: Re: CVE-2026-3891 Exploited in Ingress Gateway? [Ref-47]
-Date: Tue, 14 Jul 2026 15:50:00 +0000
-Message-ID: <20260714.47@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-Wait, look at this IP: 198.51.100.45. It's hammering the `/api/v1/auth/token` endpoint with anomalous payloads containing nested JSON structures.
-
-Detailed Diagnostic Dump #47:
-- Node: ip-10-0-47-22.ec2.internal
-- Heap Usage: 111GB
-- Active Threads: 485
-------------------------------------------------------------------------
-
-From: Diana Prince <diana.prince@ciso.corp>
-To: Eve Polastri <eve.polastri@infra.corp>
-Subject: Re: Forensic Analysis of AWS IAM Role Assumption [Ref-48]
-Date: Tue, 14 Jul 2026 16:00:00 +0000
-Message-ID: <20260714.48@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-Could this be related to the newly disclosed CVE-2026-3891? The vulnerability affects Envoy and custom ingress proxies handling malformed HTTP/2 headers.
-
-Detailed Diagnostic Dump #48:
-- Node: ip-10-0-48-22.ec2.internal
-- Heap Usage: 112GB
-- Active Threads: 490
-------------------------------------------------------------------------
-
-From: Eve Polastri <eve.polastri@infra.corp>
-To: Alice Vance <alice.vance@security.corp>
-Subject: Re: Patch Deployment and Rollback Plan [Ref-49]
-Date: Tue, 14 Jul 2026 16:10:00 +0000
-Message-ID: <20260714.49@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-Checking AWS CloudTrail... ARN `arn:aws:iam::123456789012:role/ProductionS3Accessor` was assumed from an unusual external IP at 07:42 UTC.
-
-Detailed Diagnostic Dump #49:
-- Node: ip-10-0-49-22.ec2.internal
-- Heap Usage: 113GB
-- Active Threads: 495
-------------------------------------------------------------------------
-
-From: Alice Vance <alice.vance@security.corp>
-To: Bob Smith <bob.smith@sre.corp>
-Subject: Re: CRITICAL: Production Outage in US-East-1 Cluster [Ref-50]
-Date: Tue, 14 Jul 2026 16:20:00 +0000
-Message-ID: <20260714.50@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-We are seeing high error rates (502/504) across all ingress gateways in us-east-1. Initial logs point to pod crashloops in deployment/auth-gateway.
-
-Detailed Diagnostic Dump #50:
-- Node: ip-10-0-50-22.ec2.internal
-- Heap Usage: 114GB
-- Active Threads: 500
-------------------------------------------------------------------------
-
-From: Bob Smith <bob.smith@sre.corp>
-To: Charlie Davis <charlie.davis@dev.corp>
-Subject: Re: Update on Pod Failures and Memory Leaks [Ref-51]
-Date: Tue, 14 Jul 2026 16:30:00 +0000
-Message-ID: <20260714.51@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-Checking the logs now. `kubectl logs -n production deployment/auth-gateway --tail=100` shows `Segmentation fault` followed by panic in Go runtime.
-
-Detailed Diagnostic Dump #51:
-- Node: ip-10-0-51-22.ec2.internal
-- Heap Usage: 115GB
-- Active Threads: 505
-------------------------------------------------------------------------
-
-From: Charlie Davis <charlie.davis@dev.corp>
-To: Diana Prince <diana.prince@ciso.corp>
-Subject: Re: CVE-2026-3891 Exploited in Ingress Gateway? [Ref-52]
-Date: Tue, 14 Jul 2026 16:40:00 +0000
-Message-ID: <20260714.52@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-Wait, look at this IP: 198.51.100.45. It's hammering the `/api/v1/auth/token` endpoint with anomalous payloads containing nested JSON structures.
-
-Detailed Diagnostic Dump #52:
-- Node: ip-10-0-52-22.ec2.internal
-- Heap Usage: 116GB
-- Active Threads: 510
-------------------------------------------------------------------------
-
-From: Diana Prince <diana.prince@ciso.corp>
-To: Eve Polastri <eve.polastri@infra.corp>
-Subject: Re: Forensic Analysis of AWS IAM Role Assumption [Ref-53]
-Date: Tue, 14 Jul 2026 16:50:00 +0000
-Message-ID: <20260714.53@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-Could this be related to the newly disclosed CVE-2026-3891? The vulnerability affects Envoy and custom ingress proxies handling malformed HTTP/2 headers.
-
-Detailed Diagnostic Dump #53:
-- Node: ip-10-0-53-22.ec2.internal
-- Heap Usage: 117GB
-- Active Threads: 515
-------------------------------------------------------------------------
-
-From: Eve Polastri <eve.polastri@infra.corp>
-To: Alice Vance <alice.vance@security.corp>
-Subject: Re: Patch Deployment and Rollback Plan [Ref-54]
-Date: Tue, 14 Jul 2026 17:00:00 +0000
-Message-ID: <20260714.54@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-Checking AWS CloudTrail... ARN `arn:aws:iam::123456789012:role/ProductionS3Accessor` was assumed from an unusual external IP at 07:42 UTC.
-
-Detailed Diagnostic Dump #54:
-- Node: ip-10-0-54-22.ec2.internal
-- Heap Usage: 118GB
-- Active Threads: 520
-------------------------------------------------------------------------
-
-From: Alice Vance <alice.vance@security.corp>
-To: Bob Smith <bob.smith@sre.corp>
-Subject: Re: CRITICAL: Production Outage in US-East-1 Cluster [Ref-55]
-Date: Tue, 14 Jul 2026 17:10:00 +0000
-Message-ID: <20260714.55@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-We are seeing high error rates (502/504) across all ingress gateways in us-east-1. Initial logs point to pod crashloops in deployment/auth-gateway.
-
-Detailed Diagnostic Dump #55:
-- Node: ip-10-0-55-22.ec2.internal
-- Heap Usage: 119GB
-- Active Threads: 525
-------------------------------------------------------------------------
-
-From: Bob Smith <bob.smith@sre.corp>
-To: Charlie Davis <charlie.davis@dev.corp>
-Subject: Re: Update on Pod Failures and Memory Leaks [Ref-56]
-Date: Tue, 14 Jul 2026 17:20:00 +0000
-Message-ID: <20260714.56@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-Checking the logs now. `kubectl logs -n production deployment/auth-gateway --tail=100` shows `Segmentation fault` followed by panic in Go runtime.
-
-Detailed Diagnostic Dump #56:
-- Node: ip-10-0-56-22.ec2.internal
-- Heap Usage: 120GB
-- Active Threads: 530
-------------------------------------------------------------------------
-
-From: Charlie Davis <charlie.davis@dev.corp>
-To: Diana Prince <diana.prince@ciso.corp>
-Subject: Re: CVE-2026-3891 Exploited in Ingress Gateway? [Ref-57]
-Date: Tue, 14 Jul 2026 17:30:00 +0000
-Message-ID: <20260714.57@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-Wait, look at this IP: 198.51.100.45. It's hammering the `/api/v1/auth/token` endpoint with anomalous payloads containing nested JSON structures.
-
-Detailed Diagnostic Dump #57:
-- Node: ip-10-0-57-22.ec2.internal
-- Heap Usage: 121GB
-- Active Threads: 535
-------------------------------------------------------------------------
-
-From: Diana Prince <diana.prince@ciso.corp>
-To: Eve Polastri <eve.polastri@infra.corp>
-Subject: Re: Forensic Analysis of AWS IAM Role Assumption [Ref-58]
-Date: Tue, 14 Jul 2026 17:40:00 +0000
-Message-ID: <20260714.58@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-Could this be related to the newly disclosed CVE-2026-3891? The vulnerability affects Envoy and custom ingress proxies handling malformed HTTP/2 headers.
-
-Detailed Diagnostic Dump #58:
-- Node: ip-10-0-58-22.ec2.internal
-- Heap Usage: 122GB
-- Active Threads: 540
-------------------------------------------------------------------------
-
-From: Eve Polastri <eve.polastri@infra.corp>
-To: Alice Vance <alice.vance@security.corp>
-Subject: Re: Patch Deployment and Rollback Plan [Ref-59]
-Date: Tue, 14 Jul 2026 17:50:00 +0000
-Message-ID: <20260714.59@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-Checking AWS CloudTrail... ARN `arn:aws:iam::123456789012:role/ProductionS3Accessor` was assumed from an unusual external IP at 07:42 UTC.
-
-Detailed Diagnostic Dump #59:
-- Node: ip-10-0-59-22.ec2.internal
-- Heap Usage: 123GB
-- Active Threads: 545
-------------------------------------------------------------------------
-
-From: Alice Vance <alice.vance@security.corp>
-To: Bob Smith <bob.smith@sre.corp>
-Subject: Re: CRITICAL: Production Outage in US-East-1 Cluster [Ref-60]
-Date: Tue, 14 Jul 2026 18:00:00 +0000
-Message-ID: <20260714.60@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-We are seeing high error rates (502/504) across all ingress gateways in us-east-1. Initial logs point to pod crashloops in deployment/auth-gateway.
-
-Detailed Diagnostic Dump #60:
-- Node: ip-10-0-60-22.ec2.internal
-- Heap Usage: 124GB
-- Active Threads: 550
-------------------------------------------------------------------------
-
-From: Bob Smith <bob.smith@sre.corp>
-To: Charlie Davis <charlie.davis@dev.corp>
-Subject: Re: Update on Pod Failures and Memory Leaks [Ref-61]
-Date: Tue, 14 Jul 2026 18:10:00 +0000
-Message-ID: <20260714.61@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-Checking the logs now. `kubectl logs -n production deployment/auth-gateway --tail=100` shows `Segmentation fault` followed by panic in Go runtime.
-
-Detailed Diagnostic Dump #61:
-- Node: ip-10-0-61-22.ec2.internal
-- Heap Usage: 125GB
-- Active Threads: 555
-------------------------------------------------------------------------
-
-From: Charlie Davis <charlie.davis@dev.corp>
-To: Diana Prince <diana.prince@ciso.corp>
-Subject: Re: CVE-2026-3891 Exploited in Ingress Gateway? [Ref-62]
-Date: Tue, 14 Jul 2026 18:20:00 +0000
-Message-ID: <20260714.62@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-Wait, look at this IP: 198.51.100.45. It's hammering the `/api/v1/auth/token` endpoint with anomalous payloads containing nested JSON structures.
-
-Detailed Diagnostic Dump #62:
-- Node: ip-10-0-62-22.ec2.internal
-- Heap Usage: 126GB
-- Active Threads: 560
-------------------------------------------------------------------------
-
-From: Diana Prince <diana.prince@ciso.corp>
-To: Eve Polastri <eve.polastri@infra.corp>
-Subject: Re: Forensic Analysis of AWS IAM Role Assumption [Ref-63]
-Date: Tue, 14 Jul 2026 18:30:00 +0000
-Message-ID: <20260714.63@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-Could this be related to the newly disclosed CVE-2026-3891? The vulnerability affects Envoy and custom ingress proxies handling malformed HTTP/2 headers.
-
-Detailed Diagnostic Dump #63:
-- Node: ip-10-0-63-22.ec2.internal
-- Heap Usage: 127GB
-- Active Threads: 565
-------------------------------------------------------------------------
-
-From: Eve Polastri <eve.polastri@infra.corp>
-To: Alice Vance <alice.vance@security.corp>
-Subject: Re: Patch Deployment and Rollback Plan [Ref-64]
-Date: Tue, 14 Jul 2026 18:40:00 +0000
-Message-ID: <20260714.64@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-Checking AWS CloudTrail... ARN `arn:aws:iam::123456789012:role/ProductionS3Accessor` was assumed from an unusual external IP at 07:42 UTC.
-
-Detailed Diagnostic Dump #64:
-- Node: ip-10-0-64-22.ec2.internal
-- Heap Usage: 128GB
-- Active Threads: 570
-------------------------------------------------------------------------
-
-From: Alice Vance <alice.vance@security.corp>
-To: Bob Smith <bob.smith@sre.corp>
-Subject: Re: CRITICAL: Production Outage in US-East-1 Cluster [Ref-65]
-Date: Tue, 14 Jul 2026 18:50:00 +0000
-Message-ID: <20260714.65@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-We are seeing high error rates (502/504) across all ingress gateways in us-east-1. Initial logs point to pod crashloops in deployment/auth-gateway.
-
-Detailed Diagnostic Dump #65:
-- Node: ip-10-0-65-22.ec2.internal
-- Heap Usage: 129GB
-- Active Threads: 575
-------------------------------------------------------------------------
-
-From: Bob Smith <bob.smith@sre.corp>
-To: Charlie Davis <charlie.davis@dev.corp>
-Subject: Re: Update on Pod Failures and Memory Leaks [Ref-66]
-Date: Tue, 14 Jul 2026 19:00:00 +0000
-Message-ID: <20260714.66@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-Checking the logs now. `kubectl logs -n production deployment/auth-gateway --tail=100` shows `Segmentation fault` followed by panic in Go runtime.
-
-Detailed Diagnostic Dump #66:
-- Node: ip-10-0-66-22.ec2.internal
-- Heap Usage: 130GB
-- Active Threads: 580
-------------------------------------------------------------------------
-
-From: Charlie Davis <charlie.davis@dev.corp>
-To: Diana Prince <diana.prince@ciso.corp>
-Subject: Re: CVE-2026-3891 Exploited in Ingress Gateway? [Ref-67]
-Date: Tue, 14 Jul 2026 19:10:00 +0000
-Message-ID: <20260714.67@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-Wait, look at this IP: 198.51.100.45. It's hammering the `/api/v1/auth/token` endpoint with anomalous payloads containing nested JSON structures.
-
-Detailed Diagnostic Dump #67:
-- Node: ip-10-0-67-22.ec2.internal
-- Heap Usage: 131GB
-- Active Threads: 585
-------------------------------------------------------------------------
-
-From: Diana Prince <diana.prince@ciso.corp>
-To: Eve Polastri <eve.polastri@infra.corp>
-Subject: Re: Forensic Analysis of AWS IAM Role Assumption [Ref-68]
-Date: Tue, 14 Jul 2026 19:20:00 +0000
-Message-ID: <20260714.68@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-Could this be related to the newly disclosed CVE-2026-3891? The vulnerability affects Envoy and custom ingress proxies handling malformed HTTP/2 headers.
-
-Detailed Diagnostic Dump #68:
-- Node: ip-10-0-68-22.ec2.internal
-- Heap Usage: 132GB
-- Active Threads: 590
-------------------------------------------------------------------------
-
-From: Eve Polastri <eve.polastri@infra.corp>
-To: Alice Vance <alice.vance@security.corp>
-Subject: Re: Patch Deployment and Rollback Plan [Ref-69]
-Date: Tue, 14 Jul 2026 19:30:00 +0000
-Message-ID: <20260714.69@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-Checking AWS CloudTrail... ARN `arn:aws:iam::123456789012:role/ProductionS3Accessor` was assumed from an unusual external IP at 07:42 UTC.
-
-Detailed Diagnostic Dump #69:
-- Node: ip-10-0-69-22.ec2.internal
-- Heap Usage: 133GB
-- Active Threads: 595
-------------------------------------------------------------------------
-
-From: Alice Vance <alice.vance@security.corp>
-To: Bob Smith <bob.smith@sre.corp>
-Subject: Re: CRITICAL: Production Outage in US-East-1 Cluster [Ref-70]
-Date: Tue, 14 Jul 2026 19:40:00 +0000
-Message-ID: <20260714.70@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-We are seeing high error rates (502/504) across all ingress gateways in us-east-1. Initial logs point to pod crashloops in deployment/auth-gateway.
-
-Detailed Diagnostic Dump #70:
-- Node: ip-10-0-70-22.ec2.internal
-- Heap Usage: 134GB
-- Active Threads: 600
-------------------------------------------------------------------------
-
-From: Bob Smith <bob.smith@sre.corp>
-To: Charlie Davis <charlie.davis@dev.corp>
-Subject: Re: Update on Pod Failures and Memory Leaks [Ref-71]
-Date: Tue, 14 Jul 2026 19:50:00 +0000
-Message-ID: <20260714.71@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-Checking the logs now. `kubectl logs -n production deployment/auth-gateway --tail=100` shows `Segmentation fault` followed by panic in Go runtime.
-
-Detailed Diagnostic Dump #71:
-- Node: ip-10-0-71-22.ec2.internal
-- Heap Usage: 135GB
-- Active Threads: 605
-------------------------------------------------------------------------
-
-From: Charlie Davis <charlie.davis@dev.corp>
-To: Diana Prince <diana.prince@ciso.corp>
-Subject: Re: CVE-2026-3891 Exploited in Ingress Gateway? [Ref-72]
-Date: Tue, 14 Jul 2026 20:00:00 +0000
-Message-ID: <20260714.72@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-Wait, look at this IP: 198.51.100.45. It's hammering the `/api/v1/auth/token` endpoint with anomalous payloads containing nested JSON structures.
-
-Detailed Diagnostic Dump #72:
-- Node: ip-10-0-72-22.ec2.internal
-- Heap Usage: 136GB
-- Active Threads: 610
-------------------------------------------------------------------------
-
-From: Diana Prince <diana.prince@ciso.corp>
-To: Eve Polastri <eve.polastri@infra.corp>
-Subject: Re: Forensic Analysis of AWS IAM Role Assumption [Ref-73]
-Date: Tue, 14 Jul 2026 20:10:00 +0000
-Message-ID: <20260714.73@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-Could this be related to the newly disclosed CVE-2026-3891? The vulnerability affects Envoy and custom ingress proxies handling malformed HTTP/2 headers.
-
-Detailed Diagnostic Dump #73:
-- Node: ip-10-0-73-22.ec2.internal
-- Heap Usage: 137GB
-- Active Threads: 615
-------------------------------------------------------------------------
-
-From: Eve Polastri <eve.polastri@infra.corp>
-To: Alice Vance <alice.vance@security.corp>
-Subject: Re: Patch Deployment and Rollback Plan [Ref-74]
-Date: Tue, 14 Jul 2026 20:20:00 +0000
-Message-ID: <20260714.74@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-Checking AWS CloudTrail... ARN `arn:aws:iam::123456789012:role/ProductionS3Accessor` was assumed from an unusual external IP at 07:42 UTC.
-
-Detailed Diagnostic Dump #74:
-- Node: ip-10-0-74-22.ec2.internal
-- Heap Usage: 138GB
-- Active Threads: 620
-------------------------------------------------------------------------
-
-From: Alice Vance <alice.vance@security.corp>
-To: Bob Smith <bob.smith@sre.corp>
-Subject: Re: CRITICAL: Production Outage in US-East-1 Cluster [Ref-75]
-Date: Tue, 14 Jul 2026 20:30:00 +0000
-Message-ID: <20260714.75@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-We are seeing high error rates (502/504) across all ingress gateways in us-east-1. Initial logs point to pod crashloops in deployment/auth-gateway.
-
-Detailed Diagnostic Dump #75:
-- Node: ip-10-0-75-22.ec2.internal
-- Heap Usage: 139GB
-- Active Threads: 625
-------------------------------------------------------------------------
-
-From: Bob Smith <bob.smith@sre.corp>
-To: Charlie Davis <charlie.davis@dev.corp>
-Subject: Re: Update on Pod Failures and Memory Leaks [Ref-76]
-Date: Tue, 14 Jul 2026 20:40:00 +0000
-Message-ID: <20260714.76@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-Checking the logs now. `kubectl logs -n production deployment/auth-gateway --tail=100` shows `Segmentation fault` followed by panic in Go runtime.
-
-Detailed Diagnostic Dump #76:
-- Node: ip-10-0-76-22.ec2.internal
-- Heap Usage: 140GB
-- Active Threads: 630
-------------------------------------------------------------------------
-
-From: Charlie Davis <charlie.davis@dev.corp>
-To: Diana Prince <diana.prince@ciso.corp>
-Subject: Re: CVE-2026-3891 Exploited in Ingress Gateway? [Ref-77]
-Date: Tue, 14 Jul 2026 20:50:00 +0000
-Message-ID: <20260714.77@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-Wait, look at this IP: 198.51.100.45. It's hammering the `/api/v1/auth/token` endpoint with anomalous payloads containing nested JSON structures.
-
-Detailed Diagnostic Dump #77:
-- Node: ip-10-0-77-22.ec2.internal
-- Heap Usage: 141GB
-- Active Threads: 635
-------------------------------------------------------------------------
-
-From: Diana Prince <diana.prince@ciso.corp>
-To: Eve Polastri <eve.polastri@infra.corp>
-Subject: Re: Forensic Analysis of AWS IAM Role Assumption [Ref-78]
-Date: Tue, 14 Jul 2026 21:00:00 +0000
-Message-ID: <20260714.78@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-Could this be related to the newly disclosed CVE-2026-3891? The vulnerability affects Envoy and custom ingress proxies handling malformed HTTP/2 headers.
-
-Detailed Diagnostic Dump #78:
-- Node: ip-10-0-78-22.ec2.internal
-- Heap Usage: 142GB
-- Active Threads: 640
-------------------------------------------------------------------------
-
-From: Eve Polastri <eve.polastri@infra.corp>
-To: Alice Vance <alice.vance@security.corp>
-Subject: Re: Patch Deployment and Rollback Plan [Ref-79]
-Date: Tue, 14 Jul 2026 21:10:00 +0000
-Message-ID: <20260714.79@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-Checking AWS CloudTrail... ARN `arn:aws:iam::123456789012:role/ProductionS3Accessor` was assumed from an unusual external IP at 07:42 UTC.
-
-Detailed Diagnostic Dump #79:
-- Node: ip-10-0-79-22.ec2.internal
-- Heap Usage: 143GB
-- Active Threads: 645
-------------------------------------------------------------------------
-
-From: Alice Vance <alice.vance@security.corp>
-To: Bob Smith <bob.smith@sre.corp>
-Subject: Re: CRITICAL: Production Outage in US-East-1 Cluster [Ref-80]
-Date: Tue, 14 Jul 2026 21:20:00 +0000
-Message-ID: <20260714.80@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-We are seeing high error rates (502/504) across all ingress gateways in us-east-1. Initial logs point to pod crashloops in deployment/auth-gateway.
-
-Detailed Diagnostic Dump #80:
-- Node: ip-10-0-80-22.ec2.internal
-- Heap Usage: 144GB
-- Active Threads: 650
-------------------------------------------------------------------------
-
-From: Bob Smith <bob.smith@sre.corp>
-To: Charlie Davis <charlie.davis@dev.corp>
-Subject: Re: Update on Pod Failures and Memory Leaks [Ref-81]
-Date: Tue, 14 Jul 2026 21:30:00 +0000
-Message-ID: <20260714.81@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-Checking the logs now. `kubectl logs -n production deployment/auth-gateway --tail=100` shows `Segmentation fault` followed by panic in Go runtime.
-
-Detailed Diagnostic Dump #81:
-- Node: ip-10-0-81-22.ec2.internal
-- Heap Usage: 145GB
-- Active Threads: 655
-------------------------------------------------------------------------
-
-From: Charlie Davis <charlie.davis@dev.corp>
-To: Diana Prince <diana.prince@ciso.corp>
-Subject: Re: CVE-2026-3891 Exploited in Ingress Gateway? [Ref-82]
-Date: Tue, 14 Jul 2026 21:40:00 +0000
-Message-ID: <20260714.82@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-Wait, look at this IP: 198.51.100.45. It's hammering the `/api/v1/auth/token` endpoint with anomalous payloads containing nested JSON structures.
-
-Detailed Diagnostic Dump #82:
-- Node: ip-10-0-82-22.ec2.internal
-- Heap Usage: 146GB
-- Active Threads: 660
-------------------------------------------------------------------------
-
-From: Diana Prince <diana.prince@ciso.corp>
-To: Eve Polastri <eve.polastri@infra.corp>
-Subject: Re: Forensic Analysis of AWS IAM Role Assumption [Ref-83]
-Date: Tue, 14 Jul 2026 21:50:00 +0000
-Message-ID: <20260714.83@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-Could this be related to the newly disclosed CVE-2026-3891? The vulnerability affects Envoy and custom ingress proxies handling malformed HTTP/2 headers.
-
-Detailed Diagnostic Dump #83:
-- Node: ip-10-0-83-22.ec2.internal
-- Heap Usage: 147GB
-- Active Threads: 665
-------------------------------------------------------------------------
-
-From: Eve Polastri <eve.polastri@infra.corp>
-To: Alice Vance <alice.vance@security.corp>
-Subject: Re: Patch Deployment and Rollback Plan [Ref-84]
-Date: Tue, 14 Jul 2026 22:00:00 +0000
-Message-ID: <20260714.84@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-Checking AWS CloudTrail... ARN `arn:aws:iam::123456789012:role/ProductionS3Accessor` was assumed from an unusual external IP at 07:42 UTC.
-
-Detailed Diagnostic Dump #84:
-- Node: ip-10-0-84-22.ec2.internal
-- Heap Usage: 148GB
-- Active Threads: 670
-------------------------------------------------------------------------
-
-From: Alice Vance <alice.vance@security.corp>
-To: Bob Smith <bob.smith@sre.corp>
-Subject: Re: CRITICAL: Production Outage in US-East-1 Cluster [Ref-85]
-Date: Tue, 14 Jul 2026 22:10:00 +0000
-Message-ID: <20260714.85@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-We are seeing high error rates (502/504) across all ingress gateways in us-east-1. Initial logs point to pod crashloops in deployment/auth-gateway.
-
-Detailed Diagnostic Dump #85:
-- Node: ip-10-0-85-22.ec2.internal
-- Heap Usage: 149GB
-- Active Threads: 675
-------------------------------------------------------------------------
-
-From: Bob Smith <bob.smith@sre.corp>
-To: Charlie Davis <charlie.davis@dev.corp>
-Subject: Re: Update on Pod Failures and Memory Leaks [Ref-86]
-Date: Tue, 14 Jul 2026 22:20:00 +0000
-Message-ID: <20260714.86@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-Checking the logs now. `kubectl logs -n production deployment/auth-gateway --tail=100` shows `Segmentation fault` followed by panic in Go runtime.
-
-Detailed Diagnostic Dump #86:
-- Node: ip-10-0-86-22.ec2.internal
-- Heap Usage: 150GB
-- Active Threads: 680
-------------------------------------------------------------------------
-
-From: Charlie Davis <charlie.davis@dev.corp>
-To: Diana Prince <diana.prince@ciso.corp>
-Subject: Re: CVE-2026-3891 Exploited in Ingress Gateway? [Ref-87]
-Date: Tue, 14 Jul 2026 22:30:00 +0000
-Message-ID: <20260714.87@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-Wait, look at this IP: 198.51.100.45. It's hammering the `/api/v1/auth/token` endpoint with anomalous payloads containing nested JSON structures.
-
-Detailed Diagnostic Dump #87:
-- Node: ip-10-0-87-22.ec2.internal
-- Heap Usage: 151GB
-- Active Threads: 685
-------------------------------------------------------------------------
-
-From: Diana Prince <diana.prince@ciso.corp>
-To: Eve Polastri <eve.polastri@infra.corp>
-Subject: Re: Forensic Analysis of AWS IAM Role Assumption [Ref-88]
-Date: Tue, 14 Jul 2026 22:40:00 +0000
-Message-ID: <20260714.88@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-Could this be related to the newly disclosed CVE-2026-3891? The vulnerability affects Envoy and custom ingress proxies handling malformed HTTP/2 headers.
-
-Detailed Diagnostic Dump #88:
-- Node: ip-10-0-88-22.ec2.internal
-- Heap Usage: 152GB
-- Active Threads: 690
-------------------------------------------------------------------------
-
-From: Eve Polastri <eve.polastri@infra.corp>
-To: Alice Vance <alice.vance@security.corp>
-Subject: Re: Patch Deployment and Rollback Plan [Ref-89]
-Date: Tue, 14 Jul 2026 22:50:00 +0000
-Message-ID: <20260714.89@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-Checking AWS CloudTrail... ARN `arn:aws:iam::123456789012:role/ProductionS3Accessor` was assumed from an unusual external IP at 07:42 UTC.
-
-Detailed Diagnostic Dump #89:
-- Node: ip-10-0-89-22.ec2.internal
-- Heap Usage: 153GB
-- Active Threads: 695
-------------------------------------------------------------------------
-
-From: Alice Vance <alice.vance@security.corp>
-To: Bob Smith <bob.smith@sre.corp>
-Subject: Re: CRITICAL: Production Outage in US-East-1 Cluster [Ref-90]
-Date: Tue, 14 Jul 2026 23:00:00 +0000
-Message-ID: <20260714.90@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-We are seeing high error rates (502/504) across all ingress gateways in us-east-1. Initial logs point to pod crashloops in deployment/auth-gateway.
-
-Detailed Diagnostic Dump #90:
-- Node: ip-10-0-90-22.ec2.internal
-- Heap Usage: 154GB
-- Active Threads: 700
-------------------------------------------------------------------------
-
-From: Bob Smith <bob.smith@sre.corp>
-To: Charlie Davis <charlie.davis@dev.corp>
-Subject: Re: Update on Pod Failures and Memory Leaks [Ref-91]
-Date: Tue, 14 Jul 2026 23:10:00 +0000
-Message-ID: <20260714.91@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-Checking the logs now. `kubectl logs -n production deployment/auth-gateway --tail=100` shows `Segmentation fault` followed by panic in Go runtime.
-
-Detailed Diagnostic Dump #91:
-- Node: ip-10-0-91-22.ec2.internal
-- Heap Usage: 155GB
-- Active Threads: 705
-------------------------------------------------------------------------
-
-From: Charlie Davis <charlie.davis@dev.corp>
-To: Diana Prince <diana.prince@ciso.corp>
-Subject: Re: CVE-2026-3891 Exploited in Ingress Gateway? [Ref-92]
-Date: Tue, 14 Jul 2026 23:20:00 +0000
-Message-ID: <20260714.92@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-Wait, look at this IP: 198.51.100.45. It's hammering the `/api/v1/auth/token` endpoint with anomalous payloads containing nested JSON structures.
-
-Detailed Diagnostic Dump #92:
-- Node: ip-10-0-92-22.ec2.internal
-- Heap Usage: 156GB
-- Active Threads: 710
-------------------------------------------------------------------------
-
-From: Diana Prince <diana.prince@ciso.corp>
-To: Eve Polastri <eve.polastri@infra.corp>
-Subject: Re: Forensic Analysis of AWS IAM Role Assumption [Ref-93]
-Date: Tue, 14 Jul 2026 23:30:00 +0000
-Message-ID: <20260714.93@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-Could this be related to the newly disclosed CVE-2026-3891? The vulnerability affects Envoy and custom ingress proxies handling malformed HTTP/2 headers.
-
-Detailed Diagnostic Dump #93:
-- Node: ip-10-0-93-22.ec2.internal
-- Heap Usage: 157GB
-- Active Threads: 715
-------------------------------------------------------------------------
-
-From: Eve Polastri <eve.polastri@infra.corp>
-To: Alice Vance <alice.vance@security.corp>
-Subject: Re: Patch Deployment and Rollback Plan [Ref-94]
-Date: Tue, 14 Jul 2026 23:40:00 +0000
-Message-ID: <20260714.94@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-Checking AWS CloudTrail... ARN `arn:aws:iam::123456789012:role/ProductionS3Accessor` was assumed from an unusual external IP at 07:42 UTC.
-
-Detailed Diagnostic Dump #94:
-- Node: ip-10-0-94-22.ec2.internal
-- Heap Usage: 158GB
-- Active Threads: 720
-------------------------------------------------------------------------
-
-From: Alice Vance <alice.vance@security.corp>
-To: Bob Smith <bob.smith@sre.corp>
-Subject: Re: CRITICAL: Production Outage in US-East-1 Cluster [Ref-95]
-Date: Tue, 14 Jul 2026 23:50:00 +0000
-Message-ID: <20260714.95@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-We are seeing high error rates (502/504) across all ingress gateways in us-east-1. Initial logs point to pod crashloops in deployment/auth-gateway.
-
-Detailed Diagnostic Dump #95:
-- Node: ip-10-0-95-22.ec2.internal
-- Heap Usage: 159GB
-- Active Threads: 725
-------------------------------------------------------------------------
-
-From: Bob Smith <bob.smith@sre.corp>
-To: Charlie Davis <charlie.davis@dev.corp>
-Subject: Re: Update on Pod Failures and Memory Leaks [Ref-96]
-Date: Wed, 15 Jul 2026 00:00:00 +0000
-Message-ID: <20260714.96@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-Checking the logs now. `kubectl logs -n production deployment/auth-gateway --tail=100` shows `Segmentation fault` followed by panic in Go runtime.
-
-Detailed Diagnostic Dump #96:
-- Node: ip-10-0-96-22.ec2.internal
-- Heap Usage: 160GB
-- Active Threads: 730
-------------------------------------------------------------------------
-
-From: Charlie Davis <charlie.davis@dev.corp>
-To: Diana Prince <diana.prince@ciso.corp>
-Subject: Re: CVE-2026-3891 Exploited in Ingress Gateway? [Ref-97]
-Date: Wed, 15 Jul 2026 00:10:00 +0000
-Message-ID: <20260714.97@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-Wait, look at this IP: 198.51.100.45. It's hammering the `/api/v1/auth/token` endpoint with anomalous payloads containing nested JSON structures.
-
-Detailed Diagnostic Dump #97:
-- Node: ip-10-0-97-22.ec2.internal
-- Heap Usage: 161GB
-- Active Threads: 735
-------------------------------------------------------------------------
-
-From: Diana Prince <diana.prince@ciso.corp>
-To: Eve Polastri <eve.polastri@infra.corp>
-Subject: Re: Forensic Analysis of AWS IAM Role Assumption [Ref-98]
-Date: Wed, 15 Jul 2026 00:20:00 +0000
-Message-ID: <20260714.98@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-Could this be related to the newly disclosed CVE-2026-3891? The vulnerability affects Envoy and custom ingress proxies handling malformed HTTP/2 headers.
-
-Detailed Diagnostic Dump #98:
-- Node: ip-10-0-98-22.ec2.internal
-- Heap Usage: 162GB
-- Active Threads: 740
-------------------------------------------------------------------------
-
-From: Eve Polastri <eve.polastri@infra.corp>
-To: Alice Vance <alice.vance@security.corp>
-Subject: Re: Patch Deployment and Rollback Plan [Ref-99]
-Date: Wed, 15 Jul 2026 00:30:00 +0000
-Message-ID: <20260714.99@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-Checking AWS CloudTrail... ARN `arn:aws:iam::123456789012:role/ProductionS3Accessor` was assumed from an unusual external IP at 07:42 UTC.
-
-Detailed Diagnostic Dump #99:
-- Node: ip-10-0-99-22.ec2.internal
-- Heap Usage: 163GB
-- Active Threads: 745
-------------------------------------------------------------------------
-
-From: Alice Vance <alice.vance@security.corp>
-To: Bob Smith <bob.smith@sre.corp>
-Subject: Re: CRITICAL: Production Outage in US-East-1 Cluster [Ref-100]
-Date: Wed, 15 Jul 2026 00:40:00 +0000
-Message-ID: <20260714.100@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-We are seeing high error rates (502/504) across all ingress gateways in us-east-1. Initial logs point to pod crashloops in deployment/auth-gateway.
-
-Detailed Diagnostic Dump #100:
-- Node: ip-10-0-100-22.ec2.internal
-- Heap Usage: 164GB
-- Active Threads: 750
-------------------------------------------------------------------------
-
-From: Bob Smith <bob.smith@sre.corp>
-To: Charlie Davis <charlie.davis@dev.corp>
-Subject: Re: Update on Pod Failures and Memory Leaks [Ref-101]
-Date: Wed, 15 Jul 2026 00:50:00 +0000
-Message-ID: <20260714.101@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-Checking the logs now. `kubectl logs -n production deployment/auth-gateway --tail=100` shows `Segmentation fault` followed by panic in Go runtime.
-
-Detailed Diagnostic Dump #101:
-- Node: ip-10-0-101-22.ec2.internal
-- Heap Usage: 165GB
-- Active Threads: 755
-------------------------------------------------------------------------
-
-From: Charlie Davis <charlie.davis@dev.corp>
-To: Diana Prince <diana.prince@ciso.corp>
-Subject: Re: CVE-2026-3891 Exploited in Ingress Gateway? [Ref-102]
-Date: Wed, 15 Jul 2026 01:00:00 +0000
-Message-ID: <20260714.102@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-Wait, look at this IP: 198.51.100.45. It's hammering the `/api/v1/auth/token` endpoint with anomalous payloads containing nested JSON structures.
-
-Detailed Diagnostic Dump #102:
-- Node: ip-10-0-102-22.ec2.internal
-- Heap Usage: 166GB
-- Active Threads: 760
-------------------------------------------------------------------------
-
-From: Diana Prince <diana.prince@ciso.corp>
-To: Eve Polastri <eve.polastri@infra.corp>
-Subject: Re: Forensic Analysis of AWS IAM Role Assumption [Ref-103]
-Date: Wed, 15 Jul 2026 01:10:00 +0000
-Message-ID: <20260714.103@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-Could this be related to the newly disclosed CVE-2026-3891? The vulnerability affects Envoy and custom ingress proxies handling malformed HTTP/2 headers.
-
-Detailed Diagnostic Dump #103:
-- Node: ip-10-0-103-22.ec2.internal
-- Heap Usage: 167GB
-- Active Threads: 765
-------------------------------------------------------------------------
-
-From: Eve Polastri <eve.polastri@infra.corp>
-To: Alice Vance <alice.vance@security.corp>
-Subject: Re: Patch Deployment and Rollback Plan [Ref-104]
-Date: Wed, 15 Jul 2026 01:20:00 +0000
-Message-ID: <20260714.104@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-Checking AWS CloudTrail... ARN `arn:aws:iam::123456789012:role/ProductionS3Accessor` was assumed from an unusual external IP at 07:42 UTC.
-
-Detailed Diagnostic Dump #104:
-- Node: ip-10-0-104-22.ec2.internal
-- Heap Usage: 168GB
-- Active Threads: 770
-------------------------------------------------------------------------
-
-From: Alice Vance <alice.vance@security.corp>
-To: Bob Smith <bob.smith@sre.corp>
-Subject: Re: CRITICAL: Production Outage in US-East-1 Cluster [Ref-105]
-Date: Wed, 15 Jul 2026 01:30:00 +0000
-Message-ID: <20260714.105@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-We are seeing high error rates (502/504) across all ingress gateways in us-east-1. Initial logs point to pod crashloops in deployment/auth-gateway.
-
-Detailed Diagnostic Dump #105:
-- Node: ip-10-0-105-22.ec2.internal
-- Heap Usage: 169GB
-- Active Threads: 775
-------------------------------------------------------------------------
-
-From: Bob Smith <bob.smith@sre.corp>
-To: Charlie Davis <charlie.davis@dev.corp>
-Subject: Re: Update on Pod Failures and Memory Leaks [Ref-106]
-Date: Wed, 15 Jul 2026 01:40:00 +0000
-Message-ID: <20260714.106@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-Checking the logs now. `kubectl logs -n production deployment/auth-gateway --tail=100` shows `Segmentation fault` followed by panic in Go runtime.
-
-Detailed Diagnostic Dump #106:
-- Node: ip-10-0-106-22.ec2.internal
-- Heap Usage: 170GB
-- Active Threads: 780
-------------------------------------------------------------------------
-
-From: Charlie Davis <charlie.davis@dev.corp>
-To: Diana Prince <diana.prince@ciso.corp>
-Subject: Re: CVE-2026-3891 Exploited in Ingress Gateway? [Ref-107]
-Date: Wed, 15 Jul 2026 01:50:00 +0000
-Message-ID: <20260714.107@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-Wait, look at this IP: 198.51.100.45. It's hammering the `/api/v1/auth/token` endpoint with anomalous payloads containing nested JSON structures.
-
-Detailed Diagnostic Dump #107:
-- Node: ip-10-0-107-22.ec2.internal
-- Heap Usage: 171GB
-- Active Threads: 785
-------------------------------------------------------------------------
-
-From: Diana Prince <diana.prince@ciso.corp>
-To: Eve Polastri <eve.polastri@infra.corp>
-Subject: Re: Forensic Analysis of AWS IAM Role Assumption [Ref-108]
-Date: Wed, 15 Jul 2026 02:00:00 +0000
-Message-ID: <20260714.108@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-Could this be related to the newly disclosed CVE-2026-3891? The vulnerability affects Envoy and custom ingress proxies handling malformed HTTP/2 headers.
-
-Detailed Diagnostic Dump #108:
-- Node: ip-10-0-108-22.ec2.internal
-- Heap Usage: 172GB
-- Active Threads: 790
-------------------------------------------------------------------------
-
-From: Eve Polastri <eve.polastri@infra.corp>
-To: Alice Vance <alice.vance@security.corp>
-Subject: Re: Patch Deployment and Rollback Plan [Ref-109]
-Date: Wed, 15 Jul 2026 02:10:00 +0000
-Message-ID: <20260714.109@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-Checking AWS CloudTrail... ARN `arn:aws:iam::123456789012:role/ProductionS3Accessor` was assumed from an unusual external IP at 07:42 UTC.
-
-Detailed Diagnostic Dump #109:
-- Node: ip-10-0-109-22.ec2.internal
-- Heap Usage: 173GB
-- Active Threads: 795
-------------------------------------------------------------------------
-
-From: Alice Vance <alice.vance@security.corp>
-To: Bob Smith <bob.smith@sre.corp>
-Subject: Re: CRITICAL: Production Outage in US-East-1 Cluster [Ref-110]
-Date: Wed, 15 Jul 2026 02:20:00 +0000
-Message-ID: <20260714.110@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-We are seeing high error rates (502/504) across all ingress gateways in us-east-1. Initial logs point to pod crashloops in deployment/auth-gateway.
-
-Detailed Diagnostic Dump #110:
-- Node: ip-10-0-110-22.ec2.internal
-- Heap Usage: 174GB
-- Active Threads: 800
-------------------------------------------------------------------------
-
-From: Bob Smith <bob.smith@sre.corp>
-To: Charlie Davis <charlie.davis@dev.corp>
-Subject: Re: Update on Pod Failures and Memory Leaks [Ref-111]
-Date: Wed, 15 Jul 2026 02:30:00 +0000
-Message-ID: <20260714.111@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-Checking the logs now. `kubectl logs -n production deployment/auth-gateway --tail=100` shows `Segmentation fault` followed by panic in Go runtime.
-
-Detailed Diagnostic Dump #111:
-- Node: ip-10-0-111-22.ec2.internal
-- Heap Usage: 175GB
-- Active Threads: 805
-------------------------------------------------------------------------
-
-From: Charlie Davis <charlie.davis@dev.corp>
-To: Diana Prince <diana.prince@ciso.corp>
-Subject: Re: CVE-2026-3891 Exploited in Ingress Gateway? [Ref-112]
-Date: Wed, 15 Jul 2026 02:40:00 +0000
-Message-ID: <20260714.112@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-Wait, look at this IP: 198.51.100.45. It's hammering the `/api/v1/auth/token` endpoint with anomalous payloads containing nested JSON structures.
-
-Detailed Diagnostic Dump #112:
-- Node: ip-10-0-112-22.ec2.internal
-- Heap Usage: 176GB
-- Active Threads: 810
-------------------------------------------------------------------------
-
-From: Diana Prince <diana.prince@ciso.corp>
-To: Eve Polastri <eve.polastri@infra.corp>
-Subject: Re: Forensic Analysis of AWS IAM Role Assumption [Ref-113]
-Date: Wed, 15 Jul 2026 02:50:00 +0000
-Message-ID: <20260714.113@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-Could this be related to the newly disclosed CVE-2026-3891? The vulnerability affects Envoy and custom ingress proxies handling malformed HTTP/2 headers.
-
-Detailed Diagnostic Dump #113:
-- Node: ip-10-0-113-22.ec2.internal
-- Heap Usage: 177GB
-- Active Threads: 815
-------------------------------------------------------------------------
-
-From: Eve Polastri <eve.polastri@infra.corp>
-To: Alice Vance <alice.vance@security.corp>
-Subject: Re: Patch Deployment and Rollback Plan [Ref-114]
-Date: Wed, 15 Jul 2026 03:00:00 +0000
-Message-ID: <20260714.114@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-Checking AWS CloudTrail... ARN `arn:aws:iam::123456789012:role/ProductionS3Accessor` was assumed from an unusual external IP at 07:42 UTC.
-
-Detailed Diagnostic Dump #114:
-- Node: ip-10-0-114-22.ec2.internal
-- Heap Usage: 178GB
-- Active Threads: 820
-------------------------------------------------------------------------
-
-From: Alice Vance <alice.vance@security.corp>
-To: Bob Smith <bob.smith@sre.corp>
-Subject: Re: CRITICAL: Production Outage in US-East-1 Cluster [Ref-115]
-Date: Wed, 15 Jul 2026 03:10:00 +0000
-Message-ID: <20260714.115@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-We are seeing high error rates (502/504) across all ingress gateways in us-east-1. Initial logs point to pod crashloops in deployment/auth-gateway.
-
-Detailed Diagnostic Dump #115:
-- Node: ip-10-0-115-22.ec2.internal
-- Heap Usage: 179GB
-- Active Threads: 825
-------------------------------------------------------------------------
-
-From: Bob Smith <bob.smith@sre.corp>
-To: Charlie Davis <charlie.davis@dev.corp>
-Subject: Re: Update on Pod Failures and Memory Leaks [Ref-116]
-Date: Wed, 15 Jul 2026 03:20:00 +0000
-Message-ID: <20260714.116@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-Checking the logs now. `kubectl logs -n production deployment/auth-gateway --tail=100` shows `Segmentation fault` followed by panic in Go runtime.
-
-Detailed Diagnostic Dump #116:
-- Node: ip-10-0-116-22.ec2.internal
-- Heap Usage: 180GB
-- Active Threads: 830
-------------------------------------------------------------------------
-
-From: Charlie Davis <charlie.davis@dev.corp>
-To: Diana Prince <diana.prince@ciso.corp>
-Subject: Re: CVE-2026-3891 Exploited in Ingress Gateway? [Ref-117]
-Date: Wed, 15 Jul 2026 03:30:00 +0000
-Message-ID: <20260714.117@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-Wait, look at this IP: 198.51.100.45. It's hammering the `/api/v1/auth/token` endpoint with anomalous payloads containing nested JSON structures.
-
-Detailed Diagnostic Dump #117:
-- Node: ip-10-0-117-22.ec2.internal
-- Heap Usage: 181GB
-- Active Threads: 835
-------------------------------------------------------------------------
-
-From: Diana Prince <diana.prince@ciso.corp>
-To: Eve Polastri <eve.polastri@infra.corp>
-Subject: Re: Forensic Analysis of AWS IAM Role Assumption [Ref-118]
-Date: Wed, 15 Jul 2026 03:40:00 +0000
-Message-ID: <20260714.118@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-Could this be related to the newly disclosed CVE-2026-3891? The vulnerability affects Envoy and custom ingress proxies handling malformed HTTP/2 headers.
-
-Detailed Diagnostic Dump #118:
-- Node: ip-10-0-118-22.ec2.internal
-- Heap Usage: 182GB
-- Active Threads: 840
-------------------------------------------------------------------------
-
-From: Eve Polastri <eve.polastri@infra.corp>
-To: Alice Vance <alice.vance@security.corp>
-Subject: Re: Patch Deployment and Rollback Plan [Ref-119]
-Date: Wed, 15 Jul 2026 03:50:00 +0000
-Message-ID: <20260714.119@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-Checking AWS CloudTrail... ARN `arn:aws:iam::123456789012:role/ProductionS3Accessor` was assumed from an unusual external IP at 07:42 UTC.
-
-Detailed Diagnostic Dump #119:
-- Node: ip-10-0-119-22.ec2.internal
-- Heap Usage: 183GB
-- Active Threads: 845
-------------------------------------------------------------------------
-
-From: Alice Vance <alice.vance@security.corp>
-To: Bob Smith <bob.smith@sre.corp>
-Subject: Re: CRITICAL: Production Outage in US-East-1 Cluster [Ref-120]
-Date: Wed, 15 Jul 2026 04:00:00 +0000
-Message-ID: <20260714.120@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-We are seeing high error rates (502/504) across all ingress gateways in us-east-1. Initial logs point to pod crashloops in deployment/auth-gateway.
-
-Detailed Diagnostic Dump #120:
-- Node: ip-10-0-120-22.ec2.internal
-- Heap Usage: 184GB
-- Active Threads: 850
-------------------------------------------------------------------------
-
-From: Bob Smith <bob.smith@sre.corp>
-To: Charlie Davis <charlie.davis@dev.corp>
-Subject: Re: Update on Pod Failures and Memory Leaks [Ref-121]
-Date: Wed, 15 Jul 2026 04:10:00 +0000
-Message-ID: <20260714.121@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-Checking the logs now. `kubectl logs -n production deployment/auth-gateway --tail=100` shows `Segmentation fault` followed by panic in Go runtime.
-
-Detailed Diagnostic Dump #121:
-- Node: ip-10-0-121-22.ec2.internal
-- Heap Usage: 185GB
-- Active Threads: 855
-------------------------------------------------------------------------
-
-From: Charlie Davis <charlie.davis@dev.corp>
-To: Diana Prince <diana.prince@ciso.corp>
-Subject: Re: CVE-2026-3891 Exploited in Ingress Gateway? [Ref-122]
-Date: Wed, 15 Jul 2026 04:20:00 +0000
-Message-ID: <20260714.122@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-Wait, look at this IP: 198.51.100.45. It's hammering the `/api/v1/auth/token` endpoint with anomalous payloads containing nested JSON structures.
-
-Detailed Diagnostic Dump #122:
-- Node: ip-10-0-122-22.ec2.internal
-- Heap Usage: 186GB
-- Active Threads: 860
-------------------------------------------------------------------------
-
-From: Diana Prince <diana.prince@ciso.corp>
-To: Eve Polastri <eve.polastri@infra.corp>
-Subject: Re: Forensic Analysis of AWS IAM Role Assumption [Ref-123]
-Date: Wed, 15 Jul 2026 04:30:00 +0000
-Message-ID: <20260714.123@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-Could this be related to the newly disclosed CVE-2026-3891? The vulnerability affects Envoy and custom ingress proxies handling malformed HTTP/2 headers.
-
-Detailed Diagnostic Dump #123:
-- Node: ip-10-0-123-22.ec2.internal
-- Heap Usage: 187GB
-- Active Threads: 865
-------------------------------------------------------------------------
-
-From: Eve Polastri <eve.polastri@infra.corp>
-To: Alice Vance <alice.vance@security.corp>
-Subject: Re: Patch Deployment and Rollback Plan [Ref-124]
-Date: Wed, 15 Jul 2026 04:40:00 +0000
-Message-ID: <20260714.124@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-Checking AWS CloudTrail... ARN `arn:aws:iam::123456789012:role/ProductionS3Accessor` was assumed from an unusual external IP at 07:42 UTC.
-
-Detailed Diagnostic Dump #124:
-- Node: ip-10-0-124-22.ec2.internal
-- Heap Usage: 188GB
-- Active Threads: 870
-------------------------------------------------------------------------
-
-From: Alice Vance <alice.vance@security.corp>
-To: Bob Smith <bob.smith@sre.corp>
-Subject: Re: CRITICAL: Production Outage in US-East-1 Cluster [Ref-125]
-Date: Wed, 15 Jul 2026 04:50:00 +0000
-Message-ID: <20260714.125@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-We are seeing high error rates (502/504) across all ingress gateways in us-east-1. Initial logs point to pod crashloops in deployment/auth-gateway.
-
-Detailed Diagnostic Dump #125:
-- Node: ip-10-0-125-22.ec2.internal
-- Heap Usage: 189GB
-- Active Threads: 875
-------------------------------------------------------------------------
-
-From: Bob Smith <bob.smith@sre.corp>
-To: Charlie Davis <charlie.davis@dev.corp>
-Subject: Re: Update on Pod Failures and Memory Leaks [Ref-126]
-Date: Wed, 15 Jul 2026 05:00:00 +0000
-Message-ID: <20260714.126@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-Checking the logs now. `kubectl logs -n production deployment/auth-gateway --tail=100` shows `Segmentation fault` followed by panic in Go runtime.
-
-Detailed Diagnostic Dump #126:
-- Node: ip-10-0-126-22.ec2.internal
-- Heap Usage: 190GB
-- Active Threads: 880
-------------------------------------------------------------------------
-
-From: Charlie Davis <charlie.davis@dev.corp>
-To: Diana Prince <diana.prince@ciso.corp>
-Subject: Re: CVE-2026-3891 Exploited in Ingress Gateway? [Ref-127]
-Date: Wed, 15 Jul 2026 05:10:00 +0000
-Message-ID: <20260714.127@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-Wait, look at this IP: 198.51.100.45. It's hammering the `/api/v1/auth/token` endpoint with anomalous payloads containing nested JSON structures.
-
-Detailed Diagnostic Dump #127:
-- Node: ip-10-0-127-22.ec2.internal
-- Heap Usage: 191GB
-- Active Threads: 885
-------------------------------------------------------------------------
-
-From: Diana Prince <diana.prince@ciso.corp>
-To: Eve Polastri <eve.polastri@infra.corp>
-Subject: Re: Forensic Analysis of AWS IAM Role Assumption [Ref-128]
-Date: Wed, 15 Jul 2026 05:20:00 +0000
-Message-ID: <20260714.128@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-Could this be related to the newly disclosed CVE-2026-3891? The vulnerability affects Envoy and custom ingress proxies handling malformed HTTP/2 headers.
-
-Detailed Diagnostic Dump #128:
-- Node: ip-10-0-128-22.ec2.internal
-- Heap Usage: 192GB
-- Active Threads: 890
-------------------------------------------------------------------------
-
-From: Eve Polastri <eve.polastri@infra.corp>
-To: Alice Vance <alice.vance@security.corp>
-Subject: Re: Patch Deployment and Rollback Plan [Ref-129]
-Date: Wed, 15 Jul 2026 05:30:00 +0000
-Message-ID: <20260714.129@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-Checking AWS CloudTrail... ARN `arn:aws:iam::123456789012:role/ProductionS3Accessor` was assumed from an unusual external IP at 07:42 UTC.
-
-Detailed Diagnostic Dump #129:
-- Node: ip-10-0-129-22.ec2.internal
-- Heap Usage: 193GB
-- Active Threads: 895
-------------------------------------------------------------------------
-
-From: Alice Vance <alice.vance@security.corp>
-To: Bob Smith <bob.smith@sre.corp>
-Subject: Re: CRITICAL: Production Outage in US-East-1 Cluster [Ref-130]
-Date: Wed, 15 Jul 2026 05:40:00 +0000
-Message-ID: <20260714.130@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-We are seeing high error rates (502/504) across all ingress gateways in us-east-1. Initial logs point to pod crashloops in deployment/auth-gateway.
-
-Detailed Diagnostic Dump #130:
-- Node: ip-10-0-130-22.ec2.internal
-- Heap Usage: 194GB
-- Active Threads: 900
-------------------------------------------------------------------------
-
-From: Bob Smith <bob.smith@sre.corp>
-To: Charlie Davis <charlie.davis@dev.corp>
-Subject: Re: Update on Pod Failures and Memory Leaks [Ref-131]
-Date: Wed, 15 Jul 2026 05:50:00 +0000
-Message-ID: <20260714.131@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-Checking the logs now. `kubectl logs -n production deployment/auth-gateway --tail=100` shows `Segmentation fault` followed by panic in Go runtime.
-
-Detailed Diagnostic Dump #131:
-- Node: ip-10-0-131-22.ec2.internal
-- Heap Usage: 195GB
-- Active Threads: 905
-------------------------------------------------------------------------
-
-From: Charlie Davis <charlie.davis@dev.corp>
-To: Diana Prince <diana.prince@ciso.corp>
-Subject: Re: CVE-2026-3891 Exploited in Ingress Gateway? [Ref-132]
-Date: Wed, 15 Jul 2026 06:00:00 +0000
-Message-ID: <20260714.132@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-Wait, look at this IP: 198.51.100.45. It's hammering the `/api/v1/auth/token` endpoint with anomalous payloads containing nested JSON structures.
-
-Detailed Diagnostic Dump #132:
-- Node: ip-10-0-132-22.ec2.internal
-- Heap Usage: 196GB
-- Active Threads: 910
-------------------------------------------------------------------------
-
-From: Diana Prince <diana.prince@ciso.corp>
-To: Eve Polastri <eve.polastri@infra.corp>
-Subject: Re: Forensic Analysis of AWS IAM Role Assumption [Ref-133]
-Date: Wed, 15 Jul 2026 06:10:00 +0000
-Message-ID: <20260714.133@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-Could this be related to the newly disclosed CVE-2026-3891? The vulnerability affects Envoy and custom ingress proxies handling malformed HTTP/2 headers.
-
-Detailed Diagnostic Dump #133:
-- Node: ip-10-0-133-22.ec2.internal
-- Heap Usage: 197GB
-- Active Threads: 915
-------------------------------------------------------------------------
-
-From: Eve Polastri <eve.polastri@infra.corp>
-To: Alice Vance <alice.vance@security.corp>
-Subject: Re: Patch Deployment and Rollback Plan [Ref-134]
-Date: Wed, 15 Jul 2026 06:20:00 +0000
-Message-ID: <20260714.134@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-Checking AWS CloudTrail... ARN `arn:aws:iam::123456789012:role/ProductionS3Accessor` was assumed from an unusual external IP at 07:42 UTC.
-
-Detailed Diagnostic Dump #134:
-- Node: ip-10-0-134-22.ec2.internal
-- Heap Usage: 198GB
-- Active Threads: 920
-------------------------------------------------------------------------
-
-From: Alice Vance <alice.vance@security.corp>
-To: Bob Smith <bob.smith@sre.corp>
-Subject: Re: CRITICAL: Production Outage in US-East-1 Cluster [Ref-135]
-Date: Wed, 15 Jul 2026 06:30:00 +0000
-Message-ID: <20260714.135@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-We are seeing high error rates (502/504) across all ingress gateways in us-east-1. Initial logs point to pod crashloops in deployment/auth-gateway.
-
-Detailed Diagnostic Dump #135:
-- Node: ip-10-0-135-22.ec2.internal
-- Heap Usage: 199GB
-- Active Threads: 925
-------------------------------------------------------------------------
-
-From: Bob Smith <bob.smith@sre.corp>
-To: Charlie Davis <charlie.davis@dev.corp>
-Subject: Re: Update on Pod Failures and Memory Leaks [Ref-136]
-Date: Wed, 15 Jul 2026 06:40:00 +0000
-Message-ID: <20260714.136@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-Checking the logs now. `kubectl logs -n production deployment/auth-gateway --tail=100` shows `Segmentation fault` followed by panic in Go runtime.
-
-Detailed Diagnostic Dump #136:
-- Node: ip-10-0-136-22.ec2.internal
-- Heap Usage: 200GB
-- Active Threads: 930
-------------------------------------------------------------------------
-
-From: Charlie Davis <charlie.davis@dev.corp>
-To: Diana Prince <diana.prince@ciso.corp>
-Subject: Re: CVE-2026-3891 Exploited in Ingress Gateway? [Ref-137]
-Date: Wed, 15 Jul 2026 06:50:00 +0000
-Message-ID: <20260714.137@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-Wait, look at this IP: 198.51.100.45. It's hammering the `/api/v1/auth/token` endpoint with anomalous payloads containing nested JSON structures.
-
-Detailed Diagnostic Dump #137:
-- Node: ip-10-0-137-22.ec2.internal
-- Heap Usage: 201GB
-- Active Threads: 935
-------------------------------------------------------------------------
-
-From: Diana Prince <diana.prince@ciso.corp>
-To: Eve Polastri <eve.polastri@infra.corp>
-Subject: Re: Forensic Analysis of AWS IAM Role Assumption [Ref-138]
-Date: Wed, 15 Jul 2026 07:00:00 +0000
-Message-ID: <20260714.138@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-Could this be related to the newly disclosed CVE-2026-3891? The vulnerability affects Envoy and custom ingress proxies handling malformed HTTP/2 headers.
-
-Detailed Diagnostic Dump #138:
-- Node: ip-10-0-138-22.ec2.internal
-- Heap Usage: 202GB
-- Active Threads: 940
-------------------------------------------------------------------------
-
-From: Eve Polastri <eve.polastri@infra.corp>
-To: Alice Vance <alice.vance@security.corp>
-Subject: Re: Patch Deployment and Rollback Plan [Ref-139]
-Date: Wed, 15 Jul 2026 07:10:00 +0000
-Message-ID: <20260714.139@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-Checking AWS CloudTrail... ARN `arn:aws:iam::123456789012:role/ProductionS3Accessor` was assumed from an unusual external IP at 07:42 UTC.
-
-Detailed Diagnostic Dump #139:
-- Node: ip-10-0-139-22.ec2.internal
-- Heap Usage: 203GB
-- Active Threads: 945
-------------------------------------------------------------------------
-
-From: Alice Vance <alice.vance@security.corp>
-To: Bob Smith <bob.smith@sre.corp>
-Subject: Re: CRITICAL: Production Outage in US-East-1 Cluster [Ref-140]
-Date: Wed, 15 Jul 2026 07:20:00 +0000
-Message-ID: <20260714.140@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-We are seeing high error rates (502/504) across all ingress gateways in us-east-1. Initial logs point to pod crashloops in deployment/auth-gateway.
-
-Detailed Diagnostic Dump #140:
-- Node: ip-10-0-140-22.ec2.internal
-- Heap Usage: 204GB
-- Active Threads: 950
-------------------------------------------------------------------------
-
-From: Bob Smith <bob.smith@sre.corp>
-To: Charlie Davis <charlie.davis@dev.corp>
-Subject: Re: Update on Pod Failures and Memory Leaks [Ref-141]
-Date: Wed, 15 Jul 2026 07:30:00 +0000
-Message-ID: <20260714.141@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-Checking the logs now. `kubectl logs -n production deployment/auth-gateway --tail=100` shows `Segmentation fault` followed by panic in Go runtime.
-
-Detailed Diagnostic Dump #141:
-- Node: ip-10-0-141-22.ec2.internal
-- Heap Usage: 205GB
-- Active Threads: 955
-------------------------------------------------------------------------
-
-From: Charlie Davis <charlie.davis@dev.corp>
-To: Diana Prince <diana.prince@ciso.corp>
-Subject: Re: CVE-2026-3891 Exploited in Ingress Gateway? [Ref-142]
-Date: Wed, 15 Jul 2026 07:40:00 +0000
-Message-ID: <20260714.142@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-Wait, look at this IP: 198.51.100.45. It's hammering the `/api/v1/auth/token` endpoint with anomalous payloads containing nested JSON structures.
-
-Detailed Diagnostic Dump #142:
-- Node: ip-10-0-142-22.ec2.internal
-- Heap Usage: 206GB
-- Active Threads: 960
-------------------------------------------------------------------------
-
-From: Diana Prince <diana.prince@ciso.corp>
-To: Eve Polastri <eve.polastri@infra.corp>
-Subject: Re: Forensic Analysis of AWS IAM Role Assumption [Ref-143]
-Date: Wed, 15 Jul 2026 07:50:00 +0000
-Message-ID: <20260714.143@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-Could this be related to the newly disclosed CVE-2026-3891? The vulnerability affects Envoy and custom ingress proxies handling malformed HTTP/2 headers.
-
-Detailed Diagnostic Dump #143:
-- Node: ip-10-0-143-22.ec2.internal
-- Heap Usage: 207GB
-- Active Threads: 965
-------------------------------------------------------------------------
-
-From: Eve Polastri <eve.polastri@infra.corp>
-To: Alice Vance <alice.vance@security.corp>
-Subject: Re: Patch Deployment and Rollback Plan [Ref-144]
-Date: Wed, 15 Jul 2026 08:00:00 +0000
-Message-ID: <20260714.144@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-Checking AWS CloudTrail... ARN `arn:aws:iam::123456789012:role/ProductionS3Accessor` was assumed from an unusual external IP at 07:42 UTC.
-
-Detailed Diagnostic Dump #144:
-- Node: ip-10-0-144-22.ec2.internal
-- Heap Usage: 208GB
-- Active Threads: 970
-------------------------------------------------------------------------
-
-From: Alice Vance <alice.vance@security.corp>
-To: Bob Smith <bob.smith@sre.corp>
-Subject: Re: CRITICAL: Production Outage in US-East-1 Cluster [Ref-145]
-Date: Wed, 15 Jul 2026 08:10:00 +0000
-Message-ID: <20260714.145@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-We are seeing high error rates (502/504) across all ingress gateways in us-east-1. Initial logs point to pod crashloops in deployment/auth-gateway.
-
-Detailed Diagnostic Dump #145:
-- Node: ip-10-0-145-22.ec2.internal
-- Heap Usage: 209GB
-- Active Threads: 975
-------------------------------------------------------------------------
-
-From: Bob Smith <bob.smith@sre.corp>
-To: Charlie Davis <charlie.davis@dev.corp>
-Subject: Re: Update on Pod Failures and Memory Leaks [Ref-146]
-Date: Wed, 15 Jul 2026 08:20:00 +0000
-Message-ID: <20260714.146@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-Checking the logs now. `kubectl logs -n production deployment/auth-gateway --tail=100` shows `Segmentation fault` followed by panic in Go runtime.
-
-Detailed Diagnostic Dump #146:
-- Node: ip-10-0-146-22.ec2.internal
-- Heap Usage: 210GB
-- Active Threads: 980
-------------------------------------------------------------------------
-
-From: Charlie Davis <charlie.davis@dev.corp>
-To: Diana Prince <diana.prince@ciso.corp>
-Subject: Re: CVE-2026-3891 Exploited in Ingress Gateway? [Ref-147]
-Date: Wed, 15 Jul 2026 08:30:00 +0000
-Message-ID: <20260714.147@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-Wait, look at this IP: 198.51.100.45. It's hammering the `/api/v1/auth/token` endpoint with anomalous payloads containing nested JSON structures.
-
-Detailed Diagnostic Dump #147:
-- Node: ip-10-0-147-22.ec2.internal
-- Heap Usage: 211GB
-- Active Threads: 985
-------------------------------------------------------------------------
-
-From: Diana Prince <diana.prince@ciso.corp>
-To: Eve Polastri <eve.polastri@infra.corp>
-Subject: Re: Forensic Analysis of AWS IAM Role Assumption [Ref-148]
-Date: Wed, 15 Jul 2026 08:40:00 +0000
-Message-ID: <20260714.148@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-Could this be related to the newly disclosed CVE-2026-3891? The vulnerability affects Envoy and custom ingress proxies handling malformed HTTP/2 headers.
-
-Detailed Diagnostic Dump #148:
-- Node: ip-10-0-148-22.ec2.internal
-- Heap Usage: 212GB
-- Active Threads: 990
-------------------------------------------------------------------------
-
-From: Eve Polastri <eve.polastri@infra.corp>
-To: Alice Vance <alice.vance@security.corp>
-Subject: Re: Patch Deployment and Rollback Plan [Ref-149]
-Date: Wed, 15 Jul 2026 08:50:00 +0000
-Message-ID: <20260714.149@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-Checking AWS CloudTrail... ARN `arn:aws:iam::123456789012:role/ProductionS3Accessor` was assumed from an unusual external IP at 07:42 UTC.
-
-Detailed Diagnostic Dump #149:
-- Node: ip-10-0-149-22.ec2.internal
-- Heap Usage: 213GB
-- Active Threads: 995
-------------------------------------------------------------------------
-
-From: Alice Vance <alice.vance@security.corp>
-To: Bob Smith <bob.smith@sre.corp>
-Subject: Re: CRITICAL: Production Outage in US-East-1 Cluster [Ref-150]
-Date: Wed, 15 Jul 2026 09:00:00 +0000
-Message-ID: <20260714.150@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-We are seeing high error rates (502/504) across all ingress gateways in us-east-1. Initial logs point to pod crashloops in deployment/auth-gateway.
-
-Detailed Diagnostic Dump #150:
-- Node: ip-10-0-150-22.ec2.internal
-- Heap Usage: 214GB
-- Active Threads: 1000
-------------------------------------------------------------------------
-
-From: Bob Smith <bob.smith@sre.corp>
-To: Charlie Davis <charlie.davis@dev.corp>
-Subject: Re: Update on Pod Failures and Memory Leaks [Ref-151]
-Date: Wed, 15 Jul 2026 09:10:00 +0000
-Message-ID: <20260714.151@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-Checking the logs now. `kubectl logs -n production deployment/auth-gateway --tail=100` shows `Segmentation fault` followed by panic in Go runtime.
-
-Detailed Diagnostic Dump #151:
-- Node: ip-10-0-151-22.ec2.internal
-- Heap Usage: 215GB
-- Active Threads: 1005
-------------------------------------------------------------------------
-
-From: Charlie Davis <charlie.davis@dev.corp>
-To: Diana Prince <diana.prince@ciso.corp>
-Subject: Re: CVE-2026-3891 Exploited in Ingress Gateway? [Ref-152]
-Date: Wed, 15 Jul 2026 09:20:00 +0000
-Message-ID: <20260714.152@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-Wait, look at this IP: 198.51.100.45. It's hammering the `/api/v1/auth/token` endpoint with anomalous payloads containing nested JSON structures.
-
-Detailed Diagnostic Dump #152:
-- Node: ip-10-0-152-22.ec2.internal
-- Heap Usage: 216GB
-- Active Threads: 1010
-------------------------------------------------------------------------
-
-From: Diana Prince <diana.prince@ciso.corp>
-To: Eve Polastri <eve.polastri@infra.corp>
-Subject: Re: Forensic Analysis of AWS IAM Role Assumption [Ref-153]
-Date: Wed, 15 Jul 2026 09:30:00 +0000
-Message-ID: <20260714.153@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-Could this be related to the newly disclosed CVE-2026-3891? The vulnerability affects Envoy and custom ingress proxies handling malformed HTTP/2 headers.
-
-Detailed Diagnostic Dump #153:
-- Node: ip-10-0-153-22.ec2.internal
-- Heap Usage: 217GB
-- Active Threads: 1015
-------------------------------------------------------------------------
-
-From: Eve Polastri <eve.polastri@infra.corp>
-To: Alice Vance <alice.vance@security.corp>
-Subject: Re: Patch Deployment and Rollback Plan [Ref-154]
-Date: Wed, 15 Jul 2026 09:40:00 +0000
-Message-ID: <20260714.154@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-Checking AWS CloudTrail... ARN `arn:aws:iam::123456789012:role/ProductionS3Accessor` was assumed from an unusual external IP at 07:42 UTC.
-
-Detailed Diagnostic Dump #154:
-- Node: ip-10-0-154-22.ec2.internal
-- Heap Usage: 218GB
-- Active Threads: 1020
-------------------------------------------------------------------------
-
-From: Alice Vance <alice.vance@security.corp>
-To: Bob Smith <bob.smith@sre.corp>
-Subject: Re: CRITICAL: Production Outage in US-East-1 Cluster [Ref-155]
-Date: Wed, 15 Jul 2026 09:50:00 +0000
-Message-ID: <20260714.155@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-We are seeing high error rates (502/504) across all ingress gateways in us-east-1. Initial logs point to pod crashloops in deployment/auth-gateway.
-
-Detailed Diagnostic Dump #155:
-- Node: ip-10-0-155-22.ec2.internal
-- Heap Usage: 219GB
-- Active Threads: 1025
-------------------------------------------------------------------------
-
-From: Bob Smith <bob.smith@sre.corp>
-To: Charlie Davis <charlie.davis@dev.corp>
-Subject: Re: Update on Pod Failures and Memory Leaks [Ref-156]
-Date: Wed, 15 Jul 2026 10:00:00 +0000
-Message-ID: <20260714.156@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-Checking the logs now. `kubectl logs -n production deployment/auth-gateway --tail=100` shows `Segmentation fault` followed by panic in Go runtime.
-
-Detailed Diagnostic Dump #156:
-- Node: ip-10-0-156-22.ec2.internal
-- Heap Usage: 220GB
-- Active Threads: 1030
-------------------------------------------------------------------------
-
-From: Charlie Davis <charlie.davis@dev.corp>
-To: Diana Prince <diana.prince@ciso.corp>
-Subject: Re: CVE-2026-3891 Exploited in Ingress Gateway? [Ref-157]
-Date: Wed, 15 Jul 2026 10:10:00 +0000
-Message-ID: <20260714.157@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-Wait, look at this IP: 198.51.100.45. It's hammering the `/api/v1/auth/token` endpoint with anomalous payloads containing nested JSON structures.
-
-Detailed Diagnostic Dump #157:
-- Node: ip-10-0-157-22.ec2.internal
-- Heap Usage: 221GB
-- Active Threads: 1035
-------------------------------------------------------------------------
-
-From: Diana Prince <diana.prince@ciso.corp>
-To: Eve Polastri <eve.polastri@infra.corp>
-Subject: Re: Forensic Analysis of AWS IAM Role Assumption [Ref-158]
-Date: Wed, 15 Jul 2026 10:20:00 +0000
-Message-ID: <20260714.158@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-Could this be related to the newly disclosed CVE-2026-3891? The vulnerability affects Envoy and custom ingress proxies handling malformed HTTP/2 headers.
-
-Detailed Diagnostic Dump #158:
-- Node: ip-10-0-158-22.ec2.internal
-- Heap Usage: 222GB
-- Active Threads: 1040
-------------------------------------------------------------------------
-
-From: Eve Polastri <eve.polastri@infra.corp>
-To: Alice Vance <alice.vance@security.corp>
-Subject: Re: Patch Deployment and Rollback Plan [Ref-159]
-Date: Wed, 15 Jul 2026 10:30:00 +0000
-Message-ID: <20260714.159@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-Checking AWS CloudTrail... ARN `arn:aws:iam::123456789012:role/ProductionS3Accessor` was assumed from an unusual external IP at 07:42 UTC.
-
-Detailed Diagnostic Dump #159:
-- Node: ip-10-0-159-22.ec2.internal
-- Heap Usage: 223GB
-- Active Threads: 1045
-------------------------------------------------------------------------
-
-From: Alice Vance <alice.vance@security.corp>
-To: Bob Smith <bob.smith@sre.corp>
-Subject: Re: CRITICAL: Production Outage in US-East-1 Cluster [Ref-160]
-Date: Wed, 15 Jul 2026 10:40:00 +0000
-Message-ID: <20260714.160@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-We are seeing high error rates (502/504) across all ingress gateways in us-east-1. Initial logs point to pod crashloops in deployment/auth-gateway.
-
-Detailed Diagnostic Dump #160:
-- Node: ip-10-0-160-22.ec2.internal
-- Heap Usage: 224GB
-- Active Threads: 1050
-------------------------------------------------------------------------
-
-From: Bob Smith <bob.smith@sre.corp>
-To: Charlie Davis <charlie.davis@dev.corp>
-Subject: Re: Update on Pod Failures and Memory Leaks [Ref-161]
-Date: Wed, 15 Jul 2026 10:50:00 +0000
-Message-ID: <20260714.161@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-Checking the logs now. `kubectl logs -n production deployment/auth-gateway --tail=100` shows `Segmentation fault` followed by panic in Go runtime.
-
-Detailed Diagnostic Dump #161:
-- Node: ip-10-0-161-22.ec2.internal
-- Heap Usage: 225GB
-- Active Threads: 1055
-------------------------------------------------------------------------
-
-From: Charlie Davis <charlie.davis@dev.corp>
-To: Diana Prince <diana.prince@ciso.corp>
-Subject: Re: CVE-2026-3891 Exploited in Ingress Gateway? [Ref-162]
-Date: Wed, 15 Jul 2026 11:00:00 +0000
-Message-ID: <20260714.162@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-Wait, look at this IP: 198.51.100.45. It's hammering the `/api/v1/auth/token` endpoint with anomalous payloads containing nested JSON structures.
-
-Detailed Diagnostic Dump #162:
-- Node: ip-10-0-162-22.ec2.internal
-- Heap Usage: 226GB
-- Active Threads: 1060
-------------------------------------------------------------------------
-
-From: Diana Prince <diana.prince@ciso.corp>
-To: Eve Polastri <eve.polastri@infra.corp>
-Subject: Re: Forensic Analysis of AWS IAM Role Assumption [Ref-163]
-Date: Wed, 15 Jul 2026 11:10:00 +0000
-Message-ID: <20260714.163@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-Could this be related to the newly disclosed CVE-2026-3891? The vulnerability affects Envoy and custom ingress proxies handling malformed HTTP/2 headers.
-
-Detailed Diagnostic Dump #163:
-- Node: ip-10-0-163-22.ec2.internal
-- Heap Usage: 227GB
-- Active Threads: 1065
-------------------------------------------------------------------------
-
-From: Eve Polastri <eve.polastri@infra.corp>
-To: Alice Vance <alice.vance@security.corp>
-Subject: Re: Patch Deployment and Rollback Plan [Ref-164]
-Date: Wed, 15 Jul 2026 11:20:00 +0000
-Message-ID: <20260714.164@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-Checking AWS CloudTrail... ARN `arn:aws:iam::123456789012:role/ProductionS3Accessor` was assumed from an unusual external IP at 07:42 UTC.
-
-Detailed Diagnostic Dump #164:
-- Node: ip-10-0-164-22.ec2.internal
-- Heap Usage: 228GB
-- Active Threads: 1070
-------------------------------------------------------------------------
-
-From: Alice Vance <alice.vance@security.corp>
-To: Bob Smith <bob.smith@sre.corp>
-Subject: Re: CRITICAL: Production Outage in US-East-1 Cluster [Ref-165]
-Date: Wed, 15 Jul 2026 11:30:00 +0000
-Message-ID: <20260714.165@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-We are seeing high error rates (502/504) across all ingress gateways in us-east-1. Initial logs point to pod crashloops in deployment/auth-gateway.
-
-Detailed Diagnostic Dump #165:
-- Node: ip-10-0-165-22.ec2.internal
-- Heap Usage: 229GB
-- Active Threads: 1075
-------------------------------------------------------------------------
-
-From: Bob Smith <bob.smith@sre.corp>
-To: Charlie Davis <charlie.davis@dev.corp>
-Subject: Re: Update on Pod Failures and Memory Leaks [Ref-166]
-Date: Wed, 15 Jul 2026 11:40:00 +0000
-Message-ID: <20260714.166@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-Checking the logs now. `kubectl logs -n production deployment/auth-gateway --tail=100` shows `Segmentation fault` followed by panic in Go runtime.
-
-Detailed Diagnostic Dump #166:
-- Node: ip-10-0-166-22.ec2.internal
-- Heap Usage: 230GB
-- Active Threads: 1080
-------------------------------------------------------------------------
-
-From: Charlie Davis <charlie.davis@dev.corp>
-To: Diana Prince <diana.prince@ciso.corp>
-Subject: Re: CVE-2026-3891 Exploited in Ingress Gateway? [Ref-167]
-Date: Wed, 15 Jul 2026 11:50:00 +0000
-Message-ID: <20260714.167@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-Wait, look at this IP: 198.51.100.45. It's hammering the `/api/v1/auth/token` endpoint with anomalous payloads containing nested JSON structures.
-
-Detailed Diagnostic Dump #167:
-- Node: ip-10-0-167-22.ec2.internal
-- Heap Usage: 231GB
-- Active Threads: 1085
-------------------------------------------------------------------------
-
-From: Diana Prince <diana.prince@ciso.corp>
-To: Eve Polastri <eve.polastri@infra.corp>
-Subject: Re: Forensic Analysis of AWS IAM Role Assumption [Ref-168]
-Date: Wed, 15 Jul 2026 12:00:00 +0000
-Message-ID: <20260714.168@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-Could this be related to the newly disclosed CVE-2026-3891? The vulnerability affects Envoy and custom ingress proxies handling malformed HTTP/2 headers.
-
-Detailed Diagnostic Dump #168:
-- Node: ip-10-0-168-22.ec2.internal
-- Heap Usage: 232GB
-- Active Threads: 1090
-------------------------------------------------------------------------
-
-From: Eve Polastri <eve.polastri@infra.corp>
-To: Alice Vance <alice.vance@security.corp>
-Subject: Re: Patch Deployment and Rollback Plan [Ref-169]
-Date: Wed, 15 Jul 2026 12:10:00 +0000
-Message-ID: <20260714.169@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-Checking AWS CloudTrail... ARN `arn:aws:iam::123456789012:role/ProductionS3Accessor` was assumed from an unusual external IP at 07:42 UTC.
-
-Detailed Diagnostic Dump #169:
-- Node: ip-10-0-169-22.ec2.internal
-- Heap Usage: 233GB
-- Active Threads: 1095
-------------------------------------------------------------------------
-
-From: Alice Vance <alice.vance@security.corp>
-To: Bob Smith <bob.smith@sre.corp>
-Subject: Re: CRITICAL: Production Outage in US-East-1 Cluster [Ref-170]
-Date: Wed, 15 Jul 2026 12:20:00 +0000
-Message-ID: <20260714.170@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-We are seeing high error rates (502/504) across all ingress gateways in us-east-1. Initial logs point to pod crashloops in deployment/auth-gateway.
-
-Detailed Diagnostic Dump #170:
-- Node: ip-10-0-170-22.ec2.internal
-- Heap Usage: 234GB
-- Active Threads: 1100
-------------------------------------------------------------------------
-
-From: Bob Smith <bob.smith@sre.corp>
-To: Charlie Davis <charlie.davis@dev.corp>
-Subject: Re: Update on Pod Failures and Memory Leaks [Ref-171]
-Date: Wed, 15 Jul 2026 12:30:00 +0000
-Message-ID: <20260714.171@security.corp>
-Content-Type: text/plain; charset="UTF-8"
-
-Checking the logs now. `kubectl logs -n production deployment/auth-gateway --tail=100` shows `Segmentation fault` followed by panic in Go runtime.
-
-Detailed Diagnostic Dump #171:
-- Node: ip-10-0-171-22.ec2.internal
-- Heap Usage: 235GB
-- Active Threads: 1105
-------------------------------------------------------------------------
+From exmh-workers-admin@redhat.com  Thu Aug 22 12:36:23 2002
+Return-Path: <exmh-workers-admin@spamassassin.taint.org>
+Delivered-To: zzzz@localhost.netnoteinc.com
+Received: from localhost (localhost [127.0.0.1])
+	by phobos.labs.netnoteinc.com (Postfix) with ESMTP id D03E543C36
+	for <zzzz@localhost>; Thu, 22 Aug 2002 07:36:16 -0400 (EDT)
+Received: from phobos [127.0.0.1]
+	by localhost with IMAP (fetchmail-5.9.0)
+	for zzzz@localhost (single-drop); Thu, 22 Aug 2002 12:36:16 +0100 (IST)
+Received: from listman.spamassassin.taint.org (listman.spamassassin.taint.org [66.187.233.211]) by
+    dogma.slashnull.org (8.11.6/8.11.6) with ESMTP id g7MBYrZ04811 for
+    <zzzz-exmh@spamassassin.taint.org>; Thu, 22 Aug 2002 12:34:53 +0100
+Received: from listman.spamassassin.taint.org (localhost.localdomain [127.0.0.1]) by
+    listman.redhat.com (Postfix) with ESMTP id 8386540858; Thu, 22 Aug 2002
+    07:35:02 -0400 (EDT)
+Delivered-To: exmh-workers@listman.spamassassin.taint.org
+Received: from int-mx1.corp.spamassassin.taint.org (int-mx1.corp.spamassassin.taint.org
+    [172.16.52.254]) by listman.redhat.com (Postfix) with ESMTP id 10CF8406D7
+    for <exmh-workers@listman.redhat.com>; Thu, 22 Aug 2002 07:34:10 -0400
+    (EDT)
+Received: (from mail@localhost) by int-mx1.corp.spamassassin.taint.org (8.11.6/8.11.6)
+    id g7MBY7g11259 for exmh-workers@listman.redhat.com; Thu, 22 Aug 2002
+    07:34:07 -0400
+Received: from mx1.spamassassin.taint.org (mx1.spamassassin.taint.org [172.16.48.31]) by
+    int-mx1.corp.redhat.com (8.11.6/8.11.6) with SMTP id g7MBY7Y11255 for
+    <exmh-workers@redhat.com>; Thu, 22 Aug 2002 07:34:07 -0400
+Received: from ratree.psu.ac.th ([202.28.97.6]) by mx1.spamassassin.taint.org
+    (8.11.6/8.11.6) with SMTP id g7MBIhl25223 for <exmh-workers@redhat.com>;
+    Thu, 22 Aug 2002 07:18:55 -0400
+Received: from delta.cs.mu.OZ.AU (delta.coe.psu.ac.th [172.30.0.98]) by
+    ratree.psu.ac.th (8.11.6/8.11.6) with ESMTP id g7MBWel29762;
+    Thu, 22 Aug 2002 18:32:40 +0700 (ICT)
+Received: from munnari.OZ.AU (localhost [127.0.0.1]) by delta.cs.mu.OZ.AU
+    (8.11.6/8.11.6) with ESMTP id g7MBQPW13260; Thu, 22 Aug 2002 18:26:25
+    +0700 (ICT)
+From: Robert Elz <kre@munnari.OZ.AU>
+To: Chris Garrigues <cwg-dated-1030377287.06fa6d@DeepEddy.Com>
+Cc: exmh-workers@spamassassin.taint.org
+Subject: Re: New Sequences Window
+In-Reply-To: <1029945287.4797.TMDA@deepeddy.vircio.com>
+References: <1029945287.4797.TMDA@deepeddy.vircio.com>
+    <1029882468.3116.TMDA@deepeddy.vircio.com> <9627.1029933001@munnari.OZ.AU>
+    <1029943066.26919.TMDA@deepeddy.vircio.com>
+    <1029944441.398.TMDA@deepeddy.vircio.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Message-Id: <13258.1030015585@munnari.OZ.AU>
+X-Loop: exmh-workers@spamassassin.taint.org
+Sender: exmh-workers-admin@spamassassin.taint.org
+Errors-To: exmh-workers-admin@spamassassin.taint.org
+X-Beenthere: exmh-workers@spamassassin.taint.org
+X-Mailman-Version: 2.0.1
+Precedence: bulk
+List-Help: <mailto:exmh-workers-request@spamassassin.taint.org?subject=help>
+List-Post: <mailto:exmh-workers@spamassassin.taint.org>
+List-Subscribe: <https://listman.spamassassin.taint.org/mailman/listinfo/exmh-workers>,
+    <mailto:exmh-workers-request@redhat.com?subject=subscribe>
+List-Id: Discussion list for EXMH developers <exmh-workers.spamassassin.taint.org>
+List-Unsubscribe: <https://listman.spamassassin.taint.org/mailman/listinfo/exmh-workers>,
+    <mailto:exmh-workers-request@redhat.com?subject=unsubscribe>
+List-Archive: <https://listman.spamassassin.taint.org/mailman/private/exmh-workers/>
+Date: Thu, 22 Aug 2002 18:26:25 +0700
+
+    Date:        Wed, 21 Aug 2002 10:54:46 -0500
+    From:        Chris Garrigues <cwg-dated-1030377287.06fa6d@DeepEddy.Com>
+    Message-ID:  <1029945287.4797.TMDA@deepeddy.vircio.com>
+
+
+  | I can't reproduce this error.
+
+For me it is very repeatable... (like every time, without fail).
+
+This is the debug log of the pick happening ...
+
+18:19:03 Pick_It {exec pick +inbox -list -lbrace -lbrace -subject ftp -rbrace -rbrace} {4852-4852 -sequence mercury}
+18:19:03 exec pick +inbox -list -lbrace -lbrace -subject ftp -rbrace -rbrace 4852-4852 -sequence mercury
+18:19:04 Ftoc_PickMsgs {{1 hit}}
+18:19:04 Marking 1 hits
+18:19:04 tkerror: syntax error in expression "int ...
+
+Note, if I run the pick command by hand ...
+
+delta$ pick +inbox -list -lbrace -lbrace -subject ftp -rbrace -rbrace  4852-4852 -sequence mercury
+1 hit
+
+That's where the "1 hit" comes from (obviously).  The version of nmh I'm
+using is ...
+
+delta$ pick -version
+pick -- nmh-1.0.4 [compiled on fuchsia.cs.mu.OZ.AU at Sun Mar 17 14:55:56 ICT 2002]
+
+And the relevant part of my .mh_profile ...
+
+delta$ mhparam pick
+-seq sel -list
+
+
+Since the pick command works, the sequence (actually, both of them, the
+one that's explicit on the command line, from the search popup, and the
+one that comes from .mh_profile) do get created.
+
+kre
+
+ps: this is still using the version of the code form a day ago, I haven't
+been able to reach the cvs repository today (local routing issue I think).
+
+
+
+_______________________________________________
+Exmh-workers mailing list
+Exmh-workers@redhat.com
+https://listman.redhat.com/mailman/listinfo/exmh-workers
+
+
+
+--------------------------------------------------------------------------------
+
+From Steve_Burt@cursor-system.com  Thu Aug 22 12:46:39 2002
+Return-Path: <Steve_Burt@cursor-system.com>
+Delivered-To: zzzz@localhost.netnoteinc.com
+Received: from localhost (localhost [127.0.0.1])
+	by phobos.labs.netnoteinc.com (Postfix) with ESMTP id BE12E43C34
+	for <zzzz@localhost>; Thu, 22 Aug 2002 07:46:38 -0400 (EDT)
+Received: from phobos [127.0.0.1]
+	by localhost with IMAP (fetchmail-5.9.0)
+	for zzzz@localhost (single-drop); Thu, 22 Aug 2002 12:46:38 +0100 (IST)
+Received: from n20.grp.scd.yahoo.com (n20.grp.scd.yahoo.com
+    [66.218.66.76]) by dogma.slashnull.org (8.11.6/8.11.6) with SMTP id
+    g7MBkTZ05087 for <zzzz@spamassassin.taint.org>; Thu, 22 Aug 2002 12:46:29 +0100
+X-Egroups-Return: sentto-2242572-52726-1030016790-zzzz=spamassassin.taint.org@returns.groups.yahoo.com
+Received: from [66.218.67.196] by n20.grp.scd.yahoo.com with NNFMP;
+    22 Aug 2002 11:46:30 -0000
+X-Sender: steve.burt@cursor-system.com
+X-Apparently-To: zzzzteana@yahoogroups.com
+Received: (EGP: mail-8_1_0_1); 22 Aug 2002 11:46:29 -0000
+Received: (qmail 11764 invoked from network); 22 Aug 2002 11:46:29 -0000
+Received: from unknown (66.218.66.217) by m3.grp.scd.yahoo.com with QMQP;
+    22 Aug 2002 11:46:29 -0000
+Received: from unknown (HELO mailgateway.cursor-system.com) (62.189.7.27)
+    by mta2.grp.scd.yahoo.com with SMTP; 22 Aug 2002 11:46:29 -0000
+Received: from exchange1.cps.local (unverified) by
+    mailgateway.cursor-system.com (Content Technologies SMTPRS 4.2.10) with
+    ESMTP id <T5cde81f695ac1d100407d@mailgateway.cursor-system.com> for
+    <forteana@yahoogroups.com>; Thu, 22 Aug 2002 13:14:10 +0100
+Received: by exchange1.cps.local with Internet Mail Service (5.5.2653.19)
+    id <PXX6AT23>; Thu, 22 Aug 2002 12:46:27 +0100
+Message-Id: <5EC2AD6D2314D14FB64BDA287D25D9EF12B4F6@exchange1.cps.local>
+To: "'zzzzteana@yahoogroups.com'" <zzzzteana@yahoogroups.com>
+X-Mailer: Internet Mail Service (5.5.2653.19)
+X-Egroups-From: Steve Burt <steve.burt@cursor-system.com>
+From: Steve Burt <Steve_Burt@cursor-system.com>
+X-Yahoo-Profile: pyruse
+MIME-Version: 1.0
+Mailing-List: list zzzzteana@yahoogroups.com; contact
+    forteana-owner@yahoogroups.com
+Delivered-To: mailing list zzzzteana@yahoogroups.com
+Precedence: bulk
+List-Unsubscribe: <mailto:zzzzteana-unsubscribe@yahoogroups.com>
+Date: Thu, 22 Aug 2002 12:46:18 +0100
+Subject: [zzzzteana] RE: Alexander
+Reply-To: zzzzteana@yahoogroups.com
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+
+Martin A posted:
+Tassos Papadopoulos, the Greek sculptor behind the plan, judged that the
+ limestone of Mount Kerdylio, 70 miles east of Salonika and not far from the
+ Mount Athos monastic community, was ideal for the patriotic sculpture. 
+ 
+ As well as Alexander's granite features, 240 ft high and 170 ft wide, a
+ museum, a restored amphitheatre and car park for admiring crowds are
+planned
+---------------------
+So is this mountain limestone or granite?
+If it's limestone, it'll weather pretty fast.
+
+------------------------ Yahoo! Groups Sponsor ---------------------~-->
+4 DVDs Free +s&p Join Now
+http://us.click.yahoo.com/pt6YBB/NXiEAA/mG3HAA/7gSolB/TM
+---------------------------------------------------------------------~->
+
+To unsubscribe from this group, send an email to:
+forteana-unsubscribe@egroups.com
+
+ 
+
+Your use of Yahoo! Groups is subject to http://docs.yahoo.com/info/terms/ 
+
+
+
+
+
+--------------------------------------------------------------------------------
+
+From timc@2ubh.com  Thu Aug 22 13:52:59 2002
+Return-Path: <timc@2ubh.com>
+Delivered-To: zzzz@localhost.netnoteinc.com
+Received: from localhost (localhost [127.0.0.1])
+	by phobos.labs.netnoteinc.com (Postfix) with ESMTP id 0314547C66
+	for <zzzz@localhost>; Thu, 22 Aug 2002 08:52:58 -0400 (EDT)
+Received: from phobos [127.0.0.1]
+	by localhost with IMAP (fetchmail-5.9.0)
+	for zzzz@localhost (single-drop); Thu, 22 Aug 2002 13:52:59 +0100 (IST)
+Received: from n16.grp.scd.yahoo.com (n16.grp.scd.yahoo.com
+    [66.218.66.71]) by dogma.slashnull.org (8.11.6/8.11.6) with SMTP id
+    g7MCrdZ07070 for <zzzz@spamassassin.taint.org>; Thu, 22 Aug 2002 13:53:39 +0100
+X-Egroups-Return: sentto-2242572-52733-1030020820-zzzz=spamassassin.taint.org@returns.groups.yahoo.com
+Received: from [66.218.67.198] by n16.grp.scd.yahoo.com with NNFMP;
+    22 Aug 2002 12:53:40 -0000
+X-Sender: timc@2ubh.com
+X-Apparently-To: zzzzteana@yahoogroups.com
+Received: (EGP: mail-8_1_0_1); 22 Aug 2002 12:53:39 -0000
+Received: (qmail 76099 invoked from network); 22 Aug 2002 12:53:39 -0000
+Received: from unknown (66.218.66.218) by m5.grp.scd.yahoo.com with QMQP;
+    22 Aug 2002 12:53:39 -0000
+Received: from unknown (HELO rhenium.btinternet.com) (194.73.73.93) by
+    mta3.grp.scd.yahoo.com with SMTP; 22 Aug 2002 12:53:39 -0000
+Received: from host217-36-23-185.in-addr.btopenworld.com ([217.36.23.185])
+    by rhenium.btinternet.com with esmtp (Exim 3.22 #8) id 17hrT0-0004gj-00
+    for forteana@yahoogroups.com; Thu, 22 Aug 2002 13:53:38 +0100
+X-Mailer: Microsoft Outlook Express Macintosh Edition - 4.5 (0410)
+To: zzzzteana <zzzzteana@yahoogroups.com>
+X-Priority: 3
+Message-Id: <E17hrT0-0004gj-00@rhenium.btinternet.com>
+From: "Tim Chapman" <timc@2ubh.com>
+X-Yahoo-Profile: tim2ubh
+MIME-Version: 1.0
+Mailing-List: list zzzzteana@yahoogroups.com; contact
+    forteana-owner@yahoogroups.com
+Delivered-To: mailing list zzzzteana@yahoogroups.com
+Precedence: bulk
+List-Unsubscribe: <mailto:zzzzteana-unsubscribe@yahoogroups.com>
+Date: Thu, 22 Aug 2002 13:52:38 +0100
+Subject: [zzzzteana] Moscow bomber
+Reply-To: zzzzteana@yahoogroups.com
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+
+Man Threatens Explosion In Moscow 
+
+Thursday August 22, 2002 1:40 PM
+MOSCOW (AP) - Security officers on Thursday seized an unidentified man who
+said he was armed with explosives and threatened to blow up his truck in
+front of Russia's Federal Security Services headquarters in Moscow, NTV
+television reported.
+The officers seized an automatic rifle the man was carrying, then the man
+got out of the truck and was taken into custody, NTV said. No other details
+were immediately available.
+The man had demanded talks with high government officials, the Interfax and
+ITAR-Tass news agencies said. Ekho Moskvy radio reported that he wanted to
+talk with Russian President Vladimir Putin.
+Police and security forces rushed to the Security Service building, within
+blocks of the Kremlin, Red Square and the Bolshoi Ballet, and surrounded the
+man, who claimed to have one and a half tons of explosives, the news
+agencies said. Negotiations continued for about one and a half hours outside
+the building, ITAR-Tass and Interfax reported, citing witnesses.
+The man later drove away from the building, under police escort, and drove
+to a street near Moscow's Olympic Penta Hotel, where authorities held
+further negotiations with him, the Moscow police press service said. The
+move appeared to be an attempt by security services to get him to a more
+secure location. 
+
+------------------------ Yahoo! Groups Sponsor ---------------------~-->
+4 DVDs Free +s&p Join Now
+http://us.click.yahoo.com/pt6YBB/NXiEAA/mG3HAA/7gSolB/TM
+---------------------------------------------------------------------~->
+
+To unsubscribe from this group, send an email to:
+forteana-unsubscribe@egroups.com
+
+ 
+
+Your use of Yahoo! Groups is subject to http://docs.yahoo.com/info/terms/ 
+
+
+
+
+
+--------------------------------------------------------------------------------
+
+From irregulars-admin@tb.tf  Thu Aug 22 14:23:39 2002
+Return-Path: <irregulars-admin@tb.tf>
+Delivered-To: zzzz@localhost.netnoteinc.com
+Received: from localhost (localhost [127.0.0.1])
+	by phobos.labs.netnoteinc.com (Postfix) with ESMTP id 9DAE147C66
+	for <zzzz@localhost>; Thu, 22 Aug 2002 09:23:38 -0400 (EDT)
+Received: from phobos [127.0.0.1]
+	by localhost with IMAP (fetchmail-5.9.0)
+	for zzzz@localhost (single-drop); Thu, 22 Aug 2002 14:23:38 +0100 (IST)
+Received: from web.tb.tf (route-64-131-126-36.telocity.com
+    [64.131.126.36]) by dogma.slashnull.org (8.11.6/8.11.6) with ESMTP id
+    g7MDGOZ07922 for <zzzz-irr@spamassassin.taint.org>; Thu, 22 Aug 2002 14:16:24 +0100
+Received: from web.tb.tf (localhost.localdomain [127.0.0.1]) by web.tb.tf
+    (8.11.6/8.11.6) with ESMTP id g7MDP9I16418; Thu, 22 Aug 2002 09:25:09
+    -0400
+Received: from red.harvee.home (red [192.168.25.1] (may be forged)) by
+    web.tb.tf (8.11.6/8.11.6) with ESMTP id g7MDO4I16408 for
+    <irregulars@tb.tf>; Thu, 22 Aug 2002 09:24:04 -0400
+Received: from prserv.net (out4.prserv.net [32.97.166.34]) by
+    red.harvee.home (8.11.6/8.11.6) with ESMTP id g7MDFBD29237 for
+    <irregulars@tb.tf>; Thu, 22 Aug 2002 09:15:12 -0400
+Received: from [209.202.248.109]
+    (slip-32-103-249-10.ma.us.prserv.net[32.103.249.10]) by prserv.net (out4)
+    with ESMTP id <2002082213150220405qu8jce>; Thu, 22 Aug 2002 13:15:07 +0000
+MIME-Version: 1.0
+X-Sender: @ (Unverified)
+Message-Id: <p04330137b98a941c58a8@[209.202.248.109]>
+To: undisclosed-recipient: ;
+From: Monty Solomon <monty@roscom.com>
+Content-Type: text/plain; charset="us-ascii"
+Subject: [IRR] Klez: The Virus That  Won't Die
+Sender: irregulars-admin@tb.tf
+Errors-To: irregulars-admin@tb.tf
+X-Beenthere: irregulars@tb.tf
+X-Mailman-Version: 2.0.6
+Precedence: bulk
+List-Help: <mailto:irregulars-request@tb.tf?subject=help>
+List-Post: <mailto:irregulars@tb.tf>
+List-Subscribe: <http://tb.tf/mailman/listinfo/irregulars>,
+    <mailto:irregulars-request@tb.tf?subject=subscribe>
+List-Id: New home of the TBTF Irregulars mailing list <irregulars.tb.tf>
+List-Unsubscribe: <http://tb.tf/mailman/listinfo/irregulars>,
+    <mailto:irregulars-request@tb.tf?subject=unsubscribe>
+List-Archive: <http://tb.tf/mailman/private/irregulars/>
+Date: Thu, 22 Aug 2002 09:15:25 -0400
+
+Klez: The Virus That Won't Die
+ 
+Already the most prolific virus ever, Klez continues to wreak havoc.
+
+Andrew Brandt
+>>From the September 2002 issue of PC World magazine
+Posted Thursday, August 01, 2002
+
+
+The Klez worm is approaching its seventh month of wriggling across 
+the Web, making it one of the most persistent viruses ever. And 
+experts warn that it may be a harbinger of new viruses that use a 
+combination of pernicious approaches to go from PC to PC.
+
+Antivirus software makers Symantec and McAfee both report more than 
+2000 new infections daily, with no sign of letup at press time. The 
+British security firm MessageLabs estimates that 1 in every 300 
+e-mail messages holds a variation of the Klez virus, and says that 
+Klez has already surpassed last summer's SirCam as the most prolific 
+virus ever.
+
+And some newer Klez variants aren't merely nuisances--they can carry 
+other viruses in them that corrupt your data.
+
+...
+
+http://www.pcworld.com/news/article/0,aid,103259,00.asp
+_______________________________________________
+Irregulars mailing list
+Irregulars@tb.tf
+http://tb.tf/mailman/listinfo/irregulars
+
+
+
+--------------------------------------------------------------------------------
+
+From Stewart.Smith@ee.ed.ac.uk  Thu Aug 22 14:44:26 2002
+Return-Path: <Stewart.Smith@ee.ed.ac.uk>
+Delivered-To: zzzz@localhost.netnoteinc.com
+Received: from localhost (localhost [127.0.0.1])
+	by phobos.labs.netnoteinc.com (Postfix) with ESMTP id EC69D47C66
+	for <zzzz@localhost>; Thu, 22 Aug 2002 09:44:25 -0400 (EDT)
+Received: from phobos [127.0.0.1]
+	by localhost with IMAP (fetchmail-5.9.0)
+	for zzzz@localhost (single-drop); Thu, 22 Aug 2002 14:44:25 +0100 (IST)
+Received: from n6.grp.scd.yahoo.com (n6.grp.scd.yahoo.com [66.218.66.90])
+    by dogma.slashnull.org (8.11.6/8.11.6) with SMTP id g7MDcOZ08504 for
+    <zzzz@spamassassin.taint.org>; Thu, 22 Aug 2002 14:38:25 +0100
+X-Egroups-Return: sentto-2242572-52736-1030023506-zzzz=spamassassin.taint.org@returns.groups.yahoo.com
+Received: from [66.218.67.192] by n6.grp.scd.yahoo.com with NNFMP;
+    22 Aug 2002 13:38:26 -0000
+X-Sender: Stewart.Smith@ee.ed.ac.uk
+X-Apparently-To: zzzzteana@yahoogroups.com
+Received: (EGP: mail-8_1_0_1); 22 Aug 2002 13:38:25 -0000
+Received: (qmail 48882 invoked from network); 22 Aug 2002 13:38:25 -0000
+Received: from unknown (66.218.66.218) by m10.grp.scd.yahoo.com with QMQP;
+    22 Aug 2002 13:38:25 -0000
+Received: from unknown (HELO postbox.ee.ed.ac.uk) (129.215.80.253) by
+    mta3.grp.scd.yahoo.com with SMTP; 22 Aug 2002 13:38:24 -0000
+Received: from ee.ed.ac.uk (sxs@dunblane [129.215.34.86]) by
+    postbox.ee.ed.ac.uk (8.11.0/8.11.0) with ESMTP id g7MDcNi28645 for
+    <forteana@yahoogroups.com>; Thu, 22 Aug 2002 14:38:23 +0100 (BST)
+Message-Id: <3D64E94E.8060301@ee.ed.ac.uk>
+Organization: Scottish Microelectronics Centre
+User-Agent: Mozilla/5.0 (X11; U; SunOS sun4u; en-US; rv:1.1b) Gecko/20020628
+X-Accept-Language: en, en-us
+To: zzzzteana@yahoogroups.com
+References: <3D64F325.11319.61EA648@localhost>
+From: Stewart Smith <Stewart.Smith@ee.ed.ac.uk>
+X-Yahoo-Profile: stochasticus
+MIME-Version: 1.0
+Mailing-List: list zzzzteana@yahoogroups.com; contact
+    forteana-owner@yahoogroups.com
+Delivered-To: mailing list zzzzteana@yahoogroups.com
+Precedence: bulk
+List-Unsubscribe: <mailto:zzzzteana-unsubscribe@yahoogroups.com>
+Date: Thu, 22 Aug 2002 14:38:22 +0100
+Subject: Re: [zzzzteana] Nothing like mama used to make
+Reply-To: zzzzteana@yahoogroups.com
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+
+>  in adding cream to spaghetti carbonara, which has the same effect on pasta as
+>  making a pizza a deep-pie; 
+
+I just had to jump in here as Carbonara is one of my favourites to make and ask 
+what the hell are you supposed to use instead of cream?  I've never seen a 
+recipe that hasn't used this.  Personally I use low fat creme fraiche because it 
+works quite nicely but the only time I've seen an supposedly authentic recipe 
+for carbonara  it was identical to mine (cream, eggs and lots of fresh parmesan) 
+except for the creme fraiche.
+
+Stew
+-- 
+Stewart Smith
+Scottish Microelectronics Centre, University of Edinburgh.
+http://www.ee.ed.ac.uk/~sxs/
+
+
+------------------------ Yahoo! Groups Sponsor ---------------------~-->
+4 DVDs Free +s&p Join Now
+http://us.click.yahoo.com/pt6YBB/NXiEAA/mG3HAA/7gSolB/TM
+---------------------------------------------------------------------~->
+
+To unsubscribe from this group, send an email to:
+forteana-unsubscribe@egroups.com
+
+ 
+
+Your use of Yahoo! Groups is subject to http://docs.yahoo.com/info/terms/ 
+
+
+
+
+
+--------------------------------------------------------------------------------
+
+From martin@srv0.ems.ed.ac.uk  Thu Aug 22 14:54:39 2002
+Return-Path: <martin@srv0.ems.ed.ac.uk>
+Delivered-To: zzzz@localhost.netnoteinc.com
+Received: from localhost (localhost [127.0.0.1])
+	by phobos.labs.netnoteinc.com (Postfix) with ESMTP id 16FC743F99
+	for <zzzz@localhost>; Thu, 22 Aug 2002 09:54:38 -0400 (EDT)
+Received: from phobos [127.0.0.1]
+	by localhost with IMAP (fetchmail-5.9.0)
+	for zzzz@localhost (single-drop); Thu, 22 Aug 2002 14:54:39 +0100 (IST)
+Received: from n14.grp.scd.yahoo.com (n14.grp.scd.yahoo.com
+    [66.218.66.69]) by dogma.slashnull.org (8.11.6/8.11.6) with SMTP id
+    g7MDoxZ08960 for <zzzz@spamassassin.taint.org>; Thu, 22 Aug 2002 14:50:59 +0100
+X-Egroups-Return: sentto-2242572-52737-1030024261-zzzz=spamassassin.taint.org@returns.groups.yahoo.com
+Received: from [66.218.66.95] by n14.grp.scd.yahoo.com with NNFMP;
+    22 Aug 2002 13:51:01 -0000
+X-Sender: martin@srv0.ems.ed.ac.uk
+X-Apparently-To: zzzzteana@yahoogroups.com
+Received: (EGP: mail-8_1_0_1); 22 Aug 2002 13:51:00 -0000
+Received: (qmail 71894 invoked from network); 22 Aug 2002 13:51:00 -0000
+Received: from unknown (66.218.66.218) by m7.grp.scd.yahoo.com with QMQP;
+    22 Aug 2002 13:51:00 -0000
+Received: from unknown (HELO haymarket.ed.ac.uk) (129.215.128.53) by
+    mta3.grp.scd.yahoo.com with SMTP; 22 Aug 2002 13:51:00 -0000
+Received: from srv0.ems.ed.ac.uk (srv0.ems.ed.ac.uk [129.215.117.0]) by
+    haymarket.ed.ac.uk (8.11.6/8.11.6) with ESMTP id g7MDow310334 for
+    <forteana@yahoogroups.com>; Thu, 22 Aug 2002 14:50:59 +0100 (BST)
+Received: from EMS-SRV0/SpoolDir by srv0.ems.ed.ac.uk (Mercury 1.44);
+    22 Aug 02 14:50:58 +0000
+Received: from SpoolDir by EMS-SRV0 (Mercury 1.44); 22 Aug 02 14:50:31 +0000
+Organization: Management School
+To: zzzzteana@yahoogroups.com
+Message-Id: <3D64FA3C.13325.63A5960@localhost>
+Priority: normal
+In-Reply-To: <3D64E94E.8060301@ee.ed.ac.uk>
+X-Mailer: Pegasus Mail for Windows (v4.01)
+Content-Description: Mail message body
+From: "Martin Adamson" <martin@srv0.ems.ed.ac.uk>
+MIME-Version: 1.0
+Mailing-List: list zzzzteana@yahoogroups.com; contact
+    forteana-owner@yahoogroups.com
+Delivered-To: mailing list zzzzteana@yahoogroups.com
+Precedence: bulk
+List-Unsubscribe: <mailto:zzzzteana-unsubscribe@yahoogroups.com>
+Date: Thu, 22 Aug 2002 14:50:31 +0100
+Subject: Re: [zzzzteana] Nothing like mama used to make
+Reply-To: zzzzteana@yahoogroups.com
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+
+
+> I just had to jump in here as Carbonara is one of my favourites to make and 
+> ask 
+> what the hell are you supposed to use instead of cream? 
+
+Isn't it just basically a mixture of beaten egg and bacon (or pancetta, 
+really)? You mix in the raw egg to the cooked pasta and the heat of the pasta 
+cooks the egg. That's my understanding.
+
+Martin
+
+------------------------ Yahoo! Groups Sponsor ---------------------~-->
+4 DVDs Free +s&p Join Now
+http://us.click.yahoo.com/pt6YBB/NXiEAA/mG3HAA/7gSolB/TM
+---------------------------------------------------------------------~->
+
+To unsubscribe from this group, send an email to:
+forteana-unsubscribe@egroups.com
+
+ 
+
+Your use of Yahoo! Groups is subject to http://docs.yahoo.com/info/terms/ 
+
+
+
+
+
+--------------------------------------------------------------------------------
+
+From martin@srv0.ems.ed.ac.uk  Thu Aug 22 14:54:40 2002
+Return-Path: <martin@srv0.ems.ed.ac.uk>
+Delivered-To: zzzz@localhost.netnoteinc.com
+Received: from localhost (localhost [127.0.0.1])
+	by phobos.labs.netnoteinc.com (Postfix) with ESMTP id E3D7B47C66
+	for <zzzz@localhost>; Thu, 22 Aug 2002 09:54:39 -0400 (EDT)
+Received: from phobos [127.0.0.1]
+	by localhost with IMAP (fetchmail-5.9.0)
+	for zzzz@localhost (single-drop); Thu, 22 Aug 2002 14:54:40 +0100 (IST)
+Received: from n11.grp.scd.yahoo.com (n11.grp.scd.yahoo.com
+    [66.218.66.66]) by dogma.slashnull.org (8.11.6/8.11.6) with SMTP id
+    g7MDt8Z09193 for <zzzz@spamassassin.taint.org>; Thu, 22 Aug 2002 14:55:10 +0100
+X-Egroups-Return: sentto-2242572-52738-1030024499-zzzz=spamassassin.taint.org@returns.groups.yahoo.com
+Received: from [66.218.66.94] by n11.grp.scd.yahoo.com with NNFMP;
+    22 Aug 2002 13:55:03 -0000
+X-Sender: martin@srv0.ems.ed.ac.uk
+X-Apparently-To: zzzzteana@yahoogroups.com
+Received: (EGP: mail-8_1_0_1); 22 Aug 2002 13:54:59 -0000
+Received: (qmail 43039 invoked from network); 22 Aug 2002 13:54:58 -0000
+Received: from unknown (66.218.66.216) by m1.grp.scd.yahoo.com with QMQP;
+    22 Aug 2002 13:54:58 -0000
+Received: from unknown (HELO haymarket.ed.ac.uk) (129.215.128.53) by
+    mta1.grp.scd.yahoo.com with SMTP; 22 Aug 2002 13:54:58 -0000
+Received: from srv0.ems.ed.ac.uk (srv0.ems.ed.ac.uk [129.215.117.0]) by
+    haymarket.ed.ac.uk (8.11.6/8.11.6) with ESMTP id g7MDsv311745 for
+    <forteana@yahoogroups.com>; Thu, 22 Aug 2002 14:54:57 +0100 (BST)
+Received: from EMS-SRV0/SpoolDir by srv0.ems.ed.ac.uk (Mercury 1.44);
+    22 Aug 02 14:54:56 +0000
+Received: from SpoolDir by EMS-SRV0 (Mercury 1.44); 22 Aug 02 14:54:29 +0000
+Organization: Management School
+To: zzzzteana@yahoogroups.com
+Message-Id: <3D64FB27.18538.63DEC17@localhost>
+Priority: normal
+X-Mailer: Pegasus Mail for Windows (v4.01)
+Content-Description: Mail message body
+From: "Martin Adamson" <martin@srv0.ems.ed.ac.uk>
+MIME-Version: 1.0
+Mailing-List: list zzzzteana@yahoogroups.com; contact
+    forteana-owner@yahoogroups.com
+Delivered-To: mailing list zzzzteana@yahoogroups.com
+Precedence: bulk
+List-Unsubscribe: <mailto:zzzzteana-unsubscribe@yahoogroups.com>
+Date: Thu, 22 Aug 2002 14:54:25 +0100
+Subject: [zzzzteana] Playboy wants to go out with a bang
+Reply-To: zzzzteana@yahoogroups.com
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8bit
+X-MIME-Autoconverted: from quoted-printable to 8bit by dogma.slashnull.org
+    id g7MDt8Z09193
+
+The Scotsman - 22 August 2002
+
+ Playboy wants to go out with a bang 
+ 
+ 
+ AN AGEING Berlin playboy has come up with an unusual offer to lure women into
+ his bed - by promising the last woman he sleeps with an inheritance of 250,000
+ (�160,000). 
+ 
+ Rolf Eden, 72, a Berlin disco owner famous for his countless sex partners,
+ said he could imagine no better way to die than in the arms of an attractive
+ young woman - preferably under 30. 
+ 
+ "I put it all in my last will and testament - the last woman who sleeps with
+ me gets all the money," Mr Eden told Bild newspaper. 
+ 
+ "I want to pass away in the most beautiful moment of my life. First a lot of
+ fun with a beautiful woman, then wild sex, a final orgasm - and it will all
+ end with a heart attack and then I�m gone." 
+ 
+ Mr Eden, who is selling his nightclub this year, said applications should be
+ sent in quickly because of his age. "It could end very soon," he said.
+
+
+------------------------ Yahoo! Groups Sponsor ---------------------~-->
+4 DVDs Free +s&p Join Now
+http://us.click.yahoo.com/pt6YBB/NXiEAA/mG3HAA/7gSolB/TM
+---------------------------------------------------------------------~->
+
+To unsubscribe from this group, send an email to:
+forteana-unsubscribe@egroups.com
+
+ 
+
+Your use of Yahoo! Groups is subject to http://docs.yahoo.com/info/terms/ 
+
+
+
+
+
+--------------------------------------------------------------------------------
+
+From Stewart.Smith@ee.ed.ac.uk  Thu Aug 22 15:05:07 2002
+Return-Path: <Stewart.Smith@ee.ed.ac.uk>
+Delivered-To: zzzz@localhost.netnoteinc.com
+Received: from localhost (localhost [127.0.0.1])
+	by phobos.labs.netnoteinc.com (Postfix) with ESMTP id EF86747C67
+	for <zzzz@localhost>; Thu, 22 Aug 2002 10:05:00 -0400 (EDT)
+Received: from phobos [127.0.0.1]
+	by localhost with IMAP (fetchmail-5.9.0)
+	for zzzz@localhost (single-drop); Thu, 22 Aug 2002 15:05:01 +0100 (IST)
+Received: from n34.grp.scd.yahoo.com (n34.grp.scd.yahoo.com
+    [66.218.66.102]) by dogma.slashnull.org (8.11.6/8.11.6) with SMTP id
+    g7ME1MZ09279 for <zzzz@spamassassin.taint.org>; Thu, 22 Aug 2002 15:01:22 +0100
+X-Egroups-Return: sentto-2242572-52739-1030024883-zzzz=spamassassin.taint.org@returns.groups.yahoo.com
+Received: from [66.218.67.195] by n34.grp.scd.yahoo.com with NNFMP;
+    22 Aug 2002 14:01:23 -0000
+X-Sender: Stewart.Smith@ee.ed.ac.uk
+X-Apparently-To: zzzzteana@yahoogroups.com
+Received: (EGP: mail-8_1_0_1); 22 Aug 2002 14:01:23 -0000
+Received: (qmail 45116 invoked from network); 22 Aug 2002 14:01:22 -0000
+Received: from unknown (66.218.66.218) by m2.grp.scd.yahoo.com with QMQP;
+    22 Aug 2002 14:01:22 -0000
+Received: from unknown (HELO postbox.ee.ed.ac.uk) (129.215.80.253) by
+    mta3.grp.scd.yahoo.com with SMTP; 22 Aug 2002 14:01:22 -0000
+Received: from ee.ed.ac.uk (sxs@dunblane [129.215.34.86]) by
+    postbox.ee.ed.ac.uk (8.11.0/8.11.0) with ESMTP id g7ME1Li02942 for
+    <forteana@yahoogroups.com>; Thu, 22 Aug 2002 15:01:21 +0100 (BST)
+Message-Id: <3D64EEB0.2050502@ee.ed.ac.uk>
+Organization: Scottish Microelectronics Centre
+User-Agent: Mozilla/5.0 (X11; U; SunOS sun4u; en-US; rv:1.1b) Gecko/20020628
+X-Accept-Language: en, en-us
+To: zzzzteana@yahoogroups.com
+References: <3D64FA3C.13325.63A5960@localhost>
+From: Stewart Smith <Stewart.Smith@ee.ed.ac.uk>
+X-Yahoo-Profile: stochasticus
+MIME-Version: 1.0
+Mailing-List: list zzzzteana@yahoogroups.com; contact
+    forteana-owner@yahoogroups.com
+Delivered-To: mailing list zzzzteana@yahoogroups.com
+Precedence: bulk
+List-Unsubscribe: <mailto:zzzzteana-unsubscribe@yahoogroups.com>
+Date: Thu, 22 Aug 2002 15:01:20 +0100
+Subject: Re: [zzzzteana] Nothing like mama used to make
+Reply-To: zzzzteana@yahoogroups.com
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+
+Martin Adamson wrote:
+> 
+> Isn't it just basically a mixture of beaten egg and bacon (or pancetta, 
+> really)? You mix in the raw egg to the cooked pasta and the heat of the pasta 
+> cooks the egg. That's my understanding.
+> 
+
+You're probably right, mine's just the same but with the cream added to the 
+eggs.  I guess I should try it without.  Actually looking on the internet for a 
+recipe I found this one from possibly one of the scariest people I've ever seen, 
+and he's a US Congressman:
+<http://www.virtualcities.com/ons/me/gov/megvjb1.htm>
+
+That's one of the worst non-smiles ever.
+
+Stew
+ps. Apologies if any of the list's Maine residents voted for this man, you won't 
+do it again once you've seen this pic.
+
+-- 
+Stewart Smith
+Scottish Microelectronics Centre, University of Edinburgh.
+http://www.ee.ed.ac.uk/~sxs/
+
+
+------------------------ Yahoo! Groups Sponsor ---------------------~-->
+4 DVDs Free +s&p Join Now
+http://us.click.yahoo.com/pt6YBB/NXiEAA/mG3HAA/7gSolB/TM
+---------------------------------------------------------------------~->
+
+To unsubscribe from this group, send an email to:
+forteana-unsubscribe@egroups.com
+
+ 
+
+Your use of Yahoo! Groups is subject to http://docs.yahoo.com/info/terms/ 
+
+
+
+
+
+--------------------------------------------------------------------------------
+
+From martin@srv0.ems.ed.ac.uk  Thu Aug 22 15:05:07 2002
+Return-Path: <martin@srv0.ems.ed.ac.uk>
+Delivered-To: zzzz@localhost.netnoteinc.com
+Received: from localhost (localhost [127.0.0.1])
+	by phobos.labs.netnoteinc.com (Postfix) with ESMTP id 7A0C347C68
+	for <zzzz@localhost>; Thu, 22 Aug 2002 10:05:03 -0400 (EDT)
+Received: from phobos [127.0.0.1]
+	by localhost with IMAP (fetchmail-5.9.0)
+	for zzzz@localhost (single-drop); Thu, 22 Aug 2002 15:05:03 +0100 (IST)
+Received: from n34.grp.scd.yahoo.com (n34.grp.scd.yahoo.com
+    [66.218.66.102]) by dogma.slashnull.org (8.11.6/8.11.6) with SMTP id
+    g7ME1rZ09290 for <zzzz@spamassassin.taint.org>; Thu, 22 Aug 2002 15:01:54 +0100
+X-Egroups-Return: sentto-2242572-52740-1030024915-zzzz=spamassassin.taint.org@returns.groups.yahoo.com
+Received: from [66.218.67.194] by n34.grp.scd.yahoo.com with NNFMP;
+    22 Aug 2002 14:01:55 -0000
+X-Sender: martin@srv0.ems.ed.ac.uk
+X-Apparently-To: zzzzteana@yahoogroups.com
+Received: (EGP: mail-8_1_0_1); 22 Aug 2002 14:01:55 -0000
+Received: (qmail 59494 invoked from network); 22 Aug 2002 14:01:55 -0000
+Received: from unknown (66.218.66.218) by m12.grp.scd.yahoo.com with QMQP;
+    22 Aug 2002 14:01:55 -0000
+Received: from unknown (HELO haymarket.ed.ac.uk) (129.215.128.53) by
+    mta3.grp.scd.yahoo.com with SMTP; 22 Aug 2002 14:01:54 -0000
+Received: from srv0.ems.ed.ac.uk (srv0.ems.ed.ac.uk [129.215.117.0]) by
+    haymarket.ed.ac.uk (8.11.6/8.11.6) with ESMTP id g7ME1r313981 for
+    <forteana@yahoogroups.com>; Thu, 22 Aug 2002 15:01:53 +0100 (BST)
+Received: from EMS-SRV0/SpoolDir by srv0.ems.ed.ac.uk (Mercury 1.44);
+    22 Aug 02 15:01:52 +0000
+Received: from SpoolDir by EMS-SRV0 (Mercury 1.44); 22 Aug 02 15:01:34 +0000
+Organization: Management School
+To: zzzzteana@yahoogroups.com
+Message-Id: <3D64FCD2.20705.6447320@localhost>
+Priority: normal
+X-Mailer: Pegasus Mail for Windows (v4.01)
+Content-Description: Mail message body
+From: "Martin Adamson" <martin@srv0.ems.ed.ac.uk>
+MIME-Version: 1.0
+Mailing-List: list zzzzteana@yahoogroups.com; contact
+    forteana-owner@yahoogroups.com
+Delivered-To: mailing list zzzzteana@yahoogroups.com
+Precedence: bulk
+List-Unsubscribe: <mailto:zzzzteana-unsubscribe@yahoogroups.com>
+Date: Thu, 22 Aug 2002 15:01:33 +0100
+Subject: [zzzzteana] Meaningful sentences
+Reply-To: zzzzteana@yahoogroups.com
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8bit
+X-MIME-Autoconverted: from quoted-printable to 8bit by dogma.slashnull.org
+    id g7ME1rZ09290
+
+The Scotsman
+
+ Thu 22 Aug 2002 
+
+ Meaningful sentences 
+ 
+ Tracey Lawson 
+ 
+ 
+ If you ever wanted to look like "one of the most dangerous inmates in prison
+ history", as one judge described Charles Bronson, now�s your chance. Bronson -
+ the serial hostage taker, not the movie star - has written a health and
+ fitness guide in which he shares some of the secrets behind his legendary
+ muscle power. 
+ 
+ Solitary Fitness - a title which bears testament to the fact that Bronson, 48,
+ has spent 24 of his 28 prison years in solitary confinement - explains how he
+ has turned himself into a lean, mean, fitness machine while living 23 hours a
+ day in a space just 12 feet by eight feet, on a diet of scrubs grub and at
+ virtually no cost. 
+ 
+ The book is aimed at those who want to get fabulously fit without spending a
+ fortune on gym memberships, protein supplements or designer trainers, and
+ starts with a fierce attack on some of the expensive myths churned out by the
+ exercise industry. 
+ 
+ "I pick up a fitness mag, I start to laugh and I wipe my arse with it," is the
+ opening paragraph penned by Bronson. "It�s a joke and a big con and they call
+ me a criminal!" You can�t help feeling he has a point. 
+ 
+ This is not the first book that Bronson has written from behind bars, having
+ already published Birdman Opens His Mind, which features drawings and poems
+ created by Bronson while in prison. And he is not the first prisoner to
+ discover creative expression while residing at Her Majesty�s pleasure. 
+ 
+ Jimmy Boyle, the Scots sculptor and novelist, discovered his artistic talents
+ when he was sent to Barlinnie Prison�s famous special unit, which aimed to
+ help inmates put their violent pasts behind them by teaching them how to
+ express their emotions artistically. Boyle was sentenced to life for the
+ murder of "Babs" Rooney in 1967. Once released, he moved to Edinburgh where he
+ has become a respected artist. His first novel, Hero of the Underworld, was
+ published in 1999 and his autobiography, A Sense of Freedom, was made into an
+ award-winning film. 
+ 
+ Hugh Collins was jailed for life in 1977 for the murder of William Mooney in
+ Glasgow, and in his first year in Barlinnie prison stabbed three prison
+ officers, earning him an extra seven-year sentence. But, after being
+ transferred to the same unit that Boyle attended, he learned to sculpt and
+ developed an interest in art. He later published Autobiography of a Murderer,
+ a frank account of Glasgow�s criminal culture in the 1960s, which received
+ critical praise. 
+ 
+ And Lord Archer doesn�t seem to have had trouble continuing to write the books
+ that have made him millions while in jail. He recently signed a three-book
+ deal with Macmillan publishers worth a reported �10 million, and is no doubt
+ scribbling away as we speak. 
+ 
+ So why is it that men like Collins, Bronson and Boyle, who can be so
+ destructive towards society on the outside, can become so creative once stuck
+ on the inside? Steve Richards, Bronson�s publisher, has published many books
+ about criminal figures and believes the roots of this phenomenon are both
+ pragmatic and profound. 
+ 
+ He says: "Prison is sometimes the first time some criminals will ever have
+ known a stable environment, and this can be the first time they have the
+ chance to focus on their creative skills. 
+ 
+ "It may also be the first time that they have really had the chance of an
+ education, if their early years have been hard. It could be the first time
+ anyone has offered them the chance to explore their creative talents." 
+ 
+ However, Richards believes the reasons are also deeper than that. He says:
+ "Once they are behind bars, the cold light of day hits them, and they examine
+ the very essence of who they are. 
+ 
+ "They ask themselves, am I a man who wants to be remembered for violence? Or
+ am I a man who can contribute to society, who can be remembered for something
+ good?" 
+ 
+ Bronson - who was born Michael Gordon Peterson, but changed his name to that
+ of the Hollywood star of the Death Wish films - has, so far, been remembered
+ mainly for things bad. He was originally jailed for seven years for armed
+ robbery in 1974, and has had a series of sentences added to his original term
+ over the years as a result of attacking people in prison. In 2000 he was
+ jailed for life after being convicted of holding a teacher hostage for nearly
+ two days during a jail siege. 
+ 
+ Standing five feet ten and a half inches tall and weighing 210lbs, he is
+ renowned for his strength. He has bent metal cell doors with his bare hands
+ and does up to 3,000 - yes, 3,000 - press-ups a day. As he puts it: "I can hit
+ a man 20 times in four seconds, I can push 132 press ups in 60 seconds." 
+ 
+ But judging by our current obsession with health and exercise, Solitary
+ Fitness might be the book which will see Bronson�s face sitting on every
+ coffee table in the land. He might be the man to give us the dream body which
+ so many so-called fitness gurus promise but fail to motivate us into. Because
+ Bronson has learned to use words as powerfully as he can use his fists. 
+ 
+ "All this crap about high-protein drinks, pills, diets, it�s just a load of
+ bollocks and a multi-million-pound racket," he writes, in what can only be
+ described as a refreshingly honest style. "We can all be fat lazy bastards,
+ it�s our choice, I�m sick of hearing and reading about excuses, if you stuff
+ your face with shit you become shit, that�s logical to me." 
+ 
+ As motivational mantras go, that might be just the kick up the, er, backside
+ we all needed. 
+ 
+ 
+ Solitary Fitness by Charles Bronson is published by Mirage Publishing and will
+ be available in bookstores from October at �7.99
+
+
+------------------------ Yahoo! Groups Sponsor ---------------------~-->
+4 DVDs Free +s&p Join Now
+http://us.click.yahoo.com/pt6YBB/NXiEAA/mG3HAA/7gSolB/TM
+---------------------------------------------------------------------~->
+
+To unsubscribe from this group, send an email to:
+forteana-unsubscribe@egroups.com
+
+ 
+
+Your use of Yahoo! Groups is subject to http://docs.yahoo.com/info/terms/ 
+
+
+
+
+
+--------------------------------------------------------------------------------
+
+From spamassassin-talk-admin@lists.sourceforge.net  Thu Aug 22 15:25:29 2002
+Return-Path: <spamassassin-talk-admin@example.sourceforge.net>
+Delivered-To: zzzz@localhost.netnoteinc.com
+Received: from localhost (localhost [127.0.0.1])
+	by phobos.labs.netnoteinc.com (Postfix) with ESMTP id B48D543F99
+	for <zzzz@localhost>; Thu, 22 Aug 2002 10:25:28 -0400 (EDT)
+Received: from phobos [127.0.0.1]
+	by localhost with IMAP (fetchmail-5.9.0)
+	for zzzz@localhost (single-drop); Thu, 22 Aug 2002 15:25:28 +0100 (IST)
+Received: from usw-sf-list2.sourceforge.net (usw-sf-fw2.sourceforge.net
+    [216.136.171.252]) by dogma.slashnull.org (8.11.6/8.11.6) with ESMTP id
+    g7MEI8Z09886 for <zzzz-sa@spamassassin.taint.org>; Thu, 22 Aug 2002 15:18:08 +0100
+Received: from usw-sf-list1-b.sourceforge.net ([10.3.1.13]
+    helo=usw-sf-list1.sourceforge.net) by usw-sf-list2.sourceforge.net with
+    esmtp (Exim 3.31-VA-mm2 #1 (Debian)) id 17hskl-0002W7-00; Thu,
+    22 Aug 2002 07:16:03 -0700
+Received: from mail-gr-oh.networksonline.com ([65.163.204.6]) by
+    usw-sf-list1.sourceforge.net with esmtp (Exim 3.31-VA-mm2 #1 (Debian)) id
+    17hskN-0008Ox-00 for <spamassassin-talk@lists.sourceforge.net>;
+    Thu, 22 Aug 2002 07:15:39 -0700
+Received: from mordor (mordor.networksonline.com [65.163.204.19]) by
+    mail-gr-oh.networksonline.com (Postfix) with SMTP id C06C537794 for
+    <spamassassin-talk@lists.sourceforge.net>; Thu, 22 Aug 2002 10:13:48 -0400
+    (EDT)
+Message-Id: <001001c249e6$863c4e00$13cca341@networksonline.com>
+From: "NOI Administrator" <admin@networksonline.com>
+To: <spamassassin-talk@example.sourceforge.net>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-Msmail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 5.50.4133.2400
+X-Mimeole: Produced By Microsoft MimeOLE V5.50.4133.2400
+Subject: [SAtalk] SA CGI Configurator Scripts
+Sender: spamassassin-talk-admin@example.sourceforge.net
+Errors-To: spamassassin-talk-admin@example.sourceforge.net
+X-Beenthere: spamassassin-talk@example.sourceforge.net
+X-Mailman-Version: 2.0.9-sf.net
+Precedence: bulk
+List-Help: <mailto:spamassassin-talk-request@example.sourceforge.net?subject=help>
+List-Post: <mailto:spamassassin-talk@example.sourceforge.net>
+List-Subscribe: <https://example.sourceforge.net/lists/listinfo/spamassassin-talk>,
+    <mailto:spamassassin-talk-request@lists.sourceforge.net?subject=subscribe>
+List-Id: Talk about SpamAssassin <spamassassin-talk.example.sourceforge.net>
+List-Unsubscribe: <https://example.sourceforge.net/lists/listinfo/spamassassin-talk>,
+    <mailto:spamassassin-talk-request@lists.sourceforge.net?subject=unsubscribe>
+List-Archive: <http://www.geocrawler.com/redir-sf.php3?list=spamassassin-talk>
+X-Original-Date: Thu, 22 Aug 2002 10:16:36 -0400
+Date: Thu, 22 Aug 2002 10:16:36 -0400
+
+I have been trying to research via SA mirrors and search engines if a canned
+script exists giving clients access to their user_prefs options via a
+web-based CGI interface. Numerous ISPs provide this feature to clients, but
+so far I can find nothing. Our configuration uses Amavis-Postfix and ClamAV
+for virus filtering and Procmail with SpamAssassin for spam filtering. I
+would prefer not to have to write a script myself, but will appreciate any
+suggestions.
+
+
+
+-------------------------------------------------------
+This sf.net email is sponsored by: OSDN - Tired of that same old
+cell phone?  Get a new here for FREE!
+https://www.inphonic.com/r.asp?r=sourceforge1&refcode1=vs3390
+_______________________________________________
+Spamassassin-talk mailing list
+Spamassassin-talk@lists.sourceforge.net
+https://lists.sourceforge.net/lists/listinfo/spamassassin-talk
+
+
+
+--------------------------------------------------------------------------------
+
+From spamassassin-devel-admin@lists.sourceforge.net  Thu Aug 22 15:25:29 2002
+Return-Path: <spamassassin-devel-admin@example.sourceforge.net>
+Delivered-To: zzzz@localhost.netnoteinc.com
+Received: from localhost (localhost [127.0.0.1])
+	by phobos.labs.netnoteinc.com (Postfix) with ESMTP id AE2D043F9B
+	for <zzzz@localhost>; Thu, 22 Aug 2002 10:25:29 -0400 (EDT)
+Received: from phobos [127.0.0.1]
+	by localhost with IMAP (fetchmail-5.9.0)
+	for zzzz@localhost (single-drop); Thu, 22 Aug 2002 15:25:29 +0100 (IST)
+Received: from usw-sf-list2.sourceforge.net (usw-sf-fw2.sourceforge.net
+    [216.136.171.252]) by dogma.slashnull.org (8.11.6/8.11.6) with ESMTP id
+    g7MENlZ09984 for <zzzz@spamassassin.taint.org>; Thu, 22 Aug 2002 15:23:47 +0100
+Received: from usw-sf-list1-b.sourceforge.net ([10.3.1.13]
+    helo=usw-sf-list1.sourceforge.net) by usw-sf-list2.sourceforge.net with
+    esmtp (Exim 3.31-VA-mm2 #1 (Debian)) id 17hsof-00042r-00; Thu,
+    22 Aug 2002 07:20:05 -0700
+Received: from vivi.uptime.at ([62.116.87.11] helo=mail.uptime.at) by
+    usw-sf-list1.sourceforge.net with esmtp (Exim 3.31-VA-mm2 #1 (Debian)) id
+    17hsoM-0000Ge-00 for <spamassassin-devel@lists.sourceforge.net>;
+    Thu, 22 Aug 2002 07:19:47 -0700
+Received: from [192.168.0.4] (chello062178142216.4.14.vie.surfer.at
+    [62.178.142.216]) (authenticated bits=0) by mail.uptime.at (8.12.5/8.12.5)
+    with ESMTP id g7MEI7Vp022036 for
+    <spamassassin-devel@lists.sourceforge.net>; Thu, 22 Aug 2002 16:18:07
+    +0200
+User-Agent: Microsoft-Entourage/10.0.0.1309
+From: David H=?ISO-8859-1?B?9g==?=hn <dh@uptime.at>
+To: <spamassassin-devel@example.sourceforge.net>
+Message-Id: <B98ABFA4.1F87%dh@uptime.at>
+MIME-Version: 1.0
+X-Trusted: YES
+X-From-Laptop: YES
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Mailscanner: Nothing found, baby
+Subject: [SAdev] Interesting approach to Spam handling..
+Sender: spamassassin-devel-admin@example.sourceforge.net
+Errors-To: spamassassin-devel-admin@example.sourceforge.net
+X-Beenthere: spamassassin-devel@example.sourceforge.net
+X-Mailman-Version: 2.0.9-sf.net
+Precedence: bulk
+List-Help: <mailto:spamassassin-devel-request@example.sourceforge.net?subject=help>
+List-Post: <mailto:spamassassin-devel@example.sourceforge.net>
+List-Subscribe: <https://example.sourceforge.net/lists/listinfo/spamassassin-devel>,
+    <mailto:spamassassin-devel-request@lists.sourceforge.net?subject=subscribe>
+List-Id: SpamAssassin Developers <spamassassin-devel.example.sourceforge.net>
+List-Unsubscribe: <https://example.sourceforge.net/lists/listinfo/spamassassin-devel>,
+    <mailto:spamassassin-devel-request@lists.sourceforge.net?subject=unsubscribe>
+List-Archive: <http://www.geocrawler.com/redir-sf.php3?list=spamassassin-devel>
+X-Original-Date: Thu, 22 Aug 2002 16:19:48 +0200
+Date: Thu, 22 Aug 2002 16:19:48 +0200
+
+Hello, have you seen and discussed this article and his approach?
+
+Thank you
+
+http://www.paulgraham.com/spam.html
+-- "Hell, there are no rules here-- we're trying to accomplish something."
+-- Thomas Alva Edison
+
+
+
+
+-------------------------------------------------------
+This sf.net email is sponsored by: OSDN - Tired of that same old
+cell phone?  Get a new here for FREE!
+https://www.inphonic.com/r.asp?r=sourceforge1&refcode1=vs3390
+_______________________________________________
+Spamassassin-devel mailing list
+Spamassassin-devel@lists.sourceforge.net
+https://lists.sourceforge.net/lists/listinfo/spamassassin-devel
+
+
+
+--------------------------------------------------------------------------------
+
+From spamassassin-devel-admin@lists.sourceforge.net  Thu Aug 22 16:27:25 2002
+Return-Path: <spamassassin-devel-admin@example.sourceforge.net>
+Delivered-To: zzzz@localhost.netnoteinc.com
+Received: from localhost (localhost [127.0.0.1])
+	by phobos.labs.netnoteinc.com (Postfix) with ESMTP id DF2DD43F9B
+	for <zzzz@localhost>; Thu, 22 Aug 2002 11:27:24 -0400 (EDT)
+Received: from phobos [127.0.0.1]
+	by localhost with IMAP (fetchmail-5.9.0)
+	for zzzz@localhost (single-drop); Thu, 22 Aug 2002 16:27:24 +0100 (IST)
+Received: from usw-sf-list2.sourceforge.net (usw-sf-fw2.sourceforge.net
+    [216.136.171.252]) by dogma.slashnull.org (8.11.6/8.11.6) with ESMTP id
+    g7MFJHZ11964 for <zzzz@spamassassin.taint.org>; Thu, 22 Aug 2002 16:19:17 +0100
+Received: from usw-sf-list1-b.sourceforge.net ([10.3.1.13]
+    helo=usw-sf-list1.sourceforge.net) by usw-sf-list2.sourceforge.net with
+    esmtp (Exim 3.31-VA-mm2 #1 (Debian)) id 17htfq-0001G0-00; Thu,
+    22 Aug 2002 08:15:02 -0700
+Received: from www.ctyme.com ([209.237.228.10] helo=darwin.ctyme.com) by
+    usw-sf-list1.sourceforge.net with esmtp (Cipher TLSv1:DES-CBC3-SHA:168)
+    (Exim 3.31-VA-mm2 #1 (Debian)) id 17htfa-0006Zq-00 for
+    <spamassassin-devel@lists.sourceforge.net>; Thu, 22 Aug 2002 08:14:47
+    -0700
+Received: from m206-56.dsl.tsoft.com ([198.144.206.56] helo=perkel.com) by
+    darwin.ctyme.com with asmtp (TLSv1:RC4-MD5:128) (Exim 3.35 #1) id
+    17htgP-0004te-00; Thu, 22 Aug 2002 08:15:37 -0700
+Message-Id: <3D64FFC4.5010908@perkel.com>
+From: Marc Perkel <marc@perkel.com>
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.1b)
+    Gecko/20020721
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
+To: Theo Van Dinter <felicity@kluge.net>
+Cc: spamassassin-devel@example.sourceforge.net
+Subject: Re: [SAdev] Live Rule Updates after Release ???
+References: <3D64F4E8.7040000@perkel.com> <20020822151134.GD6369@kluge.net>
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
+Sender: spamassassin-devel-admin@example.sourceforge.net
+Errors-To: spamassassin-devel-admin@example.sourceforge.net
+X-Beenthere: spamassassin-devel@example.sourceforge.net
+X-Mailman-Version: 2.0.9-sf.net
+Precedence: bulk
+List-Help: <mailto:spamassassin-devel-request@example.sourceforge.net?subject=help>
+List-Post: <mailto:spamassassin-devel@example.sourceforge.net>
+List-Subscribe: <https://example.sourceforge.net/lists/listinfo/spamassassin-devel>,
+    <mailto:spamassassin-devel-request@lists.sourceforge.net?subject=subscribe>
+List-Id: SpamAssassin Developers <spamassassin-devel.example.sourceforge.net>
+List-Unsubscribe: <https://example.sourceforge.net/lists/listinfo/spamassassin-devel>,
+    <mailto:spamassassin-devel-request@lists.sourceforge.net?subject=unsubscribe>
+List-Archive: <http://www.geocrawler.com/redir-sf.php3?list=spamassassin-devel>
+X-Original-Date: Thu, 22 Aug 2002 08:14:12 -0700
+Date: Thu, 22 Aug 2002 08:14:12 -0700
+
+Yes - great minds think alike. But even withput eval rules it would be very 
+useful. It would allow us to respond quickly to spammer's tricks.
+
+Theo Van Dinter wrote:
+> On Thu, Aug 22, 2002 at 07:27:52AM -0700, Marc Perkel wrote:
+> 
+>>Has anyone though of the idea of live updates of rules after release? The 
+>>idea being that the user can run a cron job once a week or so and get the 
+>>new default rule set. This would allow us to react faster to:
+> 
+> 
+> I suggested this a few months ago.  I don't remember the details of what
+> came out of it except that it would only be useful for non-eval rules
+> since those require code changes.
+> 
+
+
+
+-------------------------------------------------------
+This sf.net email is sponsored by: OSDN - Tired of that same old
+cell phone?  Get a new here for FREE!
+https://www.inphonic.com/r.asp?r=sourceforge1&refcode1=vs3390
+_______________________________________________
+Spamassassin-devel mailing list
+Spamassassin-devel@lists.sourceforge.net
+https://lists.sourceforge.net/lists/listinfo/spamassassin-devel
+
+
+
+--------------------------------------------------------------------------------
+
+From ilug-admin@linux.ie  Thu Aug 22 16:27:21 2002
+Return-Path: <ilug-admin@linux.ie>
+Delivered-To: zzzz@localhost.netnoteinc.com
+Received: from localhost (localhost [127.0.0.1])
+	by phobos.labs.netnoteinc.com (Postfix) with ESMTP id 7A28A43F99
+	for <zzzz@localhost>; Thu, 22 Aug 2002 11:27:21 -0400 (EDT)
+Received: from phobos [127.0.0.1]
+	by localhost with IMAP (fetchmail-5.9.0)
+	for zzzz@localhost (single-drop); Thu, 22 Aug 2002 16:27:21 +0100 (IST)
+Received: from lugh.tuatha.org (root@lugh.tuatha.org [194.125.145.45]) by
+    dogma.slashnull.org (8.11.6/8.11.6) with ESMTP id g7MFQmZ12280 for
+    <zzzz-ilug@spamassassin.taint.org>; Thu, 22 Aug 2002 16:26:48 +0100
+Received: from lugh (root@localhost [127.0.0.1]) by lugh.tuatha.org
+    (8.9.3/8.9.3) with ESMTP id QAA07188; Thu, 22 Aug 2002 16:25:32 +0100
+Received: from moe.jinny.ie ([193.120.171.3]) by lugh.tuatha.org
+    (8.9.3/8.9.3) with ESMTP id QAA07145 for <ilug@linux.ie>; Thu,
+    22 Aug 2002 16:25:24 +0100
+X-Authentication-Warning: lugh.tuatha.org: Host [193.120.171.3] claimed to
+    be moe.jinny.ie
+Received: from jlooney.jinny.ie (unknown [193.120.171.2]) by moe.jinny.ie
+    (Postfix) with ESMTP id 938BD7FC46; Thu, 22 Aug 2002 16:25:23 +0100 (IST)
+Received: by jlooney.jinny.ie (Postfix, from userid 500) id 4F57189D;
+    Thu, 22 Aug 2002 16:25:45 +0100 (IST)
+Date: Thu, 22 Aug 2002 16:25:45 +0100
+From: "John P. Looney" <valen@tuatha.org>
+To: linux-raid@vger.kernel.org
+Cc: ilug@linux.ie
+Message-Id: <20020822152545.GJ3670@jinny.ie>
+Reply-To: valen@tuatha.org
+Mail-Followup-To: linux-raid@vger.kernel.org, ilug@linux.ie
+References: <200208172056.g7HKuHm05754@raq.iceblink.org>
+    <1029624922.14769.119.camel@atherton> <20020819140815.GY26818@jinny.ie>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20020819140815.GY26818@jinny.ie>
+User-Agent: Mutt/1.4i
+X-Os: Red Hat Linux 7.3/Linux 2.4.18-3
+X-Url: http://www.redbrick.dcu.ie/~valen
+X-Gnupg-Publickey: http://www.redbrick.dcu.ie/~valen/public.asc
+Subject: [ILUG] Re: Problems with RAID1 on cobalt raq3
+Sender: ilug-admin@linux.ie
+Errors-To: ilug-admin@linux.ie
+X-Mailman-Version: 1.1
+Precedence: bulk
+List-Id: Irish Linux Users' Group <ilug.linux.ie>
+X-Beenthere: ilug@linux.ie
+
+On Mon, Aug 19, 2002 at 03:08:16PM +0100, John P. Looney mentioned:
+>  This is likely because to get it to boot, like the cobalt, I'm actually
+> passing root=/dev/hda5 to the kernel, not /dev/md0. 
+
+ Just to solve this...the reason I was booting the box with
+root=/dev/hda5, not /dev/md0 was because /dev/md0 wasn't booting - it
+would barf with 'can't find init'.
+
+ It turns out that this is because I was populating md0 with tar. Which
+seems to have 'issues' with crosslinked files - for instance, it was
+trying to make a hard link of glibc.so to hda - and failing. It was only
+as I did it again with a friend present, that he spotted the errors, and
+queried them. We noticed that the hard linked files just didn't exist on
+the new rootfs.
+
+ When we duplicated the filesystems with dump instead of tar, it worked
+fine, I was able to tell lilo to use root=/dev/md0 and everything worked.
+
+ Woohoo.
+
+Kate
+
+
+-- 
+Irish Linux Users' Group: ilug@linux.ie
+http://www.linux.ie/mailman/listinfo/ilug for (un)subscription information.
+List maintainer: listmaster@linux.ie
+
+
+
+--------------------------------------------------------------------------------
+
+From exmh-workers-admin@redhat.com  Thu Aug 22 16:37:36 2002
+Return-Path: <exmh-workers-admin@spamassassin.taint.org>
+Delivered-To: zzzz@localhost.netnoteinc.com
+Received: from localhost (localhost [127.0.0.1])
+	by phobos.labs.netnoteinc.com (Postfix) with ESMTP id 50AF343F9B
+	for <zzzz@localhost>; Thu, 22 Aug 2002 11:37:35 -0400 (EDT)
+Received: from phobos [127.0.0.1]
+	by localhost with IMAP (fetchmail-5.9.0)
+	for zzzz@localhost (single-drop); Thu, 22 Aug 2002 16:37:35 +0100 (IST)
+Received: from listman.spamassassin.taint.org (listman.spamassassin.taint.org [66.187.233.211]) by
+    dogma.slashnull.org (8.11.6/8.11.6) with ESMTP id g7MFZLZ12577 for
+    <zzzz-exmh@spamassassin.taint.org>; Thu, 22 Aug 2002 16:35:22 +0100
+Received: from listman.spamassassin.taint.org (localhost.localdomain [127.0.0.1]) by
+    listman.redhat.com (Postfix) with ESMTP id 51F5140D92; Thu, 22 Aug 2002
+    11:35:26 -0400 (EDT)
+Delivered-To: exmh-workers@listman.spamassassin.taint.org
+Received: from int-mx1.corp.spamassassin.taint.org (int-mx1.corp.spamassassin.taint.org
+    [172.16.52.254]) by listman.redhat.com (Postfix) with ESMTP id 6EED940E00
+    for <exmh-workers@listman.redhat.com>; Thu, 22 Aug 2002 11:26:01 -0400
+    (EDT)
+Received: (from mail@localhost) by int-mx1.corp.spamassassin.taint.org (8.11.6/8.11.6)
+    id g7MFPwB25414 for exmh-workers@listman.redhat.com; Thu, 22 Aug 2002
+    11:25:58 -0400
+Received: from mx1.spamassassin.taint.org (mx1.spamassassin.taint.org [172.16.48.31]) by
+    int-mx1.corp.redhat.com (8.11.6/8.11.6) with SMTP id g7MFPwY25410 for
+    <exmh-workers@redhat.com>; Thu, 22 Aug 2002 11:25:58 -0400
+Received: from austin-jump.vircio.com
+    (IDENT:+BhY7EqRf5fwVT64o4aVh7UUHF1egIL+@jump-austin.vircio.com
+    [192.12.3.99]) by mx1.redhat.com (8.11.6/8.11.6) with SMTP id g7MFBTl04916
+    for <exmh-workers@redhat.com>; Thu, 22 Aug 2002 11:11:29 -0400
+Received: (qmail 4141 invoked by uid 104); 22 Aug 2002 15:25:57 -0000
+Received: from cwg-exmh@DeepEddy.Com by localhost.localdomain with
+    qmail-scanner-0.90 (uvscan: v4.1.60/v4218. . Clean. Processed in 0.327895
+    secs); 22/08/2002 10:25:57
+Received: from deepeddy.vircio.com (@[10.1.2.1]) (envelope-sender
+    <cwg-exmh@DeepEddy.Com>) by austin-jump.vircio.com (qmail-ldap-1.03) with
+    SMTP for <exmh-workers@redhat.com>; 22 Aug 2002 15:25:56 -0000
+Received: (qmail 13189 invoked from network); 22 Aug 2002 15:25:53 -0000
+Received: from localhost (HELO deepeddy.vircio.com)
+    (?AL1b20iTMIHwZbG9ZCdQYQG3nsIe5jbe?@[127.0.0.1]) (envelope-sender
+    <cwg-exmh@DeepEddy.Com>) by localhost (qmail-ldap-1.03) with SMTP for
+    <exmh-workers@redhat.com>; 22 Aug 2002 15:25:53 -0000
+X-Mailer: exmh version 2.5 07/13/2001 with nmh-1.0.4
+To: Robert Elz <kre@munnari.OZ.AU>, exmh-workers@spamassassin.taint.org
+Subject: Re: New Sequences Window
+In-Reply-To: <1029944441.398.TMDA@deepeddy.vircio.com>
+References: <1029882468.3116.TMDA@deepeddy.vircio.com>
+    <9627.1029933001@munnari.OZ.AU>
+    <1029943066.26919.TMDA@deepeddy.vircio.com>
+    <1029944441.398.TMDA@deepeddy.vircio.com>
+X-Url: http://www.DeepEddy.Com/~cwg
+X-Image-Url: http://www.DeepEddy.Com/~cwg/chris.gif
+MIME-Version: 1.0
+Content-Type: multipart/signed;
+    boundary="==_Exmh_-1317289252P";
+    micalg=pgp-sha1;
+    protocol="application/pgp-signature"
+Content-Transfer-Encoding: 7bit
+Message-Id: <1030029953.13171.TMDA@deepeddy.vircio.com>
+From: Chris Garrigues <cwg-exmh@DeepEddy.Com>
+X-Delivery-Agent: TMDA/0.57
+Reply-To: Chris Garrigues <cwg-dated-1030461953.beb807@DeepEddy.Com>
+X-Loop: exmh-workers@spamassassin.taint.org
+Sender: exmh-workers-admin@spamassassin.taint.org
+Errors-To: exmh-workers-admin@spamassassin.taint.org
+X-Beenthere: exmh-workers@spamassassin.taint.org
+X-Mailman-Version: 2.0.1
+Precedence: bulk
+List-Help: <mailto:exmh-workers-request@spamassassin.taint.org?subject=help>
+List-Post: <mailto:exmh-workers@spamassassin.taint.org>
+List-Subscribe: <https://listman.spamassassin.taint.org/mailman/listinfo/exmh-workers>,
+    <mailto:exmh-workers-request@redhat.com?subject=subscribe>
+List-Id: Discussion list for EXMH developers <exmh-workers.spamassassin.taint.org>
+List-Unsubscribe: <https://listman.spamassassin.taint.org/mailman/listinfo/exmh-workers>,
+    <mailto:exmh-workers-request@redhat.com?subject=unsubscribe>
+List-Archive: <https://listman.spamassassin.taint.org/mailman/private/exmh-workers/>
+Date: Thu, 22 Aug 2002 10:25:52 -0500
+
+--==_Exmh_-1317289252P
+Content-Type: text/plain; charset=us-ascii
+
+> From:  Chris Garrigues <cwg-exmh@DeepEddy.Com>
+> Date:  Wed, 21 Aug 2002 10:40:39 -0500
+>
+> > From:  Chris Garrigues <cwg-exmh@DeepEddy.Com>
+> > Date:  Wed, 21 Aug 2002 10:17:45 -0500
+> >
+> > Ouch...I'll get right on it.
+> > 
+> > > From:  Robert Elz <kre@munnari.OZ.AU>
+> > > Date:  Wed, 21 Aug 2002 19:30:01 +0700
+> > >
+> > > Any chance of having that lengthen instead?   I like all my exmh stuff
+> > > in nice columns (fits the display better).   That is, I use the detache
+> d
+> > > folder list, one column.   The main exmh window takes up full screen,
+> > > top to bottom, but less than half the width, etc...
+> 
+> I thought about that.  The first order approximation would be to just add 
+> using pack .... -side top instead of pack ... -side left, however, since their 
+> each a different width, it would look funny.
+
+I've done this.  It's not as pretty as I think it should be, but it works.  
+I'm going to leave the cosmetic issues to others.  When I update the 
+documentation, I'll add this to the exmh.TODO file.
+
+I'm leaving for a 2 1/2 week vacation in a week, so this is the last new 
+functionality I'm going to add for a while.  Also, I now have pretty much 
+everything in there that I want for my own use, so I'm probably pretty much 
+done.  I'll work on bug fixes and documentation before my vacation, and 
+hopefully do nothing more afterwards.
+
+Chris
+
+-- 
+Chris Garrigues                 http://www.DeepEddy.Com/~cwg/
+virCIO                          http://www.virCIO.Com
+716 Congress, Suite 200
+Austin, TX  78701		+1 512 374 0500
+
+  World War III:  The Wrong-Doers Vs. the Evil-Doers.
+
+
+
+
+--==_Exmh_-1317289252P
+Content-Type: application/pgp-signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.0.6 (GNU/Linux)
+Comment: Exmh version 2.2_20000822 06/23/2000
+
+iD8DBQE9ZQJ/K9b4h5R0IUIRAiPuAJwL4mUus5whLNQZC8MsDlGpEdKNrACcDfZH
+PcGgN9frLIM+C5Z3vagi2wE=
+=qJoJ
+-----END PGP SIGNATURE-----
+
+--==_Exmh_-1317289252P--
+
+
+
+_______________________________________________
+Exmh-workers mailing list
+Exmh-workers@redhat.com
+https://listman.redhat.com/mailman/listinfo/exmh-workers
+
+
+
+--------------------------------------------------------------------------------
+
+From fork-admin@xent.com  Thu Aug 22 16:37:41 2002
+Return-Path: <fork-admin@xent.com>
+Delivered-To: zzzz@localhost.netnoteinc.com
+Received: from localhost (localhost [127.0.0.1])
+	by phobos.labs.netnoteinc.com (Postfix) with ESMTP id 5DB9843F99
+	for <zzzz@localhost>; Thu, 22 Aug 2002 11:37:40 -0400 (EDT)
+Received: from phobos [127.0.0.1]
+	by localhost with IMAP (fetchmail-5.9.0)
+	for zzzz@localhost (single-drop); Thu, 22 Aug 2002 16:37:40 +0100 (IST)
+Received: from xent.com ([64.161.22.236]) by dogma.slashnull.org
+    (8.11.6/8.11.6) with ESMTP id g7MFbVZ12617 for <zzzz@spamassassin.taint.org>;
+    Thu, 22 Aug 2002 16:37:32 +0100
+Received: from lair.xent.com (localhost [127.0.0.1]) by xent.com (Postfix)
+    with ESMTP id D8D5029409A; Thu, 22 Aug 2002 08:35:09 -0700 (PDT)
+Delivered-To: fork@spamassassin.taint.org
+Received: from sunserver.permafrost.net (u172n16.hfx.eastlink.ca
+    [24.222.172.16]) by xent.com (Postfix) with ESMTP id 3703F294099 for
+    <fork@xent.com>; Thu, 22 Aug 2002 08:34:40 -0700 (PDT)
+Received: from [192.168.123.179] (helo=permafrost.net) by
+    sunserver.permafrost.net with esmtp (Exim 3.35 #1 (Debian)) id
+    17htxj-0008Ad-00 for <fork@xent.com>; Thu, 22 Aug 2002 12:33:31 -0300
+Message-Id: <3D6505C3.2020405@permafrost.net>
+From: Owen Byrne <owen@permafrost.net>
+User-Agent: Mozilla/5.0 (Windows; U; Win98; en-US; rv:1.0.0) Gecko/20020530
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
+To: fork@spamassassin.taint.org
+Subject: The case for spam
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
+Sender: fork-admin@xent.com
+Errors-To: fork-admin@xent.com
+X-Beenthere: fork@spamassassin.taint.org
+X-Mailman-Version: 2.0.11
+Precedence: bulk
+List-Help: <mailto:fork-request@xent.com?subject=help>
+List-Post: <mailto:fork@spamassassin.taint.org>
+List-Subscribe: <http://xent.com/mailman/listinfo/fork>, <mailto:fork-request@xent.com?subject=subscribe>
+List-Id: Friends of Rohit Khare <fork.xent.com>
+List-Unsubscribe: <http://xent.com/mailman/listinfo/fork>,
+    <mailto:fork-request@xent.com?subject=unsubscribe>
+List-Archive: <http://xent.com/pipermail/fork/>
+Date: Thu, 22 Aug 2002 12:39:47 -0300
+
+SpamAssassin is hurting democracy!
+Owen
+---------------------------------------------------------------------------------------------------------------------
+
+http://www.bayarea.com/mld/mercurynews/news/opinion/3900215.htm
+
+Internet can level the political playing field
+By Mike McCurry and Larry Purpuro
+
+NOT many months from now, people across the country will experience one 
+of the great recurring features of American democracy. At shopping 
+malls, on factory floors, at church socials and even on our front 
+stoops, we will be approached by individuals who want to represent us in 
+public office. While chances are high that we won't know them 
+personally, they will walk up to us, offer a handshake and a flier and 
+ask for our votes.
+
+Just as technology is affecting every other area of communication, it 
+has begun to affect the way political candidates communicate with voters.
+
+In this year's GOP gubernatorial primary, California Secretary of State 
+Bill Jones, who faced better-funded candidates, acquired the e-mail 
+addresses of more than a million potential California voters and sent 
+each an unsolicited e-mail asking for support.
+
+That day, he might have chosen any of the more traditional -- and more 
+expensive -- methods of contacting voters, such as direct mail, radio 
+spots or TV ads. But he spent only about 2 cents per message, instead of 
+35 cents or more per message for direct mail or in another medium.
+
+Had Jones chosen direct mail, radio or TV, that communication would have 
+been equally ``unsolicited,'' as defined in the e-mail world. Few voters 
+would have ``opted in'' to receive campaign information from Jones 
+through any of those channels.
+
+The response to Jones' e-mail effort, however, was swift and intense. He 
+was lambasted by anti-spam advocates, and media coverage was almost 
+entirely negative. To be fair, some of Jones' tactics could have been 
+refined. He used a less-than-perfect list and no standard-practice 
+``paid for'' disclaimer in the message.
+
+His detractors, however, attacked him not for his tactical miscues but 
+because the e-mail was sent unsolicited. In fact, Jones' online campaign 
+may have been his most visible asset. In an era of cynicism toward money 
+in politics -- money typically spent on other unsolicited communication 
+mediums -- Jones tried to level the playing field.
+
+No one likes commercial spam. It is irrelevant and untargeted and can be 
+highly intrusive and even offensive. But as a sophisticated society, 
+it's time to differentiate commercial spam from very different 
+unsolicited e-mail sent by political candidates to voters.
+
+The debate is particularly relevant in light of legislation in Congress 
+that would constitute the first federal law to directly address spam. We 
+believe e-mail is no more intrusive than direct mail, telemarketing or 
+TV advertising when it comes to politicians seeking to reach voters. A 
+simple link in good e-mail campaigns allows recipients to opt out of 
+future mailings. Direct mail takes at least a phone call or stamp to be 
+taken off a list, and viewers must repeatedly endure TV ads.
+
+When a candidate lacks a large campaign war chest, he or she can use the 
+Internet to provide constituents with information to better prepare them 
+to perform their civic duty of casting educated votes. With more than 60 
+percent of all potential voters in this country possessing e-mail 
+accounts, it makes sense that political candidates use this medium.
+
+Candidates might avoid some of the tactical problems encountered by the 
+Jones campaign if they use the technologies available today that better 
+ensure quality of e-mail lists and target content to specific recipient 
+groups.
+
+But the broader point remains. When a political candidate sends a voter 
+an e-mail, that recipient can choose to delete the message without 
+opening it, unsubscribe from the list, read it or even reply and engage 
+the sender. That choice should belong to the voter -- not to anti-spam 
+advocates whose efforts are better focused on commercial e-mail. 
+Political candidates should be free to communicate with voters as best 
+they can, and let voters decide what to do with that information.
+
+
+--------------------------------------------------------------------------------
+Mike McCurry, former press secretary for President Clinton, is CEO of an 
+advocacy management and communications software company. Larry Purpuro, 
+the former Republican National Committee deputy chief of staff, is 
+founder and president of a political e-marketing firm. This was written 
+for the Los Angeles Times. 
+
+http://xent.com/mailman/listinfo/fork
 

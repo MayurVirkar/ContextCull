@@ -222,7 +222,7 @@ json_audit = {
         "principalId": "AIDAJQABLZS4A3QEXAMPLE",
         "arn": "arn:aws:iam::123456789012:user/deployer-bot",
         "accountId": "123456789012",
-        "userName": "deployer-bot"
+        "userName": "deployer-bot",
     },
     "eventTime": "2026-07-14T08:12:00Z",
     "eventSource": "ec2.amazonaws.com",
@@ -235,16 +235,16 @@ json_audit = {
         "imageId": "ami-0c55b159cbfafe1f0",
         "minCount": 4,
         "maxCount": 4,
-        "securityGroupId": ["sg-01a2b3c4d5e6f7890"]
+        "securityGroupId": ["sg-01a2b3c4d5e6f7890"],
     },
     "responseElements": {
         "instancesSet": {
             "items": [
                 {"instanceId": "i-0622056ec3e996a7c", "currentState": {"name": "running"}},
-                {"instanceId": "i-0733167fd4e007b8d", "currentState": {"name": "running"}}
+                {"instanceId": "i-0733167fd4e007b8d", "currentState": {"name": "running"}},
             ]
         }
-    }
+    },
 }
 (EVAL_DIR / "08_cloud_audit.json").write_text(json.dumps(json_audit, indent=2), encoding="utf-8")
 
@@ -258,11 +258,13 @@ csv_lines = [
     "2026-07-14T08:04:00Z,srv-02.us-east.acme,94.3,8100,2900,504,ConnectionPoolExhausted",
     "2026-07-14T08:05:00Z,srv-02.us-east.acme,98.7,8192,4100,500,InternalServerError",
     "2026-07-14T08:06:00Z,srv-03.us-east.acme,35.0,3800,22,200,None",
-    "2026-07-14T08:15:00Z,srv-01.us-east.acme,38.4,4100,21,200,None"
+    "2026-07-14T08:15:00Z,srv-01.us-east.acme,38.4,4100,21,200,None",
 ]
 (EVAL_DIR / "09_incident_metrics.csv").write_text("\n".join(csv_lines), encoding="utf-8")
 
 # 10. Complex Source Code Module
-(EVAL_DIR / "10_source_module.py").write_text(Path("src/tep/select/budget.py").read_text(encoding="utf-8"), encoding="utf-8")
+(EVAL_DIR / "10_source_module.py").write_text(
+    Path("src/tep/select/budget.py").read_text(encoding="utf-8"), encoding="utf-8"
+)
 
 print("All 10 evaluation datasets prepared successfully in examples/eval/!")

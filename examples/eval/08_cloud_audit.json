@@ -1,3992 +1,1690 @@
-[
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-1"
-    },
-    "eventTime": "2026-09-20T18:08:59.651448",
-    "eventName": "PutObject",
-    "sourceIPAddress": "198.51.100.1",
-    "requestParameters": {
-      "bucket": "prod-bucket-1",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-2"
-    },
-    "eventTime": "2026-09-20T18:08:59.651482",
-    "eventName": "AssumeRole",
-    "sourceIPAddress": "198.51.100.2",
-    "requestParameters": {
-      "bucket": "prod-bucket-2",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-3"
-    },
-    "eventTime": "2026-09-20T18:08:59.651497",
-    "eventName": "PutObject",
-    "sourceIPAddress": "198.51.100.3",
-    "requestParameters": {
-      "bucket": "prod-bucket-3",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-4"
-    },
-    "eventTime": "2026-09-20T18:08:59.651515",
-    "eventName": "AssumeRole",
-    "sourceIPAddress": "198.51.100.4",
-    "requestParameters": {
-      "bucket": "prod-bucket-4",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-5"
-    },
-    "eventTime": "2026-09-20T18:08:59.651523",
-    "eventName": "PutObject",
-    "sourceIPAddress": "198.51.100.5",
-    "requestParameters": {
-      "bucket": "prod-bucket-5",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-6"
-    },
-    "eventTime": "2026-09-20T18:08:59.651533",
-    "eventName": "AssumeRole",
-    "sourceIPAddress": "198.51.100.6",
-    "requestParameters": {
-      "bucket": "prod-bucket-6",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-7"
-    },
-    "eventTime": "2026-09-20T18:08:59.651542",
-    "eventName": "PutObject",
-    "sourceIPAddress": "198.51.100.7",
-    "requestParameters": {
-      "bucket": "prod-bucket-7",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-8"
-    },
-    "eventTime": "2026-09-20T18:08:59.651552",
-    "eventName": "AssumeRole",
-    "sourceIPAddress": "198.51.100.8",
-    "requestParameters": {
-      "bucket": "prod-bucket-8",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-9"
-    },
-    "eventTime": "2026-09-20T18:08:59.651563",
-    "eventName": "PutObject",
-    "sourceIPAddress": "198.51.100.9",
-    "requestParameters": {
-      "bucket": "prod-bucket-9",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-10"
-    },
-    "eventTime": "2026-09-20T18:08:59.651574",
-    "eventName": "AssumeRole",
-    "sourceIPAddress": "198.51.100.10",
-    "requestParameters": {
-      "bucket": "prod-bucket-10",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-11"
-    },
-    "eventTime": "2026-09-20T18:08:59.651586",
-    "eventName": "PutObject",
-    "sourceIPAddress": "198.51.100.11",
-    "requestParameters": {
-      "bucket": "prod-bucket-11",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-12"
-    },
-    "eventTime": "2026-09-20T18:08:59.651599",
-    "eventName": "AssumeRole",
-    "sourceIPAddress": "198.51.100.12",
-    "requestParameters": {
-      "bucket": "prod-bucket-12",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-13"
-    },
-    "eventTime": "2026-09-20T18:08:59.651613",
-    "eventName": "PutObject",
-    "sourceIPAddress": "198.51.100.13",
-    "requestParameters": {
-      "bucket": "prod-bucket-13",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-14"
-    },
-    "eventTime": "2026-09-20T18:08:59.651627",
-    "eventName": "AssumeRole",
-    "sourceIPAddress": "198.51.100.14",
-    "requestParameters": {
-      "bucket": "prod-bucket-14",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-15"
-    },
-    "eventTime": "2026-09-20T18:08:59.651642",
-    "eventName": "PutObject",
-    "sourceIPAddress": "198.51.100.15",
-    "requestParameters": {
-      "bucket": "prod-bucket-15",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-16"
-    },
-    "eventTime": "2026-09-20T18:08:59.651658",
-    "eventName": "AssumeRole",
-    "sourceIPAddress": "198.51.100.16",
-    "requestParameters": {
-      "bucket": "prod-bucket-16",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-17"
-    },
-    "eventTime": "2026-09-20T18:08:59.651675",
-    "eventName": "PutObject",
-    "sourceIPAddress": "198.51.100.17",
-    "requestParameters": {
-      "bucket": "prod-bucket-17",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-18"
-    },
-    "eventTime": "2026-09-20T18:08:59.651699",
-    "eventName": "AssumeRole",
-    "sourceIPAddress": "198.51.100.18",
-    "requestParameters": {
-      "bucket": "prod-bucket-18",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-19"
-    },
-    "eventTime": "2026-09-20T18:08:59.651718",
-    "eventName": "PutObject",
-    "sourceIPAddress": "198.51.100.19",
-    "requestParameters": {
-      "bucket": "prod-bucket-19",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-20"
-    },
-    "eventTime": "2026-09-20T18:08:59.651737",
-    "eventName": "AssumeRole",
-    "sourceIPAddress": "198.51.100.20",
-    "requestParameters": {
-      "bucket": "prod-bucket-20",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-21"
-    },
-    "eventTime": "2026-09-20T18:08:59.651757",
-    "eventName": "PutObject",
-    "sourceIPAddress": "198.51.100.21",
-    "requestParameters": {
-      "bucket": "prod-bucket-21",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-22"
-    },
-    "eventTime": "2026-09-20T18:08:59.651778",
-    "eventName": "AssumeRole",
-    "sourceIPAddress": "198.51.100.22",
-    "requestParameters": {
-      "bucket": "prod-bucket-22",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-23"
-    },
-    "eventTime": "2026-09-20T18:08:59.651799",
-    "eventName": "PutObject",
-    "sourceIPAddress": "198.51.100.23",
-    "requestParameters": {
-      "bucket": "prod-bucket-23",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-24"
-    },
-    "eventTime": "2026-09-20T18:08:59.651821",
-    "eventName": "AssumeRole",
-    "sourceIPAddress": "198.51.100.24",
-    "requestParameters": {
-      "bucket": "prod-bucket-24",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-25"
-    },
-    "eventTime": "2026-09-20T18:08:59.651844",
-    "eventName": "PutObject",
-    "sourceIPAddress": "198.51.100.25",
-    "requestParameters": {
-      "bucket": "prod-bucket-25",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-26"
-    },
-    "eventTime": "2026-09-20T18:08:59.651868",
-    "eventName": "AssumeRole",
-    "sourceIPAddress": "198.51.100.26",
-    "requestParameters": {
-      "bucket": "prod-bucket-26",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-27"
-    },
-    "eventTime": "2026-09-20T18:08:59.651893",
-    "eventName": "PutObject",
-    "sourceIPAddress": "198.51.100.27",
-    "requestParameters": {
-      "bucket": "prod-bucket-27",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-28"
-    },
-    "eventTime": "2026-09-20T18:08:59.651920",
-    "eventName": "AssumeRole",
-    "sourceIPAddress": "198.51.100.28",
-    "requestParameters": {
-      "bucket": "prod-bucket-28",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-29"
-    },
-    "eventTime": "2026-09-20T18:08:59.651946",
-    "eventName": "PutObject",
-    "sourceIPAddress": "198.51.100.29",
-    "requestParameters": {
-      "bucket": "prod-bucket-29",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-30"
-    },
-    "eventTime": "2026-09-20T18:08:59.651972",
-    "eventName": "AssumeRole",
-    "sourceIPAddress": "198.51.100.30",
-    "requestParameters": {
-      "bucket": "prod-bucket-30",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-31"
-    },
-    "eventTime": "2026-09-20T18:08:59.652000",
-    "eventName": "PutObject",
-    "sourceIPAddress": "198.51.100.31",
-    "requestParameters": {
-      "bucket": "prod-bucket-31",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-32"
-    },
-    "eventTime": "2026-09-20T18:08:59.652029",
-    "eventName": "AssumeRole",
-    "sourceIPAddress": "198.51.100.32",
-    "requestParameters": {
-      "bucket": "prod-bucket-32",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-33"
-    },
-    "eventTime": "2026-09-20T18:08:59.652058",
-    "eventName": "PutObject",
-    "sourceIPAddress": "198.51.100.33",
-    "requestParameters": {
-      "bucket": "prod-bucket-33",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-34"
-    },
-    "eventTime": "2026-09-20T18:08:59.652088",
-    "eventName": "AssumeRole",
-    "sourceIPAddress": "198.51.100.34",
-    "requestParameters": {
-      "bucket": "prod-bucket-34",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-35"
-    },
-    "eventTime": "2026-09-20T18:08:59.652120",
-    "eventName": "PutObject",
-    "sourceIPAddress": "198.51.100.35",
-    "requestParameters": {
-      "bucket": "prod-bucket-35",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-36"
-    },
-    "eventTime": "2026-09-20T18:08:59.652152",
-    "eventName": "AssumeRole",
-    "sourceIPAddress": "198.51.100.36",
-    "requestParameters": {
-      "bucket": "prod-bucket-36",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-37"
-    },
-    "eventTime": "2026-09-20T18:08:59.652184",
-    "eventName": "PutObject",
-    "sourceIPAddress": "198.51.100.37",
-    "requestParameters": {
-      "bucket": "prod-bucket-37",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-38"
-    },
-    "eventTime": "2026-09-20T18:08:59.652218",
-    "eventName": "AssumeRole",
-    "sourceIPAddress": "198.51.100.38",
-    "requestParameters": {
-      "bucket": "prod-bucket-38",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-39"
-    },
-    "eventTime": "2026-09-20T18:08:59.652252",
-    "eventName": "PutObject",
-    "sourceIPAddress": "198.51.100.39",
-    "requestParameters": {
-      "bucket": "prod-bucket-39",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-40"
-    },
-    "eventTime": "2026-09-20T18:08:59.652286",
-    "eventName": "AssumeRole",
-    "sourceIPAddress": "198.51.100.40",
-    "requestParameters": {
-      "bucket": "prod-bucket-40",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-41"
-    },
-    "eventTime": "2026-09-20T18:08:59.652321",
-    "eventName": "PutObject",
-    "sourceIPAddress": "198.51.100.41",
-    "requestParameters": {
-      "bucket": "prod-bucket-41",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-42"
-    },
-    "eventTime": "2026-09-20T18:08:59.652359",
-    "eventName": "AssumeRole",
-    "sourceIPAddress": "198.51.100.42",
-    "requestParameters": {
-      "bucket": "prod-bucket-42",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-43"
-    },
-    "eventTime": "2026-09-20T18:08:59.652395",
-    "eventName": "PutObject",
-    "sourceIPAddress": "198.51.100.43",
-    "requestParameters": {
-      "bucket": "prod-bucket-43",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-44"
-    },
-    "eventTime": "2026-09-20T18:08:59.652433",
-    "eventName": "AssumeRole",
-    "sourceIPAddress": "198.51.100.44",
-    "requestParameters": {
-      "bucket": "prod-bucket-44",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-45"
-    },
-    "eventTime": "2026-09-20T18:08:59.652471",
-    "eventName": "PutObject",
-    "sourceIPAddress": "198.51.100.45",
-    "requestParameters": {
-      "bucket": "prod-bucket-45",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-46"
-    },
-    "eventTime": "2026-09-20T18:08:59.652520",
-    "eventName": "AssumeRole",
-    "sourceIPAddress": "198.51.100.46",
-    "requestParameters": {
-      "bucket": "prod-bucket-46",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-47"
-    },
-    "eventTime": "2026-09-20T18:08:59.652559",
-    "eventName": "PutObject",
-    "sourceIPAddress": "198.51.100.47",
-    "requestParameters": {
-      "bucket": "prod-bucket-47",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-48"
-    },
-    "eventTime": "2026-09-20T18:08:59.652600",
-    "eventName": "AssumeRole",
-    "sourceIPAddress": "198.51.100.48",
-    "requestParameters": {
-      "bucket": "prod-bucket-48",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-49"
-    },
-    "eventTime": "2026-09-20T18:08:59.652642",
-    "eventName": "PutObject",
-    "sourceIPAddress": "198.51.100.49",
-    "requestParameters": {
-      "bucket": "prod-bucket-49",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-50"
-    },
-    "eventTime": "2026-09-20T18:08:59.652684",
-    "eventName": "AssumeRole",
-    "sourceIPAddress": "198.51.100.50",
-    "requestParameters": {
-      "bucket": "prod-bucket-50",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-51"
-    },
-    "eventTime": "2026-09-20T18:08:59.652727",
-    "eventName": "PutObject",
-    "sourceIPAddress": "198.51.100.51",
-    "requestParameters": {
-      "bucket": "prod-bucket-51",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-52"
-    },
-    "eventTime": "2026-09-20T18:08:59.652771",
-    "eventName": "AssumeRole",
-    "sourceIPAddress": "198.51.100.52",
-    "requestParameters": {
-      "bucket": "prod-bucket-52",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-53"
-    },
-    "eventTime": "2026-09-20T18:08:59.652816",
-    "eventName": "PutObject",
-    "sourceIPAddress": "198.51.100.53",
-    "requestParameters": {
-      "bucket": "prod-bucket-53",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-54"
-    },
-    "eventTime": "2026-09-20T18:08:59.652862",
-    "eventName": "AssumeRole",
-    "sourceIPAddress": "198.51.100.54",
-    "requestParameters": {
-      "bucket": "prod-bucket-54",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-55"
-    },
-    "eventTime": "2026-09-20T18:08:59.652912",
-    "eventName": "PutObject",
-    "sourceIPAddress": "198.51.100.55",
-    "requestParameters": {
-      "bucket": "prod-bucket-55",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-56"
-    },
-    "eventTime": "2026-09-20T18:08:59.652959",
-    "eventName": "AssumeRole",
-    "sourceIPAddress": "198.51.100.56",
-    "requestParameters": {
-      "bucket": "prod-bucket-56",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-57"
-    },
-    "eventTime": "2026-09-20T18:08:59.653007",
-    "eventName": "PutObject",
-    "sourceIPAddress": "198.51.100.57",
-    "requestParameters": {
-      "bucket": "prod-bucket-57",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-58"
-    },
-    "eventTime": "2026-09-20T18:08:59.653056",
-    "eventName": "AssumeRole",
-    "sourceIPAddress": "198.51.100.58",
-    "requestParameters": {
-      "bucket": "prod-bucket-58",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-59"
-    },
-    "eventTime": "2026-09-20T18:08:59.653107",
-    "eventName": "PutObject",
-    "sourceIPAddress": "198.51.100.59",
-    "requestParameters": {
-      "bucket": "prod-bucket-59",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-60"
-    },
-    "eventTime": "2026-09-20T18:08:59.653157",
-    "eventName": "AssumeRole",
-    "sourceIPAddress": "198.51.100.60",
-    "requestParameters": {
-      "bucket": "prod-bucket-60",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-61"
-    },
-    "eventTime": "2026-09-20T18:08:59.653209",
-    "eventName": "PutObject",
-    "sourceIPAddress": "198.51.100.61",
-    "requestParameters": {
-      "bucket": "prod-bucket-61",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-62"
-    },
-    "eventTime": "2026-09-20T18:08:59.653260",
-    "eventName": "AssumeRole",
-    "sourceIPAddress": "198.51.100.62",
-    "requestParameters": {
-      "bucket": "prod-bucket-62",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-63"
-    },
-    "eventTime": "2026-09-20T18:08:59.653313",
-    "eventName": "PutObject",
-    "sourceIPAddress": "198.51.100.63",
-    "requestParameters": {
-      "bucket": "prod-bucket-63",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-64"
-    },
-    "eventTime": "2026-09-20T18:08:59.653367",
-    "eventName": "AssumeRole",
-    "sourceIPAddress": "198.51.100.64",
-    "requestParameters": {
-      "bucket": "prod-bucket-64",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-65"
-    },
-    "eventTime": "2026-09-20T18:08:59.653422",
-    "eventName": "PutObject",
-    "sourceIPAddress": "198.51.100.65",
-    "requestParameters": {
-      "bucket": "prod-bucket-65",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-66"
-    },
-    "eventTime": "2026-09-20T18:08:59.653477",
-    "eventName": "AssumeRole",
-    "sourceIPAddress": "198.51.100.66",
-    "requestParameters": {
-      "bucket": "prod-bucket-66",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-67"
-    },
-    "eventTime": "2026-09-20T18:08:59.653542",
-    "eventName": "PutObject",
-    "sourceIPAddress": "198.51.100.67",
-    "requestParameters": {
-      "bucket": "prod-bucket-67",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-68"
-    },
-    "eventTime": "2026-09-20T18:08:59.653598",
-    "eventName": "AssumeRole",
-    "sourceIPAddress": "198.51.100.68",
-    "requestParameters": {
-      "bucket": "prod-bucket-68",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-69"
-    },
-    "eventTime": "2026-09-20T18:08:59.653656",
-    "eventName": "PutObject",
-    "sourceIPAddress": "198.51.100.69",
-    "requestParameters": {
-      "bucket": "prod-bucket-69",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-70"
-    },
-    "eventTime": "2026-09-20T18:08:59.653714",
-    "eventName": "AssumeRole",
-    "sourceIPAddress": "198.51.100.70",
-    "requestParameters": {
-      "bucket": "prod-bucket-70",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-71"
-    },
-    "eventTime": "2026-09-20T18:08:59.653773",
-    "eventName": "PutObject",
-    "sourceIPAddress": "198.51.100.71",
-    "requestParameters": {
-      "bucket": "prod-bucket-71",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-72"
-    },
-    "eventTime": "2026-09-20T18:08:59.653833",
-    "eventName": "AssumeRole",
-    "sourceIPAddress": "198.51.100.72",
-    "requestParameters": {
-      "bucket": "prod-bucket-72",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-73"
-    },
-    "eventTime": "2026-09-20T18:08:59.653894",
-    "eventName": "PutObject",
-    "sourceIPAddress": "198.51.100.73",
-    "requestParameters": {
-      "bucket": "prod-bucket-73",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-74"
-    },
-    "eventTime": "2026-09-20T18:08:59.653957",
-    "eventName": "AssumeRole",
-    "sourceIPAddress": "198.51.100.74",
-    "requestParameters": {
-      "bucket": "prod-bucket-74",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-75"
-    },
-    "eventTime": "2026-09-20T18:08:59.654020",
-    "eventName": "PutObject",
-    "sourceIPAddress": "198.51.100.75",
-    "requestParameters": {
-      "bucket": "prod-bucket-75",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-76"
-    },
-    "eventTime": "2026-09-20T18:08:59.654083",
-    "eventName": "AssumeRole",
-    "sourceIPAddress": "198.51.100.76",
-    "requestParameters": {
-      "bucket": "prod-bucket-76",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-77"
-    },
-    "eventTime": "2026-09-20T18:08:59.654146",
-    "eventName": "PutObject",
-    "sourceIPAddress": "198.51.100.77",
-    "requestParameters": {
-      "bucket": "prod-bucket-77",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-78"
-    },
-    "eventTime": "2026-09-20T18:08:59.654211",
-    "eventName": "AssumeRole",
-    "sourceIPAddress": "198.51.100.78",
-    "requestParameters": {
-      "bucket": "prod-bucket-78",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-79"
-    },
-    "eventTime": "2026-09-20T18:08:59.654276",
-    "eventName": "PutObject",
-    "sourceIPAddress": "198.51.100.79",
-    "requestParameters": {
-      "bucket": "prod-bucket-79",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-80"
-    },
-    "eventTime": "2026-09-20T18:08:59.654341",
-    "eventName": "AssumeRole",
-    "sourceIPAddress": "198.51.100.80",
-    "requestParameters": {
-      "bucket": "prod-bucket-80",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-81"
-    },
-    "eventTime": "2026-09-20T18:08:59.654408",
-    "eventName": "PutObject",
-    "sourceIPAddress": "198.51.100.81",
-    "requestParameters": {
-      "bucket": "prod-bucket-81",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-82"
-    },
-    "eventTime": "2026-09-20T18:08:59.654475",
-    "eventName": "AssumeRole",
-    "sourceIPAddress": "198.51.100.82",
-    "requestParameters": {
-      "bucket": "prod-bucket-82",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-83"
-    },
-    "eventTime": "2026-09-20T18:08:59.654553",
-    "eventName": "PutObject",
-    "sourceIPAddress": "198.51.100.83",
-    "requestParameters": {
-      "bucket": "prod-bucket-83",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-84"
-    },
-    "eventTime": "2026-09-20T18:08:59.654623",
-    "eventName": "AssumeRole",
-    "sourceIPAddress": "198.51.100.84",
-    "requestParameters": {
-      "bucket": "prod-bucket-84",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-85"
-    },
-    "eventTime": "2026-09-20T18:08:59.654692",
-    "eventName": "PutObject",
-    "sourceIPAddress": "198.51.100.85",
-    "requestParameters": {
-      "bucket": "prod-bucket-85",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-86"
-    },
-    "eventTime": "2026-09-20T18:08:59.654763",
-    "eventName": "AssumeRole",
-    "sourceIPAddress": "198.51.100.86",
-    "requestParameters": {
-      "bucket": "prod-bucket-86",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-87"
-    },
-    "eventTime": "2026-09-20T18:08:59.654834",
-    "eventName": "PutObject",
-    "sourceIPAddress": "198.51.100.87",
-    "requestParameters": {
-      "bucket": "prod-bucket-87",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-88"
-    },
-    "eventTime": "2026-09-20T18:08:59.654906",
-    "eventName": "AssumeRole",
-    "sourceIPAddress": "198.51.100.88",
-    "requestParameters": {
-      "bucket": "prod-bucket-88",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-89"
-    },
-    "eventTime": "2026-09-20T18:08:59.654979",
-    "eventName": "PutObject",
-    "sourceIPAddress": "198.51.100.89",
-    "requestParameters": {
-      "bucket": "prod-bucket-89",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-90"
-    },
-    "eventTime": "2026-09-20T18:08:59.655053",
-    "eventName": "AssumeRole",
-    "sourceIPAddress": "198.51.100.90",
-    "requestParameters": {
-      "bucket": "prod-bucket-90",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-91"
-    },
-    "eventTime": "2026-09-20T18:08:59.655128",
-    "eventName": "PutObject",
-    "sourceIPAddress": "198.51.100.91",
-    "requestParameters": {
-      "bucket": "prod-bucket-91",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-92"
-    },
-    "eventTime": "2026-09-20T18:08:59.655204",
-    "eventName": "AssumeRole",
-    "sourceIPAddress": "198.51.100.92",
-    "requestParameters": {
-      "bucket": "prod-bucket-92",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-93"
-    },
-    "eventTime": "2026-09-20T18:08:59.655280",
-    "eventName": "PutObject",
-    "sourceIPAddress": "198.51.100.93",
-    "requestParameters": {
-      "bucket": "prod-bucket-93",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-94"
-    },
-    "eventTime": "2026-09-20T18:08:59.655358",
-    "eventName": "AssumeRole",
-    "sourceIPAddress": "198.51.100.94",
-    "requestParameters": {
-      "bucket": "prod-bucket-94",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-95"
-    },
-    "eventTime": "2026-09-20T18:08:59.655435",
-    "eventName": "PutObject",
-    "sourceIPAddress": "198.51.100.95",
-    "requestParameters": {
-      "bucket": "prod-bucket-95",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-96"
-    },
-    "eventTime": "2026-09-20T18:08:59.655567",
-    "eventName": "AssumeRole",
-    "sourceIPAddress": "198.51.100.96",
-    "requestParameters": {
-      "bucket": "prod-bucket-96",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-97"
-    },
-    "eventTime": "2026-09-20T18:08:59.655710",
-    "eventName": "PutObject",
-    "sourceIPAddress": "198.51.100.97",
-    "requestParameters": {
-      "bucket": "prod-bucket-97",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-98"
-    },
-    "eventTime": "2026-09-20T18:08:59.655851",
-    "eventName": "AssumeRole",
-    "sourceIPAddress": "198.51.100.98",
-    "requestParameters": {
-      "bucket": "prod-bucket-98",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-99"
-    },
-    "eventTime": "2026-09-20T18:08:59.655995",
-    "eventName": "PutObject",
-    "sourceIPAddress": "198.51.100.99",
-    "requestParameters": {
-      "bucket": "prod-bucket-99",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-100"
-    },
-    "eventTime": "2026-09-20T18:08:59.656141",
-    "eventName": "AssumeRole",
-    "sourceIPAddress": "198.51.100.100",
-    "requestParameters": {
-      "bucket": "prod-bucket-100",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-101"
-    },
-    "eventTime": "2026-09-20T18:08:59.656289",
-    "eventName": "PutObject",
-    "sourceIPAddress": "198.51.100.101",
-    "requestParameters": {
-      "bucket": "prod-bucket-101",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-102"
-    },
-    "eventTime": "2026-09-20T18:08:59.656436",
-    "eventName": "AssumeRole",
-    "sourceIPAddress": "198.51.100.102",
-    "requestParameters": {
-      "bucket": "prod-bucket-102",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-103"
-    },
-    "eventTime": "2026-09-20T18:08:59.656600",
-    "eventName": "PutObject",
-    "sourceIPAddress": "198.51.100.103",
-    "requestParameters": {
-      "bucket": "prod-bucket-103",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-104"
-    },
-    "eventTime": "2026-09-20T18:08:59.656751",
-    "eventName": "AssumeRole",
-    "sourceIPAddress": "198.51.100.104",
-    "requestParameters": {
-      "bucket": "prod-bucket-104",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-105"
-    },
-    "eventTime": "2026-09-20T18:08:59.656902",
-    "eventName": "PutObject",
-    "sourceIPAddress": "198.51.100.105",
-    "requestParameters": {
-      "bucket": "prod-bucket-105",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-106"
-    },
-    "eventTime": "2026-09-20T18:08:59.657055",
-    "eventName": "AssumeRole",
-    "sourceIPAddress": "198.51.100.106",
-    "requestParameters": {
-      "bucket": "prod-bucket-106",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-107"
-    },
-    "eventTime": "2026-09-20T18:08:59.657210",
-    "eventName": "PutObject",
-    "sourceIPAddress": "198.51.100.107",
-    "requestParameters": {
-      "bucket": "prod-bucket-107",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-108"
-    },
-    "eventTime": "2026-09-20T18:08:59.657367",
-    "eventName": "AssumeRole",
-    "sourceIPAddress": "198.51.100.108",
-    "requestParameters": {
-      "bucket": "prod-bucket-108",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-109"
-    },
-    "eventTime": "2026-09-20T18:08:59.657534",
-    "eventName": "PutObject",
-    "sourceIPAddress": "198.51.100.109",
-    "requestParameters": {
-      "bucket": "prod-bucket-109",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-110"
-    },
-    "eventTime": "2026-09-20T18:08:59.657695",
-    "eventName": "AssumeRole",
-    "sourceIPAddress": "198.51.100.110",
-    "requestParameters": {
-      "bucket": "prod-bucket-110",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-111"
-    },
-    "eventTime": "2026-09-20T18:08:59.657856",
-    "eventName": "PutObject",
-    "sourceIPAddress": "198.51.100.111",
-    "requestParameters": {
-      "bucket": "prod-bucket-111",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-112"
-    },
-    "eventTime": "2026-09-20T18:08:59.658021",
-    "eventName": "AssumeRole",
-    "sourceIPAddress": "198.51.100.112",
-    "requestParameters": {
-      "bucket": "prod-bucket-112",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-113"
-    },
-    "eventTime": "2026-09-20T18:08:59.658188",
-    "eventName": "PutObject",
-    "sourceIPAddress": "198.51.100.113",
-    "requestParameters": {
-      "bucket": "prod-bucket-113",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-114"
-    },
-    "eventTime": "2026-09-20T18:08:59.658355",
-    "eventName": "AssumeRole",
-    "sourceIPAddress": "198.51.100.114",
-    "requestParameters": {
-      "bucket": "prod-bucket-114",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-115"
-    },
-    "eventTime": "2026-09-20T18:08:59.658533",
-    "eventName": "PutObject",
-    "sourceIPAddress": "198.51.100.115",
-    "requestParameters": {
-      "bucket": "prod-bucket-115",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-116"
-    },
-    "eventTime": "2026-09-20T18:08:59.658678",
-    "eventName": "AssumeRole",
-    "sourceIPAddress": "198.51.100.116",
-    "requestParameters": {
-      "bucket": "prod-bucket-116",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-117"
-    },
-    "eventTime": "2026-09-20T18:08:59.658808",
-    "eventName": "PutObject",
-    "sourceIPAddress": "198.51.100.117",
-    "requestParameters": {
-      "bucket": "prod-bucket-117",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-118"
-    },
-    "eventTime": "2026-09-20T18:08:59.658907",
-    "eventName": "AssumeRole",
-    "sourceIPAddress": "198.51.100.118",
-    "requestParameters": {
-      "bucket": "prod-bucket-118",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-119"
-    },
-    "eventTime": "2026-09-20T18:08:59.659006",
-    "eventName": "PutObject",
-    "sourceIPAddress": "198.51.100.119",
-    "requestParameters": {
-      "bucket": "prod-bucket-119",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-120"
-    },
-    "eventTime": "2026-09-20T18:08:59.659106",
-    "eventName": "AssumeRole",
-    "sourceIPAddress": "198.51.100.120",
-    "requestParameters": {
-      "bucket": "prod-bucket-120",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-121"
-    },
-    "eventTime": "2026-09-20T18:08:59.659207",
-    "eventName": "PutObject",
-    "sourceIPAddress": "198.51.100.121",
-    "requestParameters": {
-      "bucket": "prod-bucket-121",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-122"
-    },
-    "eventTime": "2026-09-20T18:08:59.659309",
-    "eventName": "AssumeRole",
-    "sourceIPAddress": "198.51.100.122",
-    "requestParameters": {
-      "bucket": "prod-bucket-122",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-123"
-    },
-    "eventTime": "2026-09-20T18:08:59.659413",
-    "eventName": "PutObject",
-    "sourceIPAddress": "198.51.100.123",
-    "requestParameters": {
-      "bucket": "prod-bucket-123",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-124"
-    },
-    "eventTime": "2026-09-20T18:08:59.659525",
-    "eventName": "AssumeRole",
-    "sourceIPAddress": "198.51.100.124",
-    "requestParameters": {
-      "bucket": "prod-bucket-124",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-125"
-    },
-    "eventTime": "2026-09-20T18:08:59.659629",
-    "eventName": "PutObject",
-    "sourceIPAddress": "198.51.100.125",
-    "requestParameters": {
-      "bucket": "prod-bucket-125",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-126"
-    },
-    "eventTime": "2026-09-20T18:08:59.659733",
-    "eventName": "AssumeRole",
-    "sourceIPAddress": "198.51.100.126",
-    "requestParameters": {
-      "bucket": "prod-bucket-126",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-127"
-    },
-    "eventTime": "2026-09-20T18:08:59.659839",
-    "eventName": "PutObject",
-    "sourceIPAddress": "198.51.100.127",
-    "requestParameters": {
-      "bucket": "prod-bucket-127",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-128"
-    },
-    "eventTime": "2026-09-20T18:08:59.659944",
-    "eventName": "AssumeRole",
-    "sourceIPAddress": "198.51.100.128",
-    "requestParameters": {
-      "bucket": "prod-bucket-128",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-129"
-    },
-    "eventTime": "2026-09-20T18:08:59.660050",
-    "eventName": "PutObject",
-    "sourceIPAddress": "198.51.100.129",
-    "requestParameters": {
-      "bucket": "prod-bucket-129",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-130"
-    },
-    "eventTime": "2026-09-20T18:08:59.660157",
-    "eventName": "AssumeRole",
-    "sourceIPAddress": "198.51.100.130",
-    "requestParameters": {
-      "bucket": "prod-bucket-130",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-131"
-    },
-    "eventTime": "2026-09-20T18:08:59.660264",
-    "eventName": "PutObject",
-    "sourceIPAddress": "198.51.100.131",
-    "requestParameters": {
-      "bucket": "prod-bucket-131",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-132"
-    },
-    "eventTime": "2026-09-20T18:08:59.660373",
-    "eventName": "AssumeRole",
-    "sourceIPAddress": "198.51.100.132",
-    "requestParameters": {
-      "bucket": "prod-bucket-132",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-133"
-    },
-    "eventTime": "2026-09-20T18:08:59.660483",
-    "eventName": "PutObject",
-    "sourceIPAddress": "198.51.100.133",
-    "requestParameters": {
-      "bucket": "prod-bucket-133",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-134"
-    },
-    "eventTime": "2026-09-20T18:08:59.660602",
-    "eventName": "AssumeRole",
-    "sourceIPAddress": "198.51.100.134",
-    "requestParameters": {
-      "bucket": "prod-bucket-134",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-135"
-    },
-    "eventTime": "2026-09-20T18:08:59.660713",
-    "eventName": "PutObject",
-    "sourceIPAddress": "198.51.100.135",
-    "requestParameters": {
-      "bucket": "prod-bucket-135",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-136"
-    },
-    "eventTime": "2026-09-20T18:08:59.660826",
-    "eventName": "AssumeRole",
-    "sourceIPAddress": "198.51.100.136",
-    "requestParameters": {
-      "bucket": "prod-bucket-136",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-137"
-    },
-    "eventTime": "2026-09-20T18:08:59.660939",
-    "eventName": "PutObject",
-    "sourceIPAddress": "198.51.100.137",
-    "requestParameters": {
-      "bucket": "prod-bucket-137",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-138"
-    },
-    "eventTime": "2026-09-20T18:08:59.661052",
-    "eventName": "AssumeRole",
-    "sourceIPAddress": "198.51.100.138",
-    "requestParameters": {
-      "bucket": "prod-bucket-138",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-139"
-    },
-    "eventTime": "2026-09-20T18:08:59.661167",
-    "eventName": "PutObject",
-    "sourceIPAddress": "198.51.100.139",
-    "requestParameters": {
-      "bucket": "prod-bucket-139",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-140"
-    },
-    "eventTime": "2026-09-20T18:08:59.661282",
-    "eventName": "AssumeRole",
-    "sourceIPAddress": "198.51.100.140",
-    "requestParameters": {
-      "bucket": "prod-bucket-140",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-141"
-    },
-    "eventTime": "2026-09-20T18:08:59.661398",
-    "eventName": "PutObject",
-    "sourceIPAddress": "198.51.100.141",
-    "requestParameters": {
-      "bucket": "prod-bucket-141",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-142"
-    },
-    "eventTime": "2026-09-20T18:08:59.661525",
-    "eventName": "AssumeRole",
-    "sourceIPAddress": "198.51.100.142",
-    "requestParameters": {
-      "bucket": "prod-bucket-142",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-143"
-    },
-    "eventTime": "2026-09-20T18:08:59.661643",
-    "eventName": "PutObject",
-    "sourceIPAddress": "198.51.100.143",
-    "requestParameters": {
-      "bucket": "prod-bucket-143",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-144"
-    },
-    "eventTime": "2026-09-20T18:08:59.661761",
-    "eventName": "AssumeRole",
-    "sourceIPAddress": "198.51.100.144",
-    "requestParameters": {
-      "bucket": "prod-bucket-144",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-145"
-    },
-    "eventTime": "2026-09-20T18:08:59.661885",
-    "eventName": "PutObject",
-    "sourceIPAddress": "198.51.100.145",
-    "requestParameters": {
-      "bucket": "prod-bucket-145",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-146"
-    },
-    "eventTime": "2026-09-20T18:08:59.662005",
-    "eventName": "AssumeRole",
-    "sourceIPAddress": "198.51.100.146",
-    "requestParameters": {
-      "bucket": "prod-bucket-146",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-147"
-    },
-    "eventTime": "2026-09-20T18:08:59.662125",
-    "eventName": "PutObject",
-    "sourceIPAddress": "198.51.100.147",
-    "requestParameters": {
-      "bucket": "prod-bucket-147",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-148"
-    },
-    "eventTime": "2026-09-20T18:08:59.662247",
-    "eventName": "AssumeRole",
-    "sourceIPAddress": "198.51.100.148",
-    "requestParameters": {
-      "bucket": "prod-bucket-148",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-149"
-    },
-    "eventTime": "2026-09-20T18:08:59.662370",
-    "eventName": "PutObject",
-    "sourceIPAddress": "198.51.100.149",
-    "requestParameters": {
-      "bucket": "prod-bucket-149",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-150"
-    },
-    "eventTime": "2026-09-20T18:08:59.662500",
-    "eventName": "AssumeRole",
-    "sourceIPAddress": "198.51.100.150",
-    "requestParameters": {
-      "bucket": "prod-bucket-150",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-151"
-    },
-    "eventTime": "2026-09-20T18:08:59.662633",
-    "eventName": "PutObject",
-    "sourceIPAddress": "198.51.100.151",
-    "requestParameters": {
-      "bucket": "prod-bucket-151",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-152"
-    },
-    "eventTime": "2026-09-20T18:08:59.662756",
-    "eventName": "AssumeRole",
-    "sourceIPAddress": "198.51.100.152",
-    "requestParameters": {
-      "bucket": "prod-bucket-152",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-153"
-    },
-    "eventTime": "2026-09-20T18:08:59.662881",
-    "eventName": "PutObject",
-    "sourceIPAddress": "198.51.100.153",
-    "requestParameters": {
-      "bucket": "prod-bucket-153",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-154"
-    },
-    "eventTime": "2026-09-20T18:08:59.663008",
-    "eventName": "AssumeRole",
-    "sourceIPAddress": "198.51.100.154",
-    "requestParameters": {
-      "bucket": "prod-bucket-154",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-155"
-    },
-    "eventTime": "2026-09-20T18:08:59.663135",
-    "eventName": "PutObject",
-    "sourceIPAddress": "198.51.100.155",
-    "requestParameters": {
-      "bucket": "prod-bucket-155",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-156"
-    },
-    "eventTime": "2026-09-20T18:08:59.663262",
-    "eventName": "AssumeRole",
-    "sourceIPAddress": "198.51.100.156",
-    "requestParameters": {
-      "bucket": "prod-bucket-156",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-157"
-    },
-    "eventTime": "2026-09-20T18:08:59.663392",
-    "eventName": "PutObject",
-    "sourceIPAddress": "198.51.100.157",
-    "requestParameters": {
-      "bucket": "prod-bucket-157",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-158"
-    },
-    "eventTime": "2026-09-20T18:08:59.663529",
-    "eventName": "AssumeRole",
-    "sourceIPAddress": "198.51.100.158",
-    "requestParameters": {
-      "bucket": "prod-bucket-158",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-159"
-    },
-    "eventTime": "2026-09-20T18:08:59.663659",
-    "eventName": "PutObject",
-    "sourceIPAddress": "198.51.100.159",
-    "requestParameters": {
-      "bucket": "prod-bucket-159",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-160"
-    },
-    "eventTime": "2026-09-20T18:08:59.663790",
-    "eventName": "AssumeRole",
-    "sourceIPAddress": "198.51.100.160",
-    "requestParameters": {
-      "bucket": "prod-bucket-160",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-161"
-    },
-    "eventTime": "2026-09-20T18:08:59.663921",
-    "eventName": "PutObject",
-    "sourceIPAddress": "198.51.100.161",
-    "requestParameters": {
-      "bucket": "prod-bucket-161",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-162"
-    },
-    "eventTime": "2026-09-20T18:08:59.664054",
-    "eventName": "AssumeRole",
-    "sourceIPAddress": "198.51.100.162",
-    "requestParameters": {
-      "bucket": "prod-bucket-162",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-163"
-    },
-    "eventTime": "2026-09-20T18:08:59.664187",
-    "eventName": "PutObject",
-    "sourceIPAddress": "198.51.100.163",
-    "requestParameters": {
-      "bucket": "prod-bucket-163",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-164"
-    },
-    "eventTime": "2026-09-20T18:08:59.664320",
-    "eventName": "AssumeRole",
-    "sourceIPAddress": "198.51.100.164",
-    "requestParameters": {
-      "bucket": "prod-bucket-164",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-165"
-    },
-    "eventTime": "2026-09-20T18:08:59.664455",
-    "eventName": "PutObject",
-    "sourceIPAddress": "198.51.100.165",
-    "requestParameters": {
-      "bucket": "prod-bucket-165",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-166"
-    },
-    "eventTime": "2026-09-20T18:08:59.664597",
-    "eventName": "AssumeRole",
-    "sourceIPAddress": "198.51.100.166",
-    "requestParameters": {
-      "bucket": "prod-bucket-166",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-167"
-    },
-    "eventTime": "2026-09-20T18:08:59.664732",
-    "eventName": "PutObject",
-    "sourceIPAddress": "198.51.100.167",
-    "requestParameters": {
-      "bucket": "prod-bucket-167",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-168"
-    },
-    "eventTime": "2026-09-20T18:08:59.664869",
-    "eventName": "AssumeRole",
-    "sourceIPAddress": "198.51.100.168",
-    "requestParameters": {
-      "bucket": "prod-bucket-168",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-169"
-    },
-    "eventTime": "2026-09-20T18:08:59.665008",
-    "eventName": "PutObject",
-    "sourceIPAddress": "198.51.100.169",
-    "requestParameters": {
-      "bucket": "prod-bucket-169",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-170"
-    },
-    "eventTime": "2026-09-20T18:08:59.665146",
-    "eventName": "AssumeRole",
-    "sourceIPAddress": "198.51.100.170",
-    "requestParameters": {
-      "bucket": "prod-bucket-170",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-171"
-    },
-    "eventTime": "2026-09-20T18:08:59.665285",
-    "eventName": "PutObject",
-    "sourceIPAddress": "198.51.100.171",
-    "requestParameters": {
-      "bucket": "prod-bucket-171",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-172"
-    },
-    "eventTime": "2026-09-20T18:08:59.665427",
-    "eventName": "AssumeRole",
-    "sourceIPAddress": "198.51.100.172",
-    "requestParameters": {
-      "bucket": "prod-bucket-172",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-173"
-    },
-    "eventTime": "2026-09-20T18:08:59.665573",
-    "eventName": "PutObject",
-    "sourceIPAddress": "198.51.100.173",
-    "requestParameters": {
-      "bucket": "prod-bucket-173",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-174"
-    },
-    "eventTime": "2026-09-20T18:08:59.665715",
-    "eventName": "AssumeRole",
-    "sourceIPAddress": "198.51.100.174",
-    "requestParameters": {
-      "bucket": "prod-bucket-174",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-175"
-    },
-    "eventTime": "2026-09-20T18:08:59.665858",
-    "eventName": "PutObject",
-    "sourceIPAddress": "198.51.100.175",
-    "requestParameters": {
-      "bucket": "prod-bucket-175",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-176"
-    },
-    "eventTime": "2026-09-20T18:08:59.666000",
-    "eventName": "AssumeRole",
-    "sourceIPAddress": "198.51.100.176",
-    "requestParameters": {
-      "bucket": "prod-bucket-176",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-177"
-    },
-    "eventTime": "2026-09-20T18:08:59.666144",
-    "eventName": "PutObject",
-    "sourceIPAddress": "198.51.100.177",
-    "requestParameters": {
-      "bucket": "prod-bucket-177",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-178"
-    },
-    "eventTime": "2026-09-20T18:08:59.666287",
-    "eventName": "AssumeRole",
-    "sourceIPAddress": "198.51.100.178",
-    "requestParameters": {
-      "bucket": "prod-bucket-178",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-179"
-    },
-    "eventTime": "2026-09-20T18:08:59.666434",
-    "eventName": "PutObject",
-    "sourceIPAddress": "198.51.100.179",
-    "requestParameters": {
-      "bucket": "prod-bucket-179",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-180"
-    },
-    "eventTime": "2026-09-20T18:08:59.666586",
-    "eventName": "AssumeRole",
-    "sourceIPAddress": "198.51.100.180",
-    "requestParameters": {
-      "bucket": "prod-bucket-180",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-181"
-    },
-    "eventTime": "2026-09-20T18:08:59.666733",
-    "eventName": "PutObject",
-    "sourceIPAddress": "198.51.100.181",
-    "requestParameters": {
-      "bucket": "prod-bucket-181",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-182"
-    },
-    "eventTime": "2026-09-20T18:08:59.666881",
-    "eventName": "AssumeRole",
-    "sourceIPAddress": "198.51.100.182",
-    "requestParameters": {
-      "bucket": "prod-bucket-182",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-183"
-    },
-    "eventTime": "2026-09-20T18:08:59.667029",
-    "eventName": "PutObject",
-    "sourceIPAddress": "198.51.100.183",
-    "requestParameters": {
-      "bucket": "prod-bucket-183",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-184"
-    },
-    "eventTime": "2026-09-20T18:08:59.667179",
-    "eventName": "AssumeRole",
-    "sourceIPAddress": "198.51.100.184",
-    "requestParameters": {
-      "bucket": "prod-bucket-184",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-185"
-    },
-    "eventTime": "2026-09-20T18:08:59.667330",
-    "eventName": "PutObject",
-    "sourceIPAddress": "198.51.100.185",
-    "requestParameters": {
-      "bucket": "prod-bucket-185",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-186"
-    },
-    "eventTime": "2026-09-20T18:08:59.667482",
-    "eventName": "AssumeRole",
-    "sourceIPAddress": "198.51.100.186",
-    "requestParameters": {
-      "bucket": "prod-bucket-186",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-187"
-    },
-    "eventTime": "2026-09-20T18:08:59.667639",
-    "eventName": "PutObject",
-    "sourceIPAddress": "198.51.100.187",
-    "requestParameters": {
-      "bucket": "prod-bucket-187",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-188"
-    },
-    "eventTime": "2026-09-20T18:08:59.667792",
-    "eventName": "AssumeRole",
-    "sourceIPAddress": "198.51.100.188",
-    "requestParameters": {
-      "bucket": "prod-bucket-188",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-189"
-    },
-    "eventTime": "2026-09-20T18:08:59.667945",
-    "eventName": "PutObject",
-    "sourceIPAddress": "198.51.100.189",
-    "requestParameters": {
-      "bucket": "prod-bucket-189",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-190"
-    },
-    "eventTime": "2026-09-20T18:08:59.668099",
-    "eventName": "AssumeRole",
-    "sourceIPAddress": "198.51.100.190",
-    "requestParameters": {
-      "bucket": "prod-bucket-190",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-191"
-    },
-    "eventTime": "2026-09-20T18:08:59.668255",
-    "eventName": "PutObject",
-    "sourceIPAddress": "198.51.100.191",
-    "requestParameters": {
-      "bucket": "prod-bucket-191",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-192"
-    },
-    "eventTime": "2026-09-20T18:08:59.668411",
-    "eventName": "AssumeRole",
-    "sourceIPAddress": "198.51.100.192",
-    "requestParameters": {
-      "bucket": "prod-bucket-192",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-193"
-    },
-    "eventTime": "2026-09-20T18:08:59.668574",
-    "eventName": "PutObject",
-    "sourceIPAddress": "198.51.100.193",
-    "requestParameters": {
-      "bucket": "prod-bucket-193",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-194"
-    },
-    "eventTime": "2026-09-20T18:08:59.668733",
-    "eventName": "AssumeRole",
-    "sourceIPAddress": "198.51.100.194",
-    "requestParameters": {
-      "bucket": "prod-bucket-194",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-195"
-    },
-    "eventTime": "2026-09-20T18:08:59.668891",
-    "eventName": "PutObject",
-    "sourceIPAddress": "198.51.100.195",
-    "requestParameters": {
-      "bucket": "prod-bucket-195",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-196"
-    },
-    "eventTime": "2026-09-20T18:08:59.669051",
-    "eventName": "AssumeRole",
-    "sourceIPAddress": "198.51.100.196",
-    "requestParameters": {
-      "bucket": "prod-bucket-196",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-197"
-    },
-    "eventTime": "2026-09-20T18:08:59.669210",
-    "eventName": "PutObject",
-    "sourceIPAddress": "198.51.100.197",
-    "requestParameters": {
-      "bucket": "prod-bucket-197",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-198"
-    },
-    "eventTime": "2026-09-20T18:08:59.669370",
-    "eventName": "AssumeRole",
-    "sourceIPAddress": "198.51.100.198",
-    "requestParameters": {
-      "bucket": "prod-bucket-198",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-199"
-    },
-    "eventTime": "2026-09-20T18:08:59.669537",
-    "eventName": "PutObject",
-    "sourceIPAddress": "198.51.100.199",
-    "requestParameters": {
-      "bucket": "prod-bucket-199",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-200"
-    },
-    "eventTime": "2026-09-20T18:08:59.669699",
-    "eventName": "AssumeRole",
-    "sourceIPAddress": "198.51.100.200",
-    "requestParameters": {
-      "bucket": "prod-bucket-200",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-201"
-    },
-    "eventTime": "2026-09-20T18:08:59.669860",
-    "eventName": "PutObject",
-    "sourceIPAddress": "198.51.100.201",
-    "requestParameters": {
-      "bucket": "prod-bucket-201",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-202"
-    },
-    "eventTime": "2026-09-20T18:08:59.670024",
-    "eventName": "AssumeRole",
-    "sourceIPAddress": "198.51.100.202",
-    "requestParameters": {
-      "bucket": "prod-bucket-202",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-203"
-    },
-    "eventTime": "2026-09-20T18:08:59.670189",
-    "eventName": "PutObject",
-    "sourceIPAddress": "198.51.100.203",
-    "requestParameters": {
-      "bucket": "prod-bucket-203",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-204"
-    },
-    "eventTime": "2026-09-20T18:08:59.670354",
-    "eventName": "AssumeRole",
-    "sourceIPAddress": "198.51.100.204",
-    "requestParameters": {
-      "bucket": "prod-bucket-204",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-205"
-    },
-    "eventTime": "2026-09-20T18:08:59.670527",
-    "eventName": "PutObject",
-    "sourceIPAddress": "198.51.100.205",
-    "requestParameters": {
-      "bucket": "prod-bucket-205",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-206"
-    },
-    "eventTime": "2026-09-20T18:08:59.670700",
-    "eventName": "AssumeRole",
-    "sourceIPAddress": "198.51.100.206",
-    "requestParameters": {
-      "bucket": "prod-bucket-206",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-207"
-    },
-    "eventTime": "2026-09-20T18:08:59.670871",
-    "eventName": "PutObject",
-    "sourceIPAddress": "198.51.100.207",
-    "requestParameters": {
-      "bucket": "prod-bucket-207",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-208"
-    },
-    "eventTime": "2026-09-20T18:08:59.671039",
-    "eventName": "AssumeRole",
-    "sourceIPAddress": "198.51.100.208",
-    "requestParameters": {
-      "bucket": "prod-bucket-208",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-209"
-    },
-    "eventTime": "2026-09-20T18:08:59.671208",
-    "eventName": "PutObject",
-    "sourceIPAddress": "198.51.100.209",
-    "requestParameters": {
-      "bucket": "prod-bucket-209",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-210"
-    },
-    "eventTime": "2026-09-20T18:08:59.671377",
-    "eventName": "AssumeRole",
-    "sourceIPAddress": "198.51.100.210",
-    "requestParameters": {
-      "bucket": "prod-bucket-210",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-211"
-    },
-    "eventTime": "2026-09-20T18:08:59.671556",
-    "eventName": "PutObject",
-    "sourceIPAddress": "198.51.100.211",
-    "requestParameters": {
-      "bucket": "prod-bucket-211",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-212"
-    },
-    "eventTime": "2026-09-20T18:08:59.671727",
-    "eventName": "AssumeRole",
-    "sourceIPAddress": "198.51.100.212",
-    "requestParameters": {
-      "bucket": "prod-bucket-212",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-213"
-    },
-    "eventTime": "2026-09-20T18:08:59.671898",
-    "eventName": "PutObject",
-    "sourceIPAddress": "198.51.100.213",
-    "requestParameters": {
-      "bucket": "prod-bucket-213",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-214"
-    },
-    "eventTime": "2026-09-20T18:08:59.672070",
-    "eventName": "AssumeRole",
-    "sourceIPAddress": "198.51.100.214",
-    "requestParameters": {
-      "bucket": "prod-bucket-214",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-215"
-    },
-    "eventTime": "2026-09-20T18:08:59.672244",
-    "eventName": "PutObject",
-    "sourceIPAddress": "198.51.100.215",
-    "requestParameters": {
-      "bucket": "prod-bucket-215",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-216"
-    },
-    "eventTime": "2026-09-20T18:08:59.672419",
-    "eventName": "AssumeRole",
-    "sourceIPAddress": "198.51.100.216",
-    "requestParameters": {
-      "bucket": "prod-bucket-216",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-217"
-    },
-    "eventTime": "2026-09-20T18:08:59.672605",
-    "eventName": "PutObject",
-    "sourceIPAddress": "198.51.100.217",
-    "requestParameters": {
-      "bucket": "prod-bucket-217",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-218"
-    },
-    "eventTime": "2026-09-20T18:08:59.672780",
-    "eventName": "AssumeRole",
-    "sourceIPAddress": "198.51.100.218",
-    "requestParameters": {
-      "bucket": "prod-bucket-218",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-219"
-    },
-    "eventTime": "2026-09-20T18:08:59.672957",
-    "eventName": "PutObject",
-    "sourceIPAddress": "198.51.100.219",
-    "requestParameters": {
-      "bucket": "prod-bucket-219",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-220"
-    },
-    "eventTime": "2026-09-20T18:08:59.673134",
-    "eventName": "AssumeRole",
-    "sourceIPAddress": "198.51.100.220",
-    "requestParameters": {
-      "bucket": "prod-bucket-220",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-221"
-    },
-    "eventTime": "2026-09-20T18:08:59.673311",
-    "eventName": "PutObject",
-    "sourceIPAddress": "198.51.100.221",
-    "requestParameters": {
-      "bucket": "prod-bucket-221",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-222"
-    },
-    "eventTime": "2026-09-20T18:08:59.673527",
-    "eventName": "AssumeRole",
-    "sourceIPAddress": "198.51.100.222",
-    "requestParameters": {
-      "bucket": "prod-bucket-222",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-223"
-    },
-    "eventTime": "2026-09-20T18:08:59.673716",
-    "eventName": "PutObject",
-    "sourceIPAddress": "198.51.100.223",
-    "requestParameters": {
-      "bucket": "prod-bucket-223",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-224"
-    },
-    "eventTime": "2026-09-20T18:08:59.673899",
-    "eventName": "AssumeRole",
-    "sourceIPAddress": "198.51.100.224",
-    "requestParameters": {
-      "bucket": "prod-bucket-224",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-225"
-    },
-    "eventTime": "2026-09-20T18:08:59.674079",
-    "eventName": "PutObject",
-    "sourceIPAddress": "198.51.100.225",
-    "requestParameters": {
-      "bucket": "prod-bucket-225",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-226"
-    },
-    "eventTime": "2026-09-20T18:08:59.674261",
-    "eventName": "AssumeRole",
-    "sourceIPAddress": "198.51.100.226",
-    "requestParameters": {
-      "bucket": "prod-bucket-226",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-227"
-    },
-    "eventTime": "2026-09-20T18:08:59.674444",
-    "eventName": "PutObject",
-    "sourceIPAddress": "198.51.100.227",
-    "requestParameters": {
-      "bucket": "prod-bucket-227",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-228"
-    },
-    "eventTime": "2026-09-20T18:08:59.674635",
-    "eventName": "AssumeRole",
-    "sourceIPAddress": "198.51.100.228",
-    "requestParameters": {
-      "bucket": "prod-bucket-228",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-229"
-    },
-    "eventTime": "2026-09-20T18:08:59.674820",
-    "eventName": "PutObject",
-    "sourceIPAddress": "198.51.100.229",
-    "requestParameters": {
-      "bucket": "prod-bucket-229",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-230"
-    },
-    "eventTime": "2026-09-20T18:08:59.675005",
-    "eventName": "AssumeRole",
-    "sourceIPAddress": "198.51.100.230",
-    "requestParameters": {
-      "bucket": "prod-bucket-230",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-231"
-    },
-    "eventTime": "2026-09-20T18:08:59.675190",
-    "eventName": "PutObject",
-    "sourceIPAddress": "198.51.100.231",
-    "requestParameters": {
-      "bucket": "prod-bucket-231",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-232"
-    },
-    "eventTime": "2026-09-20T18:08:59.675377",
-    "eventName": "AssumeRole",
-    "sourceIPAddress": "198.51.100.232",
-    "requestParameters": {
-      "bucket": "prod-bucket-232",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-233"
-    },
-    "eventTime": "2026-09-20T18:08:59.675571",
-    "eventName": "PutObject",
-    "sourceIPAddress": "198.51.100.233",
-    "requestParameters": {
-      "bucket": "prod-bucket-233",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-234"
-    },
-    "eventTime": "2026-09-20T18:08:59.675759",
-    "eventName": "AssumeRole",
-    "sourceIPAddress": "198.51.100.234",
-    "requestParameters": {
-      "bucket": "prod-bucket-234",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-235"
-    },
-    "eventTime": "2026-09-20T18:08:59.675948",
-    "eventName": "PutObject",
-    "sourceIPAddress": "198.51.100.235",
-    "requestParameters": {
-      "bucket": "prod-bucket-235",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-236"
-    },
-    "eventTime": "2026-09-20T18:08:59.676137",
-    "eventName": "AssumeRole",
-    "sourceIPAddress": "198.51.100.236",
-    "requestParameters": {
-      "bucket": "prod-bucket-236",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-237"
-    },
-    "eventTime": "2026-09-20T18:08:59.676326",
-    "eventName": "PutObject",
-    "sourceIPAddress": "198.51.100.237",
-    "requestParameters": {
-      "bucket": "prod-bucket-237",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-238"
-    },
-    "eventTime": "2026-09-20T18:08:59.676524",
-    "eventName": "AssumeRole",
-    "sourceIPAddress": "198.51.100.238",
-    "requestParameters": {
-      "bucket": "prod-bucket-238",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-239"
-    },
-    "eventTime": "2026-09-20T18:08:59.676716",
-    "eventName": "PutObject",
-    "sourceIPAddress": "198.51.100.239",
-    "requestParameters": {
-      "bucket": "prod-bucket-239",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-240"
-    },
-    "eventTime": "2026-09-20T18:08:59.676908",
-    "eventName": "AssumeRole",
-    "sourceIPAddress": "198.51.100.240",
-    "requestParameters": {
-      "bucket": "prod-bucket-240",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-241"
-    },
-    "eventTime": "2026-09-20T18:08:59.677101",
-    "eventName": "PutObject",
-    "sourceIPAddress": "198.51.100.241",
-    "requestParameters": {
-      "bucket": "prod-bucket-241",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-242"
-    },
-    "eventTime": "2026-09-20T18:08:59.677295",
-    "eventName": "AssumeRole",
-    "sourceIPAddress": "198.51.100.242",
-    "requestParameters": {
-      "bucket": "prod-bucket-242",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-243"
-    },
-    "eventTime": "2026-09-20T18:08:59.677490",
-    "eventName": "PutObject",
-    "sourceIPAddress": "198.51.100.243",
-    "requestParameters": {
-      "bucket": "prod-bucket-243",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-244"
-    },
-    "eventTime": "2026-09-20T18:08:59.677693",
-    "eventName": "AssumeRole",
-    "sourceIPAddress": "198.51.100.244",
-    "requestParameters": {
-      "bucket": "prod-bucket-244",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-245"
-    },
-    "eventTime": "2026-09-20T18:08:59.677889",
-    "eventName": "PutObject",
-    "sourceIPAddress": "198.51.100.245",
-    "requestParameters": {
-      "bucket": "prod-bucket-245",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-246"
-    },
-    "eventTime": "2026-09-20T18:08:59.678086",
-    "eventName": "AssumeRole",
-    "sourceIPAddress": "198.51.100.246",
-    "requestParameters": {
-      "bucket": "prod-bucket-246",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-247"
-    },
-    "eventTime": "2026-09-20T18:08:59.678284",
-    "eventName": "PutObject",
-    "sourceIPAddress": "198.51.100.247",
-    "requestParameters": {
-      "bucket": "prod-bucket-247",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-248"
-    },
-    "eventTime": "2026-09-20T18:08:59.678483",
-    "eventName": "AssumeRole",
-    "sourceIPAddress": "198.51.100.248",
-    "requestParameters": {
-      "bucket": "prod-bucket-248",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-249"
-    },
-    "eventTime": "2026-09-20T18:08:59.678693",
-    "eventName": "PutObject",
-    "sourceIPAddress": "198.51.100.249",
-    "requestParameters": {
-      "bucket": "prod-bucket-249",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-250"
-    },
-    "eventTime": "2026-09-20T18:08:59.678894",
-    "eventName": "AssumeRole",
-    "sourceIPAddress": "198.51.100.250",
-    "requestParameters": {
-      "bucket": "prod-bucket-250",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-251"
-    },
-    "eventTime": "2026-09-20T18:08:59.679096",
-    "eventName": "PutObject",
-    "sourceIPAddress": "198.51.100.251",
-    "requestParameters": {
-      "bucket": "prod-bucket-251",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-252"
-    },
-    "eventTime": "2026-09-20T18:08:59.679298",
-    "eventName": "AssumeRole",
-    "sourceIPAddress": "198.51.100.252",
-    "requestParameters": {
-      "bucket": "prod-bucket-252",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-253"
-    },
-    "eventTime": "2026-09-20T18:08:59.679500",
-    "eventName": "PutObject",
-    "sourceIPAddress": "198.51.100.253",
-    "requestParameters": {
-      "bucket": "prod-bucket-253",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-254"
-    },
-    "eventTime": "2026-09-20T18:08:59.679710",
-    "eventName": "AssumeRole",
-    "sourceIPAddress": "198.51.100.254",
-    "requestParameters": {
-      "bucket": "prod-bucket-254",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-255"
-    },
-    "eventTime": "2026-09-20T18:08:59.679915",
-    "eventName": "PutObject",
-    "sourceIPAddress": "198.51.100.0",
-    "requestParameters": {
-      "bucket": "prod-bucket-255",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-256"
-    },
-    "eventTime": "2026-09-20T18:08:59.680120",
-    "eventName": "AssumeRole",
-    "sourceIPAddress": "198.51.100.1",
-    "requestParameters": {
-      "bucket": "prod-bucket-256",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-257"
-    },
-    "eventTime": "2026-09-20T18:08:59.680326",
-    "eventName": "PutObject",
-    "sourceIPAddress": "198.51.100.2",
-    "requestParameters": {
-      "bucket": "prod-bucket-257",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-258"
-    },
-    "eventTime": "2026-09-20T18:08:59.680570",
-    "eventName": "AssumeRole",
-    "sourceIPAddress": "198.51.100.3",
-    "requestParameters": {
-      "bucket": "prod-bucket-258",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-259"
-    },
-    "eventTime": "2026-09-20T18:08:59.680781",
-    "eventName": "PutObject",
-    "sourceIPAddress": "198.51.100.4",
-    "requestParameters": {
-      "bucket": "prod-bucket-259",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-260"
-    },
-    "eventTime": "2026-09-20T18:08:59.680990",
-    "eventName": "AssumeRole",
-    "sourceIPAddress": "198.51.100.5",
-    "requestParameters": {
-      "bucket": "prod-bucket-260",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-261"
-    },
-    "eventTime": "2026-09-20T18:08:59.681199",
-    "eventName": "PutObject",
-    "sourceIPAddress": "198.51.100.6",
-    "requestParameters": {
-      "bucket": "prod-bucket-261",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-262"
-    },
-    "eventTime": "2026-09-20T18:08:59.681409",
-    "eventName": "AssumeRole",
-    "sourceIPAddress": "198.51.100.7",
-    "requestParameters": {
-      "bucket": "prod-bucket-262",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-263"
-    },
-    "eventTime": "2026-09-20T18:08:59.681627",
-    "eventName": "PutObject",
-    "sourceIPAddress": "198.51.100.8",
-    "requestParameters": {
-      "bucket": "prod-bucket-263",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-264"
-    },
-    "eventTime": "2026-09-20T18:08:59.681839",
-    "eventName": "AssumeRole",
-    "sourceIPAddress": "198.51.100.9",
-    "requestParameters": {
-      "bucket": "prod-bucket-264",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-265"
-    },
-    "eventTime": "2026-09-20T18:08:59.682052",
-    "eventName": "PutObject",
-    "sourceIPAddress": "198.51.100.10",
-    "requestParameters": {
-      "bucket": "prod-bucket-265",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-266"
-    },
-    "eventTime": "2026-09-20T18:08:59.682267",
-    "eventName": "AssumeRole",
-    "sourceIPAddress": "198.51.100.11",
-    "requestParameters": {
-      "bucket": "prod-bucket-266",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-267"
-    },
-    "eventTime": "2026-09-20T18:08:59.682481",
-    "eventName": "PutObject",
-    "sourceIPAddress": "198.51.100.12",
-    "requestParameters": {
-      "bucket": "prod-bucket-267",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-268"
-    },
-    "eventTime": "2026-09-20T18:08:59.682706",
-    "eventName": "AssumeRole",
-    "sourceIPAddress": "198.51.100.13",
-    "requestParameters": {
-      "bucket": "prod-bucket-268",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-269"
-    },
-    "eventTime": "2026-09-20T18:08:59.682923",
-    "eventName": "PutObject",
-    "sourceIPAddress": "198.51.100.14",
-    "requestParameters": {
-      "bucket": "prod-bucket-269",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-270"
-    },
-    "eventTime": "2026-09-20T18:08:59.683140",
-    "eventName": "AssumeRole",
-    "sourceIPAddress": "198.51.100.15",
-    "requestParameters": {
-      "bucket": "prod-bucket-270",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-271"
-    },
-    "eventTime": "2026-09-20T18:08:59.683358",
-    "eventName": "PutObject",
-    "sourceIPAddress": "198.51.100.16",
-    "requestParameters": {
-      "bucket": "prod-bucket-271",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-272"
-    },
-    "eventTime": "2026-09-20T18:08:59.683584",
-    "eventName": "AssumeRole",
-    "sourceIPAddress": "198.51.100.17",
-    "requestParameters": {
-      "bucket": "prod-bucket-272",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-273"
-    },
-    "eventTime": "2026-09-20T18:08:59.683803",
-    "eventName": "PutObject",
-    "sourceIPAddress": "198.51.100.18",
-    "requestParameters": {
-      "bucket": "prod-bucket-273",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-274"
-    },
-    "eventTime": "2026-09-20T18:08:59.684024",
-    "eventName": "AssumeRole",
-    "sourceIPAddress": "198.51.100.19",
-    "requestParameters": {
-      "bucket": "prod-bucket-274",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-275"
-    },
-    "eventTime": "2026-09-20T18:08:59.684244",
-    "eventName": "PutObject",
-    "sourceIPAddress": "198.51.100.20",
-    "requestParameters": {
-      "bucket": "prod-bucket-275",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-276"
-    },
-    "eventTime": "2026-09-20T18:08:59.684466",
-    "eventName": "AssumeRole",
-    "sourceIPAddress": "198.51.100.21",
-    "requestParameters": {
-      "bucket": "prod-bucket-276",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-277"
-    },
-    "eventTime": "2026-09-20T18:08:59.684695",
-    "eventName": "PutObject",
-    "sourceIPAddress": "198.51.100.22",
-    "requestParameters": {
-      "bucket": "prod-bucket-277",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-278"
-    },
-    "eventTime": "2026-09-20T18:08:59.684918",
-    "eventName": "AssumeRole",
-    "sourceIPAddress": "198.51.100.23",
-    "requestParameters": {
-      "bucket": "prod-bucket-278",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-279"
-    },
-    "eventTime": "2026-09-20T18:08:59.685142",
-    "eventName": "PutObject",
-    "sourceIPAddress": "198.51.100.24",
-    "requestParameters": {
-      "bucket": "prod-bucket-279",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-280"
-    },
-    "eventTime": "2026-09-20T18:08:59.685366",
-    "eventName": "AssumeRole",
-    "sourceIPAddress": "198.51.100.25",
-    "requestParameters": {
-      "bucket": "prod-bucket-280",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-281"
-    },
-    "eventTime": "2026-09-20T18:08:59.685598",
-    "eventName": "PutObject",
-    "sourceIPAddress": "198.51.100.26",
-    "requestParameters": {
-      "bucket": "prod-bucket-281",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-282"
-    },
-    "eventTime": "2026-09-20T18:08:59.685823",
-    "eventName": "AssumeRole",
-    "sourceIPAddress": "198.51.100.27",
-    "requestParameters": {
-      "bucket": "prod-bucket-282",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-283"
-    },
-    "eventTime": "2026-09-20T18:08:59.686049",
-    "eventName": "PutObject",
-    "sourceIPAddress": "198.51.100.28",
-    "requestParameters": {
-      "bucket": "prod-bucket-283",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-284"
-    },
-    "eventTime": "2026-09-20T18:08:59.686275",
-    "eventName": "AssumeRole",
-    "sourceIPAddress": "198.51.100.29",
-    "requestParameters": {
-      "bucket": "prod-bucket-284",
-      "region": "us-east-1"
-    }
-  },
-  {
-    "eventVersion": "1.08",
-    "userIdentity": {
-      "type": "IAMUser",
-      "arn": "arn:aws:iam::123456789012:user/admin-285"
-    },
-    "eventTime": "2026-09-20T18:08:59.686502",
-    "eventName": "PutObject",
-    "sourceIPAddress": "198.51.100.30",
-    "requestParameters": {
-      "bucket": "prod-bucket-285",
-      "region": "us-east-1"
-    }
-  }
-]
+{
+    "dataType": "CVE_RECORD",
+    "dataVersion": "5.2",
+    "cveMetadata": {
+        "cveId": "CVE-2024-21626",
+        "assignerOrgId": "a0819718-46f1-4df5-94e2-005712e83aaa",
+        "state": "PUBLISHED",
+        "assignerShortName": "GitHub_M",
+        "dateReserved": "2023-12-29T03:00:44.953Z",
+        "datePublished": "2024-01-31T21:31:14.391Z",
+        "dateUpdated": "2026-09-17T12:04:33.454Z"
+    },
+    "containers": {
+        "cna": {
+            "title": "runc container breakout through process.cwd trickery and leaked fds",
+            "problemTypes": [
+                {
+                    "descriptions": [
+                        {
+                            "cweId": "CWE-403",
+                            "lang": "en",
+                            "description": "CWE-403: Exposure of File Descriptor to Unintended Control Sphere ('File Descriptor Leak')",
+                            "type": "CWE"
+                        }
+                    ]
+                },
+                {
+                    "descriptions": [
+                        {
+                            "cweId": "CWE-668",
+                            "lang": "en",
+                            "description": "CWE-668: Exposure of Resource to Wrong Sphere",
+                            "type": "CWE"
+                        }
+                    ]
+                }
+            ],
+            "metrics": [
+                {
+                    "cvssV3_1": {
+                        "attackComplexity": "LOW",
+                        "attackVector": "LOCAL",
+                        "availabilityImpact": "HIGH",
+                        "baseScore": 8.6,
+                        "baseSeverity": "HIGH",
+                        "confidentialityImpact": "HIGH",
+                        "integrityImpact": "HIGH",
+                        "privilegesRequired": "NONE",
+                        "scope": "CHANGED",
+                        "userInteraction": "REQUIRED",
+                        "vectorString": "CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:C/C:H/I:H/A:H",
+                        "version": "3.1"
+                    }
+                }
+            ],
+            "references": [
+                {
+                    "name": "https://github.com/opencontainers/runc/security/advisories/GHSA-xr7r-f8xq-vfvv",
+                    "tags": [
+                        "x_refsource_CONFIRM"
+                    ],
+                    "url": "https://github.com/opencontainers/runc/security/advisories/GHSA-xr7r-f8xq-vfvv"
+                },
+                {
+                    "name": "https://github.com/opencontainers/runc/commit/02120488a4c0fc487d1ed2867e901eeed7ce8ecf",
+                    "tags": [
+                        "x_refsource_MISC"
+                    ],
+                    "url": "https://github.com/opencontainers/runc/commit/02120488a4c0fc487d1ed2867e901eeed7ce8ecf"
+                },
+                {
+                    "name": "https://github.com/opencontainers/runc/releases/tag/v1.1.12",
+                    "tags": [
+                        "x_refsource_MISC"
+                    ],
+                    "url": "https://github.com/opencontainers/runc/releases/tag/v1.1.12"
+                },
+                {
+                    "url": "http://www.openwall.com/lists/oss-security/2024/02/01/1"
+                },
+                {
+                    "url": "http://www.openwall.com/lists/oss-security/2024/02/02/3"
+                },
+                {
+                    "url": "http://packetstormsecurity.com/files/176993/runc-1.1.11-File-Descriptor-Leak-Privilege-Escalation.html"
+                },
+                {
+                    "url": "https://lists.fedoraproject.org/archives/list/package-announce@lists.fedoraproject.org/message/SYMO3BANINS6RGFQFKPRG4FIOJ7GWYTL/"
+                },
+                {
+                    "url": "https://lists.fedoraproject.org/archives/list/package-announce@lists.fedoraproject.org/message/2NLXNE23Q5ESQUAI22Z7A63JX2WMPJ2J/"
+                },
+                {
+                    "url": "https://lists.debian.org/debian-lts-announce/2024/02/msg00005.html"
+                }
+            ],
+            "affected": [
+                {
+                    "vendor": "opencontainers",
+                    "product": "runc",
+                    "versions": [
+                        {
+                            "version": ">=v1.0.0-rc93, < 1.1.12",
+                            "status": "affected"
+                        }
+                    ]
+                }
+            ],
+            "providerMetadata": {
+                "orgId": "a0819718-46f1-4df5-94e2-005712e83aaa",
+                "shortName": "GitHub_M",
+                "dateUpdated": "2024-02-19T03:06:14.739Z"
+            },
+            "descriptions": [
+                {
+                    "lang": "en",
+                    "value": "runc is a CLI tool for spawning and running containers on Linux according to the OCI specification. In runc 1.1.11 and earlier, due to an internal file descriptor leak, an attacker could cause a newly-spawned container process (from runc exec) to have a working directory in the host filesystem namespace, allowing for a container escape by giving access to the host filesystem (\"attack 2\"). The same attack could be used by a malicious image to allow a container process to gain access to the host filesystem through runc run (\"attack 1\"). Variants of attacks 1 and 2 could be also be used to overwrite semi-arbitrary host binaries, allowing for complete container escapes (\"attack 3a\" and \"attack 3b\"). runc 1.1.12 includes patches for this issue."
+                }
+            ],
+            "source": {
+                "advisory": "GHSA-xr7r-f8xq-vfvv",
+                "discovery": "UNKNOWN"
+            }
+        },
+        "adp": [
+            {
+                "providerMetadata": {
+                    "orgId": "af854a3a-2127-422b-91ae-364da2661108",
+                    "shortName": "CVE",
+                    "dateUpdated": "2024-08-19T07:48:05.378Z"
+                },
+                "title": "CVE Program Container",
+                "references": [
+                    {
+                        "name": "https://github.com/opencontainers/runc/security/advisories/GHSA-xr7r-f8xq-vfvv",
+                        "tags": [
+                            "x_refsource_CONFIRM",
+                            "x_transferred"
+                        ],
+                        "url": "https://github.com/opencontainers/runc/security/advisories/GHSA-xr7r-f8xq-vfvv"
+                    },
+                    {
+                        "name": "https://github.com/opencontainers/runc/commit/02120488a4c0fc487d1ed2867e901eeed7ce8ecf",
+                        "tags": [
+                            "x_refsource_MISC",
+                            "x_transferred"
+                        ],
+                        "url": "https://github.com/opencontainers/runc/commit/02120488a4c0fc487d1ed2867e901eeed7ce8ecf"
+                    },
+                    {
+                        "name": "https://github.com/opencontainers/runc/releases/tag/v1.1.12",
+                        "tags": [
+                            "x_refsource_MISC",
+                            "x_transferred"
+                        ],
+                        "url": "https://github.com/opencontainers/runc/releases/tag/v1.1.12"
+                    },
+                    {
+                        "url": "http://www.openwall.com/lists/oss-security/2024/02/01/1",
+                        "tags": [
+                            "x_transferred"
+                        ]
+                    },
+                    {
+                        "url": "http://www.openwall.com/lists/oss-security/2024/02/02/3",
+                        "tags": [
+                            "x_transferred"
+                        ]
+                    },
+                    {
+                        "url": "http://packetstormsecurity.com/files/176993/runc-1.1.11-File-Descriptor-Leak-Privilege-Escalation.html",
+                        "tags": [
+                            "x_transferred"
+                        ]
+                    },
+                    {
+                        "url": "https://lists.fedoraproject.org/archives/list/package-announce@lists.fedoraproject.org/message/SYMO3BANINS6RGFQFKPRG4FIOJ7GWYTL/",
+                        "tags": [
+                            "x_transferred"
+                        ]
+                    },
+                    {
+                        "url": "https://lists.fedoraproject.org/archives/list/package-announce@lists.fedoraproject.org/message/2NLXNE23Q5ESQUAI22Z7A63JX2WMPJ2J/",
+                        "tags": [
+                            "x_transferred"
+                        ]
+                    },
+                    {
+                        "url": "https://lists.debian.org/debian-lts-announce/2024/02/msg00005.html",
+                        "tags": [
+                            "x_transferred"
+                        ]
+                    },
+                    {
+                        "url": "https://www.vicarius.io/vsociety/posts/leaky-vessels-part-1-cve-2024-21626"
+                    }
+                ]
+            },
+            {
+                "metrics": [
+                    {
+                        "other": {
+                            "type": "ssvc",
+                            "content": {
+                                "timestamp": "2024-04-19T04:01:01.696064Z",
+                                "id": "CVE-2024-21626",
+                                "options": [
+                                    {
+                                        "Exploitation": "poc"
+                                    },
+                                    {
+                                        "Automatable": "no"
+                                    },
+                                    {
+                                        "Technical Impact": "total"
+                                    }
+                                ],
+                                "role": "CISA Coordinator",
+                                "version": "2.0.3"
+                            }
+                        }
+                    }
+                ],
+                "title": "CISA ADP Vulnrichment",
+                "providerMetadata": {
+                    "orgId": "134c704f-9b21-4f2e-91b3-4a467353bcc0",
+                    "shortName": "CISA-ADP",
+                    "dateUpdated": "2025-05-15T16:02:34.619Z"
+                }
+            },
+            {
+                "affected": [
+                    {
+                        "collectionURL": "https://access.redhat.com/downloads/content/package-browser/",
+                        "cpes": [
+                            "cpe:/a:redhat:ocp_tools:4.15::el8"
+                        ],
+                        "defaultStatus": "affected",
+                        "packageName": "jenkins",
+                        "product": "OCP-Tools-4.15-RHEL-8",
+                        "vendor": "Red Hat",
+                        "versions": [
+                            {
+                                "lessThan": "*",
+                                "status": "unaffected",
+                                "version": "0:2.440.3.1718879390-3.el8",
+                                "versionType": "rpm"
+                            }
+                        ]
+                    },
+                    {
+                        "collectionURL": "https://access.redhat.com/downloads/content/package-browser/",
+                        "cpes": [
+                            "cpe:/a:redhat:ocp_tools:4.15::el8"
+                        ],
+                        "defaultStatus": "affected",
+                        "packageName": "jenkins-2-plugins",
+                        "product": "OCP-Tools-4.15-RHEL-8",
+                        "vendor": "Red Hat",
+                        "versions": [
+                            {
+                                "lessThan": "*",
+                                "status": "unaffected",
+                                "version": "0:4.15.1718879538-1.el8",
+                                "versionType": "rpm"
+                            }
+                        ]
+                    },
+                    {
+                        "collectionURL": "https://access.redhat.com/downloads/content/package-browser/",
+                        "cpes": [
+                            "cpe:/a:redhat:rhel_extras_other:7"
+                        ],
+                        "defaultStatus": "affected",
+                        "packageName": "runc",
+                        "product": "Red Hat Enterprise Linux 7 Extras",
+                        "vendor": "Red Hat",
+                        "versions": [
+                            {
+                                "lessThan": "*",
+                                "status": "unaffected",
+                                "version": "0:1.0.0-70.rc10.el7_9",
+                                "versionType": "rpm"
+                            }
+                        ]
+                    },
+                    {
+                        "collectionURL": "https://access.redhat.com/downloads/content/package-browser/",
+                        "cpes": [
+                            "cpe:/a:redhat:rhel_extras_other:7"
+                        ],
+                        "defaultStatus": "affected",
+                        "packageName": "docker",
+                        "product": "Red Hat Enterprise Linux 7 Extras",
+                        "vendor": "Red Hat",
+                        "versions": [
+                            {
+                                "lessThan": "*",
+                                "status": "unaffected",
+                                "version": "2:1.13.1-210.git7d71120.el7_9",
+                                "versionType": "rpm"
+                            }
+                        ]
+                    },
+                    {
+                        "collectionURL": "https://access.redhat.com/downloads/content/package-browser/",
+                        "cpes": [
+                            "cpe:/a:redhat:enterprise_linux:8"
+                        ],
+                        "defaultStatus": "affected",
+                        "packageName": "container-tools:4.0",
+                        "product": "Red Hat Enterprise Linux 8",
+                        "vendor": "Red Hat",
+                        "versions": [
+                            {
+                                "lessThan": "*",
+                                "status": "unaffected",
+                                "version": "8090020240201111813.d7b6f4b7",
+                                "versionType": "rpm"
+                            }
+                        ]
+                    },
+                    {
+                        "collectionURL": "https://access.redhat.com/downloads/content/package-browser/",
+                        "cpes": [
+                            "cpe:/a:redhat:enterprise_linux:8"
+                        ],
+                        "defaultStatus": "affected",
+                        "packageName": "container-tools:rhel8",
+                        "product": "Red Hat Enterprise Linux 8",
+                        "vendor": "Red Hat",
+                        "versions": [
+                            {
+                                "lessThan": "*",
+                                "status": "unaffected",
+                                "version": "8090020240201111839.d7b6f4b7",
+                                "versionType": "rpm"
+                            }
+                        ]
+                    },
+                    {
+                        "collectionURL": "https://access.redhat.com/downloads/content/package-browser/",
+                        "cpes": [
+                            "cpe:/a:redhat:rhel_aus:8.2"
+                        ],
+                        "defaultStatus": "affected",
+                        "packageName": "container-tools:2.0",
+                        "product": "Red Hat Enterprise Linux 8.2 Advanced Update Support",
+                        "vendor": "Red Hat",
+                        "versions": [
+                            {
+                                "lessThan": "*",
+                                "status": "unaffected",
+                                "version": "8020020240206120705.28c38760",
+                                "versionType": "rpm"
+                            }
+                        ]
+                    },
+                    {
+                        "collectionURL": "https://access.redhat.com/downloads/content/package-browser/",
+                        "cpes": [
+                            "cpe:/a:redhat:rhel_tus:8.2"
+                        ],
+                        "defaultStatus": "affected",
+                        "packageName": "container-tools:2.0",
+                        "product": "Red Hat Enterprise Linux 8.2 Telecommunications Update Service",
+                        "vendor": "Red Hat",
+                        "versions": [
+                            {
+                                "lessThan": "*",
+                                "status": "unaffected",
+                                "version": "8020020240206120705.28c38760",
+                                "versionType": "rpm"
+                            }
+                        ]
+                    },
+                    {
+                        "collectionURL": "https://access.redhat.com/downloads/content/package-browser/",
+                        "cpes": [
+                            "cpe:/a:redhat:rhel_e4s:8.2"
+                        ],
+                        "defaultStatus": "affected",
+                        "packageName": "container-tools:2.0",
+                        "product": "Red Hat Enterprise Linux 8.2 Update Services for SAP Solutions",
+                        "vendor": "Red Hat",
+                        "versions": [
+                            {
+                                "lessThan": "*",
+                                "status": "unaffected",
+                                "version": "8020020240206120705.28c38760",
+                                "versionType": "rpm"
+                            }
+                        ]
+                    },
+                    {
+                        "collectionURL": "https://access.redhat.com/downloads/content/package-browser/",
+                        "cpes": [
+                            "cpe:/a:redhat:rhel_aus:8.4"
+                        ],
+                        "defaultStatus": "affected",
+                        "packageName": "container-tools:3.0",
+                        "product": "Red Hat Enterprise Linux 8.4 Advanced Mission Critical Update Support",
+                        "vendor": "Red Hat",
+                        "versions": [
+                            {
+                                "lessThan": "*",
+                                "status": "unaffected",
+                                "version": "8040020240207051234.c0c392d5",
+                                "versionType": "rpm"
+                            }
+                        ]
+                    },
+                    {
+                        "collectionURL": "https://access.redhat.com/downloads/content/package-browser/",
+                        "cpes": [
+                            "cpe:/a:redhat:rhel_tus:8.4"
+                        ],
+                        "defaultStatus": "affected",
+                        "packageName": "container-tools:3.0",
+                        "product": "Red Hat Enterprise Linux 8.4 Telecommunications Update Service",
+                        "vendor": "Red Hat",
+                        "versions": [
+                            {
+                                "lessThan": "*",
+                                "status": "unaffected",
+                                "version": "8040020240207051234.c0c392d5",
+                                "versionType": "rpm"
+                            }
+                        ]
+                    },
+                    {
+                        "collectionURL": "https://access.redhat.com/downloads/content/package-browser/",
+                        "cpes": [
+                            "cpe:/a:redhat:rhel_e4s:8.4"
+                        ],
+                        "defaultStatus": "affected",
+                        "packageName": "container-tools:3.0",
+                        "product": "Red Hat Enterprise Linux 8.4 Update Services for SAP Solutions",
+                        "vendor": "Red Hat",
+                        "versions": [
+                            {
+                                "lessThan": "*",
+                                "status": "unaffected",
+                                "version": "8040020240207051234.c0c392d5",
+                                "versionType": "rpm"
+                            }
+                        ]
+                    },
+                    {
+                        "collectionURL": "https://access.redhat.com/downloads/content/package-browser/",
+                        "cpes": [
+                            "cpe:/a:redhat:rhel_eus:8.6"
+                        ],
+                        "defaultStatus": "affected",
+                        "packageName": "container-tools:4.0",
+                        "product": "Red Hat Enterprise Linux 8.6 Extended Update Support",
+                        "vendor": "Red Hat",
+                        "versions": [
+                            {
+                                "lessThan": "*",
+                                "status": "unaffected",
+                                "version": "8060020240205133014.3b538bd8",
+                                "versionType": "rpm"
+                            }
+                        ]
+                    },
+                    {
+                        "collectionURL": "https://access.redhat.com/downloads/content/package-browser/",
+                        "cpes": [
+                            "cpe:/a:redhat:rhel_eus:8.6"
+                        ],
+                        "defaultStatus": "affected",
+                        "packageName": "container-tools:rhel8",
+                        "product": "Red Hat Enterprise Linux 8.6 Extended Update Support",
+                        "vendor": "Red Hat",
+                        "versions": [
+                            {
+                                "lessThan": "*",
+                                "status": "unaffected",
+                                "version": "8060020240206151655.3b538bd8",
+                                "versionType": "rpm"
+                            }
+                        ]
+                    },
+                    {
+                        "collectionURL": "https://access.redhat.com/downloads/content/package-browser/",
+                        "cpes": [
+                            "cpe:/a:redhat:rhel_eus:8.8"
+                        ],
+                        "defaultStatus": "affected",
+                        "packageName": "container-tools:rhel8",
+                        "product": "Red Hat Enterprise Linux 8.8 Extended Update Support",
+                        "vendor": "Red Hat",
+                        "versions": [
+                            {
+                                "lessThan": "*",
+                                "status": "unaffected",
+                                "version": "8080020240206143933.0f77c1b7",
+                                "versionType": "rpm"
+                            }
+                        ]
+                    },
+                    {
+                        "collectionURL": "https://access.redhat.com/downloads/content/package-browser/",
+                        "cpes": [
+                            "cpe:/a:redhat:enterprise_linux:9"
+                        ],
+                        "defaultStatus": "affected",
+                        "packageName": "runc",
+                        "product": "Red Hat Enterprise Linux 9",
+                        "vendor": "Red Hat",
+                        "versions": [
+                            {
+                                "lessThan": "*",
+                                "status": "unaffected",
+                                "version": "4:1.1.12-1.el9_3",
+                                "versionType": "rpm"
+                            }
+                        ]
+                    },
+                    {
+                        "collectionURL": "https://access.redhat.com/downloads/content/package-browser/",
+                        "cpes": [
+                            "cpe:/a:redhat:rhel_eus:9.0"
+                        ],
+                        "defaultStatus": "affected",
+                        "packageName": "runc",
+                        "product": "Red Hat Enterprise Linux 9.0 Extended Update Support",
+                        "vendor": "Red Hat",
+                        "versions": [
+                            {
+                                "lessThan": "*",
+                                "status": "unaffected",
+                                "version": "4:1.1.12-1.el9_0",
+                                "versionType": "rpm"
+                            }
+                        ]
+                    },
+                    {
+                        "collectionURL": "https://access.redhat.com/downloads/content/package-browser/",
+                        "cpes": [
+                            "cpe:/a:redhat:rhel_eus:9.2"
+                        ],
+                        "defaultStatus": "affected",
+                        "packageName": "runc",
+                        "product": "Red Hat Enterprise Linux 9.2 Extended Update Support",
+                        "vendor": "Red Hat",
+                        "versions": [
+                            {
+                                "lessThan": "*",
+                                "status": "unaffected",
+                                "version": "4:1.1.12-1.el9_2",
+                                "versionType": "rpm"
+                            }
+                        ]
+                    },
+                    {
+                        "collectionURL": "https://access.redhat.com/downloads/content/package-browser/",
+                        "cpes": [
+                            "cpe:/a:redhat:openshift:4.11::el8"
+                        ],
+                        "defaultStatus": "affected",
+                        "packageName": "runc",
+                        "product": "Red Hat OpenShift Container Platform 4.11",
+                        "vendor": "Red Hat",
+                        "versions": [
+                            {
+                                "lessThan": "*",
+                                "status": "unaffected",
+                                "version": "3:1.1.2-3.1.rhaos4.11.el8",
+                                "versionType": "rpm"
+                            }
+                        ]
+                    },
+                    {
+                        "collectionURL": "https://catalog.redhat.com/software/containers/",
+                        "cpes": [
+                            "cpe:/a:redhat:openshift:4.12::el8"
+                        ],
+                        "defaultStatus": "affected",
+                        "packageName": "runc",
+                        "product": "Red Hat OpenShift Container Platform 4.12",
+                        "vendor": "Red Hat",
+                        "versions": [
+                            {
+                                "lessThan": "*",
+                                "status": "unaffected",
+                                "version": "3:1.1.6-5.1.rhaos4.12.el8",
+                                "versionType": "rpm"
+                            }
+                        ]
+                    },
+                    {
+                        "collectionURL": "https://catalog.redhat.com/software/containers/",
+                        "cpes": [
+                            "cpe:/a:redhat:openshift:4.12::el8"
+                        ],
+                        "defaultStatus": "affected",
+                        "packageName": "openshift4/ose-docker-builder",
+                        "product": "Red Hat OpenShift Container Platform 4.12",
+                        "vendor": "Red Hat",
+                        "versions": [
+                            {
+                                "lessThan": "*",
+                                "status": "unaffected",
+                                "version": "v4.12.0-202503030130.p0.g7c2a284.assembly.stream.el8",
+                                "versionType": "rpm"
+                            }
+                        ]
+                    },
+                    {
+                        "collectionURL": "https://catalog.redhat.com/software/containers/",
+                        "cpes": [
+                            "cpe:/a:redhat:openshift:4.13::el8"
+                        ],
+                        "defaultStatus": "affected",
+                        "packageName": "runc",
+                        "product": "Red Hat OpenShift Container Platform 4.13",
+                        "vendor": "Red Hat",
+                        "versions": [
+                            {
+                                "lessThan": "*",
+                                "status": "unaffected",
+                                "version": "4:1.1.12-1.rhaos4.13.el8",
+                                "versionType": "rpm"
+                            }
+                        ]
+                    },
+                    {
+                        "collectionURL": "https://catalog.redhat.com/software/containers/",
+                        "cpes": [
+                            "cpe:/a:redhat:openshift:4.13::el8"
+                        ],
+                        "defaultStatus": "affected",
+                        "packageName": "openshift4/ose-docker-builder",
+                        "product": "Red Hat OpenShift Container Platform 4.13",
+                        "vendor": "Red Hat",
+                        "versions": [
+                            {
+                                "lessThan": "*",
+                                "status": "unaffected",
+                                "version": "v4.13.0-202503111300.p0.gb379980.assembly.stream.el8",
+                                "versionType": "rpm"
+                            }
+                        ]
+                    },
+                    {
+                        "collectionURL": "https://catalog.redhat.com/software/containers/",
+                        "cpes": [
+                            "cpe:/a:redhat:openshift:4.14::el8"
+                        ],
+                        "defaultStatus": "affected",
+                        "packageName": "runc",
+                        "product": "Red Hat OpenShift Container Platform 4.14",
+                        "vendor": "Red Hat",
+                        "versions": [
+                            {
+                                "lessThan": "*",
+                                "status": "unaffected",
+                                "version": "4:1.1.12-1.rhaos4.14.el8",
+                                "versionType": "rpm"
+                            }
+                        ]
+                    },
+                    {
+                        "collectionURL": "https://catalog.redhat.com/software/containers/",
+                        "cpes": [
+                            "cpe:/a:redhat:openshift:4.14::el8"
+                        ],
+                        "defaultStatus": "affected",
+                        "packageName": "openshift4/ose-docker-builder",
+                        "product": "Red Hat OpenShift Container Platform 4.14",
+                        "vendor": "Red Hat",
+                        "versions": [
+                            {
+                                "lessThan": "*",
+                                "status": "unaffected",
+                                "version": "v4.14.0-202503060906.p0.gb03f3f5.assembly.stream.el8",
+                                "versionType": "rpm"
+                            }
+                        ]
+                    },
+                    {
+                        "collectionURL": "https://catalog.redhat.com/software/containers/",
+                        "cpes": [
+                            "cpe:/a:redhat:openshift:4.14::el9"
+                        ],
+                        "defaultStatus": "affected",
+                        "packageName": "microshift",
+                        "product": "Red Hat OpenShift Container Platform 4.14",
+                        "vendor": "Red Hat",
+                        "versions": [
+                            {
+                                "lessThan": "*",
+                                "status": "unaffected",
+                                "version": "0:4.14.42-202411280904.p0.gcf4d04f.assembly.4.14.42.el9",
+                                "versionType": "rpm"
+                            }
+                        ]
+                    },
+                    {
+                        "collectionURL": "https://catalog.redhat.com/software/containers/",
+                        "cpes": [
+                            "cpe:/a:redhat:openshift:4.15::el8"
+                        ],
+                        "defaultStatus": "affected",
+                        "packageName": "openshift4/ose-docker-builder",
+                        "product": "Red Hat OpenShift Container Platform 4.15",
+                        "vendor": "Red Hat",
+                        "versions": [
+                            {
+                                "lessThan": "*",
+                                "status": "unaffected",
+                                "version": "v4.15.0-202502171304.p0.gb74eb6d.assembly.stream.el8",
+                                "versionType": "rpm"
+                            }
+                        ]
+                    },
+                    {
+                        "collectionURL": "https://catalog.redhat.com/software/containers/",
+                        "cpes": [
+                            "cpe:/a:redhat:openshift:4.15::el9"
+                        ],
+                        "defaultStatus": "affected",
+                        "packageName": "microshift",
+                        "product": "Red Hat OpenShift Container Platform 4.15",
+                        "vendor": "Red Hat",
+                        "versions": [
+                            {
+                                "lessThan": "*",
+                                "status": "unaffected",
+                                "version": "0:4.15.41-202412091343.p0.gcf9680e.assembly.4.15.41.el9",
+                                "versionType": "rpm"
+                            }
+                        ]
+                    },
+                    {
+                        "collectionURL": "https://catalog.redhat.com/software/containers/",
+                        "cpes": [
+                            "cpe:/a:redhat:openshift:4.16::el9"
+                        ],
+                        "defaultStatus": "affected",
+                        "packageName": "microshift",
+                        "product": "Red Hat OpenShift Container Platform 4.16",
+                        "vendor": "Red Hat",
+                        "versions": [
+                            {
+                                "lessThan": "*",
+                                "status": "unaffected",
+                                "version": "0:4.16.24-202411220522.p0.gcc4fedc.assembly.4.16.24.el9",
+                                "versionType": "rpm"
+                            }
+                        ]
+                    },
+                    {
+                        "collectionURL": "https://catalog.redhat.com/software/containers/",
+                        "cpes": [
+                            "cpe:/a:redhat:openshift:4.16::el9"
+                        ],
+                        "defaultStatus": "affected",
+                        "packageName": "openshift4/ose-docker-builder-rhel9",
+                        "product": "Red Hat OpenShift Container Platform 4.16",
+                        "vendor": "Red Hat",
+                        "versions": [
+                            {
+                                "lessThan": "*",
+                                "status": "unaffected",
+                                "version": "v4.16.0-202501160405.p0.g300d9ad.assembly.stream.el9",
+                                "versionType": "rpm"
+                            }
+                        ]
+                    },
+                    {
+                        "collectionURL": "https://catalog.redhat.com/software/containers/",
+                        "cpes": [
+                            "cpe:/a:redhat:openshift:4.17::el9"
+                        ],
+                        "defaultStatus": "affected",
+                        "packageName": "microshift",
+                        "product": "Red Hat OpenShift Container Platform 4.17",
+                        "vendor": "Red Hat",
+                        "versions": [
+                            {
+                                "lessThan": "*",
+                                "status": "unaffected",
+                                "version": "0:4.17.7-202411280904.p0.g129334d.assembly.4.17.7.el9",
+                                "versionType": "rpm"
+                            }
+                        ]
+                    },
+                    {
+                        "collectionURL": "https://catalog.redhat.com/software/containers/",
+                        "cpes": [
+                            "cpe:/a:redhat:openshift:4.17::el9"
+                        ],
+                        "defaultStatus": "affected",
+                        "packageName": "openshift4/ose-docker-builder-rhel9",
+                        "product": "Red Hat OpenShift Container Platform 4.17",
+                        "vendor": "Red Hat",
+                        "versions": [
+                            {
+                                "lessThan": "*",
+                                "status": "unaffected",
+                                "version": "v4.17.0-202501052337.p0.gbb33e13.assembly.stream.el9",
+                                "versionType": "rpm"
+                            }
+                        ]
+                    },
+                    {
+                        "collectionURL": "https://access.redhat.com/downloads/content/package-browser/",
+                        "cpes": [
+                            "cpe:/a:redhat:ocp_tools"
+                        ],
+                        "defaultStatus": "affected",
+                        "packageName": "ocp-tools-4/jenkins-agent-base-rhel8",
+                        "product": "OpenShift Developer Tools and Services",
+                        "vendor": "Red Hat"
+                    },
+                    {
+                        "collectionURL": "https://access.redhat.com/downloads/content/package-browser/",
+                        "cpes": [
+                            "cpe:/a:redhat:ocp_tools"
+                        ],
+                        "defaultStatus": "affected",
+                        "packageName": "ocp-tools-4/jenkins-rhel8",
+                        "product": "OpenShift Developer Tools and Services",
+                        "vendor": "Red Hat"
+                    },
+                    {
+                        "collectionURL": "https://access.redhat.com/downloads/content/package-browser/",
+                        "cpes": [
+                            "cpe:/a:redhat:openshift_power_monitoring"
+                        ],
+                        "defaultStatus": "affected",
+                        "packageName": "kepler-container",
+                        "product": "Power monitoring for Red Hat OpenShift",
+                        "vendor": "Red Hat"
+                    },
+                    {
+                        "collectionURL": "https://access.redhat.com/downloads/content/package-browser/",
+                        "cpes": [
+                            "cpe:/o:redhat:enterprise_linux:10"
+                        ],
+                        "defaultStatus": "unaffected",
+                        "packageName": "buildah",
+                        "product": "Red Hat Enterprise Linux 10",
+                        "vendor": "Red Hat"
+                    },
+                    {
+                        "collectionURL": "https://access.redhat.com/downloads/content/package-browser/",
+                        "cpes": [
+                            "cpe:/o:redhat:enterprise_linux:10"
+                        ],
+                        "defaultStatus": "unaffected",
+                        "packageName": "containers-common",
+                        "product": "Red Hat Enterprise Linux 10",
+                        "vendor": "Red Hat"
+                    },
+                    {
+                        "collectionURL": "https://access.redhat.com/downloads/content/package-browser/",
+                        "cpes": [
+                            "cpe:/o:redhat:enterprise_linux:10"
+                        ],
+                        "defaultStatus": "unaffected",
+                        "packageName": "podman",
+                        "product": "Red Hat Enterprise Linux 10",
+                        "vendor": "Red Hat"
+                    },
+                    {
+                        "collectionURL": "https://access.redhat.com/downloads/content/package-browser/",
+                        "cpes": [
+                            "cpe:/o:redhat:enterprise_linux:9"
+                        ],
+                        "defaultStatus": "unaffected",
+                        "packageName": "buildah",
+                        "product": "Red Hat Enterprise Linux 9",
+                        "vendor": "Red Hat"
+                    },
+                    {
+                        "collectionURL": "https://access.redhat.com/downloads/content/package-browser/",
+                        "cpes": [
+                            "cpe:/o:redhat:enterprise_linux:9"
+                        ],
+                        "defaultStatus": "unaffected",
+                        "packageName": "podman",
+                        "product": "Red Hat Enterprise Linux 9",
+                        "vendor": "Red Hat"
+                    },
+                    {
+                        "collectionURL": "https://access.redhat.com/downloads/content/package-browser/",
+                        "cpes": [
+                            "cpe:/a:redhat:openshift:4"
+                        ],
+                        "defaultStatus": "unaffected",
+                        "packageName": "buildah",
+                        "product": "Red Hat OpenShift Container Platform 4",
+                        "vendor": "Red Hat"
+                    },
+                    {
+                        "collectionURL": "https://access.redhat.com/downloads/content/package-browser/",
+                        "cpes": [
+                            "cpe:/a:redhat:openshift:4"
+                        ],
+                        "defaultStatus": "unaffected",
+                        "packageName": "cri-o",
+                        "product": "Red Hat OpenShift Container Platform 4",
+                        "vendor": "Red Hat"
+                    },
+                    {
+                        "collectionURL": "https://access.redhat.com/downloads/content/package-browser/",
+                        "cpes": [
+                            "cpe:/a:redhat:openshift:4"
+                        ],
+                        "defaultStatus": "unaffected",
+                        "packageName": "cri-tools",
+                        "product": "Red Hat OpenShift Container Platform 4",
+                        "vendor": "Red Hat"
+                    },
+                    {
+                        "collectionURL": "https://access.redhat.com/downloads/content/package-browser/",
+                        "cpes": [
+                            "cpe:/a:redhat:openshift:4"
+                        ],
+                        "defaultStatus": "affected",
+                        "packageName": "openshift",
+                        "product": "Red Hat OpenShift Container Platform 4",
+                        "vendor": "Red Hat"
+                    },
+                    {
+                        "collectionURL": "https://access.redhat.com/downloads/content/package-browser/",
+                        "cpes": [
+                            "cpe:/a:redhat:openshift:4"
+                        ],
+                        "defaultStatus": "unaffected",
+                        "packageName": "openshift4/ose-aws-ebs-csi-driver-rhel9",
+                        "product": "Red Hat OpenShift Container Platform 4",
+                        "vendor": "Red Hat"
+                    },
+                    {
+                        "collectionURL": "https://access.redhat.com/downloads/content/package-browser/",
+                        "cpes": [
+                            "cpe:/a:redhat:openshift:4"
+                        ],
+                        "defaultStatus": "unaffected",
+                        "packageName": "openshift4/ose-aws-efs-csi-driver-container-rhel8",
+                        "product": "Red Hat OpenShift Container Platform 4",
+                        "vendor": "Red Hat"
+                    },
+                    {
+                        "collectionURL": "https://access.redhat.com/downloads/content/package-browser/",
+                        "cpes": [
+                            "cpe:/a:redhat:openshift:4"
+                        ],
+                        "defaultStatus": "unaffected",
+                        "packageName": "openshift4/ose-csi-driver-nfs-rhel8",
+                        "product": "Red Hat OpenShift Container Platform 4",
+                        "vendor": "Red Hat"
+                    },
+                    {
+                        "collectionURL": "https://access.redhat.com/downloads/content/package-browser/",
+                        "cpes": [
+                            "cpe:/a:redhat:openshift:4"
+                        ],
+                        "defaultStatus": "affected",
+                        "packageName": "openshift4/ose-hyperkube",
+                        "product": "Red Hat OpenShift Container Platform 4",
+                        "vendor": "Red Hat"
+                    },
+                    {
+                        "collectionURL": "https://access.redhat.com/downloads/content/package-browser/",
+                        "cpes": [
+                            "cpe:/a:redhat:openshift:4"
+                        ],
+                        "defaultStatus": "affected",
+                        "packageName": "openshift4/ose-kube-proxy",
+                        "product": "Red Hat OpenShift Container Platform 4",
+                        "vendor": "Red Hat"
+                    },
+                    {
+                        "collectionURL": "https://access.redhat.com/downloads/content/package-browser/",
+                        "cpes": [
+                            "cpe:/a:redhat:openshift:4"
+                        ],
+                        "defaultStatus": "unaffected",
+                        "packageName": "openshift4/ose-node-feature-discovery",
+                        "product": "Red Hat OpenShift Container Platform 4",
+                        "vendor": "Red Hat"
+                    },
+                    {
+                        "collectionURL": "https://access.redhat.com/downloads/content/package-browser/",
+                        "cpes": [
+                            "cpe:/a:redhat:openshift:4"
+                        ],
+                        "defaultStatus": "affected",
+                        "packageName": "openshift4/ose-powervs-block-csi-driver-rhel9",
+                        "product": "Red Hat OpenShift Container Platform 4",
+                        "vendor": "Red Hat"
+                    },
+                    {
+                        "collectionURL": "https://access.redhat.com/downloads/content/package-browser/",
+                        "cpes": [
+                            "cpe:/a:redhat:openshift:4"
+                        ],
+                        "defaultStatus": "affected",
+                        "packageName": "openshift4/ose-sdn-rhel8",
+                        "product": "Red Hat OpenShift Container Platform 4",
+                        "vendor": "Red Hat"
+                    },
+                    {
+                        "collectionURL": "https://access.redhat.com/downloads/content/package-browser/",
+                        "cpes": [
+                            "cpe:/a:redhat:openshift:4"
+                        ],
+                        "defaultStatus": "unaffected",
+                        "packageName": "openshift4/ose-tests",
+                        "product": "Red Hat OpenShift Container Platform 4",
+                        "vendor": "Red Hat"
+                    },
+                    {
+                        "collectionURL": "https://access.redhat.com/downloads/content/package-browser/",
+                        "cpes": [
+                            "cpe:/a:redhat:openshift:4"
+                        ],
+                        "defaultStatus": "unaffected",
+                        "packageName": "openshift4/ose-vmware-vsphere-csi-driver-rhel8",
+                        "product": "Red Hat OpenShift Container Platform 4",
+                        "vendor": "Red Hat"
+                    },
+                    {
+                        "collectionURL": "https://access.redhat.com/downloads/content/package-browser/",
+                        "cpes": [
+                            "cpe:/a:redhat:openshift:4"
+                        ],
+                        "defaultStatus": "unaffected",
+                        "packageName": "openshift4/ose-vsphere-csi-driver-rhel8",
+                        "product": "Red Hat OpenShift Container Platform 4",
+                        "vendor": "Red Hat"
+                    },
+                    {
+                        "collectionURL": "https://access.redhat.com/downloads/content/package-browser/",
+                        "cpes": [
+                            "cpe:/a:redhat:openshift:4"
+                        ],
+                        "defaultStatus": "unaffected",
+                        "packageName": "openshift4/ose-vsphere-csi-driver-syncer-rhel8",
+                        "product": "Red Hat OpenShift Container Platform 4",
+                        "vendor": "Red Hat"
+                    },
+                    {
+                        "collectionURL": "https://access.redhat.com/downloads/content/package-browser/",
+                        "cpes": [
+                            "cpe:/a:redhat:openshift:4"
+                        ],
+                        "defaultStatus": "unaffected",
+                        "packageName": "podman",
+                        "product": "Red Hat OpenShift Container Platform 4",
+                        "vendor": "Red Hat"
+                    },
+                    {
+                        "collectionURL": "https://access.redhat.com/downloads/content/package-browser/",
+                        "cpes": [
+                            "cpe:/a:redhat:container_native_virtualization:4"
+                        ],
+                        "defaultStatus": "affected",
+                        "packageName": "container-native-virtualization/passt-network-binding-plugin-cni-rhel9",
+                        "product": "Red Hat OpenShift Virtualization 4",
+                        "vendor": "Red Hat"
+                    },
+                    {
+                        "collectionURL": "https://access.redhat.com/downloads/content/package-browser/",
+                        "cpes": [
+                            "cpe:/a:redhat:container_native_virtualization:4"
+                        ],
+                        "defaultStatus": "affected",
+                        "packageName": "container-native-virtualization/passt-network-binding-plugin-sidecar-rhel9",
+                        "product": "Red Hat OpenShift Virtualization 4",
+                        "vendor": "Red Hat"
+                    },
+                    {
+                        "collectionURL": "https://access.redhat.com/downloads/content/package-browser/",
+                        "cpes": [
+                            "cpe:/a:redhat:container_native_virtualization:4"
+                        ],
+                        "defaultStatus": "affected",
+                        "packageName": "container-native-virtualization/sidecar-shim-rhel9",
+                        "product": "Red Hat OpenShift Virtualization 4",
+                        "vendor": "Red Hat"
+                    },
+                    {
+                        "collectionURL": "https://access.redhat.com/downloads/content/package-browser/",
+                        "cpes": [
+                            "cpe:/a:redhat:container_native_virtualization:4"
+                        ],
+                        "defaultStatus": "affected",
+                        "packageName": "container-native-virtualization/virt-api",
+                        "product": "Red Hat OpenShift Virtualization 4",
+                        "vendor": "Red Hat"
+                    },
+                    {
+                        "collectionURL": "https://access.redhat.com/downloads/content/package-browser/",
+                        "cpes": [
+                            "cpe:/a:redhat:container_native_virtualization:4"
+                        ],
+                        "defaultStatus": "affected",
+                        "packageName": "container-native-virtualization/virt-api-rhel9",
+                        "product": "Red Hat OpenShift Virtualization 4",
+                        "vendor": "Red Hat"
+                    },
+                    {
+                        "collectionURL": "https://access.redhat.com/downloads/content/package-browser/",
+                        "cpes": [
+                            "cpe:/a:redhat:container_native_virtualization:4"
+                        ],
+                        "defaultStatus": "affected",
+                        "packageName": "container-native-virtualization/virt-artifacts-server",
+                        "product": "Red Hat OpenShift Virtualization 4",
+                        "vendor": "Red Hat"
+                    },
+                    {
+                        "collectionURL": "https://access.redhat.com/downloads/content/package-browser/",
+                        "cpes": [
+                            "cpe:/a:redhat:container_native_virtualization:4"
+                        ],
+                        "defaultStatus": "affected",
+                        "packageName": "container-native-virtualization/virt-artifacts-server-rhel8",
+                        "product": "Red Hat OpenShift Virtualization 4",
+                        "vendor": "Red Hat"
+                    },
+                    {
+                        "collectionURL": "https://access.redhat.com/downloads/content/package-browser/",
+                        "cpes": [
+                            "cpe:/a:redhat:container_native_virtualization:4"
+                        ],
+                        "defaultStatus": "affected",
+                        "packageName": "container-native-virtualization/virt-artifacts-server-rhel9",
+                        "product": "Red Hat OpenShift Virtualization 4",
+                        "vendor": "Red Hat"
+                    },
+                    {
+                        "collectionURL": "https://access.redhat.com/downloads/content/package-browser/",
+                        "cpes": [
+                            "cpe:/a:redhat:container_native_virtualization:4"
+                        ],
+                        "defaultStatus": "affected",
+                        "packageName": "container-native-virtualization/virt-controller",
+                        "product": "Red Hat OpenShift Virtualization 4",
+                        "vendor": "Red Hat"
+                    },
+                    {
+                        "collectionURL": "https://access.redhat.com/downloads/content/package-browser/",
+                        "cpes": [
+                            "cpe:/a:redhat:container_native_virtualization:4"
+                        ],
+                        "defaultStatus": "affected",
+                        "packageName": "container-native-virtualization/virt-controller-rhel9",
+                        "product": "Red Hat OpenShift Virtualization 4",
+                        "vendor": "Red Hat"
+                    },
+                    {
+                        "collectionURL": "https://access.redhat.com/downloads/content/package-browser/",
+                        "cpes": [
+                            "cpe:/a:redhat:container_native_virtualization:4"
+                        ],
+                        "defaultStatus": "affected",
+                        "packageName": "container-native-virtualization/virt-exportproxy",
+                        "product": "Red Hat OpenShift Virtualization 4",
+                        "vendor": "Red Hat"
+                    },
+                    {
+                        "collectionURL": "https://access.redhat.com/downloads/content/package-browser/",
+                        "cpes": [
+                            "cpe:/a:redhat:container_native_virtualization:4"
+                        ],
+                        "defaultStatus": "affected",
+                        "packageName": "container-native-virtualization/virt-exportproxy-rhel9",
+                        "product": "Red Hat OpenShift Virtualization 4",
+                        "vendor": "Red Hat"
+                    },
+                    {
+                        "collectionURL": "https://access.redhat.com/downloads/content/package-browser/",
+                        "cpes": [
+                            "cpe:/a:redhat:container_native_virtualization:4"
+                        ],
+                        "defaultStatus": "affected",
+                        "packageName": "container-native-virtualization/virt-exportserver",
+                        "product": "Red Hat OpenShift Virtualization 4",
+                        "vendor": "Red Hat"
+                    },
+                    {
+                        "collectionURL": "https://access.redhat.com/downloads/content/package-browser/",
+                        "cpes": [
+                            "cpe:/a:redhat:container_native_virtualization:4"
+                        ],
+                        "defaultStatus": "affected",
+                        "packageName": "container-native-virtualization/virt-exportserver-rhel9",
+                        "product": "Red Hat OpenShift Virtualization 4",
+                        "vendor": "Red Hat"
+                    },
+                    {
+                        "collectionURL": "https://access.redhat.com/downloads/content/package-browser/",
+                        "cpes": [
+                            "cpe:/a:redhat:container_native_virtualization:4"
+                        ],
+                        "defaultStatus": "affected",
+                        "packageName": "container-native-virtualization/virt-handler",
+                        "product": "Red Hat OpenShift Virtualization 4",
+                        "vendor": "Red Hat"
+                    },
+                    {
+                        "collectionURL": "https://access.redhat.com/downloads/content/package-browser/",
+                        "cpes": [
+                            "cpe:/a:redhat:container_native_virtualization:4"
+                        ],
+                        "defaultStatus": "affected",
+                        "packageName": "container-native-virtualization/virt-handler-rhel9",
+                        "product": "Red Hat OpenShift Virtualization 4",
+                        "vendor": "Red Hat"
+                    },
+                    {
+                        "collectionURL": "https://access.redhat.com/downloads/content/package-browser/",
+                        "cpes": [
+                            "cpe:/a:redhat:container_native_virtualization:4"
+                        ],
+                        "defaultStatus": "affected",
+                        "packageName": "container-native-virtualization/virt-launcher",
+                        "product": "Red Hat OpenShift Virtualization 4",
+                        "vendor": "Red Hat"
+                    },
+                    {
+                        "collectionURL": "https://access.redhat.com/downloads/content/package-browser/",
+                        "cpes": [
+                            "cpe:/a:redhat:container_native_virtualization:4"
+                        ],
+                        "defaultStatus": "affected",
+                        "packageName": "container-native-virtualization/virt-launcher-rhel9",
+                        "product": "Red Hat OpenShift Virtualization 4",
+                        "vendor": "Red Hat"
+                    },
+                    {
+                        "collectionURL": "https://access.redhat.com/downloads/content/package-browser/",
+                        "cpes": [
+                            "cpe:/a:redhat:container_native_virtualization:4"
+                        ],
+                        "defaultStatus": "affected",
+                        "packageName": "container-native-virtualization/virt-operator",
+                        "product": "Red Hat OpenShift Virtualization 4",
+                        "vendor": "Red Hat"
+                    },
+                    {
+                        "collectionURL": "https://access.redhat.com/downloads/content/package-browser/",
+                        "cpes": [
+                            "cpe:/a:redhat:container_native_virtualization:4"
+                        ],
+                        "defaultStatus": "affected",
+                        "packageName": "container-native-virtualization/virt-operator-rhel9",
+                        "product": "Red Hat OpenShift Virtualization 4",
+                        "vendor": "Red Hat"
+                    },
+                    {
+                        "collectionURL": "https://access.redhat.com/downloads/content/package-browser/",
+                        "cpes": [
+                            "cpe:/a:redhat:container_native_virtualization:4"
+                        ],
+                        "defaultStatus": "affected",
+                        "packageName": "container-native-virtualization/wasp-agent-rhel9",
+                        "product": "Red Hat OpenShift Virtualization 4",
+                        "vendor": "Red Hat"
+                    },
+                    {
+                        "collectionURL": "https://access.redhat.com/downloads/content/package-browser/",
+                        "cpes": [
+                            "cpe:/a:redhat:container_native_virtualization:4"
+                        ],
+                        "defaultStatus": "affected",
+                        "packageName": "kubevirt",
+                        "product": "Red Hat OpenShift Virtualization 4",
+                        "vendor": "Red Hat"
+                    },
+                    {
+                        "collectionURL": "https://access.redhat.com/downloads/content/package-browser/",
+                        "cpes": [
+                            "cpe:/a:redhat:quay:3"
+                        ],
+                        "defaultStatus": "affected",
+                        "packageName": "quay/quay-builder-rhel8",
+                        "product": "Red Hat Quay 3",
+                        "vendor": "Red Hat"
+                    }
+                ],
+                "datePublic": "2024-01-31T20:01:00.000Z",
+                "descriptions": [
+                    {
+                        "lang": "en",
+                        "value": "A file descriptor leak issue was found in the runc package. While a user performs `O_CLOEXEC` all file descriptors before executing the container code, the file descriptor is open when performing `setcwd(2)`, which means that the reference can be kept alive in the container by configuring the working directory to be a path resolved through the file descriptor. The non-dumpable bit is unset after `execve`, meaning there are multiple ways to attack this other than bad configurations. The only way to defend against it entirely is to close all unneeded file descriptors."
+                    }
+                ],
+                "metrics": [
+                    {
+                        "other": {
+                            "content": {
+                                "namespace": "https://access.redhat.com/security/updates/classification/",
+                                "value": "Important"
+                            },
+                            "type": "Red Hat severity rating"
+                        }
+                    },
+                    {
+                        "cvssV3_1": {
+                            "attackComplexity": "LOW",
+                            "attackVector": "LOCAL",
+                            "availabilityImpact": "HIGH",
+                            "baseScore": 8.6,
+                            "baseSeverity": "HIGH",
+                            "confidentialityImpact": "HIGH",
+                            "integrityImpact": "HIGH",
+                            "privilegesRequired": "NONE",
+                            "scope": "CHANGED",
+                            "userInteraction": "REQUIRED",
+                            "vectorString": "CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:C/C:H/I:H/A:H",
+                            "version": "3.1"
+                        },
+                        "format": "CVSS"
+                    }
+                ],
+                "problemTypes": [
+                    {
+                        "descriptions": [
+                            {
+                                "cweId": "CWE-200",
+                                "description": "Exposure of Sensitive Information to an Unauthorized Actor",
+                                "lang": "en",
+                                "type": "CWE"
+                            }
+                        ]
+                    }
+                ],
+                "references": [
+                    {
+                        "tags": [
+                            "vdb-entry",
+                            "x_refsource_REDHAT"
+                        ],
+                        "url": "https://access.redhat.com/security/cve/CVE-2024-21626"
+                    },
+                    {
+                        "name": "RHBZ#2258725",
+                        "tags": [
+                            "issue-tracking",
+                            "x_refsource_REDHAT"
+                        ],
+                        "url": "https://bugzilla.redhat.com/show_bug.cgi?id=2258725"
+                    },
+                    {
+                        "tags": [
+                            "x_sadp-csaf-vex"
+                        ],
+                        "url": "https://security.access.redhat.com/data/csaf/v2/vex/2024/cve-2024-21626.json"
+                    },
+                    {
+                        "tags": [
+                            "vendor-advisory",
+                            "x_refsource_REDHAT"
+                        ],
+                        "url": "https://access.redhat.com/errata/RHSA-2024:1270"
+                    },
+                    {
+                        "tags": [
+                            "vendor-advisory",
+                            "x_refsource_REDHAT"
+                        ],
+                        "url": "https://access.redhat.com/errata/RHSA-2024:0717"
+                    },
+                    {
+                        "tags": [
+                            "vendor-advisory",
+                            "x_refsource_REDHAT"
+                        ],
+                        "url": "https://access.redhat.com/errata/RHSA-2024:4597"
+                    },
+                    {
+                        "tags": [
+                            "vendor-advisory",
+                            "x_refsource_REDHAT"
+                        ],
+                        "url": "https://access.redhat.com/errata/RHSA-2024:0684"
+                    },
+                    {
+                        "tags": [
+                            "vendor-advisory",
+                            "x_refsource_REDHAT"
+                        ],
+                        "url": "https://access.redhat.com/errata/RHSA-2025:2441"
+                    },
+                    {
+                        "tags": [
+                            "vendor-advisory",
+                            "x_refsource_REDHAT"
+                        ],
+                        "url": "https://access.redhat.com/errata/RHSA-2024:0666"
+                    },
+                    {
+                        "tags": [
+                            "vendor-advisory",
+                            "x_refsource_REDHAT"
+                        ],
+                        "url": "https://access.redhat.com/errata/RHSA-2025:2701"
+                    },
+                    {
+                        "tags": [
+                            "vendor-advisory",
+                            "x_refsource_REDHAT"
+                        ],
+                        "url": "https://access.redhat.com/errata/RHSA-2024:0662"
+                    },
+                    {
+                        "tags": [
+                            "vendor-advisory",
+                            "x_refsource_REDHAT"
+                        ],
+                        "url": "https://access.redhat.com/errata/RHSA-2025:2710"
+                    },
+                    {
+                        "tags": [
+                            "vendor-advisory",
+                            "x_refsource_REDHAT"
+                        ],
+                        "url": "https://access.redhat.com/errata/RHSA-2024:0645"
+                    },
+                    {
+                        "tags": [
+                            "vendor-advisory",
+                            "x_refsource_REDHAT"
+                        ],
+                        "url": "https://access.redhat.com/errata/RHSA-2025:1711"
+                    },
+                    {
+                        "tags": [
+                            "vendor-advisory",
+                            "x_refsource_REDHAT"
+                        ],
+                        "url": "https://access.redhat.com/errata/RHSA-2024:10525"
+                    },
+                    {
+                        "tags": [
+                            "vendor-advisory",
+                            "x_refsource_REDHAT"
+                        ],
+                        "url": "https://access.redhat.com/errata/RHSA-2024:10841"
+                    },
+                    {
+                        "tags": [
+                            "vendor-advisory",
+                            "x_refsource_REDHAT"
+                        ],
+                        "url": "https://access.redhat.com/errata/RHSA-2024:10149"
+                    },
+                    {
+                        "tags": [
+                            "vendor-advisory",
+                            "x_refsource_REDHAT"
+                        ],
+                        "url": "https://access.redhat.com/errata/RHSA-2025:0650"
+                    },
+                    {
+                        "tags": [
+                            "vendor-advisory",
+                            "x_refsource_REDHAT"
+                        ],
+                        "url": "https://access.redhat.com/errata/RHSA-2024:10520"
+                    },
+                    {
+                        "tags": [
+                            "vendor-advisory",
+                            "x_refsource_REDHAT"
+                        ],
+                        "url": "https://access.redhat.com/errata/RHSA-2025:0115"
+                    },
+                    {
+                        "tags": [
+                            "vendor-advisory",
+                            "x_refsource_REDHAT"
+                        ],
+                        "url": "https://access.redhat.com/errata/RHSA-2024:0758"
+                    },
+                    {
+                        "tags": [
+                            "vendor-advisory",
+                            "x_refsource_REDHAT"
+                        ],
+                        "url": "https://access.redhat.com/errata/RHSA-2024:0760"
+                    },
+                    {
+                        "tags": [
+                            "vendor-advisory",
+                            "x_refsource_REDHAT"
+                        ],
+                        "url": "https://access.redhat.com/errata/RHSA-2024:0757"
+                    },
+                    {
+                        "tags": [
+                            "vendor-advisory",
+                            "x_refsource_REDHAT"
+                        ],
+                        "url": "https://access.redhat.com/errata/RHSA-2024:0764"
+                    },
+                    {
+                        "tags": [
+                            "vendor-advisory",
+                            "x_refsource_REDHAT"
+                        ],
+                        "url": "https://access.redhat.com/errata/RHSA-2024:0759"
+                    },
+                    {
+                        "tags": [
+                            "vendor-advisory",
+                            "x_refsource_REDHAT"
+                        ],
+                        "url": "https://access.redhat.com/errata/RHSA-2024:0748"
+                    },
+                    {
+                        "tags": [
+                            "vendor-advisory",
+                            "x_refsource_REDHAT"
+                        ],
+                        "url": "https://access.redhat.com/errata/RHSA-2024:0752"
+                    },
+                    {
+                        "tags": [
+                            "vendor-advisory",
+                            "x_refsource_REDHAT"
+                        ],
+                        "url": "https://access.redhat.com/errata/RHSA-2024:0756"
+                    },
+                    {
+                        "tags": [
+                            "vendor-advisory",
+                            "x_refsource_REDHAT"
+                        ],
+                        "url": "https://access.redhat.com/errata/RHSA-2024:0755"
+                    },
+                    {
+                        "tags": [
+                            "vendor-advisory",
+                            "x_refsource_REDHAT"
+                        ],
+                        "url": "https://access.redhat.com/errata/RHSA-2024:0670"
+                    }
+                ],
+                "solutions": [
+                    {
+                        "lang": "en",
+                        "value": "RHSA-2024:1270: Red Hat Enterprise Linux 7 Extras"
+                    },
+                    {
+                        "lang": "en",
+                        "value": "RHSA-2024:0717: Red Hat Enterprise Linux 7 Extras"
+                    },
+                    {
+                        "lang": "en",
+                        "value": "RHSA-2024:4597: OpenShift Developer Tools and Services for OCP 4.15"
+                    },
+                    {
+                        "lang": "en",
+                        "value": "RHSA-2024:0684: Red Hat OpenShift Container Platform 4.11"
+                    },
+                    {
+                        "lang": "en",
+                        "value": "RHSA-2025:2441: Red Hat OpenShift Container Platform 4.12"
+                    },
+                    {
+                        "lang": "en",
+                        "value": "RHSA-2024:0666: Red Hat OpenShift Container Platform 4.12"
+                    },
+                    {
+                        "lang": "en",
+                        "value": "RHSA-2025:2701: Red Hat OpenShift Container Platform 4.13"
+                    },
+                    {
+                        "lang": "en",
+                        "value": "RHSA-2024:0662: Red Hat OpenShift Container Platform 4.13"
+                    },
+                    {
+                        "lang": "en",
+                        "value": "RHSA-2025:2710: Red Hat OpenShift Container Platform 4.14"
+                    },
+                    {
+                        "lang": "en",
+                        "value": "RHSA-2024:0645: Red Hat OpenShift Container Platform 4.14"
+                    },
+                    {
+                        "lang": "en",
+                        "value": "RHSA-2025:1711: Red Hat OpenShift Container Platform 4.15"
+                    },
+                    {
+                        "lang": "en",
+                        "value": "RHSA-2024:10525: Red Hat OpenShift Container Platform 4.14"
+                    },
+                    {
+                        "lang": "en",
+                        "value": "RHSA-2024:10841: Red Hat OpenShift Container Platform 4.15"
+                    },
+                    {
+                        "lang": "en",
+                        "value": "RHSA-2024:10149: Red Hat OpenShift Container Platform 4.16"
+                    },
+                    {
+                        "lang": "en",
+                        "value": "RHSA-2025:0650: Red Hat OpenShift Container Platform 4.16"
+                    },
+                    {
+                        "lang": "en",
+                        "value": "RHSA-2024:10520: Red Hat OpenShift Container Platform 4.17"
+                    },
+                    {
+                        "lang": "en",
+                        "value": "RHSA-2025:0115: Red Hat OpenShift Container Platform 4.17"
+                    },
+                    {
+                        "lang": "en",
+                        "value": "RHSA-2024:0758: Red Hat Enterprise Linux AppStream AUS (v. 8.2), Red Hat Enterprise Linux AppStream E4S (v. 8.2), Red Hat Enterprise Linux AppStream TUS (v. 8.2)"
+                    },
+                    {
+                        "lang": "en",
+                        "value": "RHSA-2024:0760: Red Hat Enterprise Linux AppStream AUS (v.8.4), Red Hat Enterprise Linux AppStream E4S (v.8.4), Red Hat Enterprise Linux AppStream TUS (v.8.4)"
+                    },
+                    {
+                        "lang": "en",
+                        "value": "RHSA-2024:0757: Red Hat Enterprise Linux AppStream EUS (v.8.6)"
+                    },
+                    {
+                        "lang": "en",
+                        "value": "RHSA-2024:0764: Red Hat Enterprise Linux AppStream EUS (v.8.6)"
+                    },
+                    {
+                        "lang": "en",
+                        "value": "RHSA-2024:0759: Red Hat Enterprise Linux AppStream EUS (v.8.8)"
+                    },
+                    {
+                        "lang": "en",
+                        "value": "RHSA-2024:0748: Red Hat Enterprise Linux AppStream (v. 8)"
+                    },
+                    {
+                        "lang": "en",
+                        "value": "RHSA-2024:0752: Red Hat Enterprise Linux AppStream (v. 8)"
+                    },
+                    {
+                        "lang": "en",
+                        "value": "RHSA-2024:0756: Red Hat Enterprise Linux AppStream EUS (v.9.0)"
+                    },
+                    {
+                        "lang": "en",
+                        "value": "RHSA-2024:0755: Red Hat Enterprise Linux AppStream EUS (v.9.2)"
+                    },
+                    {
+                        "lang": "en",
+                        "value": "RHSA-2024:0670: Red Hat Enterprise Linux AppStream (v. 9)"
+                    }
+                ],
+                "timeline": [
+                    {
+                        "lang": "en",
+                        "time": "2024-01-17T00:00:00.000Z",
+                        "value": "Reported to Red Hat."
+                    },
+                    {
+                        "lang": "en",
+                        "time": "2024-01-31T20:01:00.000Z",
+                        "value": "Made public."
+                    }
+                ],
+                "title": "runc: file descriptor leak",
+                "workarounds": [
+                    {
+                        "lang": "en",
+                        "value": "Red Hat Enterprise Linux (RHEL) and OpenShift ships with SELinux in targeted enforcing mode, which prevents the container processes from accessing host content and mitigates this attack. Dockerfiles can be inspected on the 'RUN' and 'WORKDIR' directives to ensure that there are no escapes or malicious paths, which are an indication of compromise. Limiting access and only using trusted container images can help prevent unauthorized access and malicious attacks."
+                    }
+                ],
+                "x_adpType": "supplier",
+                "x_generator": {
+                    "engine": "sadp-cli 1.0.0"
+                },
+                "providerMetadata": {
+                    "orgId": "0b0ca135-0b70-47e7-9f44-1890c2a1c46c",
+                    "shortName": "redhat-SADP",
+                    "dateUpdated": "2026-09-17T12:04:33.454Z"
+                }
+            }
+        ]
+    }
+}

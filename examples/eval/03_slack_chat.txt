@@ -1,1132 +1,570 @@
-[2026-07-14 08:00:00] @alice: cluster health check failing in us-west-2 (msg_id:0)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1000.
-[2026-07-14 08:00:15] @bob: looking into it now. running `kubectl get nodes` (msg_id:1)
-[2026-07-14 08:00:30] @charlie: nodes are NotReady! multiple node heartbeats missed. (msg_id:2)
-[2026-07-14 08:00:45] @dave: check AWS EC2 console, are instances terminating? (msg_id:3)
-[2026-07-14 08:01:00] @eve: auto-scaling group triggered scale-in due to faulty metric! (msg_id:4)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1004.
-[2026-07-14 08:01:15] @sre-bot: cluster health check failing in us-west-2 (msg_id:5)
-[2026-07-14 08:01:30] @alice: looking into it now. running `kubectl get nodes` (msg_id:6)
-[2026-07-14 08:01:45] @bob: nodes are NotReady! multiple node heartbeats missed. (msg_id:7)
-[2026-07-14 08:02:00] @charlie: check AWS EC2 console, are instances terminating? (msg_id:8)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1008.
-[2026-07-14 08:02:15] @dave: auto-scaling group triggered scale-in due to faulty metric! (msg_id:9)
-[2026-07-14 08:02:30] @eve: cluster health check failing in us-west-2 (msg_id:10)
-[2026-07-14 08:02:45] @sre-bot: looking into it now. running `kubectl get nodes` (msg_id:11)
-[2026-07-14 08:03:00] @alice: nodes are NotReady! multiple node heartbeats missed. (msg_id:12)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1012.
-[2026-07-14 08:03:15] @bob: check AWS EC2 console, are instances terminating? (msg_id:13)
-[2026-07-14 08:03:30] @charlie: auto-scaling group triggered scale-in due to faulty metric! (msg_id:14)
-[2026-07-14 08:03:45] @dave: cluster health check failing in us-west-2 (msg_id:15)
-[2026-07-14 08:04:00] @eve: looking into it now. running `kubectl get nodes` (msg_id:16)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1016.
-[2026-07-14 08:04:15] @sre-bot: nodes are NotReady! multiple node heartbeats missed. (msg_id:17)
-[2026-07-14 08:04:30] @alice: check AWS EC2 console, are instances terminating? (msg_id:18)
-[2026-07-14 08:04:45] @bob: auto-scaling group triggered scale-in due to faulty metric! (msg_id:19)
-[2026-07-14 08:05:00] @charlie: cluster health check failing in us-west-2 (msg_id:20)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1020.
-[2026-07-14 08:05:15] @dave: looking into it now. running `kubectl get nodes` (msg_id:21)
-[2026-07-14 08:05:30] @eve: nodes are NotReady! multiple node heartbeats missed. (msg_id:22)
-[2026-07-14 08:05:45] @sre-bot: check AWS EC2 console, are instances terminating? (msg_id:23)
-[2026-07-14 08:06:00] @alice: auto-scaling group triggered scale-in due to faulty metric! (msg_id:24)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1024.
-[2026-07-14 08:06:15] @bob: cluster health check failing in us-west-2 (msg_id:25)
-[2026-07-14 08:06:30] @charlie: looking into it now. running `kubectl get nodes` (msg_id:26)
-[2026-07-14 08:06:45] @dave: nodes are NotReady! multiple node heartbeats missed. (msg_id:27)
-[2026-07-14 08:07:00] @eve: check AWS EC2 console, are instances terminating? (msg_id:28)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1028.
-[2026-07-14 08:07:15] @sre-bot: auto-scaling group triggered scale-in due to faulty metric! (msg_id:29)
-[2026-07-14 08:07:30] @alice: cluster health check failing in us-west-2 (msg_id:30)
-[2026-07-14 08:07:45] @bob: looking into it now. running `kubectl get nodes` (msg_id:31)
-[2026-07-14 08:08:00] @charlie: nodes are NotReady! multiple node heartbeats missed. (msg_id:32)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1032.
-[2026-07-14 08:08:15] @dave: check AWS EC2 console, are instances terminating? (msg_id:33)
-[2026-07-14 08:08:30] @eve: auto-scaling group triggered scale-in due to faulty metric! (msg_id:34)
-[2026-07-14 08:08:45] @sre-bot: cluster health check failing in us-west-2 (msg_id:35)
-[2026-07-14 08:09:00] @alice: looking into it now. running `kubectl get nodes` (msg_id:36)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1036.
-[2026-07-14 08:09:15] @bob: nodes are NotReady! multiple node heartbeats missed. (msg_id:37)
-[2026-07-14 08:09:30] @charlie: check AWS EC2 console, are instances terminating? (msg_id:38)
-[2026-07-14 08:09:45] @dave: auto-scaling group triggered scale-in due to faulty metric! (msg_id:39)
-[2026-07-14 08:10:00] @eve: cluster health check failing in us-west-2 (msg_id:40)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1040.
-[2026-07-14 08:10:15] @sre-bot: looking into it now. running `kubectl get nodes` (msg_id:41)
-[2026-07-14 08:10:30] @alice: nodes are NotReady! multiple node heartbeats missed. (msg_id:42)
-[2026-07-14 08:10:45] @bob: check AWS EC2 console, are instances terminating? (msg_id:43)
-[2026-07-14 08:11:00] @charlie: auto-scaling group triggered scale-in due to faulty metric! (msg_id:44)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1044.
-[2026-07-14 08:11:15] @dave: cluster health check failing in us-west-2 (msg_id:45)
-[2026-07-14 08:11:30] @eve: looking into it now. running `kubectl get nodes` (msg_id:46)
-[2026-07-14 08:11:45] @sre-bot: nodes are NotReady! multiple node heartbeats missed. (msg_id:47)
-[2026-07-14 08:12:00] @alice: check AWS EC2 console, are instances terminating? (msg_id:48)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1048.
-[2026-07-14 08:12:15] @bob: auto-scaling group triggered scale-in due to faulty metric! (msg_id:49)
-[2026-07-14 08:12:30] @charlie: cluster health check failing in us-west-2 (msg_id:50)
-[2026-07-14 08:12:45] @dave: looking into it now. running `kubectl get nodes` (msg_id:51)
-[2026-07-14 08:13:00] @eve: nodes are NotReady! multiple node heartbeats missed. (msg_id:52)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1052.
-[2026-07-14 08:13:15] @sre-bot: check AWS EC2 console, are instances terminating? (msg_id:53)
-[2026-07-14 08:13:30] @alice: auto-scaling group triggered scale-in due to faulty metric! (msg_id:54)
-[2026-07-14 08:13:45] @bob: cluster health check failing in us-west-2 (msg_id:55)
-[2026-07-14 08:14:00] @charlie: looking into it now. running `kubectl get nodes` (msg_id:56)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1056.
-[2026-07-14 08:14:15] @dave: nodes are NotReady! multiple node heartbeats missed. (msg_id:57)
-[2026-07-14 08:14:30] @eve: check AWS EC2 console, are instances terminating? (msg_id:58)
-[2026-07-14 08:14:45] @sre-bot: auto-scaling group triggered scale-in due to faulty metric! (msg_id:59)
-[2026-07-14 08:15:00] @alice: cluster health check failing in us-west-2 (msg_id:60)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1060.
-[2026-07-14 08:15:15] @bob: looking into it now. running `kubectl get nodes` (msg_id:61)
-[2026-07-14 08:15:30] @charlie: nodes are NotReady! multiple node heartbeats missed. (msg_id:62)
-[2026-07-14 08:15:45] @dave: check AWS EC2 console, are instances terminating? (msg_id:63)
-[2026-07-14 08:16:00] @eve: auto-scaling group triggered scale-in due to faulty metric! (msg_id:64)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1064.
-[2026-07-14 08:16:15] @sre-bot: cluster health check failing in us-west-2 (msg_id:65)
-[2026-07-14 08:16:30] @alice: looking into it now. running `kubectl get nodes` (msg_id:66)
-[2026-07-14 08:16:45] @bob: nodes are NotReady! multiple node heartbeats missed. (msg_id:67)
-[2026-07-14 08:17:00] @charlie: check AWS EC2 console, are instances terminating? (msg_id:68)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1068.
-[2026-07-14 08:17:15] @dave: auto-scaling group triggered scale-in due to faulty metric! (msg_id:69)
-[2026-07-14 08:17:30] @eve: cluster health check failing in us-west-2 (msg_id:70)
-[2026-07-14 08:17:45] @sre-bot: looking into it now. running `kubectl get nodes` (msg_id:71)
-[2026-07-14 08:18:00] @alice: nodes are NotReady! multiple node heartbeats missed. (msg_id:72)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1072.
-[2026-07-14 08:18:15] @bob: check AWS EC2 console, are instances terminating? (msg_id:73)
-[2026-07-14 08:18:30] @charlie: auto-scaling group triggered scale-in due to faulty metric! (msg_id:74)
-[2026-07-14 08:18:45] @dave: cluster health check failing in us-west-2 (msg_id:75)
-[2026-07-14 08:19:00] @eve: looking into it now. running `kubectl get nodes` (msg_id:76)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1076.
-[2026-07-14 08:19:15] @sre-bot: nodes are NotReady! multiple node heartbeats missed. (msg_id:77)
-[2026-07-14 08:19:30] @alice: check AWS EC2 console, are instances terminating? (msg_id:78)
-[2026-07-14 08:19:45] @bob: auto-scaling group triggered scale-in due to faulty metric! (msg_id:79)
-[2026-07-14 08:20:00] @charlie: cluster health check failing in us-west-2 (msg_id:80)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1080.
-[2026-07-14 08:20:15] @dave: looking into it now. running `kubectl get nodes` (msg_id:81)
-[2026-07-14 08:20:30] @eve: nodes are NotReady! multiple node heartbeats missed. (msg_id:82)
-[2026-07-14 08:20:45] @sre-bot: check AWS EC2 console, are instances terminating? (msg_id:83)
-[2026-07-14 08:21:00] @alice: auto-scaling group triggered scale-in due to faulty metric! (msg_id:84)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1084.
-[2026-07-14 08:21:15] @bob: cluster health check failing in us-west-2 (msg_id:85)
-[2026-07-14 08:21:30] @charlie: looking into it now. running `kubectl get nodes` (msg_id:86)
-[2026-07-14 08:21:45] @dave: nodes are NotReady! multiple node heartbeats missed. (msg_id:87)
-[2026-07-14 08:22:00] @eve: check AWS EC2 console, are instances terminating? (msg_id:88)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1088.
-[2026-07-14 08:22:15] @sre-bot: auto-scaling group triggered scale-in due to faulty metric! (msg_id:89)
-[2026-07-14 08:22:30] @alice: cluster health check failing in us-west-2 (msg_id:90)
-[2026-07-14 08:22:45] @bob: looking into it now. running `kubectl get nodes` (msg_id:91)
-[2026-07-14 08:23:00] @charlie: nodes are NotReady! multiple node heartbeats missed. (msg_id:92)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1092.
-[2026-07-14 08:23:15] @dave: check AWS EC2 console, are instances terminating? (msg_id:93)
-[2026-07-14 08:23:30] @eve: auto-scaling group triggered scale-in due to faulty metric! (msg_id:94)
-[2026-07-14 08:23:45] @sre-bot: cluster health check failing in us-west-2 (msg_id:95)
-[2026-07-14 08:24:00] @alice: looking into it now. running `kubectl get nodes` (msg_id:96)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1096.
-[2026-07-14 08:24:15] @bob: nodes are NotReady! multiple node heartbeats missed. (msg_id:97)
-[2026-07-14 08:24:30] @charlie: check AWS EC2 console, are instances terminating? (msg_id:98)
-[2026-07-14 08:24:45] @dave: auto-scaling group triggered scale-in due to faulty metric! (msg_id:99)
-[2026-07-14 08:25:00] @eve: cluster health check failing in us-west-2 (msg_id:100)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1100.
-[2026-07-14 08:25:15] @sre-bot: looking into it now. running `kubectl get nodes` (msg_id:101)
-[2026-07-14 08:25:30] @alice: nodes are NotReady! multiple node heartbeats missed. (msg_id:102)
-[2026-07-14 08:25:45] @bob: check AWS EC2 console, are instances terminating? (msg_id:103)
-[2026-07-14 08:26:00] @charlie: auto-scaling group triggered scale-in due to faulty metric! (msg_id:104)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1104.
-[2026-07-14 08:26:15] @dave: cluster health check failing in us-west-2 (msg_id:105)
-[2026-07-14 08:26:30] @eve: looking into it now. running `kubectl get nodes` (msg_id:106)
-[2026-07-14 08:26:45] @sre-bot: nodes are NotReady! multiple node heartbeats missed. (msg_id:107)
-[2026-07-14 08:27:00] @alice: check AWS EC2 console, are instances terminating? (msg_id:108)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1108.
-[2026-07-14 08:27:15] @bob: auto-scaling group triggered scale-in due to faulty metric! (msg_id:109)
-[2026-07-14 08:27:30] @charlie: cluster health check failing in us-west-2 (msg_id:110)
-[2026-07-14 08:27:45] @dave: looking into it now. running `kubectl get nodes` (msg_id:111)
-[2026-07-14 08:28:00] @eve: nodes are NotReady! multiple node heartbeats missed. (msg_id:112)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1112.
-[2026-07-14 08:28:15] @sre-bot: check AWS EC2 console, are instances terminating? (msg_id:113)
-[2026-07-14 08:28:30] @alice: auto-scaling group triggered scale-in due to faulty metric! (msg_id:114)
-[2026-07-14 08:28:45] @bob: cluster health check failing in us-west-2 (msg_id:115)
-[2026-07-14 08:29:00] @charlie: looking into it now. running `kubectl get nodes` (msg_id:116)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1116.
-[2026-07-14 08:29:15] @dave: nodes are NotReady! multiple node heartbeats missed. (msg_id:117)
-[2026-07-14 08:29:30] @eve: check AWS EC2 console, are instances terminating? (msg_id:118)
-[2026-07-14 08:29:45] @sre-bot: auto-scaling group triggered scale-in due to faulty metric! (msg_id:119)
-[2026-07-14 08:30:00] @alice: cluster health check failing in us-west-2 (msg_id:120)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1120.
-[2026-07-14 08:30:15] @bob: looking into it now. running `kubectl get nodes` (msg_id:121)
-[2026-07-14 08:30:30] @charlie: nodes are NotReady! multiple node heartbeats missed. (msg_id:122)
-[2026-07-14 08:30:45] @dave: check AWS EC2 console, are instances terminating? (msg_id:123)
-[2026-07-14 08:31:00] @eve: auto-scaling group triggered scale-in due to faulty metric! (msg_id:124)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1124.
-[2026-07-14 08:31:15] @sre-bot: cluster health check failing in us-west-2 (msg_id:125)
-[2026-07-14 08:31:30] @alice: looking into it now. running `kubectl get nodes` (msg_id:126)
-[2026-07-14 08:31:45] @bob: nodes are NotReady! multiple node heartbeats missed. (msg_id:127)
-[2026-07-14 08:32:00] @charlie: check AWS EC2 console, are instances terminating? (msg_id:128)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1128.
-[2026-07-14 08:32:15] @dave: auto-scaling group triggered scale-in due to faulty metric! (msg_id:129)
-[2026-07-14 08:32:30] @eve: cluster health check failing in us-west-2 (msg_id:130)
-[2026-07-14 08:32:45] @sre-bot: looking into it now. running `kubectl get nodes` (msg_id:131)
-[2026-07-14 08:33:00] @alice: nodes are NotReady! multiple node heartbeats missed. (msg_id:132)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1132.
-[2026-07-14 08:33:15] @bob: check AWS EC2 console, are instances terminating? (msg_id:133)
-[2026-07-14 08:33:30] @charlie: auto-scaling group triggered scale-in due to faulty metric! (msg_id:134)
-[2026-07-14 08:33:45] @dave: cluster health check failing in us-west-2 (msg_id:135)
-[2026-07-14 08:34:00] @eve: looking into it now. running `kubectl get nodes` (msg_id:136)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1136.
-[2026-07-14 08:34:15] @sre-bot: nodes are NotReady! multiple node heartbeats missed. (msg_id:137)
-[2026-07-14 08:34:30] @alice: check AWS EC2 console, are instances terminating? (msg_id:138)
-[2026-07-14 08:34:45] @bob: auto-scaling group triggered scale-in due to faulty metric! (msg_id:139)
-[2026-07-14 08:35:00] @charlie: cluster health check failing in us-west-2 (msg_id:140)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1140.
-[2026-07-14 08:35:15] @dave: looking into it now. running `kubectl get nodes` (msg_id:141)
-[2026-07-14 08:35:30] @eve: nodes are NotReady! multiple node heartbeats missed. (msg_id:142)
-[2026-07-14 08:35:45] @sre-bot: check AWS EC2 console, are instances terminating? (msg_id:143)
-[2026-07-14 08:36:00] @alice: auto-scaling group triggered scale-in due to faulty metric! (msg_id:144)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1144.
-[2026-07-14 08:36:15] @bob: cluster health check failing in us-west-2 (msg_id:145)
-[2026-07-14 08:36:30] @charlie: looking into it now. running `kubectl get nodes` (msg_id:146)
-[2026-07-14 08:36:45] @dave: nodes are NotReady! multiple node heartbeats missed. (msg_id:147)
-[2026-07-14 08:37:00] @eve: check AWS EC2 console, are instances terminating? (msg_id:148)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1148.
-[2026-07-14 08:37:15] @sre-bot: auto-scaling group triggered scale-in due to faulty metric! (msg_id:149)
-[2026-07-14 08:37:30] @alice: cluster health check failing in us-west-2 (msg_id:150)
-[2026-07-14 08:37:45] @bob: looking into it now. running `kubectl get nodes` (msg_id:151)
-[2026-07-14 08:38:00] @charlie: nodes are NotReady! multiple node heartbeats missed. (msg_id:152)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1152.
-[2026-07-14 08:38:15] @dave: check AWS EC2 console, are instances terminating? (msg_id:153)
-[2026-07-14 08:38:30] @eve: auto-scaling group triggered scale-in due to faulty metric! (msg_id:154)
-[2026-07-14 08:38:45] @sre-bot: cluster health check failing in us-west-2 (msg_id:155)
-[2026-07-14 08:39:00] @alice: looking into it now. running `kubectl get nodes` (msg_id:156)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1156.
-[2026-07-14 08:39:15] @bob: nodes are NotReady! multiple node heartbeats missed. (msg_id:157)
-[2026-07-14 08:39:30] @charlie: check AWS EC2 console, are instances terminating? (msg_id:158)
-[2026-07-14 08:39:45] @dave: auto-scaling group triggered scale-in due to faulty metric! (msg_id:159)
-[2026-07-14 08:40:00] @eve: cluster health check failing in us-west-2 (msg_id:160)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1160.
-[2026-07-14 08:40:15] @sre-bot: looking into it now. running `kubectl get nodes` (msg_id:161)
-[2026-07-14 08:40:30] @alice: nodes are NotReady! multiple node heartbeats missed. (msg_id:162)
-[2026-07-14 08:40:45] @bob: check AWS EC2 console, are instances terminating? (msg_id:163)
-[2026-07-14 08:41:00] @charlie: auto-scaling group triggered scale-in due to faulty metric! (msg_id:164)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1164.
-[2026-07-14 08:41:15] @dave: cluster health check failing in us-west-2 (msg_id:165)
-[2026-07-14 08:41:30] @eve: looking into it now. running `kubectl get nodes` (msg_id:166)
-[2026-07-14 08:41:45] @sre-bot: nodes are NotReady! multiple node heartbeats missed. (msg_id:167)
-[2026-07-14 08:42:00] @alice: check AWS EC2 console, are instances terminating? (msg_id:168)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1168.
-[2026-07-14 08:42:15] @bob: auto-scaling group triggered scale-in due to faulty metric! (msg_id:169)
-[2026-07-14 08:42:30] @charlie: cluster health check failing in us-west-2 (msg_id:170)
-[2026-07-14 08:42:45] @dave: looking into it now. running `kubectl get nodes` (msg_id:171)
-[2026-07-14 08:43:00] @eve: nodes are NotReady! multiple node heartbeats missed. (msg_id:172)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1172.
-[2026-07-14 08:43:15] @sre-bot: check AWS EC2 console, are instances terminating? (msg_id:173)
-[2026-07-14 08:43:30] @alice: auto-scaling group triggered scale-in due to faulty metric! (msg_id:174)
-[2026-07-14 08:43:45] @bob: cluster health check failing in us-west-2 (msg_id:175)
-[2026-07-14 08:44:00] @charlie: looking into it now. running `kubectl get nodes` (msg_id:176)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1176.
-[2026-07-14 08:44:15] @dave: nodes are NotReady! multiple node heartbeats missed. (msg_id:177)
-[2026-07-14 08:44:30] @eve: check AWS EC2 console, are instances terminating? (msg_id:178)
-[2026-07-14 08:44:45] @sre-bot: auto-scaling group triggered scale-in due to faulty metric! (msg_id:179)
-[2026-07-14 08:45:00] @alice: cluster health check failing in us-west-2 (msg_id:180)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1180.
-[2026-07-14 08:45:15] @bob: looking into it now. running `kubectl get nodes` (msg_id:181)
-[2026-07-14 08:45:30] @charlie: nodes are NotReady! multiple node heartbeats missed. (msg_id:182)
-[2026-07-14 08:45:45] @dave: check AWS EC2 console, are instances terminating? (msg_id:183)
-[2026-07-14 08:46:00] @eve: auto-scaling group triggered scale-in due to faulty metric! (msg_id:184)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1184.
-[2026-07-14 08:46:15] @sre-bot: cluster health check failing in us-west-2 (msg_id:185)
-[2026-07-14 08:46:30] @alice: looking into it now. running `kubectl get nodes` (msg_id:186)
-[2026-07-14 08:46:45] @bob: nodes are NotReady! multiple node heartbeats missed. (msg_id:187)
-[2026-07-14 08:47:00] @charlie: check AWS EC2 console, are instances terminating? (msg_id:188)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1188.
-[2026-07-14 08:47:15] @dave: auto-scaling group triggered scale-in due to faulty metric! (msg_id:189)
-[2026-07-14 08:47:30] @eve: cluster health check failing in us-west-2 (msg_id:190)
-[2026-07-14 08:47:45] @sre-bot: looking into it now. running `kubectl get nodes` (msg_id:191)
-[2026-07-14 08:48:00] @alice: nodes are NotReady! multiple node heartbeats missed. (msg_id:192)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1192.
-[2026-07-14 08:48:15] @bob: check AWS EC2 console, are instances terminating? (msg_id:193)
-[2026-07-14 08:48:30] @charlie: auto-scaling group triggered scale-in due to faulty metric! (msg_id:194)
-[2026-07-14 08:48:45] @dave: cluster health check failing in us-west-2 (msg_id:195)
-[2026-07-14 08:49:00] @eve: looking into it now. running `kubectl get nodes` (msg_id:196)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1196.
-[2026-07-14 08:49:15] @sre-bot: nodes are NotReady! multiple node heartbeats missed. (msg_id:197)
-[2026-07-14 08:49:30] @alice: check AWS EC2 console, are instances terminating? (msg_id:198)
-[2026-07-14 08:49:45] @bob: auto-scaling group triggered scale-in due to faulty metric! (msg_id:199)
-[2026-07-14 08:50:00] @charlie: cluster health check failing in us-west-2 (msg_id:200)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1200.
-[2026-07-14 08:50:15] @dave: looking into it now. running `kubectl get nodes` (msg_id:201)
-[2026-07-14 08:50:30] @eve: nodes are NotReady! multiple node heartbeats missed. (msg_id:202)
-[2026-07-14 08:50:45] @sre-bot: check AWS EC2 console, are instances terminating? (msg_id:203)
-[2026-07-14 08:51:00] @alice: auto-scaling group triggered scale-in due to faulty metric! (msg_id:204)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1204.
-[2026-07-14 08:51:15] @bob: cluster health check failing in us-west-2 (msg_id:205)
-[2026-07-14 08:51:30] @charlie: looking into it now. running `kubectl get nodes` (msg_id:206)
-[2026-07-14 08:51:45] @dave: nodes are NotReady! multiple node heartbeats missed. (msg_id:207)
-[2026-07-14 08:52:00] @eve: check AWS EC2 console, are instances terminating? (msg_id:208)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1208.
-[2026-07-14 08:52:15] @sre-bot: auto-scaling group triggered scale-in due to faulty metric! (msg_id:209)
-[2026-07-14 08:52:30] @alice: cluster health check failing in us-west-2 (msg_id:210)
-[2026-07-14 08:52:45] @bob: looking into it now. running `kubectl get nodes` (msg_id:211)
-[2026-07-14 08:53:00] @charlie: nodes are NotReady! multiple node heartbeats missed. (msg_id:212)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1212.
-[2026-07-14 08:53:15] @dave: check AWS EC2 console, are instances terminating? (msg_id:213)
-[2026-07-14 08:53:30] @eve: auto-scaling group triggered scale-in due to faulty metric! (msg_id:214)
-[2026-07-14 08:53:45] @sre-bot: cluster health check failing in us-west-2 (msg_id:215)
-[2026-07-14 08:54:00] @alice: looking into it now. running `kubectl get nodes` (msg_id:216)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1216.
-[2026-07-14 08:54:15] @bob: nodes are NotReady! multiple node heartbeats missed. (msg_id:217)
-[2026-07-14 08:54:30] @charlie: check AWS EC2 console, are instances terminating? (msg_id:218)
-[2026-07-14 08:54:45] @dave: auto-scaling group triggered scale-in due to faulty metric! (msg_id:219)
-[2026-07-14 08:55:00] @eve: cluster health check failing in us-west-2 (msg_id:220)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1220.
-[2026-07-14 08:55:15] @sre-bot: looking into it now. running `kubectl get nodes` (msg_id:221)
-[2026-07-14 08:55:30] @alice: nodes are NotReady! multiple node heartbeats missed. (msg_id:222)
-[2026-07-14 08:55:45] @bob: check AWS EC2 console, are instances terminating? (msg_id:223)
-[2026-07-14 08:56:00] @charlie: auto-scaling group triggered scale-in due to faulty metric! (msg_id:224)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1224.
-[2026-07-14 08:56:15] @dave: cluster health check failing in us-west-2 (msg_id:225)
-[2026-07-14 08:56:30] @eve: looking into it now. running `kubectl get nodes` (msg_id:226)
-[2026-07-14 08:56:45] @sre-bot: nodes are NotReady! multiple node heartbeats missed. (msg_id:227)
-[2026-07-14 08:57:00] @alice: check AWS EC2 console, are instances terminating? (msg_id:228)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1228.
-[2026-07-14 08:57:15] @bob: auto-scaling group triggered scale-in due to faulty metric! (msg_id:229)
-[2026-07-14 08:57:30] @charlie: cluster health check failing in us-west-2 (msg_id:230)
-[2026-07-14 08:57:45] @dave: looking into it now. running `kubectl get nodes` (msg_id:231)
-[2026-07-14 08:58:00] @eve: nodes are NotReady! multiple node heartbeats missed. (msg_id:232)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1232.
-[2026-07-14 08:58:15] @sre-bot: check AWS EC2 console, are instances terminating? (msg_id:233)
-[2026-07-14 08:58:30] @alice: auto-scaling group triggered scale-in due to faulty metric! (msg_id:234)
-[2026-07-14 08:58:45] @bob: cluster health check failing in us-west-2 (msg_id:235)
-[2026-07-14 08:59:00] @charlie: looking into it now. running `kubectl get nodes` (msg_id:236)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1236.
-[2026-07-14 08:59:15] @dave: nodes are NotReady! multiple node heartbeats missed. (msg_id:237)
-[2026-07-14 08:59:30] @eve: check AWS EC2 console, are instances terminating? (msg_id:238)
-[2026-07-14 08:59:45] @sre-bot: auto-scaling group triggered scale-in due to faulty metric! (msg_id:239)
-[2026-07-14 09:00:00] @alice: cluster health check failing in us-west-2 (msg_id:240)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1240.
-[2026-07-14 09:00:15] @bob: looking into it now. running `kubectl get nodes` (msg_id:241)
-[2026-07-14 09:00:30] @charlie: nodes are NotReady! multiple node heartbeats missed. (msg_id:242)
-[2026-07-14 09:00:45] @dave: check AWS EC2 console, are instances terminating? (msg_id:243)
-[2026-07-14 09:01:00] @eve: auto-scaling group triggered scale-in due to faulty metric! (msg_id:244)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1244.
-[2026-07-14 09:01:15] @sre-bot: cluster health check failing in us-west-2 (msg_id:245)
-[2026-07-14 09:01:30] @alice: looking into it now. running `kubectl get nodes` (msg_id:246)
-[2026-07-14 09:01:45] @bob: nodes are NotReady! multiple node heartbeats missed. (msg_id:247)
-[2026-07-14 09:02:00] @charlie: check AWS EC2 console, are instances terminating? (msg_id:248)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1248.
-[2026-07-14 09:02:15] @dave: auto-scaling group triggered scale-in due to faulty metric! (msg_id:249)
-[2026-07-14 09:02:30] @eve: cluster health check failing in us-west-2 (msg_id:250)
-[2026-07-14 09:02:45] @sre-bot: looking into it now. running `kubectl get nodes` (msg_id:251)
-[2026-07-14 09:03:00] @alice: nodes are NotReady! multiple node heartbeats missed. (msg_id:252)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1252.
-[2026-07-14 09:03:15] @bob: check AWS EC2 console, are instances terminating? (msg_id:253)
-[2026-07-14 09:03:30] @charlie: auto-scaling group triggered scale-in due to faulty metric! (msg_id:254)
-[2026-07-14 09:03:45] @dave: cluster health check failing in us-west-2 (msg_id:255)
-[2026-07-14 09:04:00] @eve: looking into it now. running `kubectl get nodes` (msg_id:256)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1256.
-[2026-07-14 09:04:15] @sre-bot: nodes are NotReady! multiple node heartbeats missed. (msg_id:257)
-[2026-07-14 09:04:30] @alice: check AWS EC2 console, are instances terminating? (msg_id:258)
-[2026-07-14 09:04:45] @bob: auto-scaling group triggered scale-in due to faulty metric! (msg_id:259)
-[2026-07-14 09:05:00] @charlie: cluster health check failing in us-west-2 (msg_id:260)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1260.
-[2026-07-14 09:05:15] @dave: looking into it now. running `kubectl get nodes` (msg_id:261)
-[2026-07-14 09:05:30] @eve: nodes are NotReady! multiple node heartbeats missed. (msg_id:262)
-[2026-07-14 09:05:45] @sre-bot: check AWS EC2 console, are instances terminating? (msg_id:263)
-[2026-07-14 09:06:00] @alice: auto-scaling group triggered scale-in due to faulty metric! (msg_id:264)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1264.
-[2026-07-14 09:06:15] @bob: cluster health check failing in us-west-2 (msg_id:265)
-[2026-07-14 09:06:30] @charlie: looking into it now. running `kubectl get nodes` (msg_id:266)
-[2026-07-14 09:06:45] @dave: nodes are NotReady! multiple node heartbeats missed. (msg_id:267)
-[2026-07-14 09:07:00] @eve: check AWS EC2 console, are instances terminating? (msg_id:268)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1268.
-[2026-07-14 09:07:15] @sre-bot: auto-scaling group triggered scale-in due to faulty metric! (msg_id:269)
-[2026-07-14 09:07:30] @alice: cluster health check failing in us-west-2 (msg_id:270)
-[2026-07-14 09:07:45] @bob: looking into it now. running `kubectl get nodes` (msg_id:271)
-[2026-07-14 09:08:00] @charlie: nodes are NotReady! multiple node heartbeats missed. (msg_id:272)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1272.
-[2026-07-14 09:08:15] @dave: check AWS EC2 console, are instances terminating? (msg_id:273)
-[2026-07-14 09:08:30] @eve: auto-scaling group triggered scale-in due to faulty metric! (msg_id:274)
-[2026-07-14 09:08:45] @sre-bot: cluster health check failing in us-west-2 (msg_id:275)
-[2026-07-14 09:09:00] @alice: looking into it now. running `kubectl get nodes` (msg_id:276)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1276.
-[2026-07-14 09:09:15] @bob: nodes are NotReady! multiple node heartbeats missed. (msg_id:277)
-[2026-07-14 09:09:30] @charlie: check AWS EC2 console, are instances terminating? (msg_id:278)
-[2026-07-14 09:09:45] @dave: auto-scaling group triggered scale-in due to faulty metric! (msg_id:279)
-[2026-07-14 09:10:00] @eve: cluster health check failing in us-west-2 (msg_id:280)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1280.
-[2026-07-14 09:10:15] @sre-bot: looking into it now. running `kubectl get nodes` (msg_id:281)
-[2026-07-14 09:10:30] @alice: nodes are NotReady! multiple node heartbeats missed. (msg_id:282)
-[2026-07-14 09:10:45] @bob: check AWS EC2 console, are instances terminating? (msg_id:283)
-[2026-07-14 09:11:00] @charlie: auto-scaling group triggered scale-in due to faulty metric! (msg_id:284)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1284.
-[2026-07-14 09:11:15] @dave: cluster health check failing in us-west-2 (msg_id:285)
-[2026-07-14 09:11:30] @eve: looking into it now. running `kubectl get nodes` (msg_id:286)
-[2026-07-14 09:11:45] @sre-bot: nodes are NotReady! multiple node heartbeats missed. (msg_id:287)
-[2026-07-14 09:12:00] @alice: check AWS EC2 console, are instances terminating? (msg_id:288)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1288.
-[2026-07-14 09:12:15] @bob: auto-scaling group triggered scale-in due to faulty metric! (msg_id:289)
-[2026-07-14 09:12:30] @charlie: cluster health check failing in us-west-2 (msg_id:290)
-[2026-07-14 09:12:45] @dave: looking into it now. running `kubectl get nodes` (msg_id:291)
-[2026-07-14 09:13:00] @eve: nodes are NotReady! multiple node heartbeats missed. (msg_id:292)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1292.
-[2026-07-14 09:13:15] @sre-bot: check AWS EC2 console, are instances terminating? (msg_id:293)
-[2026-07-14 09:13:30] @alice: auto-scaling group triggered scale-in due to faulty metric! (msg_id:294)
-[2026-07-14 09:13:45] @bob: cluster health check failing in us-west-2 (msg_id:295)
-[2026-07-14 09:14:00] @charlie: looking into it now. running `kubectl get nodes` (msg_id:296)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1296.
-[2026-07-14 09:14:15] @dave: nodes are NotReady! multiple node heartbeats missed. (msg_id:297)
-[2026-07-14 09:14:30] @eve: check AWS EC2 console, are instances terminating? (msg_id:298)
-[2026-07-14 09:14:45] @sre-bot: auto-scaling group triggered scale-in due to faulty metric! (msg_id:299)
-[2026-07-14 09:15:00] @alice: cluster health check failing in us-west-2 (msg_id:300)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1300.
-[2026-07-14 09:15:15] @bob: looking into it now. running `kubectl get nodes` (msg_id:301)
-[2026-07-14 09:15:30] @charlie: nodes are NotReady! multiple node heartbeats missed. (msg_id:302)
-[2026-07-14 09:15:45] @dave: check AWS EC2 console, are instances terminating? (msg_id:303)
-[2026-07-14 09:16:00] @eve: auto-scaling group triggered scale-in due to faulty metric! (msg_id:304)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1304.
-[2026-07-14 09:16:15] @sre-bot: cluster health check failing in us-west-2 (msg_id:305)
-[2026-07-14 09:16:30] @alice: looking into it now. running `kubectl get nodes` (msg_id:306)
-[2026-07-14 09:16:45] @bob: nodes are NotReady! multiple node heartbeats missed. (msg_id:307)
-[2026-07-14 09:17:00] @charlie: check AWS EC2 console, are instances terminating? (msg_id:308)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1308.
-[2026-07-14 09:17:15] @dave: auto-scaling group triggered scale-in due to faulty metric! (msg_id:309)
-[2026-07-14 09:17:30] @eve: cluster health check failing in us-west-2 (msg_id:310)
-[2026-07-14 09:17:45] @sre-bot: looking into it now. running `kubectl get nodes` (msg_id:311)
-[2026-07-14 09:18:00] @alice: nodes are NotReady! multiple node heartbeats missed. (msg_id:312)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1312.
-[2026-07-14 09:18:15] @bob: check AWS EC2 console, are instances terminating? (msg_id:313)
-[2026-07-14 09:18:30] @charlie: auto-scaling group triggered scale-in due to faulty metric! (msg_id:314)
-[2026-07-14 09:18:45] @dave: cluster health check failing in us-west-2 (msg_id:315)
-[2026-07-14 09:19:00] @eve: looking into it now. running `kubectl get nodes` (msg_id:316)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1316.
-[2026-07-14 09:19:15] @sre-bot: nodes are NotReady! multiple node heartbeats missed. (msg_id:317)
-[2026-07-14 09:19:30] @alice: check AWS EC2 console, are instances terminating? (msg_id:318)
-[2026-07-14 09:19:45] @bob: auto-scaling group triggered scale-in due to faulty metric! (msg_id:319)
-[2026-07-14 09:20:00] @charlie: cluster health check failing in us-west-2 (msg_id:320)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1320.
-[2026-07-14 09:20:15] @dave: looking into it now. running `kubectl get nodes` (msg_id:321)
-[2026-07-14 09:20:30] @eve: nodes are NotReady! multiple node heartbeats missed. (msg_id:322)
-[2026-07-14 09:20:45] @sre-bot: check AWS EC2 console, are instances terminating? (msg_id:323)
-[2026-07-14 09:21:00] @alice: auto-scaling group triggered scale-in due to faulty metric! (msg_id:324)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1324.
-[2026-07-14 09:21:15] @bob: cluster health check failing in us-west-2 (msg_id:325)
-[2026-07-14 09:21:30] @charlie: looking into it now. running `kubectl get nodes` (msg_id:326)
-[2026-07-14 09:21:45] @dave: nodes are NotReady! multiple node heartbeats missed. (msg_id:327)
-[2026-07-14 09:22:00] @eve: check AWS EC2 console, are instances terminating? (msg_id:328)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1328.
-[2026-07-14 09:22:15] @sre-bot: auto-scaling group triggered scale-in due to faulty metric! (msg_id:329)
-[2026-07-14 09:22:30] @alice: cluster health check failing in us-west-2 (msg_id:330)
-[2026-07-14 09:22:45] @bob: looking into it now. running `kubectl get nodes` (msg_id:331)
-[2026-07-14 09:23:00] @charlie: nodes are NotReady! multiple node heartbeats missed. (msg_id:332)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1332.
-[2026-07-14 09:23:15] @dave: check AWS EC2 console, are instances terminating? (msg_id:333)
-[2026-07-14 09:23:30] @eve: auto-scaling group triggered scale-in due to faulty metric! (msg_id:334)
-[2026-07-14 09:23:45] @sre-bot: cluster health check failing in us-west-2 (msg_id:335)
-[2026-07-14 09:24:00] @alice: looking into it now. running `kubectl get nodes` (msg_id:336)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1336.
-[2026-07-14 09:24:15] @bob: nodes are NotReady! multiple node heartbeats missed. (msg_id:337)
-[2026-07-14 09:24:30] @charlie: check AWS EC2 console, are instances terminating? (msg_id:338)
-[2026-07-14 09:24:45] @dave: auto-scaling group triggered scale-in due to faulty metric! (msg_id:339)
-[2026-07-14 09:25:00] @eve: cluster health check failing in us-west-2 (msg_id:340)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1340.
-[2026-07-14 09:25:15] @sre-bot: looking into it now. running `kubectl get nodes` (msg_id:341)
-[2026-07-14 09:25:30] @alice: nodes are NotReady! multiple node heartbeats missed. (msg_id:342)
-[2026-07-14 09:25:45] @bob: check AWS EC2 console, are instances terminating? (msg_id:343)
-[2026-07-14 09:26:00] @charlie: auto-scaling group triggered scale-in due to faulty metric! (msg_id:344)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1344.
-[2026-07-14 09:26:15] @dave: cluster health check failing in us-west-2 (msg_id:345)
-[2026-07-14 09:26:30] @eve: looking into it now. running `kubectl get nodes` (msg_id:346)
-[2026-07-14 09:26:45] @sre-bot: nodes are NotReady! multiple node heartbeats missed. (msg_id:347)
-[2026-07-14 09:27:00] @alice: check AWS EC2 console, are instances terminating? (msg_id:348)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1348.
-[2026-07-14 09:27:15] @bob: auto-scaling group triggered scale-in due to faulty metric! (msg_id:349)
-[2026-07-14 09:27:30] @charlie: cluster health check failing in us-west-2 (msg_id:350)
-[2026-07-14 09:27:45] @dave: looking into it now. running `kubectl get nodes` (msg_id:351)
-[2026-07-14 09:28:00] @eve: nodes are NotReady! multiple node heartbeats missed. (msg_id:352)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1352.
-[2026-07-14 09:28:15] @sre-bot: check AWS EC2 console, are instances terminating? (msg_id:353)
-[2026-07-14 09:28:30] @alice: auto-scaling group triggered scale-in due to faulty metric! (msg_id:354)
-[2026-07-14 09:28:45] @bob: cluster health check failing in us-west-2 (msg_id:355)
-[2026-07-14 09:29:00] @charlie: looking into it now. running `kubectl get nodes` (msg_id:356)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1356.
-[2026-07-14 09:29:15] @dave: nodes are NotReady! multiple node heartbeats missed. (msg_id:357)
-[2026-07-14 09:29:30] @eve: check AWS EC2 console, are instances terminating? (msg_id:358)
-[2026-07-14 09:29:45] @sre-bot: auto-scaling group triggered scale-in due to faulty metric! (msg_id:359)
-[2026-07-14 09:30:00] @alice: cluster health check failing in us-west-2 (msg_id:360)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1360.
-[2026-07-14 09:30:15] @bob: looking into it now. running `kubectl get nodes` (msg_id:361)
-[2026-07-14 09:30:30] @charlie: nodes are NotReady! multiple node heartbeats missed. (msg_id:362)
-[2026-07-14 09:30:45] @dave: check AWS EC2 console, are instances terminating? (msg_id:363)
-[2026-07-14 09:31:00] @eve: auto-scaling group triggered scale-in due to faulty metric! (msg_id:364)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1364.
-[2026-07-14 09:31:15] @sre-bot: cluster health check failing in us-west-2 (msg_id:365)
-[2026-07-14 09:31:30] @alice: looking into it now. running `kubectl get nodes` (msg_id:366)
-[2026-07-14 09:31:45] @bob: nodes are NotReady! multiple node heartbeats missed. (msg_id:367)
-[2026-07-14 09:32:00] @charlie: check AWS EC2 console, are instances terminating? (msg_id:368)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1368.
-[2026-07-14 09:32:15] @dave: auto-scaling group triggered scale-in due to faulty metric! (msg_id:369)
-[2026-07-14 09:32:30] @eve: cluster health check failing in us-west-2 (msg_id:370)
-[2026-07-14 09:32:45] @sre-bot: looking into it now. running `kubectl get nodes` (msg_id:371)
-[2026-07-14 09:33:00] @alice: nodes are NotReady! multiple node heartbeats missed. (msg_id:372)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1372.
-[2026-07-14 09:33:15] @bob: check AWS EC2 console, are instances terminating? (msg_id:373)
-[2026-07-14 09:33:30] @charlie: auto-scaling group triggered scale-in due to faulty metric! (msg_id:374)
-[2026-07-14 09:33:45] @dave: cluster health check failing in us-west-2 (msg_id:375)
-[2026-07-14 09:34:00] @eve: looking into it now. running `kubectl get nodes` (msg_id:376)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1376.
-[2026-07-14 09:34:15] @sre-bot: nodes are NotReady! multiple node heartbeats missed. (msg_id:377)
-[2026-07-14 09:34:30] @alice: check AWS EC2 console, are instances terminating? (msg_id:378)
-[2026-07-14 09:34:45] @bob: auto-scaling group triggered scale-in due to faulty metric! (msg_id:379)
-[2026-07-14 09:35:00] @charlie: cluster health check failing in us-west-2 (msg_id:380)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1380.
-[2026-07-14 09:35:15] @dave: looking into it now. running `kubectl get nodes` (msg_id:381)
-[2026-07-14 09:35:30] @eve: nodes are NotReady! multiple node heartbeats missed. (msg_id:382)
-[2026-07-14 09:35:45] @sre-bot: check AWS EC2 console, are instances terminating? (msg_id:383)
-[2026-07-14 09:36:00] @alice: auto-scaling group triggered scale-in due to faulty metric! (msg_id:384)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1384.
-[2026-07-14 09:36:15] @bob: cluster health check failing in us-west-2 (msg_id:385)
-[2026-07-14 09:36:30] @charlie: looking into it now. running `kubectl get nodes` (msg_id:386)
-[2026-07-14 09:36:45] @dave: nodes are NotReady! multiple node heartbeats missed. (msg_id:387)
-[2026-07-14 09:37:00] @eve: check AWS EC2 console, are instances terminating? (msg_id:388)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1388.
-[2026-07-14 09:37:15] @sre-bot: auto-scaling group triggered scale-in due to faulty metric! (msg_id:389)
-[2026-07-14 09:37:30] @alice: cluster health check failing in us-west-2 (msg_id:390)
-[2026-07-14 09:37:45] @bob: looking into it now. running `kubectl get nodes` (msg_id:391)
-[2026-07-14 09:38:00] @charlie: nodes are NotReady! multiple node heartbeats missed. (msg_id:392)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1392.
-[2026-07-14 09:38:15] @dave: check AWS EC2 console, are instances terminating? (msg_id:393)
-[2026-07-14 09:38:30] @eve: auto-scaling group triggered scale-in due to faulty metric! (msg_id:394)
-[2026-07-14 09:38:45] @sre-bot: cluster health check failing in us-west-2 (msg_id:395)
-[2026-07-14 09:39:00] @alice: looking into it now. running `kubectl get nodes` (msg_id:396)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1396.
-[2026-07-14 09:39:15] @bob: nodes are NotReady! multiple node heartbeats missed. (msg_id:397)
-[2026-07-14 09:39:30] @charlie: check AWS EC2 console, are instances terminating? (msg_id:398)
-[2026-07-14 09:39:45] @dave: auto-scaling group triggered scale-in due to faulty metric! (msg_id:399)
-[2026-07-14 09:40:00] @eve: cluster health check failing in us-west-2 (msg_id:400)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1400.
-[2026-07-14 09:40:15] @sre-bot: looking into it now. running `kubectl get nodes` (msg_id:401)
-[2026-07-14 09:40:30] @alice: nodes are NotReady! multiple node heartbeats missed. (msg_id:402)
-[2026-07-14 09:40:45] @bob: check AWS EC2 console, are instances terminating? (msg_id:403)
-[2026-07-14 09:41:00] @charlie: auto-scaling group triggered scale-in due to faulty metric! (msg_id:404)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1404.
-[2026-07-14 09:41:15] @dave: cluster health check failing in us-west-2 (msg_id:405)
-[2026-07-14 09:41:30] @eve: looking into it now. running `kubectl get nodes` (msg_id:406)
-[2026-07-14 09:41:45] @sre-bot: nodes are NotReady! multiple node heartbeats missed. (msg_id:407)
-[2026-07-14 09:42:00] @alice: check AWS EC2 console, are instances terminating? (msg_id:408)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1408.
-[2026-07-14 09:42:15] @bob: auto-scaling group triggered scale-in due to faulty metric! (msg_id:409)
-[2026-07-14 09:42:30] @charlie: cluster health check failing in us-west-2 (msg_id:410)
-[2026-07-14 09:42:45] @dave: looking into it now. running `kubectl get nodes` (msg_id:411)
-[2026-07-14 09:43:00] @eve: nodes are NotReady! multiple node heartbeats missed. (msg_id:412)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1412.
-[2026-07-14 09:43:15] @sre-bot: check AWS EC2 console, are instances terminating? (msg_id:413)
-[2026-07-14 09:43:30] @alice: auto-scaling group triggered scale-in due to faulty metric! (msg_id:414)
-[2026-07-14 09:43:45] @bob: cluster health check failing in us-west-2 (msg_id:415)
-[2026-07-14 09:44:00] @charlie: looking into it now. running `kubectl get nodes` (msg_id:416)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1416.
-[2026-07-14 09:44:15] @dave: nodes are NotReady! multiple node heartbeats missed. (msg_id:417)
-[2026-07-14 09:44:30] @eve: check AWS EC2 console, are instances terminating? (msg_id:418)
-[2026-07-14 09:44:45] @sre-bot: auto-scaling group triggered scale-in due to faulty metric! (msg_id:419)
-[2026-07-14 09:45:00] @alice: cluster health check failing in us-west-2 (msg_id:420)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1420.
-[2026-07-14 09:45:15] @bob: looking into it now. running `kubectl get nodes` (msg_id:421)
-[2026-07-14 09:45:30] @charlie: nodes are NotReady! multiple node heartbeats missed. (msg_id:422)
-[2026-07-14 09:45:45] @dave: check AWS EC2 console, are instances terminating? (msg_id:423)
-[2026-07-14 09:46:00] @eve: auto-scaling group triggered scale-in due to faulty metric! (msg_id:424)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1424.
-[2026-07-14 09:46:15] @sre-bot: cluster health check failing in us-west-2 (msg_id:425)
-[2026-07-14 09:46:30] @alice: looking into it now. running `kubectl get nodes` (msg_id:426)
-[2026-07-14 09:46:45] @bob: nodes are NotReady! multiple node heartbeats missed. (msg_id:427)
-[2026-07-14 09:47:00] @charlie: check AWS EC2 console, are instances terminating? (msg_id:428)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1428.
-[2026-07-14 09:47:15] @dave: auto-scaling group triggered scale-in due to faulty metric! (msg_id:429)
-[2026-07-14 09:47:30] @eve: cluster health check failing in us-west-2 (msg_id:430)
-[2026-07-14 09:47:45] @sre-bot: looking into it now. running `kubectl get nodes` (msg_id:431)
-[2026-07-14 09:48:00] @alice: nodes are NotReady! multiple node heartbeats missed. (msg_id:432)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1432.
-[2026-07-14 09:48:15] @bob: check AWS EC2 console, are instances terminating? (msg_id:433)
-[2026-07-14 09:48:30] @charlie: auto-scaling group triggered scale-in due to faulty metric! (msg_id:434)
-[2026-07-14 09:48:45] @dave: cluster health check failing in us-west-2 (msg_id:435)
-[2026-07-14 09:49:00] @eve: looking into it now. running `kubectl get nodes` (msg_id:436)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1436.
-[2026-07-14 09:49:15] @sre-bot: nodes are NotReady! multiple node heartbeats missed. (msg_id:437)
-[2026-07-14 09:49:30] @alice: check AWS EC2 console, are instances terminating? (msg_id:438)
-[2026-07-14 09:49:45] @bob: auto-scaling group triggered scale-in due to faulty metric! (msg_id:439)
-[2026-07-14 09:50:00] @charlie: cluster health check failing in us-west-2 (msg_id:440)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1440.
-[2026-07-14 09:50:15] @dave: looking into it now. running `kubectl get nodes` (msg_id:441)
-[2026-07-14 09:50:30] @eve: nodes are NotReady! multiple node heartbeats missed. (msg_id:442)
-[2026-07-14 09:50:45] @sre-bot: check AWS EC2 console, are instances terminating? (msg_id:443)
-[2026-07-14 09:51:00] @alice: auto-scaling group triggered scale-in due to faulty metric! (msg_id:444)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1444.
-[2026-07-14 09:51:15] @bob: cluster health check failing in us-west-2 (msg_id:445)
-[2026-07-14 09:51:30] @charlie: looking into it now. running `kubectl get nodes` (msg_id:446)
-[2026-07-14 09:51:45] @dave: nodes are NotReady! multiple node heartbeats missed. (msg_id:447)
-[2026-07-14 09:52:00] @eve: check AWS EC2 console, are instances terminating? (msg_id:448)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1448.
-[2026-07-14 09:52:15] @sre-bot: auto-scaling group triggered scale-in due to faulty metric! (msg_id:449)
-[2026-07-14 09:52:30] @alice: cluster health check failing in us-west-2 (msg_id:450)
-[2026-07-14 09:52:45] @bob: looking into it now. running `kubectl get nodes` (msg_id:451)
-[2026-07-14 09:53:00] @charlie: nodes are NotReady! multiple node heartbeats missed. (msg_id:452)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1452.
-[2026-07-14 09:53:15] @dave: check AWS EC2 console, are instances terminating? (msg_id:453)
-[2026-07-14 09:53:30] @eve: auto-scaling group triggered scale-in due to faulty metric! (msg_id:454)
-[2026-07-14 09:53:45] @sre-bot: cluster health check failing in us-west-2 (msg_id:455)
-[2026-07-14 09:54:00] @alice: looking into it now. running `kubectl get nodes` (msg_id:456)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1456.
-[2026-07-14 09:54:15] @bob: nodes are NotReady! multiple node heartbeats missed. (msg_id:457)
-[2026-07-14 09:54:30] @charlie: check AWS EC2 console, are instances terminating? (msg_id:458)
-[2026-07-14 09:54:45] @dave: auto-scaling group triggered scale-in due to faulty metric! (msg_id:459)
-[2026-07-14 09:55:00] @eve: cluster health check failing in us-west-2 (msg_id:460)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1460.
-[2026-07-14 09:55:15] @sre-bot: looking into it now. running `kubectl get nodes` (msg_id:461)
-[2026-07-14 09:55:30] @alice: nodes are NotReady! multiple node heartbeats missed. (msg_id:462)
-[2026-07-14 09:55:45] @bob: check AWS EC2 console, are instances terminating? (msg_id:463)
-[2026-07-14 09:56:00] @charlie: auto-scaling group triggered scale-in due to faulty metric! (msg_id:464)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1464.
-[2026-07-14 09:56:15] @dave: cluster health check failing in us-west-2 (msg_id:465)
-[2026-07-14 09:56:30] @eve: looking into it now. running `kubectl get nodes` (msg_id:466)
-[2026-07-14 09:56:45] @sre-bot: nodes are NotReady! multiple node heartbeats missed. (msg_id:467)
-[2026-07-14 09:57:00] @alice: check AWS EC2 console, are instances terminating? (msg_id:468)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1468.
-[2026-07-14 09:57:15] @bob: auto-scaling group triggered scale-in due to faulty metric! (msg_id:469)
-[2026-07-14 09:57:30] @charlie: cluster health check failing in us-west-2 (msg_id:470)
-[2026-07-14 09:57:45] @dave: looking into it now. running `kubectl get nodes` (msg_id:471)
-[2026-07-14 09:58:00] @eve: nodes are NotReady! multiple node heartbeats missed. (msg_id:472)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1472.
-[2026-07-14 09:58:15] @sre-bot: check AWS EC2 console, are instances terminating? (msg_id:473)
-[2026-07-14 09:58:30] @alice: auto-scaling group triggered scale-in due to faulty metric! (msg_id:474)
-[2026-07-14 09:58:45] @bob: cluster health check failing in us-west-2 (msg_id:475)
-[2026-07-14 09:59:00] @charlie: looking into it now. running `kubectl get nodes` (msg_id:476)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1476.
-[2026-07-14 09:59:15] @dave: nodes are NotReady! multiple node heartbeats missed. (msg_id:477)
-[2026-07-14 09:59:30] @eve: check AWS EC2 console, are instances terminating? (msg_id:478)
-[2026-07-14 09:59:45] @sre-bot: auto-scaling group triggered scale-in due to faulty metric! (msg_id:479)
-[2026-07-14 10:00:00] @alice: cluster health check failing in us-west-2 (msg_id:480)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1480.
-[2026-07-14 10:00:15] @bob: looking into it now. running `kubectl get nodes` (msg_id:481)
-[2026-07-14 10:00:30] @charlie: nodes are NotReady! multiple node heartbeats missed. (msg_id:482)
-[2026-07-14 10:00:45] @dave: check AWS EC2 console, are instances terminating? (msg_id:483)
-[2026-07-14 10:01:00] @eve: auto-scaling group triggered scale-in due to faulty metric! (msg_id:484)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1484.
-[2026-07-14 10:01:15] @sre-bot: cluster health check failing in us-west-2 (msg_id:485)
-[2026-07-14 10:01:30] @alice: looking into it now. running `kubectl get nodes` (msg_id:486)
-[2026-07-14 10:01:45] @bob: nodes are NotReady! multiple node heartbeats missed. (msg_id:487)
-[2026-07-14 10:02:00] @charlie: check AWS EC2 console, are instances terminating? (msg_id:488)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1488.
-[2026-07-14 10:02:15] @dave: auto-scaling group triggered scale-in due to faulty metric! (msg_id:489)
-[2026-07-14 10:02:30] @eve: cluster health check failing in us-west-2 (msg_id:490)
-[2026-07-14 10:02:45] @sre-bot: looking into it now. running `kubectl get nodes` (msg_id:491)
-[2026-07-14 10:03:00] @alice: nodes are NotReady! multiple node heartbeats missed. (msg_id:492)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1492.
-[2026-07-14 10:03:15] @bob: check AWS EC2 console, are instances terminating? (msg_id:493)
-[2026-07-14 10:03:30] @charlie: auto-scaling group triggered scale-in due to faulty metric! (msg_id:494)
-[2026-07-14 10:03:45] @dave: cluster health check failing in us-west-2 (msg_id:495)
-[2026-07-14 10:04:00] @eve: looking into it now. running `kubectl get nodes` (msg_id:496)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1496.
-[2026-07-14 10:04:15] @sre-bot: nodes are NotReady! multiple node heartbeats missed. (msg_id:497)
-[2026-07-14 10:04:30] @alice: check AWS EC2 console, are instances terminating? (msg_id:498)
-[2026-07-14 10:04:45] @bob: auto-scaling group triggered scale-in due to faulty metric! (msg_id:499)
-[2026-07-14 10:05:00] @charlie: cluster health check failing in us-west-2 (msg_id:500)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1500.
-[2026-07-14 10:05:15] @dave: looking into it now. running `kubectl get nodes` (msg_id:501)
-[2026-07-14 10:05:30] @eve: nodes are NotReady! multiple node heartbeats missed. (msg_id:502)
-[2026-07-14 10:05:45] @sre-bot: check AWS EC2 console, are instances terminating? (msg_id:503)
-[2026-07-14 10:06:00] @alice: auto-scaling group triggered scale-in due to faulty metric! (msg_id:504)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1504.
-[2026-07-14 10:06:15] @bob: cluster health check failing in us-west-2 (msg_id:505)
-[2026-07-14 10:06:30] @charlie: looking into it now. running `kubectl get nodes` (msg_id:506)
-[2026-07-14 10:06:45] @dave: nodes are NotReady! multiple node heartbeats missed. (msg_id:507)
-[2026-07-14 10:07:00] @eve: check AWS EC2 console, are instances terminating? (msg_id:508)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1508.
-[2026-07-14 10:07:15] @sre-bot: auto-scaling group triggered scale-in due to faulty metric! (msg_id:509)
-[2026-07-14 10:07:30] @alice: cluster health check failing in us-west-2 (msg_id:510)
-[2026-07-14 10:07:45] @bob: looking into it now. running `kubectl get nodes` (msg_id:511)
-[2026-07-14 10:08:00] @charlie: nodes are NotReady! multiple node heartbeats missed. (msg_id:512)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1512.
-[2026-07-14 10:08:15] @dave: check AWS EC2 console, are instances terminating? (msg_id:513)
-[2026-07-14 10:08:30] @eve: auto-scaling group triggered scale-in due to faulty metric! (msg_id:514)
-[2026-07-14 10:08:45] @sre-bot: cluster health check failing in us-west-2 (msg_id:515)
-[2026-07-14 10:09:00] @alice: looking into it now. running `kubectl get nodes` (msg_id:516)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1516.
-[2026-07-14 10:09:15] @bob: nodes are NotReady! multiple node heartbeats missed. (msg_id:517)
-[2026-07-14 10:09:30] @charlie: check AWS EC2 console, are instances terminating? (msg_id:518)
-[2026-07-14 10:09:45] @dave: auto-scaling group triggered scale-in due to faulty metric! (msg_id:519)
-[2026-07-14 10:10:00] @eve: cluster health check failing in us-west-2 (msg_id:520)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1520.
-[2026-07-14 10:10:15] @sre-bot: looking into it now. running `kubectl get nodes` (msg_id:521)
-[2026-07-14 10:10:30] @alice: nodes are NotReady! multiple node heartbeats missed. (msg_id:522)
-[2026-07-14 10:10:45] @bob: check AWS EC2 console, are instances terminating? (msg_id:523)
-[2026-07-14 10:11:00] @charlie: auto-scaling group triggered scale-in due to faulty metric! (msg_id:524)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1524.
-[2026-07-14 10:11:15] @dave: cluster health check failing in us-west-2 (msg_id:525)
-[2026-07-14 10:11:30] @eve: looking into it now. running `kubectl get nodes` (msg_id:526)
-[2026-07-14 10:11:45] @sre-bot: nodes are NotReady! multiple node heartbeats missed. (msg_id:527)
-[2026-07-14 10:12:00] @alice: check AWS EC2 console, are instances terminating? (msg_id:528)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1528.
-[2026-07-14 10:12:15] @bob: auto-scaling group triggered scale-in due to faulty metric! (msg_id:529)
-[2026-07-14 10:12:30] @charlie: cluster health check failing in us-west-2 (msg_id:530)
-[2026-07-14 10:12:45] @dave: looking into it now. running `kubectl get nodes` (msg_id:531)
-[2026-07-14 10:13:00] @eve: nodes are NotReady! multiple node heartbeats missed. (msg_id:532)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1532.
-[2026-07-14 10:13:15] @sre-bot: check AWS EC2 console, are instances terminating? (msg_id:533)
-[2026-07-14 10:13:30] @alice: auto-scaling group triggered scale-in due to faulty metric! (msg_id:534)
-[2026-07-14 10:13:45] @bob: cluster health check failing in us-west-2 (msg_id:535)
-[2026-07-14 10:14:00] @charlie: looking into it now. running `kubectl get nodes` (msg_id:536)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1536.
-[2026-07-14 10:14:15] @dave: nodes are NotReady! multiple node heartbeats missed. (msg_id:537)
-[2026-07-14 10:14:30] @eve: check AWS EC2 console, are instances terminating? (msg_id:538)
-[2026-07-14 10:14:45] @sre-bot: auto-scaling group triggered scale-in due to faulty metric! (msg_id:539)
-[2026-07-14 10:15:00] @alice: cluster health check failing in us-west-2 (msg_id:540)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1540.
-[2026-07-14 10:15:15] @bob: looking into it now. running `kubectl get nodes` (msg_id:541)
-[2026-07-14 10:15:30] @charlie: nodes are NotReady! multiple node heartbeats missed. (msg_id:542)
-[2026-07-14 10:15:45] @dave: check AWS EC2 console, are instances terminating? (msg_id:543)
-[2026-07-14 10:16:00] @eve: auto-scaling group triggered scale-in due to faulty metric! (msg_id:544)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1544.
-[2026-07-14 10:16:15] @sre-bot: cluster health check failing in us-west-2 (msg_id:545)
-[2026-07-14 10:16:30] @alice: looking into it now. running `kubectl get nodes` (msg_id:546)
-[2026-07-14 10:16:45] @bob: nodes are NotReady! multiple node heartbeats missed. (msg_id:547)
-[2026-07-14 10:17:00] @charlie: check AWS EC2 console, are instances terminating? (msg_id:548)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1548.
-[2026-07-14 10:17:15] @dave: auto-scaling group triggered scale-in due to faulty metric! (msg_id:549)
-[2026-07-14 10:17:30] @eve: cluster health check failing in us-west-2 (msg_id:550)
-[2026-07-14 10:17:45] @sre-bot: looking into it now. running `kubectl get nodes` (msg_id:551)
-[2026-07-14 10:18:00] @alice: nodes are NotReady! multiple node heartbeats missed. (msg_id:552)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1552.
-[2026-07-14 10:18:15] @bob: check AWS EC2 console, are instances terminating? (msg_id:553)
-[2026-07-14 10:18:30] @charlie: auto-scaling group triggered scale-in due to faulty metric! (msg_id:554)
-[2026-07-14 10:18:45] @dave: cluster health check failing in us-west-2 (msg_id:555)
-[2026-07-14 10:19:00] @eve: looking into it now. running `kubectl get nodes` (msg_id:556)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1556.
-[2026-07-14 10:19:15] @sre-bot: nodes are NotReady! multiple node heartbeats missed. (msg_id:557)
-[2026-07-14 10:19:30] @alice: check AWS EC2 console, are instances terminating? (msg_id:558)
-[2026-07-14 10:19:45] @bob: auto-scaling group triggered scale-in due to faulty metric! (msg_id:559)
-[2026-07-14 10:20:00] @charlie: cluster health check failing in us-west-2 (msg_id:560)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1560.
-[2026-07-14 10:20:15] @dave: looking into it now. running `kubectl get nodes` (msg_id:561)
-[2026-07-14 10:20:30] @eve: nodes are NotReady! multiple node heartbeats missed. (msg_id:562)
-[2026-07-14 10:20:45] @sre-bot: check AWS EC2 console, are instances terminating? (msg_id:563)
-[2026-07-14 10:21:00] @alice: auto-scaling group triggered scale-in due to faulty metric! (msg_id:564)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1564.
-[2026-07-14 10:21:15] @bob: cluster health check failing in us-west-2 (msg_id:565)
-[2026-07-14 10:21:30] @charlie: looking into it now. running `kubectl get nodes` (msg_id:566)
-[2026-07-14 10:21:45] @dave: nodes are NotReady! multiple node heartbeats missed. (msg_id:567)
-[2026-07-14 10:22:00] @eve: check AWS EC2 console, are instances terminating? (msg_id:568)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1568.
-[2026-07-14 10:22:15] @sre-bot: auto-scaling group triggered scale-in due to faulty metric! (msg_id:569)
-[2026-07-14 10:22:30] @alice: cluster health check failing in us-west-2 (msg_id:570)
-[2026-07-14 10:22:45] @bob: looking into it now. running `kubectl get nodes` (msg_id:571)
-[2026-07-14 10:23:00] @charlie: nodes are NotReady! multiple node heartbeats missed. (msg_id:572)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1572.
-[2026-07-14 10:23:15] @dave: check AWS EC2 console, are instances terminating? (msg_id:573)
-[2026-07-14 10:23:30] @eve: auto-scaling group triggered scale-in due to faulty metric! (msg_id:574)
-[2026-07-14 10:23:45] @sre-bot: cluster health check failing in us-west-2 (msg_id:575)
-[2026-07-14 10:24:00] @alice: looking into it now. running `kubectl get nodes` (msg_id:576)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1576.
-[2026-07-14 10:24:15] @bob: nodes are NotReady! multiple node heartbeats missed. (msg_id:577)
-[2026-07-14 10:24:30] @charlie: check AWS EC2 console, are instances terminating? (msg_id:578)
-[2026-07-14 10:24:45] @dave: auto-scaling group triggered scale-in due to faulty metric! (msg_id:579)
-[2026-07-14 10:25:00] @eve: cluster health check failing in us-west-2 (msg_id:580)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1580.
-[2026-07-14 10:25:15] @sre-bot: looking into it now. running `kubectl get nodes` (msg_id:581)
-[2026-07-14 10:25:30] @alice: nodes are NotReady! multiple node heartbeats missed. (msg_id:582)
-[2026-07-14 10:25:45] @bob: check AWS EC2 console, are instances terminating? (msg_id:583)
-[2026-07-14 10:26:00] @charlie: auto-scaling group triggered scale-in due to faulty metric! (msg_id:584)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1584.
-[2026-07-14 10:26:15] @dave: cluster health check failing in us-west-2 (msg_id:585)
-[2026-07-14 10:26:30] @eve: looking into it now. running `kubectl get nodes` (msg_id:586)
-[2026-07-14 10:26:45] @sre-bot: nodes are NotReady! multiple node heartbeats missed. (msg_id:587)
-[2026-07-14 10:27:00] @alice: check AWS EC2 console, are instances terminating? (msg_id:588)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1588.
-[2026-07-14 10:27:15] @bob: auto-scaling group triggered scale-in due to faulty metric! (msg_id:589)
-[2026-07-14 10:27:30] @charlie: cluster health check failing in us-west-2 (msg_id:590)
-[2026-07-14 10:27:45] @dave: looking into it now. running `kubectl get nodes` (msg_id:591)
-[2026-07-14 10:28:00] @eve: nodes are NotReady! multiple node heartbeats missed. (msg_id:592)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1592.
-[2026-07-14 10:28:15] @sre-bot: check AWS EC2 console, are instances terminating? (msg_id:593)
-[2026-07-14 10:28:30] @alice: auto-scaling group triggered scale-in due to faulty metric! (msg_id:594)
-[2026-07-14 10:28:45] @bob: cluster health check failing in us-west-2 (msg_id:595)
-[2026-07-14 10:29:00] @charlie: looking into it now. running `kubectl get nodes` (msg_id:596)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1596.
-[2026-07-14 10:29:15] @dave: nodes are NotReady! multiple node heartbeats missed. (msg_id:597)
-[2026-07-14 10:29:30] @eve: check AWS EC2 console, are instances terminating? (msg_id:598)
-[2026-07-14 10:29:45] @sre-bot: auto-scaling group triggered scale-in due to faulty metric! (msg_id:599)
-[2026-07-14 10:30:00] @alice: cluster health check failing in us-west-2 (msg_id:600)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1600.
-[2026-07-14 10:30:15] @bob: looking into it now. running `kubectl get nodes` (msg_id:601)
-[2026-07-14 10:30:30] @charlie: nodes are NotReady! multiple node heartbeats missed. (msg_id:602)
-[2026-07-14 10:30:45] @dave: check AWS EC2 console, are instances terminating? (msg_id:603)
-[2026-07-14 10:31:00] @eve: auto-scaling group triggered scale-in due to faulty metric! (msg_id:604)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1604.
-[2026-07-14 10:31:15] @sre-bot: cluster health check failing in us-west-2 (msg_id:605)
-[2026-07-14 10:31:30] @alice: looking into it now. running `kubectl get nodes` (msg_id:606)
-[2026-07-14 10:31:45] @bob: nodes are NotReady! multiple node heartbeats missed. (msg_id:607)
-[2026-07-14 10:32:00] @charlie: check AWS EC2 console, are instances terminating? (msg_id:608)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1608.
-[2026-07-14 10:32:15] @dave: auto-scaling group triggered scale-in due to faulty metric! (msg_id:609)
-[2026-07-14 10:32:30] @eve: cluster health check failing in us-west-2 (msg_id:610)
-[2026-07-14 10:32:45] @sre-bot: looking into it now. running `kubectl get nodes` (msg_id:611)
-[2026-07-14 10:33:00] @alice: nodes are NotReady! multiple node heartbeats missed. (msg_id:612)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1612.
-[2026-07-14 10:33:15] @bob: check AWS EC2 console, are instances terminating? (msg_id:613)
-[2026-07-14 10:33:30] @charlie: auto-scaling group triggered scale-in due to faulty metric! (msg_id:614)
-[2026-07-14 10:33:45] @dave: cluster health check failing in us-west-2 (msg_id:615)
-[2026-07-14 10:34:00] @eve: looking into it now. running `kubectl get nodes` (msg_id:616)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1616.
-[2026-07-14 10:34:15] @sre-bot: nodes are NotReady! multiple node heartbeats missed. (msg_id:617)
-[2026-07-14 10:34:30] @alice: check AWS EC2 console, are instances terminating? (msg_id:618)
-[2026-07-14 10:34:45] @bob: auto-scaling group triggered scale-in due to faulty metric! (msg_id:619)
-[2026-07-14 10:35:00] @charlie: cluster health check failing in us-west-2 (msg_id:620)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1620.
-[2026-07-14 10:35:15] @dave: looking into it now. running `kubectl get nodes` (msg_id:621)
-[2026-07-14 10:35:30] @eve: nodes are NotReady! multiple node heartbeats missed. (msg_id:622)
-[2026-07-14 10:35:45] @sre-bot: check AWS EC2 console, are instances terminating? (msg_id:623)
-[2026-07-14 10:36:00] @alice: auto-scaling group triggered scale-in due to faulty metric! (msg_id:624)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1624.
-[2026-07-14 10:36:15] @bob: cluster health check failing in us-west-2 (msg_id:625)
-[2026-07-14 10:36:30] @charlie: looking into it now. running `kubectl get nodes` (msg_id:626)
-[2026-07-14 10:36:45] @dave: nodes are NotReady! multiple node heartbeats missed. (msg_id:627)
-[2026-07-14 10:37:00] @eve: check AWS EC2 console, are instances terminating? (msg_id:628)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1628.
-[2026-07-14 10:37:15] @sre-bot: auto-scaling group triggered scale-in due to faulty metric! (msg_id:629)
-[2026-07-14 10:37:30] @alice: cluster health check failing in us-west-2 (msg_id:630)
-[2026-07-14 10:37:45] @bob: looking into it now. running `kubectl get nodes` (msg_id:631)
-[2026-07-14 10:38:00] @charlie: nodes are NotReady! multiple node heartbeats missed. (msg_id:632)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1632.
-[2026-07-14 10:38:15] @dave: check AWS EC2 console, are instances terminating? (msg_id:633)
-[2026-07-14 10:38:30] @eve: auto-scaling group triggered scale-in due to faulty metric! (msg_id:634)
-[2026-07-14 10:38:45] @sre-bot: cluster health check failing in us-west-2 (msg_id:635)
-[2026-07-14 10:39:00] @alice: looking into it now. running `kubectl get nodes` (msg_id:636)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1636.
-[2026-07-14 10:39:15] @bob: nodes are NotReady! multiple node heartbeats missed. (msg_id:637)
-[2026-07-14 10:39:30] @charlie: check AWS EC2 console, are instances terminating? (msg_id:638)
-[2026-07-14 10:39:45] @dave: auto-scaling group triggered scale-in due to faulty metric! (msg_id:639)
-[2026-07-14 10:40:00] @eve: cluster health check failing in us-west-2 (msg_id:640)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1640.
-[2026-07-14 10:40:15] @sre-bot: looking into it now. running `kubectl get nodes` (msg_id:641)
-[2026-07-14 10:40:30] @alice: nodes are NotReady! multiple node heartbeats missed. (msg_id:642)
-[2026-07-14 10:40:45] @bob: check AWS EC2 console, are instances terminating? (msg_id:643)
-[2026-07-14 10:41:00] @charlie: auto-scaling group triggered scale-in due to faulty metric! (msg_id:644)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1644.
-[2026-07-14 10:41:15] @dave: cluster health check failing in us-west-2 (msg_id:645)
-[2026-07-14 10:41:30] @eve: looking into it now. running `kubectl get nodes` (msg_id:646)
-[2026-07-14 10:41:45] @sre-bot: nodes are NotReady! multiple node heartbeats missed. (msg_id:647)
-[2026-07-14 10:42:00] @alice: check AWS EC2 console, are instances terminating? (msg_id:648)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1648.
-[2026-07-14 10:42:15] @bob: auto-scaling group triggered scale-in due to faulty metric! (msg_id:649)
-[2026-07-14 10:42:30] @charlie: cluster health check failing in us-west-2 (msg_id:650)
-[2026-07-14 10:42:45] @dave: looking into it now. running `kubectl get nodes` (msg_id:651)
-[2026-07-14 10:43:00] @eve: nodes are NotReady! multiple node heartbeats missed. (msg_id:652)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1652.
-[2026-07-14 10:43:15] @sre-bot: check AWS EC2 console, are instances terminating? (msg_id:653)
-[2026-07-14 10:43:30] @alice: auto-scaling group triggered scale-in due to faulty metric! (msg_id:654)
-[2026-07-14 10:43:45] @bob: cluster health check failing in us-west-2 (msg_id:655)
-[2026-07-14 10:44:00] @charlie: looking into it now. running `kubectl get nodes` (msg_id:656)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1656.
-[2026-07-14 10:44:15] @dave: nodes are NotReady! multiple node heartbeats missed. (msg_id:657)
-[2026-07-14 10:44:30] @eve: check AWS EC2 console, are instances terminating? (msg_id:658)
-[2026-07-14 10:44:45] @sre-bot: auto-scaling group triggered scale-in due to faulty metric! (msg_id:659)
-[2026-07-14 10:45:00] @alice: cluster health check failing in us-west-2 (msg_id:660)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1660.
-[2026-07-14 10:45:15] @bob: looking into it now. running `kubectl get nodes` (msg_id:661)
-[2026-07-14 10:45:30] @charlie: nodes are NotReady! multiple node heartbeats missed. (msg_id:662)
-[2026-07-14 10:45:45] @dave: check AWS EC2 console, are instances terminating? (msg_id:663)
-[2026-07-14 10:46:00] @eve: auto-scaling group triggered scale-in due to faulty metric! (msg_id:664)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1664.
-[2026-07-14 10:46:15] @sre-bot: cluster health check failing in us-west-2 (msg_id:665)
-[2026-07-14 10:46:30] @alice: looking into it now. running `kubectl get nodes` (msg_id:666)
-[2026-07-14 10:46:45] @bob: nodes are NotReady! multiple node heartbeats missed. (msg_id:667)
-[2026-07-14 10:47:00] @charlie: check AWS EC2 console, are instances terminating? (msg_id:668)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1668.
-[2026-07-14 10:47:15] @dave: auto-scaling group triggered scale-in due to faulty metric! (msg_id:669)
-[2026-07-14 10:47:30] @eve: cluster health check failing in us-west-2 (msg_id:670)
-[2026-07-14 10:47:45] @sre-bot: looking into it now. running `kubectl get nodes` (msg_id:671)
-[2026-07-14 10:48:00] @alice: nodes are NotReady! multiple node heartbeats missed. (msg_id:672)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1672.
-[2026-07-14 10:48:15] @bob: check AWS EC2 console, are instances terminating? (msg_id:673)
-[2026-07-14 10:48:30] @charlie: auto-scaling group triggered scale-in due to faulty metric! (msg_id:674)
-[2026-07-14 10:48:45] @dave: cluster health check failing in us-west-2 (msg_id:675)
-[2026-07-14 10:49:00] @eve: looking into it now. running `kubectl get nodes` (msg_id:676)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1676.
-[2026-07-14 10:49:15] @sre-bot: nodes are NotReady! multiple node heartbeats missed. (msg_id:677)
-[2026-07-14 10:49:30] @alice: check AWS EC2 console, are instances terminating? (msg_id:678)
-[2026-07-14 10:49:45] @bob: auto-scaling group triggered scale-in due to faulty metric! (msg_id:679)
-[2026-07-14 10:50:00] @charlie: cluster health check failing in us-west-2 (msg_id:680)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1680.
-[2026-07-14 10:50:15] @dave: looking into it now. running `kubectl get nodes` (msg_id:681)
-[2026-07-14 10:50:30] @eve: nodes are NotReady! multiple node heartbeats missed. (msg_id:682)
-[2026-07-14 10:50:45] @sre-bot: check AWS EC2 console, are instances terminating? (msg_id:683)
-[2026-07-14 10:51:00] @alice: auto-scaling group triggered scale-in due to faulty metric! (msg_id:684)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1684.
-[2026-07-14 10:51:15] @bob: cluster health check failing in us-west-2 (msg_id:685)
-[2026-07-14 10:51:30] @charlie: looking into it now. running `kubectl get nodes` (msg_id:686)
-[2026-07-14 10:51:45] @dave: nodes are NotReady! multiple node heartbeats missed. (msg_id:687)
-[2026-07-14 10:52:00] @eve: check AWS EC2 console, are instances terminating? (msg_id:688)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1688.
-[2026-07-14 10:52:15] @sre-bot: auto-scaling group triggered scale-in due to faulty metric! (msg_id:689)
-[2026-07-14 10:52:30] @alice: cluster health check failing in us-west-2 (msg_id:690)
-[2026-07-14 10:52:45] @bob: looking into it now. running `kubectl get nodes` (msg_id:691)
-[2026-07-14 10:53:00] @charlie: nodes are NotReady! multiple node heartbeats missed. (msg_id:692)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1692.
-[2026-07-14 10:53:15] @dave: check AWS EC2 console, are instances terminating? (msg_id:693)
-[2026-07-14 10:53:30] @eve: auto-scaling group triggered scale-in due to faulty metric! (msg_id:694)
-[2026-07-14 10:53:45] @sre-bot: cluster health check failing in us-west-2 (msg_id:695)
-[2026-07-14 10:54:00] @alice: looking into it now. running `kubectl get nodes` (msg_id:696)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1696.
-[2026-07-14 10:54:15] @bob: nodes are NotReady! multiple node heartbeats missed. (msg_id:697)
-[2026-07-14 10:54:30] @charlie: check AWS EC2 console, are instances terminating? (msg_id:698)
-[2026-07-14 10:54:45] @dave: auto-scaling group triggered scale-in due to faulty metric! (msg_id:699)
-[2026-07-14 10:55:00] @eve: cluster health check failing in us-west-2 (msg_id:700)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1700.
-[2026-07-14 10:55:15] @sre-bot: looking into it now. running `kubectl get nodes` (msg_id:701)
-[2026-07-14 10:55:30] @alice: nodes are NotReady! multiple node heartbeats missed. (msg_id:702)
-[2026-07-14 10:55:45] @bob: check AWS EC2 console, are instances terminating? (msg_id:703)
-[2026-07-14 10:56:00] @charlie: auto-scaling group triggered scale-in due to faulty metric! (msg_id:704)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1704.
-[2026-07-14 10:56:15] @dave: cluster health check failing in us-west-2 (msg_id:705)
-[2026-07-14 10:56:30] @eve: looking into it now. running `kubectl get nodes` (msg_id:706)
-[2026-07-14 10:56:45] @sre-bot: nodes are NotReady! multiple node heartbeats missed. (msg_id:707)
-[2026-07-14 10:57:00] @alice: check AWS EC2 console, are instances terminating? (msg_id:708)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1708.
-[2026-07-14 10:57:15] @bob: auto-scaling group triggered scale-in due to faulty metric! (msg_id:709)
-[2026-07-14 10:57:30] @charlie: cluster health check failing in us-west-2 (msg_id:710)
-[2026-07-14 10:57:45] @dave: looking into it now. running `kubectl get nodes` (msg_id:711)
-[2026-07-14 10:58:00] @eve: nodes are NotReady! multiple node heartbeats missed. (msg_id:712)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1712.
-[2026-07-14 10:58:15] @sre-bot: check AWS EC2 console, are instances terminating? (msg_id:713)
-[2026-07-14 10:58:30] @alice: auto-scaling group triggered scale-in due to faulty metric! (msg_id:714)
-[2026-07-14 10:58:45] @bob: cluster health check failing in us-west-2 (msg_id:715)
-[2026-07-14 10:59:00] @charlie: looking into it now. running `kubectl get nodes` (msg_id:716)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1716.
-[2026-07-14 10:59:15] @dave: nodes are NotReady! multiple node heartbeats missed. (msg_id:717)
-[2026-07-14 10:59:30] @eve: check AWS EC2 console, are instances terminating? (msg_id:718)
-[2026-07-14 10:59:45] @sre-bot: auto-scaling group triggered scale-in due to faulty metric! (msg_id:719)
-[2026-07-14 11:00:00] @alice: cluster health check failing in us-west-2 (msg_id:720)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1720.
-[2026-07-14 11:00:15] @bob: looking into it now. running `kubectl get nodes` (msg_id:721)
-[2026-07-14 11:00:30] @charlie: nodes are NotReady! multiple node heartbeats missed. (msg_id:722)
-[2026-07-14 11:00:45] @dave: check AWS EC2 console, are instances terminating? (msg_id:723)
-[2026-07-14 11:01:00] @eve: auto-scaling group triggered scale-in due to faulty metric! (msg_id:724)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1724.
-[2026-07-14 11:01:15] @sre-bot: cluster health check failing in us-west-2 (msg_id:725)
-[2026-07-14 11:01:30] @alice: looking into it now. running `kubectl get nodes` (msg_id:726)
-[2026-07-14 11:01:45] @bob: nodes are NotReady! multiple node heartbeats missed. (msg_id:727)
-[2026-07-14 11:02:00] @charlie: check AWS EC2 console, are instances terminating? (msg_id:728)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1728.
-[2026-07-14 11:02:15] @dave: auto-scaling group triggered scale-in due to faulty metric! (msg_id:729)
-[2026-07-14 11:02:30] @eve: cluster health check failing in us-west-2 (msg_id:730)
-[2026-07-14 11:02:45] @sre-bot: looking into it now. running `kubectl get nodes` (msg_id:731)
-[2026-07-14 11:03:00] @alice: nodes are NotReady! multiple node heartbeats missed. (msg_id:732)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1732.
-[2026-07-14 11:03:15] @bob: check AWS EC2 console, are instances terminating? (msg_id:733)
-[2026-07-14 11:03:30] @charlie: auto-scaling group triggered scale-in due to faulty metric! (msg_id:734)
-[2026-07-14 11:03:45] @dave: cluster health check failing in us-west-2 (msg_id:735)
-[2026-07-14 11:04:00] @eve: looking into it now. running `kubectl get nodes` (msg_id:736)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1736.
-[2026-07-14 11:04:15] @sre-bot: nodes are NotReady! multiple node heartbeats missed. (msg_id:737)
-[2026-07-14 11:04:30] @alice: check AWS EC2 console, are instances terminating? (msg_id:738)
-[2026-07-14 11:04:45] @bob: auto-scaling group triggered scale-in due to faulty metric! (msg_id:739)
-[2026-07-14 11:05:00] @charlie: cluster health check failing in us-west-2 (msg_id:740)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1740.
-[2026-07-14 11:05:15] @dave: looking into it now. running `kubectl get nodes` (msg_id:741)
-[2026-07-14 11:05:30] @eve: nodes are NotReady! multiple node heartbeats missed. (msg_id:742)
-[2026-07-14 11:05:45] @sre-bot: check AWS EC2 console, are instances terminating? (msg_id:743)
-[2026-07-14 11:06:00] @alice: auto-scaling group triggered scale-in due to faulty metric! (msg_id:744)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1744.
-[2026-07-14 11:06:15] @bob: cluster health check failing in us-west-2 (msg_id:745)
-[2026-07-14 11:06:30] @charlie: looking into it now. running `kubectl get nodes` (msg_id:746)
-[2026-07-14 11:06:45] @dave: nodes are NotReady! multiple node heartbeats missed. (msg_id:747)
-[2026-07-14 11:07:00] @eve: check AWS EC2 console, are instances terminating? (msg_id:748)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1748.
-[2026-07-14 11:07:15] @sre-bot: auto-scaling group triggered scale-in due to faulty metric! (msg_id:749)
-[2026-07-14 11:07:30] @alice: cluster health check failing in us-west-2 (msg_id:750)
-[2026-07-14 11:07:45] @bob: looking into it now. running `kubectl get nodes` (msg_id:751)
-[2026-07-14 11:08:00] @charlie: nodes are NotReady! multiple node heartbeats missed. (msg_id:752)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1752.
-[2026-07-14 11:08:15] @dave: check AWS EC2 console, are instances terminating? (msg_id:753)
-[2026-07-14 11:08:30] @eve: auto-scaling group triggered scale-in due to faulty metric! (msg_id:754)
-[2026-07-14 11:08:45] @sre-bot: cluster health check failing in us-west-2 (msg_id:755)
-[2026-07-14 11:09:00] @alice: looking into it now. running `kubectl get nodes` (msg_id:756)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1756.
-[2026-07-14 11:09:15] @bob: nodes are NotReady! multiple node heartbeats missed. (msg_id:757)
-[2026-07-14 11:09:30] @charlie: check AWS EC2 console, are instances terminating? (msg_id:758)
-[2026-07-14 11:09:45] @dave: auto-scaling group triggered scale-in due to faulty metric! (msg_id:759)
-[2026-07-14 11:10:00] @eve: cluster health check failing in us-west-2 (msg_id:760)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1760.
-[2026-07-14 11:10:15] @sre-bot: looking into it now. running `kubectl get nodes` (msg_id:761)
-[2026-07-14 11:10:30] @alice: nodes are NotReady! multiple node heartbeats missed. (msg_id:762)
-[2026-07-14 11:10:45] @bob: check AWS EC2 console, are instances terminating? (msg_id:763)
-[2026-07-14 11:11:00] @charlie: auto-scaling group triggered scale-in due to faulty metric! (msg_id:764)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1764.
-[2026-07-14 11:11:15] @dave: cluster health check failing in us-west-2 (msg_id:765)
-[2026-07-14 11:11:30] @eve: looking into it now. running `kubectl get nodes` (msg_id:766)
-[2026-07-14 11:11:45] @sre-bot: nodes are NotReady! multiple node heartbeats missed. (msg_id:767)
-[2026-07-14 11:12:00] @alice: check AWS EC2 console, are instances terminating? (msg_id:768)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1768.
-[2026-07-14 11:12:15] @bob: auto-scaling group triggered scale-in due to faulty metric! (msg_id:769)
-[2026-07-14 11:12:30] @charlie: cluster health check failing in us-west-2 (msg_id:770)
-[2026-07-14 11:12:45] @dave: looking into it now. running `kubectl get nodes` (msg_id:771)
-[2026-07-14 11:13:00] @eve: nodes are NotReady! multiple node heartbeats missed. (msg_id:772)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1772.
-[2026-07-14 11:13:15] @sre-bot: check AWS EC2 console, are instances terminating? (msg_id:773)
-[2026-07-14 11:13:30] @alice: auto-scaling group triggered scale-in due to faulty metric! (msg_id:774)
-[2026-07-14 11:13:45] @bob: cluster health check failing in us-west-2 (msg_id:775)
-[2026-07-14 11:14:00] @charlie: looking into it now. running `kubectl get nodes` (msg_id:776)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1776.
-[2026-07-14 11:14:15] @dave: nodes are NotReady! multiple node heartbeats missed. (msg_id:777)
-[2026-07-14 11:14:30] @eve: check AWS EC2 console, are instances terminating? (msg_id:778)
-[2026-07-14 11:14:45] @sre-bot: auto-scaling group triggered scale-in due to faulty metric! (msg_id:779)
-[2026-07-14 11:15:00] @alice: cluster health check failing in us-west-2 (msg_id:780)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1780.
-[2026-07-14 11:15:15] @bob: looking into it now. running `kubectl get nodes` (msg_id:781)
-[2026-07-14 11:15:30] @charlie: nodes are NotReady! multiple node heartbeats missed. (msg_id:782)
-[2026-07-14 11:15:45] @dave: check AWS EC2 console, are instances terminating? (msg_id:783)
-[2026-07-14 11:16:00] @eve: auto-scaling group triggered scale-in due to faulty metric! (msg_id:784)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1784.
-[2026-07-14 11:16:15] @sre-bot: cluster health check failing in us-west-2 (msg_id:785)
-[2026-07-14 11:16:30] @alice: looking into it now. running `kubectl get nodes` (msg_id:786)
-[2026-07-14 11:16:45] @bob: nodes are NotReady! multiple node heartbeats missed. (msg_id:787)
-[2026-07-14 11:17:00] @charlie: check AWS EC2 console, are instances terminating? (msg_id:788)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1788.
-[2026-07-14 11:17:15] @dave: auto-scaling group triggered scale-in due to faulty metric! (msg_id:789)
-[2026-07-14 11:17:30] @eve: cluster health check failing in us-west-2 (msg_id:790)
-[2026-07-14 11:17:45] @sre-bot: looking into it now. running `kubectl get nodes` (msg_id:791)
-[2026-07-14 11:18:00] @alice: nodes are NotReady! multiple node heartbeats missed. (msg_id:792)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1792.
-[2026-07-14 11:18:15] @bob: check AWS EC2 console, are instances terminating? (msg_id:793)
-[2026-07-14 11:18:30] @charlie: auto-scaling group triggered scale-in due to faulty metric! (msg_id:794)
-[2026-07-14 11:18:45] @dave: cluster health check failing in us-west-2 (msg_id:795)
-[2026-07-14 11:19:00] @eve: looking into it now. running `kubectl get nodes` (msg_id:796)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1796.
-[2026-07-14 11:19:15] @sre-bot: nodes are NotReady! multiple node heartbeats missed. (msg_id:797)
-[2026-07-14 11:19:30] @alice: check AWS EC2 console, are instances terminating? (msg_id:798)
-[2026-07-14 11:19:45] @bob: auto-scaling group triggered scale-in due to faulty metric! (msg_id:799)
-[2026-07-14 11:20:00] @charlie: cluster health check failing in us-west-2 (msg_id:800)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1800.
-[2026-07-14 11:20:15] @dave: looking into it now. running `kubectl get nodes` (msg_id:801)
-[2026-07-14 11:20:30] @eve: nodes are NotReady! multiple node heartbeats missed. (msg_id:802)
-[2026-07-14 11:20:45] @sre-bot: check AWS EC2 console, are instances terminating? (msg_id:803)
-[2026-07-14 11:21:00] @alice: auto-scaling group triggered scale-in due to faulty metric! (msg_id:804)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1804.
-[2026-07-14 11:21:15] @bob: cluster health check failing in us-west-2 (msg_id:805)
-[2026-07-14 11:21:30] @charlie: looking into it now. running `kubectl get nodes` (msg_id:806)
-[2026-07-14 11:21:45] @dave: nodes are NotReady! multiple node heartbeats missed. (msg_id:807)
-[2026-07-14 11:22:00] @eve: check AWS EC2 console, are instances terminating? (msg_id:808)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1808.
-[2026-07-14 11:22:15] @sre-bot: auto-scaling group triggered scale-in due to faulty metric! (msg_id:809)
-[2026-07-14 11:22:30] @alice: cluster health check failing in us-west-2 (msg_id:810)
-[2026-07-14 11:22:45] @bob: looking into it now. running `kubectl get nodes` (msg_id:811)
-[2026-07-14 11:23:00] @charlie: nodes are NotReady! multiple node heartbeats missed. (msg_id:812)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1812.
-[2026-07-14 11:23:15] @dave: check AWS EC2 console, are instances terminating? (msg_id:813)
-[2026-07-14 11:23:30] @eve: auto-scaling group triggered scale-in due to faulty metric! (msg_id:814)
-[2026-07-14 11:23:45] @sre-bot: cluster health check failing in us-west-2 (msg_id:815)
-[2026-07-14 11:24:00] @alice: looking into it now. running `kubectl get nodes` (msg_id:816)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1816.
-[2026-07-14 11:24:15] @bob: nodes are NotReady! multiple node heartbeats missed. (msg_id:817)
-[2026-07-14 11:24:30] @charlie: check AWS EC2 console, are instances terminating? (msg_id:818)
-[2026-07-14 11:24:45] @dave: auto-scaling group triggered scale-in due to faulty metric! (msg_id:819)
-[2026-07-14 11:25:00] @eve: cluster health check failing in us-west-2 (msg_id:820)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1820.
-[2026-07-14 11:25:15] @sre-bot: looking into it now. running `kubectl get nodes` (msg_id:821)
-[2026-07-14 11:25:30] @alice: nodes are NotReady! multiple node heartbeats missed. (msg_id:822)
-[2026-07-14 11:25:45] @bob: check AWS EC2 console, are instances terminating? (msg_id:823)
-[2026-07-14 11:26:00] @charlie: auto-scaling group triggered scale-in due to faulty metric! (msg_id:824)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1824.
-[2026-07-14 11:26:15] @dave: cluster health check failing in us-west-2 (msg_id:825)
-[2026-07-14 11:26:30] @eve: looking into it now. running `kubectl get nodes` (msg_id:826)
-[2026-07-14 11:26:45] @sre-bot: nodes are NotReady! multiple node heartbeats missed. (msg_id:827)
-[2026-07-14 11:27:00] @alice: check AWS EC2 console, are instances terminating? (msg_id:828)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1828.
-[2026-07-14 11:27:15] @bob: auto-scaling group triggered scale-in due to faulty metric! (msg_id:829)
-[2026-07-14 11:27:30] @charlie: cluster health check failing in us-west-2 (msg_id:830)
-[2026-07-14 11:27:45] @dave: looking into it now. running `kubectl get nodes` (msg_id:831)
-[2026-07-14 11:28:00] @eve: nodes are NotReady! multiple node heartbeats missed. (msg_id:832)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1832.
-[2026-07-14 11:28:15] @sre-bot: check AWS EC2 console, are instances terminating? (msg_id:833)
-[2026-07-14 11:28:30] @alice: auto-scaling group triggered scale-in due to faulty metric! (msg_id:834)
-[2026-07-14 11:28:45] @bob: cluster health check failing in us-west-2 (msg_id:835)
-[2026-07-14 11:29:00] @charlie: looking into it now. running `kubectl get nodes` (msg_id:836)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1836.
-[2026-07-14 11:29:15] @dave: nodes are NotReady! multiple node heartbeats missed. (msg_id:837)
-[2026-07-14 11:29:30] @eve: check AWS EC2 console, are instances terminating? (msg_id:838)
-[2026-07-14 11:29:45] @sre-bot: auto-scaling group triggered scale-in due to faulty metric! (msg_id:839)
-[2026-07-14 11:30:00] @alice: cluster health check failing in us-west-2 (msg_id:840)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1840.
-[2026-07-14 11:30:15] @bob: looking into it now. running `kubectl get nodes` (msg_id:841)
-[2026-07-14 11:30:30] @charlie: nodes are NotReady! multiple node heartbeats missed. (msg_id:842)
-[2026-07-14 11:30:45] @dave: check AWS EC2 console, are instances terminating? (msg_id:843)
-[2026-07-14 11:31:00] @eve: auto-scaling group triggered scale-in due to faulty metric! (msg_id:844)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1844.
-[2026-07-14 11:31:15] @sre-bot: cluster health check failing in us-west-2 (msg_id:845)
-[2026-07-14 11:31:30] @alice: looking into it now. running `kubectl get nodes` (msg_id:846)
-[2026-07-14 11:31:45] @bob: nodes are NotReady! multiple node heartbeats missed. (msg_id:847)
-[2026-07-14 11:32:00] @charlie: check AWS EC2 console, are instances terminating? (msg_id:848)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1848.
-[2026-07-14 11:32:15] @dave: auto-scaling group triggered scale-in due to faulty metric! (msg_id:849)
-[2026-07-14 11:32:30] @eve: cluster health check failing in us-west-2 (msg_id:850)
-[2026-07-14 11:32:45] @sre-bot: looking into it now. running `kubectl get nodes` (msg_id:851)
-[2026-07-14 11:33:00] @alice: nodes are NotReady! multiple node heartbeats missed. (msg_id:852)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1852.
-[2026-07-14 11:33:15] @bob: check AWS EC2 console, are instances terminating? (msg_id:853)
-[2026-07-14 11:33:30] @charlie: auto-scaling group triggered scale-in due to faulty metric! (msg_id:854)
-[2026-07-14 11:33:45] @dave: cluster health check failing in us-west-2 (msg_id:855)
-[2026-07-14 11:34:00] @eve: looking into it now. running `kubectl get nodes` (msg_id:856)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1856.
-[2026-07-14 11:34:15] @sre-bot: nodes are NotReady! multiple node heartbeats missed. (msg_id:857)
-[2026-07-14 11:34:30] @alice: check AWS EC2 console, are instances terminating? (msg_id:858)
-[2026-07-14 11:34:45] @bob: auto-scaling group triggered scale-in due to faulty metric! (msg_id:859)
-[2026-07-14 11:35:00] @charlie: cluster health check failing in us-west-2 (msg_id:860)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1860.
-[2026-07-14 11:35:15] @dave: looking into it now. running `kubectl get nodes` (msg_id:861)
-[2026-07-14 11:35:30] @eve: nodes are NotReady! multiple node heartbeats missed. (msg_id:862)
-[2026-07-14 11:35:45] @sre-bot: check AWS EC2 console, are instances terminating? (msg_id:863)
-[2026-07-14 11:36:00] @alice: auto-scaling group triggered scale-in due to faulty metric! (msg_id:864)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1864.
-[2026-07-14 11:36:15] @bob: cluster health check failing in us-west-2 (msg_id:865)
-[2026-07-14 11:36:30] @charlie: looking into it now. running `kubectl get nodes` (msg_id:866)
-[2026-07-14 11:36:45] @dave: nodes are NotReady! multiple node heartbeats missed. (msg_id:867)
-[2026-07-14 11:37:00] @eve: check AWS EC2 console, are instances terminating? (msg_id:868)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1868.
-[2026-07-14 11:37:15] @sre-bot: auto-scaling group triggered scale-in due to faulty metric! (msg_id:869)
-[2026-07-14 11:37:30] @alice: cluster health check failing in us-west-2 (msg_id:870)
-[2026-07-14 11:37:45] @bob: looking into it now. running `kubectl get nodes` (msg_id:871)
-[2026-07-14 11:38:00] @charlie: nodes are NotReady! multiple node heartbeats missed. (msg_id:872)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1872.
-[2026-07-14 11:38:15] @dave: check AWS EC2 console, are instances terminating? (msg_id:873)
-[2026-07-14 11:38:30] @eve: auto-scaling group triggered scale-in due to faulty metric! (msg_id:874)
-[2026-07-14 11:38:45] @sre-bot: cluster health check failing in us-west-2 (msg_id:875)
-[2026-07-14 11:39:00] @alice: looking into it now. running `kubectl get nodes` (msg_id:876)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1876.
-[2026-07-14 11:39:15] @bob: nodes are NotReady! multiple node heartbeats missed. (msg_id:877)
-[2026-07-14 11:39:30] @charlie: check AWS EC2 console, are instances terminating? (msg_id:878)
-[2026-07-14 11:39:45] @dave: auto-scaling group triggered scale-in due to faulty metric! (msg_id:879)
-[2026-07-14 11:40:00] @eve: cluster health check failing in us-west-2 (msg_id:880)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1880.
-[2026-07-14 11:40:15] @sre-bot: looking into it now. running `kubectl get nodes` (msg_id:881)
-[2026-07-14 11:40:30] @alice: nodes are NotReady! multiple node heartbeats missed. (msg_id:882)
-[2026-07-14 11:40:45] @bob: check AWS EC2 console, are instances terminating? (msg_id:883)
-[2026-07-14 11:41:00] @charlie: auto-scaling group triggered scale-in due to faulty metric! (msg_id:884)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1884.
-[2026-07-14 11:41:15] @dave: cluster health check failing in us-west-2 (msg_id:885)
-[2026-07-14 11:41:30] @eve: looking into it now. running `kubectl get nodes` (msg_id:886)
-[2026-07-14 11:41:45] @sre-bot: nodes are NotReady! multiple node heartbeats missed. (msg_id:887)
-[2026-07-14 11:42:00] @alice: check AWS EC2 console, are instances terminating? (msg_id:888)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1888.
-[2026-07-14 11:42:15] @bob: auto-scaling group triggered scale-in due to faulty metric! (msg_id:889)
-[2026-07-14 11:42:30] @charlie: cluster health check failing in us-west-2 (msg_id:890)
-[2026-07-14 11:42:45] @dave: looking into it now. running `kubectl get nodes` (msg_id:891)
-[2026-07-14 11:43:00] @eve: nodes are NotReady! multiple node heartbeats missed. (msg_id:892)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1892.
-[2026-07-14 11:43:15] @sre-bot: check AWS EC2 console, are instances terminating? (msg_id:893)
-[2026-07-14 11:43:30] @alice: auto-scaling group triggered scale-in due to faulty metric! (msg_id:894)
-[2026-07-14 11:43:45] @bob: cluster health check failing in us-west-2 (msg_id:895)
-[2026-07-14 11:44:00] @charlie: looking into it now. running `kubectl get nodes` (msg_id:896)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1896.
-[2026-07-14 11:44:15] @dave: nodes are NotReady! multiple node heartbeats missed. (msg_id:897)
-[2026-07-14 11:44:30] @eve: check AWS EC2 console, are instances terminating? (msg_id:898)
-[2026-07-14 11:44:45] @sre-bot: auto-scaling group triggered scale-in due to faulty metric! (msg_id:899)
-[2026-07-14 11:45:00] @alice: cluster health check failing in us-west-2 (msg_id:900)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1900.
-[2026-07-14 11:45:15] @bob: looking into it now. running `kubectl get nodes` (msg_id:901)
-[2026-07-14 11:45:30] @charlie: nodes are NotReady! multiple node heartbeats missed. (msg_id:902)
-[2026-07-14 11:45:45] @dave: check AWS EC2 console, are instances terminating? (msg_id:903)
-[2026-07-14 11:46:00] @eve: auto-scaling group triggered scale-in due to faulty metric! (msg_id:904)
-    ↳ [Thread] @sre-bot: Automated alert acknowledged for incident INC-1904.
+=== PasiZ1 is now known as PasiZ
+=== bahamat_ is now known as bahamat
+[00:26] <kotgc> Hello, how can I tell what is the EFI partition https://dpaste.com/DC4N5RRH8
+[00:27] <rbox> fdisk -l
+[00:29] <younder> The size is a good hint note that sda1 is a 512M partition
+[00:30] <kotgc> rbox thanks, that really worked https://dpaste.com/HG8N8Z749
+[00:31] <kotgc> dev/sda1
+[00:32] <kotgc> Can the EFI partition be called the root?
+[00:32] <kotgc> I need to mount the EFI to chroot to fix a black screen.
+[00:32] <younder> no, it is only for booting
+[00:33] <kotgc> ok
+[00:36] <kotgc> So I'm planning to "chroot" into the target EFI partition (/dev/sda1), so I think I have to mount /dev/sda1, so grub install/update are correct.
+=== ubuntu is now known as Guest6378
+=== arraybolt3 is now known as arraybolt3_tl
+=== arraybolt3_wc is now known as arraybolt3
+=== deepSleep is now known as Guest4327
+[02:13] <aiena> How to make snaps work correctly with SELInux in ubuntu 22.04
+[02:14] <rbox> ubuntu isn't really designed for selinux
+[02:17] <aiena> what is the correct way to implement MAC in ubuntu?
+[02:18] <rbox> if you want to use selinux, you should progably use a dist designed for selinux, lol
+[02:19] <aiena> rbox, I wa tested selinux in an ubuntu vm so no harm no foul :)
+[02:20] <aiena> rbox, the question is what is the correct mechanism for ubuntu to implement Mandatory access control
+[02:20] <rbox> "AppArmor is a Mandatory Access Control (MAC) system"
+[02:21] <aiena> ok I'm reading about it.
+[02:22] <rbox> i mean, that was the very first hit on google...
+[02:26] <aiena> where are snap apparmor policies stored? It seems like ubuntui nforces a policy but I can't find it in /etc/apparmor.d
+[02:26] <rbox> another thing thats the first hit on g oogle...
+[02:28] <aiena> foir me it just shows https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=&cad=rja&uact=8&ved=2ahUKEwjq-46NrN6DAxW58DgGHWjUDP0QFnoECBQQAQ&url=https%3A%2F%2Fubuntu.com%2Fserver%2Fdocs%2Fsecurity-apparmor&usg=AOvVaw2XglGOKVe-rwrDi-5JpS5v&opi=89978449 a the first etry
+[02:28] <arraybolt3> rbox: if it's that easy for you to find, it's that easy for you to share too. Don't drive users away by griping about what Google tells you.
+[02:32] <arraybolt3> aiena: look in /var/lib/snapd/apparmor/profiles
+[02:33] <aiena> thank you
+=== deepSleep is now known as Guest1737
+=== Spr0cket- is now known as Spr0cket
+=== kinghat9 is now known as kinghat
+=== kentucky44448 is now known as kentucky4444
+=== codingkoopa8 is now known as codingkoopa
+[05:09] <aiena> I was trying to follow https://help.ubuntu.com/community/UFW and typed `ufw allow from 192.168.0.0/24 to any 22` rule but I get a wrong number of arguments error
+[05:09] <aiena> what error am I making
+[05:10] <aiena> I think I missed the word port
+[05:24] <ismail> hello .. how to enable hibernate ?
+=== Casper26_ is now known as Casper26
+=== homer is now known as V1A
+=== TomTom_ is now known as TomTom
+[09:01] <Jantz> is the famous silk road?
+[09:01] <lotuspsychje> Jantz: no, this is the Ubuntu support channel
+[09:06] <Jantz> hackers hackers I need a hacker where is she?
+[09:08] <lotuspsychje> !guidelines | Jantz
+[09:08] <ubottu> Jantz: The guidelines for using the Ubuntu channels can be found at https://wiki.ubuntu.com/IRC/Guidelines
+[13:16] <BluesKaj> Hi all
+[13:39] <deadrom> Hi. 20.04 server. DNS set to use DNS server outside. systemd-resolv --status shows desired DNS. dig says 127.0.0.53. internet says this a classic offering 100 solutions. is there a straightforward approach?
+[13:40] <deadrom> 53u+t open, dns not confed to TLS
+[13:49] <pragmaticenigma> deadrom: 127.0.0.53 is a local system caching DNS provider. Almost all installations are setup that way by default to reduce the latency of re-querying a DNS server for something within it TTL property.
+[13:50] <pragmaticenigma> deadrom: your system is querying upstream when it needs to, but if something requests www.example.com and then less than 5ms later does it again, it doesn't have to go all the way to the upstream provider for the second query.
+=== veegee_ is now known as veegee
+[13:52] <deadrom> pragmaticenigma: what if the target's IP changes and I got faster then 5ms queries, say edge application
+[13:52] <deadrom> ?
+[13:53] <ikonia> deadrom: you can point directly at a dns server, or you can use the local resolver to forward to a dns server
+[13:54] <pragmaticenigma> deadrom: what do you mean target's UP changes?
+[13:55] <deadrom> well, DNS resolves to a different IP. new instance spawn, new address
+[13:55] <ikonia> that's the dns servers job to maintain a record with the correct TTL
+[13:56] <deadrom> guess azure should do that
+[13:56] <deadrom> uuh root dns
+[13:57] <pragmaticenigma> deadrom: If a domain's IP address changes that frequently it should be defined with a short enough TTL that it wouldn't be a problem. I'm not sure I undersatnd your issue
+[13:57] <ikonia> deadrom: are you trying to host something in Azure and the ip keeps changing ?
+[13:57] <ikonia> what's the actual problem you're trying to solve
+[14:03] <pragmaticenigma> deadrom: systemd-resolvd runs a local caching instance of DNS. resolved will look up an unknown domain at the upstream provider. Any successive queries that occur to that same domain query within the domains defined TTL will be resolved locally. This is to reduce latency of DNS querying and be a good netizen by reducing load on upstream DNS resolvers. If you're hosting a service in Azure that has a frequently changing IP address, that
+[14:03] <pragmaticenigma> DNS record should have a very low TTL so it's not an issue.
+[14:34] <deadrom> ikonia: yes, azure resource with changing IPs, but I think this resolved itself: the differerently reported DNS servers were reported to be an error, turns out people just got jumpy about that but there is no functional impact.
+[14:34] <deadrom> Thanks for the explanation.
+[14:55] <ikonia> glad your sorted
+[15:20] <deadrom> ikonia, ah, edge issue, not linux issue per say. the things you discover when you shake people hard enough
+[15:41] <Guest4> Hey folks, I am using Ubuntu 22.04 for the first time, so I have barely experiences and knowledge about it. I´ve got a problem und I would be very happy, if someone could maybe help me. The issue is, that I installed Chrome-Browser to my Cinnamon-GUI and I can´t run it by clicking on the app-symbol. If I do, a clock is displayed (loading
+[15:41] <Guest4> process?!) and after a few seconds it dissapers, the cursor shows up again and nothing happens. The only way for me to start Chrome so far is via terminal, using the --no-sandbox command, but this is quiet not the best way, as I read on the Internet. If I try to start it as a non-root user via terminal, the following error is presented: „Missing
+[15:41] <Guest4> X Server or $Display. The platform failed to initialize. Exiting.“ I am using Ubuntu through VNC.
+[15:44] <rbox> what do yoj mean start it as a non root user via teerminal
+[15:44] <rbox> you should be starting it ast he user logged in to X
+[15:47] <Guest4> as a standard user without administration rights. Can you maybe explain shortly what is X?
+[15:47] <rbox> the user logged in to the graphical system
+[15:55] <ioria> Guest30, maybe the .desktop launcher is not set correctly; look at  ~/.local/share/applications/   and /usr/share/applications
+[16:07] <pragmaticenigma> Guest30: You should not be logged in as root, at any time, with exception for system specific maintaince, which commonly can be accomplished by preceeding a command with "sudo " and then enternig your user (not root) password. Google Chrome is not distributed by Ubuntu, it is considered a thirdparty application and you will have to seek help from their community. You can install the chromium browser which is offered through the Software
+[16:07] <pragmaticenigma> intaller/package manager. That package is called "chromium-browser"
+[16:09] <pragmaticenigma> Guest30: If you wish to install 3rd party applications like Google Chrome, make sure you are getting the software from the official sources and following their instructions exactly (read instructions twice before performing any action.)
+[16:21] <wyre> hi guys! I'm trying to show my hidden grub by holding esc key ...
+[16:21] <wyre> and I can see the grub cli
+[16:21] <wyre> but I'd like to see the grub menu to add some parameters to my kernel command line
+[16:22] <rbox> hit esc again
+[16:22] <rbox> it should take you back to the menu
+[16:23] <howudodat> I am trying to set up NVS4.2 server.  I already have samba fs, samba ad, and windows, mac, linux clients working (all linux running 22.04).  Now I want to add a NFS server that also uses AD for kerberos and for extended ACLs.  Can anyone recemmend a good guide on this?
+[16:23] <wyre> rbox, hitting esc is like printing a new line
+[16:26] <rbox> weirds
+[16:26] <rbox> im sure i've done that before
+[16:27] <pragmaticenigma> howudodat: You may find more server specific help in #ubuntu-server
+[16:27] <rbox> what if you hold shift instead of hitting esc on boot?
+[16:27] <wyre> rbox, the boot process continues
+[16:27] <rbox> well dont hold esc, just tap it
+[16:27] <pragmaticenigma> wyre: are you trying to make a permanent change, or just testing a temporary one?
+[16:28] <Guest30> rbox ioria pragmaticenigma Thanks for your advices. I set up the GUI by myself and read something about I had to install xorg in advance, which I didn´t. Could this also be a reason why Chrome is not running?
+[16:29] <rbox> Guest30: if you dont know what you are doing, its best to just do a normal install
+[16:29] <wyre> pragmaticenigma, just testing a temporary one
+[16:29] <wyre> but more than that ... I'd like to edit the /etc/fstab
+[16:29] <wyre> it seems to have a wrong entry
+[16:30] <howudodat> pragmaticenigma: thanks, I've been lurking there for several days.  I guess I can post there again
+[16:33] <pragmaticenigma> Guest30: With your first go at this, you should use a ready to go install of your preferred setup. You can get the unofficial (which means it is not supported here) Ubuntu Cinnamon installer from https://ubuntucinnamon.org/.  Or for a Gnome2 classic experience you can try Ubuntu MATE which is a supported and official flavor of UBuntu from https://ubuntu-mate.org/
+[16:37] <pragmaticenigma> howudodat: What you're asking for assistance on, is beyond what a typical user of the Desktop version of Ubuntu would do. That is why I suggested the other channel. If you're not having luck there you can use the IRC command '/msg alis list {keyword}' to see if another channel might be more targeted to your need. Other options might be #linux (which is very general) or you may have to find a community through a web search.
+[16:38] <howudodat> pragmaticenigma: understood.  I posted again in ubunut-server as well as #nfs, I'll see what happens, if not well...I'll keep looking
+[16:38] <howudodat> if it were easy, everyone would do it (tm)...:)
+[16:40] <pragmaticenigma> !pm | Guest30
+[16:40] <ubottu> Guest30: Please ask your questions in the channel so that other people can help you, benefit from your questions and answers, and ensure that you're not getting bad advice.
+[16:41] <Guest30> OK, I´m sorry
+[16:42] <Guest30> I thought the amout of questions might be annoying for other users in the channel
+[16:43] <nonix4> Is there a way to disable DPMS at login/lock screen? (as in blacklist it for video drivers and/or monitors which are incompatible with blanking)
+[16:43] <pragmaticenigma> Guest30: if something is not allowed, a moderator will let you know. As long as you follow the channel guidelines and code of conduct here, you are free to ask any Ubuntu releated question here.
+[16:58] <webchat3> hello
+[16:59] <webchat3> so, I just bought a dell vostro with ubuntu, i created the account set pass etc. I want to return the laptop because I do not like it
+[16:59] <webchat3> my ask is, how to delete the user ?
+[17:00] <webchat3> i tried all commands on internet but doesn t working
+[17:00] <webchat3> please help me
+[17:00] <webchat3> error code 8
+[17:00] <rbox> why do yo uneed to delete the user?
+[17:01] <webchat3> because i send the laptop back\
+[17:01] <webchat3> if I send back a laptop with password set up I think is not ok
+[17:01] <rbox> did they tell you to do anythign?
+[17:01] <rbox> they're just going tow ipe it
+[17:01] <rbox> lol
+[17:02] <webchat3> what are you saying ? just send it back ?
+[17:03] <rbox> do whatever they tell you to do
+[17:03] <rbox> did they tell you to woryr about anything?
+[17:04] <webchat3> is writed on site that if you make a return that laptop be unlocked
+[17:04] <webchat3> but how to unlock it?
+[17:04] <webchat3> i deleted all filles etc
+[17:04] <rbox> adding a user account isnt locking anything
+[17:04] <rbox> if you're unsure about their instructinos, you should ask them
+[17:05] <webchat3> my ask is how can I deleted my account
+[17:06] <arraybolt3> webchat3: You shouldn't send back a computer that you put any personal data on unless *you* wipe it first. You technically *can* delete the only user account on the system, but if anything that will lock it *worse*.
+[17:06] <nonix4> actually many wouldn't settle with deleting files, instead they'd overwrite the filesystem and reinstall (with minimal image to keep it simple/fast)
+[17:07] <arraybolt3> If you want to fully "unlock" the machine, the right way to do that would be to make sure they have your password, or delete the password entirely.
+[17:07] <webchat3> this is what I m saiyng, how to delete anything from this laptop, my personal data
+[17:07] <webchat3> how to delete the password
+[17:08] <arraybolt3> webchat3: download the same version of Ubuntu that is installed on the machine, and reinstall from scratch. Preferably scrub the entire drive using GNOME Disks (I think it can do that?) before installing.
+[17:08] <webchat3> IT IS SO COMPLICATED
+[17:08] <nonix4> I'd just overwrite the hd once with random noise, once with zeros and once with netboot image and call it done
+[17:09] <arraybolt3> webchat3: it would be this complicated with Windows too :-/
+[17:09] <arraybolt3> This is data security - if you save data to a drive, simply "deleting" it leaves pieces on the drive. If you want to make sure no one resurrects your old deleted data and steals it, you have to wipe the drive.
+[17:10] <nonix4> (actually major part of hds/ssds these days do have a secure erase command which is fast, if you choose to trust the hw manufacturer)
+[17:10] <arraybolt3> webchat3: who did you buy this machine from?
+[17:11] <arraybolt3> a particular company? Did you buy from Dell directly? Or did you buy from some third party?
+[17:11] <webchat3> #arraybolt3 me
+[17:11] <webchat3> from third party
+[17:13] <arraybolt3> yeah. So you really should probably download Ubuntu from here: https://ubuntu.com/download/desktop then flash it to a USB drive, then use the "Disks" utility to zero out the internal drive, and then reinstall Ubuntu. Set a simple short password and make sure the seller knows that password when you send it back.
+[17:19] <webchat65> hi
+[17:25] <Guest47> For now the (hopefully) last question about using a browser on a Cinnamon-GUI: I can run Firefox instead of Chrome, but when it´s open, I can´t type anything, and just act by writing my commands into a Text Editor and then just copy paste it via mouse click into Firefox. So it´s not reacting to keyboard inputs. Is there maybe an easy way to fix
+[17:25] <Guest47> it?
+[17:26] <howudodat> I would add a new user, give them sudo rights, login as them, then delete your user, rm -fr /home/<old username>
+[17:33] <Guest888> Hi, ipv6 newbie here. So, my ISP provide ipv6 , how do I set static ipv6 address on ubuntu pc
+[17:34] <Guest888> Can anyone help me?
+[17:35] <arraybolt3> Guest888: People are here to help, but if this is a server machine it might be better to try #ubuntu-server.
+[17:35] <nonix4> Guest888: Do they actually sell you stable prefix? Otherwise configuring stable suffix won't help much.
+[17:35] <arraybolt3> Otherwise, this is a great place.
+[17:36] <ubuntu_user_42> Hello, is there a way to install nm-connection-editor without installing Gnome Shell and its dependencies, akin to how Arch Linux does it?
+[17:37] <nonix4> Guest888: but indeed may want to utilize netplan.io and systemd-networkd instead of networkmanager if the use scenario even slightly resembles servers
+[17:38] <rbox> ubuntu_user_42: how are you trying to install it?
+[17:39] <ubuntu_user_42> It seems to be contained in network-manager-gnome, which is weird, because I remember having a package called network-manager-applet
+[17:40] <Guest888> nonix4: what do you mean by stable prefix? I check my router, everytimes it restart the 1st 3 field (eg.. 2001:0DB8:face::) does not change.
+[17:41] <Guest888> nonix4: and have "/64" on the router interface
+[17:45] <ubuntu_user_42> Okay, I got it work with the Fedora package for nm-connection-editor + Alien. Probably not the best way to do it, but it seems to work just fine.
+[17:45] <rbox> ubuntu_user_42: thanks for the play by play
+[17:47] <arraybolt3> ubuntu_user_42: nm-connection-editor doesn't usually require GNOME Shell I don't think?
+[17:47] <arraybolt3> just `sudo apt install nm-connection-editor` should have done the trick, but perhaps `sudo apt install --no-install-recommends nm-connection-editor` would help
+[17:47] <ubuntu_user_42> There is no nm-connection-editor package
+[17:48] <arraybolt3> oh you're right
+[17:48] <ubuntu_user_42> That is the problem, it used to network-manager-applet, which apparently got removed and merged with network-manager-gnome? Not sure. Like I said, I remember having network-manager-applet
+[17:48] <ubuntu_user_42> s/used to/used to be
+[17:48] <arraybolt3> gnome-shell is a Recommends of network-manager-gnome
+[17:48] <arraybolt3> so it might work to `sudo apt install --no-install-recomments network-manager-gnome`
+[17:49] <ubuntu_user_42> Doesn't look like it. Even with --no-install-recommends, `gnome-shell` is installed, alongside with `mutter-common` and all the libraries gnome-shell would require
+[17:50] <arraybolt3> weird
+[17:54] <nonix4> ubuntu_user_42: it depends on gnome-shell | policykit-1-gnome | polkit-1-auth-agent -- so maybe install one of the polkit ones first?
+[17:55] <ubuntu_user_42> Darn, that worked!
+[17:56] <ubuntu_user_42> Thanks a lot
+[17:56] <arraybolt3> \o/
+[17:56] <arraybolt3> nonix4: nice going!
+=== shlom is now known as V1A
+=== lyn is now known as Guest6049
+=== Guest6049 is now known as lynorian2
+=== lyn is now known as Guest8107
+[19:55] <zeratul> if I want to extend the sudo timeout where in the visudo file do I add that setting?
+[20:33] <pragmaticenigma> zeratul: First make sure you keep a copy of the original line, the alter the line `Defaults env_reset` to `Defaults env_reset, timestamp_timeout=5` where the number 5 represents the number of minutes you wish sudo to remain active.
+[20:33] <pragmaticenigma> zeratul: you are simply adding the `, timestamp_timeout=5` after the original entry
+[20:47] <zeratul> pragmaticenigma, why the , after Defaults env_reset ???
+[20:55] <pragmaticenigma> zeratul: You are welcome to take a look at https://www.man7.org/linux/man-pages/man5/sudoers.5.html for that information
+=== cappy is now known as cappy_
+=== cappy_ is now known as cappy
+[22:09] <messier16> hi running ubuntu 22.04.03 headless server I get error messages which seem to indicate a problem with a sata port or cable or drive; I have run smart tests on all drives and they are reported to be ok. here https://pastebin.com/YNTzM4rw are the error messages from $grep error /var/log/syslog
+[22:10] <messier16> it appears perhaps the problem is with the /dev/sda drive
+[22:10] <messier16> but I need help deciphering
+[22:12] <rbox> yeah, looks like some kind of a hardware error
+[22:13] <messier16> does this indicate it is, specifically, the /dev/sda drive? mediamagnate kernel: [293456.821909] blk_update_request: I/O error, dev sda, sector 888202112 op 0x0:(READ) flags 0x80700 phys_seg 32 prio class 0
+[22:13] <messier16> there are four internal drives
+[22:13] <rbox> well it says sda
+[22:14] <rbox> it woudnl't say sda if it was about sdd
+[22:14] <messier16> ok
+[22:14] <messier16> that's what I thought but I don't have enough experience to know for sure
+[22:14] <messier16> thank you rbox
+[22:16] <tomreyn> messier16: what yuo should take note of is ther serial number of the drive you want to replace. smatctl is one of the tools reporting that.
+[22:18] <tomreyn> while 'sda' means 'first sata drive', what actually is 'the first', as seen by the running system, may be more difficult to match tho the installed disks when opening the case.
+[22:18] <tomreyn> serial numbers are usually printed on HDD labels.
+[22:19] <messier16> well, luckily.. all drives are different sizes. so identification should be fairly easy. I think.
+[22:19] <messier16> but thank you for the info and the tip
+[22:23] <messier16> there's an odd thing - the only time I get the error messages is when a drive is connected via an external USB cable - it's in one of those drive bays. but the /dev/sda drive is definitely a 4tb internal seagate.
+[22:24] <messier16> alright I'm running a long smartctl test on this drive as test results showed I'd only done a short test, which it passed. I could have sworn I did a long test as well. Thank you for your time.
+[22:27] <Aavar> I just upgraded to 22.04 and I have a script that among other things runs "zpool status -v" to check the status of my zfs. When I run it I get this message: https://dpaste.com/34HH2U7XE Is it safe for me to run "zpool upgrade"?
+[22:28] <rbox> Aavar: you should back up your data to be sure
+[22:33] <Aavar> rbox: it is bankes up, but it is far away and will take a long time to recover. Is it a bad idea to just leave it?
+[22:34] <rbox> well some features wont be used
+=== Edgy25 is now known as Edgy2
+[22:41] <pragmaticenigma> Aavar: a remote backup is not a backup... harddrives are relatively cheap, and ideal for making sure you have a local backup
+[22:41] <pragmaticenigma> Aavar: More specifically 3-2-1 should be considered the back up strategy. 3 backups, with 2 on different media, and one remotely stored
+=== tabakhase__ is now known as tabakhase
+[22:42] <Aavar> pragmaticenigma: I know, but this is not important data. It is only inconvenient to loose it
+[22:43] <pragmaticenigma> then it's important data :P
+[22:44] <Aavar> pragmaticenigma: if you call old linux ISOs that I might install again important, then yes. Ripping the ISOs is quite time consuming
+[22:46] <Aavar> pragmaticenigma: :P
+=== Jubes91 is now known as Jubes9
+=== salient89 is now known as salient8
+=== infogulch5 is now known as infogulch
+=== djhankb1 is now known as djhankb
+=== MrC is now known as Guest7989
+=== MrBenC is now known as MrC
+=== vx^ is now known as vx
+=== mrelcee_ is now known as mrelcee
+=== mateus-morais8 is now known as mateus-morais
+=== dvdmuckle_ is now known as dvdmuckle
+=== pr3sonic is now known as highrate
+[23:00] <Luiserebii> Hello, I am looking to update my vim. I see it is at `version 8.1.1847` when I open it. However, when I try to update it via `sudo apt-get install vim`, I see: `vim is already the newest version (2:8.1.2269-1ubuntu5.21).`
+[23:00] <Luiserebii> Why is there that version discrepancy?
+[23:02] <Aavar> Luiserebii: because i'ts not upgraded in the repository yet. I guess.
+[23:02] <Bashing-om> !latest | Luiserebii
+[23:02] <ubottu> Luiserebii: Packages in Ubuntu may not be the latest. Ubuntu aims for stability, so "latest" may not be a good idea. Post-release updates are only considered if they are fixes for security vulnerabilities, high impact bug fixes, or unintrusive bug fixes with substantial benefit. See also !backports, !sru, and !ppa.
+[23:02] <Bashing-om> !info vim lunar
+[23:02] <ubottu> 'lunar' is not a valid release
+[23:04] <Luiserebii> Is there a safe way that I can install the newest version while keeping the package via `apt-get`? Or will I just have to uninstall it and install it a different way?
+[23:04] <Luiserebii> Or at least, a newer version?
+[23:04] <rbox> you can find some random ppa
+[23:04] <rbox> or you can compile it
+[23:05] <rbox> Luiserebii: you can find some random ppa, or you can compile it
+[23:07] <Luiserebii> Hmmmm
+[23:07] <Aavar> Luiserebii: have you checked what version is in snap?
+=== skoobasteeve4 is now known as skoobasteeve
+[23:08] <Luiserebii> I admit, I'm a bit confused. I see: https://launchpad.net/ubuntu/+source/vim/2:9.0.1672-1ubuntu2.2. Is there a way I can pull this in and install it via apt-get?
+[23:08] <tomreyn> Luiserebii: you run ubuntu 20.04 LTS apparently. there are newer releases you could upgrade to, and those provided newer versions of vim, too.
+[23:08] <Luiserebii> Aavar: I have not seen it, but I am afraid of conflicts with apt-get. Would I have to uninstall vim via apt-get to be safe?
+[23:08] <tomreyn> newer *Ubuntu* releases, providing newer versions of vim
+[23:09] <Aavar> Luiserebii: snap will never conflict with apt.
+=== salient86 is now known as salient8
+[23:10] <Luiserebii> Ohhh, I see, I am on 20.04 LTS, yes... darn. I guess I have to make the move up soon. I've been putting it off partially because I've become comfortable with my customization on 20.04 haha
+[23:11] <tomreyn> maybe you can keep them, or most of them.
+[23:12] <tomreyn> becoming too dependant on customizations to be able to upgrade is risk you should not take.
+[23:12] <tomreyn> better go with the flow, accept some minor level of imperfection
+[23:12] <Luiserebii> Oh, yes, I suppose that is wise.
+[23:15] <tomreyn> 22.04 LTS is the current long term support release, the next one will be 24.04, and those version numbers are actually YY.MM, year and month, of when they release
+[23:15] <jeremy31> Basically the LTS is the .04 release of an even number year
+[23:16] <Aavar> Luiserebii: 8.2 is in 22.04, but also in snap. Just run "sudo snap install --beta vim-editor" and you will have a newer version.
+[23:17] <tomreyn> https://snapcraft.io/vim-editor provides a may 2020 "beta" channel providing 8.2.788, that's too old to be recommendable.
+[23:17] <tomreyn> as in, not maintained for 4 years, unlike the .deb's, which do get security patches.
+[23:18] <Aavar> tomreyn: I stand corrected.
+[23:19] <Luiserebii> I did find a ppa that I was able to update to. Thank you so much for all your help!
+[23:19] <tomreyn> Aavar: well. this version IS newer / higher than the one Luiserebii has now (though hers will have security and bug fixes, whereas the snap one won't have them since)
+=== lynndotpy0 is now known as lynndotpy
+=== punkcoder6 is now known as punkcoder
+[23:21] <tomreyn> Luiserebii: be aware that ppa's may provde no security patches either. it entirely depends on their maintainers and whether they care about it (which they don#t need to do).
+[23:21] <Luiserebii> I managed to push it to vim 9 using the PPA, but I would think the next priority is getting to 22.04 or maybe the 24 LTS (when it releases)
+[23:23] <Aavar> Luiserebii: I recommend doing it in steps. In my experience, upgrading two versions has more potential problems than one.
+[23:26] <Luiserebii> Ahhh, ok. I will definitely follow that advice. Thank you again!
+[23:31] <tomreyn> Luiserebii: which PPA are you using then? one of jonathanf's?
+[23:31] <ogra_> als note tat adding a PPA effectiveky gives the PPA owner root access to your system (via dpkg maintainer scripts the packags can do anything they want) so think about how much you trust such a particular PPA owner
+=== octav1a_ is now known as octav1a
+[23:39] <dtype> are there popular third party PPAs that are lower barrier to entry than official Ubuntu, for folks wiling to do some work but not wanting to introduce the trust problem of another PPA?
+[23:41] <tomreyn> pick some software you like, look for available PPAs, see what you can contribute
+[23:42] <ogra_> well, PPAs always have that trust problem ... thats due to the design of dpkg/apt ...
+[23:42] <dtype> i mean, i'm doing a project that needs to distribute a little python script as a collection point, and would like to give folks an option to install more correctly, but it isn't big enough to end up in Ubuntu proper
+[23:42] <dtype> i could just do my own PPA, but then of course the trust issue
+[23:43] <pragmaticenigma> dtype: A python script should be packaged within python and installed in a venv at the end user using pip
+[23:43] <ogra_> luckily PPAs always include the source packges so you *can* inspect what they are doing ... but you indeed need the knowledge and invst some time
+[23:43] <dtype> pragmaticenigma: it needs to run on systemd/cron as part of the install
+[23:43] <ogra_> (and nothing stops the owner of introducing something evil with the next updae indeed)
+[23:44] <pragmaticenigma> dtype: You can run a script from within a venv from cron very easiliy
+[23:44] <dtype> sure, can consider that as an option
+[23:45] <dtype> fwiw, doesn't have to be python but it is in practice today
+[23:47] <pragmaticenigma> I think the part that is missing is that channels like this one consider 3rd party PPAs contributing to an unsupported installation of Ubuntu. It's one of the first things a volunteer here will tell someone to remove before attempting to troubleshoot a system
+[23:48] <JanC> there isn't really much different between a distro and a PPA when it comes to "trust", just that you have to trust an extra person/group, and you have to make the same considerations to judge them
+[23:51] <dtype> pragmaticenigma: I had the same thing with a perl script like 25 years ago that became popular and you can still install today in about every distribution, even though it is not great programming
+[23:52] <pragmaticenigma> 99% of programs were just someone's quick fix that "worked" and for fear of breaking things never get touched again
+[23:52] <dtype> still odd to me that you can `apt-get install ethstats` which was some hacky thing from ~2000
+[23:53] <arraybolt3> well people liked it and the package hasn't broken yet :)
+[23:53] <arraybolt3> dtype: have you considered making it a Snap?
+[23:53] <dtype> i haven't touched it in 22 years
+[23:54] <arraybolt3> I mean the new script
+[23:54] <arraybolt3> Those don't require any scary PPA addition steps to install, the tool to install them is built into Ubuntu, and they oftentimes work well if you know what you're doing with confinement
+[23:54] <pragmaticenigma> are you sure it's the same thing... a search of ethstats turns up an ethereum
+[23:54] <pragmaticenigma>  block chain
+[23:54] <pragmaticenigma> monitor
+[23:54] <dtype> oh, it isn't that kind of thing. see https://dmon.io. my new project here is just a free/libre external service for monitoring device stuff. I think I can probably make it forever hosted free.
+[23:55] <dtype> i guess it *could* be a snap
+[23:55] <arraybolt3> if you want something a little easier to install that doesn't require PPA gymnastics to work, that would be the Ubuntu way of doing things.
+[23:56] <arraybolt3> And it's cross-distro compatible, although it requires the end user to be willing to install Snap on non-Ubuntu distros.
+[23:56] <dtype> ethstats/jammy 1.2.1-4 all
+[23:56] <dtype>   script that quickly measures network device throughput
+[23:56] <dtype> pragmaticenigma: ^^ that one
+[23:56] <dtype> probably won't google very well since it is literally a perl script from 2000 with no further presence
+[23:57] <dtype> anyway wasn't here to sell ethstats. just noting it as an example of a litlte utility thing that ended up in stock repos
+[23:57] <dtype> arraybolt3: yeah noted. maybe a little snap would be the way to go
+[23:58] <dtype> needs read access to /sys but that should be doable maybe.
+[23:59] <dtype> (nothing that isn’t world readable anyway)
+
+[00:00] <JanC> or you can do all of them so people can choose  ;)
+[00:07] <dtype> thanks for ideas here folks.
+=== ingrim1 is now known as ingrim
+=== Casper26_ is now known as Casper26
+=== ASap_ is now known as ASap
+[01:05] <blackguy5> my dad used to call me nigger
+=== ingrim6 is now known as ingrim
+=== justache- is now known as justache
+[04:32] <bray90820> In 23.10 why is the mouse pointer bigger in some apps
+[04:32] <bray90820> IE MakeMKV and KVIRC
+=== guiverc2 is now known as guiverc
+=== Ricardus_ is now known as Ricardus
+=== pushkarnk1 is now known as pushkarnk
+[06:24] <nixon> saludos
+=== JoeBk_ is now known as JoeBk
+[07:23] <vtol> mi enorme castillo
+[08:01] <BlueSmoke> Hi, If I press the i or L keys they work, I can also shift uper or lower with right shift key,  The left shift key works with other keys, but not i or L and a few others can anyone point me in the right direction to fix this?
+[08:01] <BlueSmoke> I'm using Ubuntu 20.04
+[08:04] <BlueSmoke> If it helps it acts the same on en and us settings
+=== GreenRio- is now known as GreenRiot
+[08:11] <Bashing-om> BlueSmoke: Default config. ' cat /etc/default/keyboard ' >> XKBMODEL="pc105" ?
+[08:15] <BlueSmoke> In /etc/default/keyboard     it says XKBLAYOUT=gb,us
+[08:15] <BlueSmoke> BACKSPACE=guess
+[08:15] <BlueSmoke> XKBVARIANT=,
+[08:16] <BlueSmoke> if thats what you were asking
+[08:18] <BlueSmoke> It's a laptop with shared num pad
+[08:19] <Bashing-om> BlueSmoke: I expected the keyboard layout (such as pc105) to also be configured.
+[08:19] <BlueSmoke> what I posted is all thats in there
+[08:28] <Bashing-om> BlueSmoke: Will take one more knowledgeable than I to determine what the layout should be - past my bed time and I am headed that way.
+[08:28] <BlueSmoke> Thanks for looking at It anyway good night
+[08:34] <thisisjaymehta> I have similar but different issue like BlueSmoke.
+[08:35] <thisisjaymehta> in my case function key not works, I tried many different keyboard layouts in settings
+[08:36] <thisisjaymehta> I am using "helloganss" keyboard and it only support win and mac. But I am trying to make all keys work on ubuntu.
+[08:36] <BlueSmoke> I looked at posts all ove the place but there are many different so it confuses the search thats why I thought I'd ask here hoping someone could put me on the right parth
+[08:38] <BlueSmoke> Mine when I hold left shif the afected key do nothing
+[08:39] <BlueSmoke> mine includes some Fkeys also but not many
+[10:03] <lgerhardus> hi
+[11:03] <tsurugi> hallo people
+[11:14] <alcosta> HI everybody!I had a problem booting Ubuntu 20.04 for the first time from the iso standard image file.
+[11:16] <alcosta> I was unable to boot and start a session from my computer.
+[11:18] <alcosta> I have a nvidia GeForce GT710 graphic board, for which, normally, on other ubuntu 20.04 installations, i have a nvidia-driver-470.
+[11:20] <alcosta> Trying to start a new ubuntu 20.04 installation, the system is unable to recognize a display monitor ASUS 28" (ultra high resolution of 3840x... dots).
+[11:20] <alcosta> The monitor, after a stARTING
+[11:23] <alcosta> The monitor, after a splash screen indicating ubuntu and ASRock (my mother board) hibernates and power off, so that nothing is more visible on the totally black display!.
+[11:23] <alcosta> Please, is there somebody reading what i'm saying?
+[11:32] <alcosta> No! Nobody is reading what i'm saying! Next time! Thanks! :)
+[12:00] <dob1_> hi, I cannot use virtualbox anymore "If your system is using EFI Secure Boot you may need to sign the kernel modules (vboxdrv, vboxnetflt, vboxnetadp, vboxpci)"
+[12:00] <dob1_> it was working I suppose until the last kernel update
+[13:12] <Ludo0404> salut
+[13:13] <Ludo0404> salut
+[13:13] <mrtlsn> salut
+[13:13] <arthur> salut
+=== arthur is now known as Guest1905
+[13:13] <Paris> #ubuntu-fr
+[13:14] <Paris> i know it so much.
+[13:14] <noahtby> salut
+[13:14] <Guest1905> bakkaaa
+[13:14] <Guest1905> c moi
+[13:14] <Ludo0404> noah ça va ?
+[13:14] <mrtlsn> c est qui Paris ?
+[13:14] <Guest1905> votre bb
+[13:16] <Guest1905> cc
+[13:16] <mrtlsn> hello
+[13:16] <noahtby> slt
+[13:17] <Guest1905> jtm noah
+[13:23] <Guest1905> cc
+[13:24] <Guest1905> cc mv
+[13:25] <noahtby> cc bb
+[13:25] <pragmaticenigma> Guest1905, noahtby, Ludo0404 : Do you have an Ubuntu support question?
+[13:35] <Neil_McCauley> eim Thema.
+[13:35] <Neil_McCauley> <Neil_McCauley> Linux Ubuntu does not boot anymore in normal mode, only in failsafe mode. Did an sudo fsck /dev/sda5 check, which fixed some errors but still no boot in normal mode. Any help?
+[13:40] <lotuspsychje> Neil_McCauley: see if you can go update and/or fix broken packages in recoverymode
+[13:41] <pragmaticenigma> Neil_McCauley: Define what "some errors" means? 1 or 2, several lines, a whole screens worth, it scrolled by as it worked?
+[13:58] <BluesKaj> Hi all
+=== phireant869 is now known as phireant86
+[14:02] <Neil_McCauley> Running additional passes to resolve blocks claimed by more than one inode...
+[14:02] <Neil_McCauley> Pass 1B: Rescanning for multiply-claimed blocks
+[14:02] <Neil_McCauley> Multiply-claimed block(s) in inode 10633565: 43385905 43402767--43402770 1808--1809
+[14:02] <Neil_McCauley> Multiply-claimed block(s) in inode 10633616: 43385905 43402767--43402770 1808--1809
+[14:02] <Neil_McCauley> Pass 1C: Scanning directories for inodes with multiply-claimed blocks
+[14:02] <Neil_McCauley> Pass 1D: Reconciling multiply-claimed blocks
+[14:03] <lotuspsychje> !paste | Neil_McCauley
+[14:03] <ubottu> Neil_McCauley: For posting multi-line texts into the channel, please use https://dpaste.com | To post !screenshots use https://imgur.com | !pastebinit to paste directly from command line | Make sure you give us the URL for your paste - see also the channel topic.
+[14:06] <Neil_McCauley> OK, sorry. This is the url: https://dpaste.com/2F5A3SLUF
+[14:10] <pragmaticenigma> Neil_McCauley: Does windows boot normally or does that also have issues?
+[14:12] <Neil_McCauley> No, windows has no issues booting. This booting issue in Ubuntu occured after an kernel update/upgrade.
+[14:15] <Neil_McCauley> Ubuntu 6.5.0.14 general does not boot only 6.5.0.14 recovery does.
+[14:29]  * glumbletross flexes his muscles
+[14:32] <lotuspsychje> Neil_McCauley: there are a few known bugs around kernel 6.5 booting
+[14:33] <lotuspsychje> Neil_McCauley: bug #2047590 is one for example
+[14:33] -ubottu:#ubuntu- Bug 2047590 in linux (Ubuntu) "6.5.0-14 kernel will not boot" [Undecided, Incomplete] https://launchpad.net/bugs/2047590
+=== pushkarnk1 is now known as pushkarnk
+[14:51] <Neil_McCauley> lotusspychje: that is a pitty.
+[14:52] <glumbletross> Ubuntu Rocks your Socks
+[14:53] <pragmaticenigma> glumbletross: Do you have an Ubuntu support question?
+[14:55] <glumbletross> @pragmaticenigma, yes, why is my system encryption keys keep crashing right after login?
+[14:58] <glumbletross> kernel 6.5.0-14-generic x86-64
+[15:09] <glumbletross> i sent reports but no response
+[15:10] <lotuspsychje> glumbletross: do you mean you filed a bug?
+=== luis is now known as muertos
+[15:10] <glumbletross> yes I clicked send report
+[15:29] <leftyfb> glumbletross: that doesn't file a bug
+[15:29] <leftyfb> !bug | glumbletross
+[15:29] <ubottu> glumbletross: If you find a bug in Ubuntu or any of its official !flavors, please report it using the command « ubuntu-bug <package> » - See https://help.ubuntu.com/community/ReportingBugs for other ways to report bugs.
+=== gabriele_ is now known as gabriele
+[16:42] <strk> is there a way to search for source packages ?
+[16:42] <strk> with apt
+[16:43] <strk> based on https://packages.ubuntu.com/jammy/libs/libgeos3.10.2 I go: `apt source libgeos3.10.2` but I get: E: Unable to find a source package for libgeos3.10.2
+[16:44] <strk> I do have `deb-src http://no.archive.ubuntu.com/ubuntu jammy main` in /etc/apt/source.list
+[16:45] <leftyfb> strk: libgeos3.10.2 is part of the universe repository
+[16:47] <strk> ah, why, if I may ask ?
+[16:47]  * strk is a geos maintainer
+[16:48] <leftyfb> you could contact ubuntu-devel-discuss@lists.ubuntu.com to find out
+[16:48] <pragmaticenigma> strk: Universe is where community maintained packages are stored. Main is for Canonical-supported
+=== ingrim0 is now known as ingrim
+[17:27] <strk> how can I completely update the source code in a source package ?
+[17:30] <pragmaticenigma> strk: Think you'd have to reach out to the mail list email that lefty mentioned earlier for that answer.
+[17:38] <armadefuego> Anyone out there that can give me suggestions on what to look at with a problem that my mouse won't select windows? ( i can use the keyboard to change windows)
+[17:39] <leftyfb> huh?
+[17:40] <leftyfb> armadefuego: can you take a screenshot or picture?
+[17:40] <leftyfb> of the screen where you're trying to "select windows"
+[17:40] <strk> how do I search for a package by partial name ? is there any such service for source pakcage on commandline ?
+[17:40] <armadefuego> Also can't use the dash, or the _chrome_ on the window via the mouse.
+[17:41] <leftyfb> armadefuego: are you sure the mouse button works?
+[17:41] <armadefuego> @strk: i use dpkg -l | grep {name}
+[17:41] <strk> armadefuego: that one only searches in the installed packages, I'm talking about searching in all packages
+[17:41] <pragmaticenigma> armadefuego: doesn't that only search already installed packages?
+[17:41] <armadefuego> @leftyb: all 3 of them! ( i have 3 mice on the machine)
+[17:41] <strk> like: apt search # but for source packages
+[17:42] <webchat95> I have just installed ubuntu 22.04 and now my speaker is not working the audio is coming from my headphone but not from speakers
+[17:42] <armadefuego> for all packages i just use the ubuntu site.
+[17:42] <pragmaticenigma> webchat95: unplug headphones
+[17:43] <webchat95> : ) now also not coming
+[17:43] <armadefuego> @webchat95: can i assume that the headphone is disconnected when you test the speakers?
+[17:43] <webchat95> armadefuego yes
+[17:44] <pragmaticenigma> armadefuego: if you're receiving help, it's best to refrain from helping others. it makes it really hard to know when you are replying to someone helping you, or if you're helping someone else
+[17:45] <armadefuego> @webchat95 is the setup in settings appropriate for your speakers? ( there may be options that the soundcard doesn't support to your speakers.
+[17:46] <leftyfb> armadefuego: try 1 mouse at a time
+[17:46] <webchat95> armadefuego in settings the output device is showing
+[17:47] <strk> debhelper is already the newest version (12.10ubuntu1). # this prevents me to build backports requiring version 13, how do I go about that ?
+[17:53] <armadefuego1> Disconnecting the mouse ( and a screen) crashed my GUI!
+[17:54] <leftyfb> armadefuego1: what release of ubuntu is this? It doesn't sound stock
+[17:57] <armadefuego1> 23.10. Pretty much stock.
+[17:59] <armadefuego1> node and chrome are the only _unubuntu repos in my apt sources ( from what i can see)
+[18:01] <leftyfb> armadefuego1: you mean beyond the stock sources.list right?
+[18:02] <armadefuego1> yes.
+[18:05] <pragmaticenigma> armadefuego1: after rebooting are you still experiencing the issue?
+[18:06] <armadefuego1> restarting the GUI makes the issue disappear for a while.
+[18:07] <pragmaticenigma> armadefuego1: with all three mice attached to the system?
+[18:08] <armadefuego1> (switching GUI consoles (<CTL><ALT><F1>    === <CTL><ALT><F2>) makes the mouse behave normally, for a bit)
+[18:08] <armadefuego1> yes.
+[18:08] <pragmaticenigma> armadefuego1: why three mice?
+[18:09] <leftyfb> armadefuego1: only plug in 1 mouse at a time and see if the issue still happens
+[18:09] <armadefuego1> the mice, when experiencing the issue, all work _normally_ within the window. But not in the window decorations ( menu bars)
+[18:11] <armadefuego1> it seems its the window manager, not the window, in X terms anyway.
+[18:12] <pragmaticenigma> I'm going to go with this being self inflicted armadefuego1 ... as it appears there's no attempt at resolving the issue, just more anecdotal commentary that doesn't really get to the root of the problem of what probably is an edge case which is most computers are not operated with more than one mouse at a time.
+[18:12] <pragmaticenigma> without you explaining why three mice, and actually following the suggestions of reducing the count to 1 and see if the problem occurs
+[18:12] <armadefuego1> Sorry. I am just looking for what i need to include in a bug issue.
+[18:13] <pragmaticenigma> it's not a bug
+[18:13] <pragmaticenigma> you have an edge case, and at the moment is going to get flagged with "won't fix" because of using three mice without explination why there is need for such an arrangement, and whether or not the problem happens with only one mouse attached
+[18:14] <armadefuego1> So which file do i look at to see that the _crash_ wasn't a crash?
+[18:14] <pragmaticenigma> armadefuego1: done helping you... since it appears you're not really experiencing a problem. just wasting people's time
+[18:14] <leftyfb> armadefuego1: let us know when you would like our help by providing answers to the questions that have been asked
+[18:18] <armadefuego1> I am sorry i missed a question
+[18:18] <armadefuego1> 3 mice: Track ball, trackpad, standard mouse.
+[18:19] <armadefuego1> the _trackball_ is the additional, i think.
+[18:19] <leftyfb> unplug all but 1
+[18:20] <armadefuego1> I did that, and i go the _oh! snap_ screen.
+[18:20] <leftyfb> armadefuego1: unplug all but 1 and reboot
+[18:21] <armadefuego1> Ok. I will try that for a day, or so.
+[18:22] <armadefuego1> xinput --list
+[18:22] <armadefuego1> ⎡ Virtual core pointer                    	id=2	[master pointer  (3)]
+[18:22] <armadefuego1> ⎜   ↳ Virtual core XTEST pointer              	id=4	[slave  pointer  (2)]
+[18:22] <armadefuego1> ⎜   ↳ Logitech Wireless Keyboard PID:4023     	id=8	[slave  pointer  (2)]
+[18:22] <armadefuego1> ⎜   ↳ Logitech Wireless Mouse                 	id=9	[slave  pointer  (2)]
+[18:22] <armadefuego1> ⎜   ↳ ImPS/2 Logitech Wheel Mouse             	id=12	[slave  pointer  (2)]
+[18:23] <pragmaticenigma> I have never heard of an "Oh Snap" screen in ubuntu... only the "Aw, Snap" in Chrome... me thinks this is a developer and is playing with WebRTC controls
+[18:24] <pragmaticenigma> locking up the control of the mouse
+[18:24] <leftyfb> they left
+[18:24] <pragmaticenigma> i know... that's why I mentioned it
+[18:27] <armadefuego> rebooted with the one mouse.
+[18:27] <armadefuego> Thanks for the suggestion
+[18:29] <pragmaticenigma> armadefuego: Something of interest. There is no "Oh Snap" error message that I am aware of in Ubuntu. Only time I have seen such an error screen is from Google Chrome. Seeing that you have node.js repository, I'm going to assume you are a developer. Are you working on some sort of hardware WebRTC project with Google Chrome involving pointing devices?
+[18:31] <armadefuego> No.
+[18:31] <armadefuego> I use 2 mice because the regular mouse is _familiar_. the trackpad is good for drawing. the trackball saves my wrist.
+[18:32] <leftyfb> you can only use 1 at a time
+[18:32] <armadefuego> I am no longer an active developer. but i keep my hands dirty, sometimes.
+[18:33] <armadefuego> well, sometimes i 2-hand mouse ;)
+[18:34] <leftyfb> sorry, but I doubt that
+[18:34] <armadefuego> (the regular mouse has 5 buttons, the trackpad only 3!
+[18:35] <armadefuego> ok. sorry. 50 years of using mice i can. ( gamers use a keyboard, and a mouse at the same time, for certain games to control movement.
+[18:35] <armadefuego> i guess its all what you are used to.
+[18:51] <strk> how do I downgrade a package ?
+[18:52] <strk> I built a custom one with a newer version and now I'd like to move back
+[18:52] <strk> oh, appending =<oldversion> works
+[19:57] <tomreyn> strk: this will last until the next time you install upgrades
+[19:58] <tomreyn> apt pinning is an apt mechanism which can prevent upgrades. obviously, doing so also introduces security risks / prevents patching of vulnerabilities
+[20:14] <dob1_> hi, why with kernel 6.5.0-14-generic gcc-12 was not installed ?
+[20:16] <pragmaticenigma> dob1_: You'll have to explain why you expect a kernel update to also install a compiler update
+[20:17] <dob1_> pragmaticenigma: the problem: I was installing virtualbox (the one from virtualbox repository), the build of the module fails because gcc-12 was not installed and gcc-12 is the compiler defined by the kernel
+[20:17] <dob1_> *failed
+[20:19] <ravage> that is a question you have to ask the virtualbox repository maintainer then
+[20:19] <dob1_> they say this
+[20:23] <pragmaticenigma> dob1_: There is a virtual box package in Ubuntu's support repositories. It is highly recommended that you use that one, as it is built and conforms to the available packages for Ubuntu.
+[20:23] <pragmaticenigma> *Ubuntu's supported repositories
+[20:25] <dob1_> pragmaticenigma: sorry but imho this is not the point
+[20:26] <pragmaticenigma> !latest | dob1_
+[20:26] <ubottu> dob1_: Packages in Ubuntu may not be the latest. Ubuntu aims for stability, so "latest" may not be a good idea. Post-release updates are only considered if they are fixes for security vulnerabilities, high impact bug fixes, or unintrusive bug fixes with substantial benefit. See also !backports, !sru, and !ppa.
+=== wp is now known as wolfpackmars2
+[20:28] <pragmaticenigma> dob1_: It is every bit the point. You came here expecting something to work, where you made the choice to use an unsupported package repository. In doing so, there's no help here for your situation. The suggestion of using the package already offered in the repository is because it is supported here, and we can help with issues you may have in using it.
+[20:29] <pragmaticenigma> dob1_: Also worth noting, the repository from Oracle for VirtualBox is well known for breaking Ubuntu installs. I've had several of my past installations break because of it. Oracle commonly provides packages for other supporting libraries that break other funcationality in Ubuntu
+[20:30] <dob1_> what I am saying is, if in Makefile or whatever build is defined, is setup to "give me the default gcc for this kernel" and this gcc is not installed imho is a distribution problem
+=== wolfpackmars2 is now known as wp
+=== wp is now known as wolfpackmars2
+[20:30] <dob1_> not a package/repository problem
+[20:30] <dob1_> is not that virtualbox package defined gcc-12 hardcoded to use it while building the module
+[20:30] <pragmaticenigma> You are using an unsupported repository with a dependency requirement that is not met by Ubuntu's default and supported repository. That is not a supportable scenario here
+[20:32] <dob1_> ok got it, I will not insist, thanks anyway
+=== wolfpackmars2 is now known as sgroesz
+=== sgroesz is now known as wolfpackmars2
+=== NotEickmeyer is now known as Eickmeyer
+[20:41] <jwash> dob1_ I use oracle's repo for Virtualbox. Use a binary, they install fine.
+[20:42] <jwash> you don't need to compile it
+=== JoeBk_ is now known as JoeBk
+[20:54] <pragmaticenigma> !ppa | just a FYI jwash
+[20:54] <ubottu> just a FYI jwash: A Personal Package Archive (PPA) can provide alternate software not normally available in the offical Ubuntu repositories - Looking for a PPA? See https://launchpad.net/ubuntu/+ppas - WARNING: PPAs are unsupported third-party packages, and you use them at your own risk. See also !addppa and !ppa-purge
+[20:56] <jwash> --.
+[20:57] <jwash> pragmaticenigma i don't need that info
+[20:58] <pragmaticenigma> jwash: as the info stated... PPA are unsupported... this channel works to only suggest supported options for users. that's why that is included in that message.
+[20:58] <jwash> so what
+[20:58] <jwash> i just commented about my experience
+[20:58] <jwash> get over yourself
+[20:59] <pragmaticenigma> because then someone goes off and installs PPAs thinking becuase it was suggested or mentioned here it's a supported action. Then their install is broken and they're told "Sorry, we don't support that here" and left to pound sand. Leaving a poor experience for that person.
+[21:01] <jwash> i never said install a ppa, i said use a binary from the repo
+[21:02] <jwash> i said "I use oracle's repo for Virtualbox. Use a binary, they install fine."
+[21:02] <jwash> not that i use a PPA
+[21:02] <jwash> i just get the DEB and install it
+[21:10] <arraybolt3> dob1_, jwash, pragmaticenigma: For the record this happens even with the official VirtualBox from the Jammy repository.
+[21:10] <arraybolt3> (the GCC-12 error)
+[21:10] <arraybolt3> if the HWE kernel is installed in the guest.
+[21:10] <arraybolt3> at least that happens when installing guest additions
+[21:11] <arraybolt3> however Virtual
+[21:11] <arraybolt3> Box itself installs on a host just fine.
+[21:11] <jwash> it never affects me, i use the binary
+[21:34] <UndrWater_> new to ubuntu server: when upgrading php, is there an automated way to update modified php files, such as .ini and www?
+[21:35] <leftyfb> ansible
+[21:35] <pragmaticenigma> UndrWater_: Explain upgrading php? Like from a system update using apt?
+[21:37] <UndrWater_> pragmaticenigma: moving from php8.1 to php8.2 for example
+[21:37] <UndrWater_> perhaps migrating was a more accurate term
+[21:38] <pragmaticenigma> UndrWater_: it might be, as upgrade would be something handled by the package manager, which would take care of config files for you, or alert you to changes made from the package copy compared to your local copy
+[21:38] <leftyfb> UndrWater_: not as part of the package upgrade/install. It would be done after the package upgraded/installed.
+[21:39] <mtc> having trouble with my login after an upgrade... I get a black screen with a cursor instead of a login screen... I tried to boot to an old kernel with grub, but still getting the same problem... I think it is graphical driver problem.. I am using the open source amd drivers... how can I troubleshoot or reinstall them?
+[22:33] <bray90820> Why do some apps in ubuntu 23.10 have a bigger mouse curser than the rest of the OS
+[22:33] <bray90820> https://imgur.com/a/mtqwLsl
+=== JoeBk is now known as Guest9897
+=== JoeBk_ is now known as JoeBk

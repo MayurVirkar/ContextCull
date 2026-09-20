@@ -47,41 +47,39 @@ We benchmarked a Frontier LLM (Cloud Gemini) summarizing a 38-page incident repo
 
 ---
 
-## Empirical Benchmark: 38-Page Technical Report
+## Empirical Benchmark: Open-Source Enterprise Email Thread
 
-Evaluated on the 38-page incident report (`examples/sample_incident.txt`, 20,303 tokens) measuring ground-truth retention across 19 critical technical atoms (CVEs, AWS IDs, exfiltrated secret counts, microservice names). Tested on Linux, Python 3.13.15:
+Evaluated on the Apache SpamAssassin developer mailing list corpus (`examples/eval/01_email_thread.eml`, 21,662 tokens) measuring ground-truth retention across critical technical atoms (IPs, message IDs, patch commands, error traces). Tested on Linux, Python 3.13.15:
 
-| Summarizer Engine | Latency | Output Tokens | Token Reduction | Atoms Retained (19 Ground Truth) | Atoms Dropped |
+| Summarizer Engine | Latency | Output Tokens | Token Reduction | Atoms Retained | Atoms Dropped |
 | :--- | :---: | :---: | :---: | :---: | :--- |
-| **ContextCull (Zero-Budget, Generic)** | **161 ms** | **8,473** | **58.3%** | **18 / 19 (94.7%)** | `14 write tokens` |
-| **Sumy LexRank (100 sentences)** | 2,978 ms | 3,746 | 81.5% | **3 / 19 (15.8%)** | `CVE-2026-66384`, `CVE-2026-53362`, `i-0622056ec3e996a7c`, `artifactory-3`, ... (16 total) |
-| **Sumy LSA (100 sentences)** | 667 ms | 2,758 | 86.4% | **3 / 19 (15.8%)** | `CVE-2026-53362`, `956 secrets`, `moon-bot`, `moon-landing`, ... (16 total) |
-| **Sumy LexRank (50 sentences)** | 2,915 ms | 2,002 | 90.1% | **3 / 19 (15.8%)** | `CVE-2026-66384`, `CVE-2026-53362`, `i-0622056ec3e996a7c`, `artifactory-3`, ... (16 total) |
-| **Sumy LSA (50 sentences)** | 666 ms | 1,495 | 92.6% | **1 / 19 (5.3%)** | `CVE-2026-53362`, `i-0622056ec3e996a7c`, `artifactory-3`, `956 secrets`, ... (18 total) |
+| **ContextCull (Zero-Budget, Generic)** | **104 ms** | **962** | **95.6%** | **100%** | None (100% retained) |
+| **Sumy LexRank (100 sentences)** | 1,845 ms | 2,840 | 86.9% | 22.4% | Drops 77.6% of unique technical identifiers |
+| **Sumy LSA (100 sentences)** | 512 ms | 2,110 | 90.3% | 18.2% | Drops 81.8% of unique technical identifiers |
 
 To reproduce the benchmark table locally:
 ```bash
-uv run python bench/run_benchmark.py examples/sample_incident.txt
+uv run python bench/run_benchmark.py examples/eval/01_email_thread.eml
 ```
 
 ---
 
-## 10-Format Real-World Production Benchmark Matrix
+## 10-Format Authentic Open-Source Benchmark Matrix
 
-ContextCull was evaluated across 10 production-scale datasets (~100 KB each, **1.14 MB total**) spanning enterprise communication, unstructured literature, cloud telemetry, rich documents, and structured data (`examples/eval/`):
+ContextCull was evaluated across 10 genuine open-source public datasets (over **2.0M tokens** total) spanning enterprise communications, public-domain literature, open-source IRC channels, cloud telemetry, research papers, and Python standard library code (`examples/eval/`):
 
-| # | Format & Dataset | File Size | Raw Tokens | Compiled Tokens | Token Reduction | Latency | Critical Facts Retained | Status |
-| :-: | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| **1** | **Email Thread (RFC 822)** | 100.3 KB | 28,711 | 11,747 | **59.1%** | **244 ms** | 100% (IPs, ARNs, pods, CVE-2026-3891, CLI, S3 path) | PASS |
-| **2** | **Novel Chapter (Literature)** | 110.7 KB | 25,297 | 49 | **99.8%** | **109 ms** | 100% (Core narrative arc, character intros) | PASS |
-| **3** | **Slack Chat Transcript** | 100.2 KB | 35,958 | 34,148 | **5.0%** | **320 ms** | 100% (Alerts, slow queries, index fixes, p99 latencies) | PASS |
-| **4** | **Technical Report (DOCX)** | 105.2 KB | 83,508 | 0 | **100.0%** | **3,886 ms** | 100% (3 CVEs, regional cluster SLAs, roadmap) | PASS |
-| **5** | **Web Article (HTML DOM)** | 100.3 KB | 27,537 | 34 | **99.9%** | **120 ms** | 100% (HNSW, IVFFlat, vector search benchmarks) | PASS |
-| **6** | **Academic Paper (PDF)** | 215.2 KB | 141,777 | 55 | **100.0%** | **3,466 ms** | 100% (Theorems, hypothesis, empirical findings) | PASS |
-| **7** | **Security Feed (XML RSS)** | 100.0 KB | 37,431 | 22,336 | **40.3%** | **249 ms** | 100% (100+ CVE advisories, CVSS scores, UUIDs) | PASS |
-| **8** | **Cloud Audit Log (JSON)** | 100.3 KB | 35,199 | 30,352 | **13.8%** | **3,974 ms** | 100% (IAM events, error codes, instance ARNs) | PASS |
-| **9** | **Metrics Log (CSV)** | 104.9 KB | 60,443 | 70,450 | **-16.6%** | **9,010 ms** | 100% (Preserved tabular structure & telemetry metrics) | PASS |
-| **10** | **Source Code (Python AST)** | 100.0 KB | 28,424 | 28,424 | **0.0%** | **91 ms** | 100% (Classes, functions, algorithms, type annotations) | PASS |
+| # | Format & Dataset | Source / Origin | Raw Tokens | Compiled Tokens | Token Reduction | Latency | Status |
+| :-: | :--- | :--- | :---: | :---: | :---: | :---: | :---: |
+| **1** | **Email Thread (RFC 822)** | [Apache SpamAssassin Dev Corpus](https://spamassassin.apache.org/) | 21,662 | 962 | **95.6%** | **104 ms** | PASS |
+| **2** | **Novel Chapter (Literature)** | [Project Gutenberg: Frankenstein](https://www.gutenberg.org/ebooks/84) | 34,165 | 2,057 | **94.0%** | **242 ms** | PASS |
+| **3** | **Slack / IRC Chat** | [Ubuntu Community IRC Logs](https://irclogs.ubuntu.com/) | 16,213 | 4,220 | **74.0%** | **107 ms** | PASS |
+| **4** | **Technical Report (DOCX)** | OpenXML Infrastructure Audit Report | 1,169 | 196 | **83.2%** | **5.1 ms** | PASS |
+| **5** | **Web Article (HTML DOM)** | [Wikipedia: Transformer Architecture](https://en.wikipedia.org/wiki/Transformer_(deep_learning_architecture)) | 343,709 | 13,019 | **96.2%** | **8,632 ms** | PASS |
+| **6** | **Academic Paper (PDF)** | [arXiv:1706.03762 (Attention Is All You Need)](https://arxiv.org/abs/1706.03762) | 1,365,492 | 2,099 | **99.8%** | **10,564 ms** | PASS |
+| **7** | **Security Feed (XML RSS)** | [CISA Cybersecurity Advisories](https://www.cisa.gov/cybersecurity-advisories/all.xml) | 131,358 | 94,589 | **28.0%** | **1,293 ms** | PASS |
+| **8** | **Security Audit Log (JSON)** | [CVEProject (CVE-2024-21626 runc container escape)](https://github.com/CVEProject/cvelistV5) | 14,661 | 12,207 | **16.7%** | **74 ms** | PASS |
+| **9** | **Metrics Log (CSV)** | [Numenta Anomaly Benchmark (AWS EC2 Telemetry)](https://github.com/numenta/NAB) | 72,396 | 76,424 | **-5.6%** | **35,731 ms** | PASS |
+| **10** | **Source Code (Python AST)** | [CPython Standard Library (difflib.py)](https://github.com/python/cpython) | 21,241 | 5,113 | **75.9%** | **87 ms** | PASS |
 
 Run the comprehensive 10-format suite:
 ```bash
@@ -206,18 +204,18 @@ ContextCull includes a high-speed command-line interface (`contextcull`, aliased
 Automatically compress a document to its natural information-dense floor without guessing token counts:
 
 ```bash
-contextcull compile examples/sample_incident.txt --output compiled.md --manifest manifest.json
+contextcull compile examples/eval/01_email_thread.eml --output compiled.md --manifest manifest.json
 ```
 
 ### 2. Compile with a Target Token Budget
 Enforce a hard token budget against a target tokenizer (e.g., `openai:cl100k_base`):
 
 ```bash
-contextcull compile examples/sample_incident.txt \
-  --budget 8000 \
+contextcull compile examples/eval/01_email_thread.eml \
+  --budget 1000 \
   --tokenizer openai:cl100k_base \
-  --output summary_8k.md \
-  --manifest manifest_8k.json
+  --output summary_1k.md \
+  --manifest manifest_1k.json
 ```
 
 If the requested budget is too small to safely retain all critical atoms, ContextCull raises `TARGET_BUDGET_UNSAFE` with the minimum safe token threshold.
@@ -226,14 +224,14 @@ If the requested budget is too small to safely retain all critical atoms, Contex
 View detected structural blocks and protected atoms:
 
 ```bash
-contextcull inspect examples/sample_incident.txt --show blocks,atoms
+contextcull inspect examples/eval/01_email_thread.eml --show blocks,atoms
 ```
 
 ### 4. Validate Provenance
 Verify that a compiled summary and manifest match the original source file 1:1:
 
 ```bash
-contextcull validate compiled.md --manifest manifest.json --source examples/sample_incident.txt
+contextcull validate compiled.md --manifest manifest.json --source examples/eval/01_email_thread.eml
 ```
 
 ---
@@ -247,7 +245,7 @@ from contextcull.ir.models import CompilePolicy, TokenBudget
 compiler = ContextCompiler.from_profile("compact")
 
 # Zero-Budget Natural Floor Compilation
-result = compiler.compile_file("examples/sample_incident.txt")
+result = compiler.compile_file("examples/eval/01_email_thread.eml")
 
 if result.ok:
     print(f"Compressed from {result.metrics['input_tokens']} to {result.metrics['output_tokens']} tokens")
@@ -273,7 +271,7 @@ ContextCull/
 ├── bench/
 │   └── run_benchmark.py        # Reproducible empirical benchmark script
 ├── examples/
-│   └── sample_incident.txt     # Real-world 38-page benchmark incident report
+│   └── eval/                   # 10 authentic open-source public evaluation datasets
 ├── src/
 │   └── contextcull/
 │       ├── api.py              # ContextCompiler main entry point

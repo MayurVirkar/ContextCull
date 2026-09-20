@@ -25,15 +25,18 @@ DATASETS = [
     ("10_source_module.py", "Source Code (Python AST)"),
 ]
 
+
 def run_evals():
     tokenizer = get_tokenizer("openai:cl100k_base")
     compiler = ContextCompiler(mode=CompileMode.COMPACT)
     policy = CompilePolicy(mode=CompileMode.COMPACT)
-    
+
     results = []
-    
+
     print("=" * 80)
-    print(f"{'#':<3} | {'Dataset':<28} | {'Raw Tok':<8} | {'TEP Tok':<8} | {'Reduc %':<8} | {'Latency':<8} | {'Status'}")
+    print(
+        f"{'#':<3} | {'Dataset':<28} | {'Raw Tok':<8} | {'TEP Tok':<8} | {'Reduc %':<8} | {'Latency':<8} | {'Status'}"
+    )
     print("-" * 80)
 
     for idx, (filename, label) in enumerate(DATASETS, 1):
@@ -42,17 +45,17 @@ def run_evals():
             raw_bytes = f.read()
 
         raw_tokens = tokenizer.count_tokens(raw_bytes.decode("utf-8", errors="replace"))
-        
+
         t0 = time.perf_counter()
         res = compiler.compile(raw_bytes, policy=policy)
         t1 = time.perf_counter()
-        
+
         latency_ms = (t1 - t0) * 1000.0
         tep_tokens = tokenizer.count_tokens(res.text) if res.text else 0
         reduction_pct = (1.0 - (tep_tokens / raw_tokens)) * 100.0 if raw_tokens > 0 else 0.0
 
         atoms_total = len(res.manifest.get("source", {}).get("atoms", []))
-        
+
         # Save compiled output for subagent examination
         out_path = OUTPUT_DIR / f"{Path(filename).stem}_tep.txt"
         with open(out_path, "w", encoding="utf-8") as out_f:
@@ -73,12 +76,15 @@ def run_evals():
         }
         results.append(eval_record)
 
-        print(f"{idx:<3} | {label:<28} | {raw_tokens:<8} | {tep_tokens:<8} | {reduction_pct:>6.1f}% | {latency_ms:>6.1f}ms | {res.status}")
+        print(
+            f"{idx:<3} | {label:<28} | {raw_tokens:<8} | {tep_tokens:<8} | {reduction_pct:>6.1f}% | {latency_ms:>6.1f}ms | {res.status}"
+        )
 
     print("=" * 80)
-    
+
     with open(OUTPUT_DIR / "eval_results.json", "w", encoding="utf-8") as jf:
         json.dump(results, jf, indent=2)
+
 
 if __name__ == "__main__":
     run_evals()
