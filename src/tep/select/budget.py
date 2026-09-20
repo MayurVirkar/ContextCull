@@ -44,6 +44,7 @@ def select_units_budget_free(
 
     Algorithm:
     1. Entity Coverage Floor: Guarantees 100% coverage of all detected critical entities and required atoms.
+       Uses greedy submodular set-cover to select the minimal set of units covering all distinct entities.
     2. Pareto Elbow Selection: Evaluates marginal information gain (new vocabulary entropy + PageRank centrality)
        and stops when marginal gain drops below the knee threshold (diminishing returns).
     3. Preserves source chronological order.
@@ -52,37 +53,33 @@ def select_units_budget_free(
         return []
 
     required_atom_ids = {a.atom_id for a in atoms if a.required}
-
-    # Extract all entities across all units
     unit_entities = [extract_unit_entities(u.text) for u in units]
     doc_entities: set[str] = set()
     for ue in unit_entities:
         doc_entities.update(ue)
 
-    # 1. Mandatory units: Any unit with a required atom or critical entity
+    # 1. Mandatory units: Required atoms and test failures
     mandatory_indices: set[int] = set()
     covered_entities: set[str] = set()
-    covered_required_atoms: set[str] = set()
 
     for i, u in enumerate(units):
-        has_required_atom = any(aid in required_atom_ids for aid in u.atom_ids)
-        has_critical_entity = bool(unit_entities[i])
-        if has_required_atom or has_critical_entity:
+        has_required = any(aid in required_atom_ids for aid in u.atom_ids)
+        is_failure = policy.preserve_failures and "test_failure" in u.block_id
+        if has_required or is_failure:
             mandatory_indices.add(i)
             covered_entities.update(unit_entities[i])
-            covered_required_atoms.update(aid for aid in u.atom_ids if aid in required_atom_ids)
 
-    # Submodular greedy selection for any remaining required atoms/entities
+    # Greedy submodular set-cover for remaining critical entities
     uncovered_entities = doc_entities - covered_entities
-    uncovered_atoms = required_atom_ids - covered_required_atoms
+    candidates = [i for i in range(len(units)) if i not in mandatory_indices]
 
-    while uncovered_entities or uncovered_atoms:
+    while uncovered_entities:
         best_idx = -1
         best_gain = 0
-        for i, u in enumerate(units):
+        for i in candidates:
             if i in mandatory_indices:
                 continue
-            gain = len(unit_entities[i] & uncovered_entities) + len(set(u.atom_ids) & uncovered_atoms)
+            gain = len(unit_entities[i] & uncovered_entities)
             if gain > best_gain:
                 best_gain = gain
                 best_idx = i
@@ -90,7 +87,6 @@ def select_units_budget_free(
         if best_idx >= 0 and best_gain > 0:
             mandatory_indices.add(best_idx)
             uncovered_entities -= unit_entities[best_idx]
-            uncovered_atoms -= set(units[best_idx].atom_ids)
         else:
             break
 
@@ -99,19 +95,15 @@ def select_units_budget_free(
     if len(scores_arr) < len(units):
         scores_arr = np.ones(len(units))
 
-    # Token-level vocabulary set already covered by mandatory units
     selected_indices = set(mandatory_indices)
     covered_vocab: Counter[str] = Counter()
     for idx in selected_indices:
         words = re.findall(r"\b\w{3,}\b", units[idx].text.lower())
         covered_vocab.update(words)
 
-    # Candidate pool for narrative expansion
     remaining_indices = [i for i in range(len(units)) if i not in selected_indices]
-    # Sort remaining candidates by PageRank centrality score descending
     remaining_indices.sort(key=lambda i: scores_arr[i], reverse=True)
 
-    # Marginal entropy threshold: stop when new tokens offer minimal new vocabulary
     elbow_threshold = 0.08  # Knee threshold for diminishing marginal returns
 
     for idx in remaining_indices:
@@ -120,8 +112,6 @@ def select_units_budget_free(
             continue
         new_words = words - set(covered_vocab.keys())
         marginal_gain = len(new_words) / len(words)
-
-        # Weight marginal gain by centrality score
         marginal_value = marginal_gain * (0.5 + 0.5 * float(scores_arr[idx]))
 
         if marginal_value >= elbow_threshold:
@@ -129,8 +119,7 @@ def select_units_budget_free(
             covered_vocab.update(words)
 
     # 3. Restore source chronological order
-    result = [units[i] for i in sorted(selected_indices)]
-    return result
+    return [units[i] for i in sorted(selected_indices)]
 
 
 def select_units(
@@ -164,10 +153,12 @@ def select_units_constrained(
     required_atom_ids = {a.atom_id for a in atoms if a.required}
     unit_entities = [extract_unit_entities(u.text) for u in units]
 
-    # Mandatory units for required atoms and critical entities
+    # Mandatory units: required atoms and test failures (if policy.preserve_failures)
     mandatory_indices: set[int] = set()
     for i, u in enumerate(units):
-        if any(aid in required_atom_ids for aid in u.atom_ids) or unit_entities[i]:
+        has_required = any(aid in required_atom_ids for aid in u.atom_ids)
+        is_failure = policy.preserve_failures and "test_failure" in u.block_id
+        if has_required or is_failure:
             mandatory_indices.add(i)
 
     # Calculate token cost of mandatory units
@@ -176,16 +167,50 @@ def select_units_constrained(
     if budget.tokens is not None and mandatory_tokens > budget.tokens and budget.hard_budget:
         missing_atoms = [a.surface for a in atoms if a.required]
         raise BudgetUnsafeError(
-                requested_tokens=budget.tokens,
-                minimum_safe_tokens=mandatory_tokens,
-                missing_atoms=missing_atoms,
-                mandatory_unit_ids=[units[i].unit_id for i in mandatory_indices],
-            )
+            requested_tokens=budget.tokens,
+            minimum_safe_tokens=mandatory_tokens,
+            missing_atoms=missing_atoms,
+            mandatory_unit_ids=[units[i].unit_id for i in mandatory_indices],
+        )
 
     selected_indices = set(mandatory_indices)
     current_tokens = mandatory_tokens
 
     scores_arr = np.array(scores) if scores is not None else np.ones(len(units))
+
+    # Priority 1: Greedy submodular cover for critical entities within remaining budget
+    doc_entities: set[str] = set()
+    for ue in unit_entities:
+        doc_entities.update(ue)
+    covered_entities: set[str] = set()
+    for idx in selected_indices:
+        covered_entities.update(unit_entities[idx])
+
+    uncovered_entities = doc_entities - covered_entities
+    candidates = [i for i in range(len(units)) if i not in selected_indices]
+
+    while uncovered_entities:
+        best_idx = -1
+        best_gain = 0
+        for i in candidates:
+            if i in selected_indices:
+                continue
+            cost = tokenizer.count_tokens(units[i].text)
+            if budget.tokens is not None and current_tokens + cost > budget.tokens:
+                continue
+            gain = len(unit_entities[i] & uncovered_entities)
+            if gain > best_gain:
+                best_gain = gain
+                best_idx = i
+
+        if best_idx >= 0 and best_gain > 0:
+            selected_indices.add(best_idx)
+            current_tokens += tokenizer.count_tokens(units[best_idx].text)
+            uncovered_entities -= unit_entities[best_idx]
+        else:
+            break
+
+    # Priority 2: Centrality-ranked narrative expansion
     remaining = [i for i in range(len(units)) if i not in selected_indices]
     remaining.sort(key=lambda i: scores_arr[i], reverse=True)
 

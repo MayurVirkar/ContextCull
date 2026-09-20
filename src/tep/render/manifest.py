@@ -72,7 +72,10 @@ def render_and_manifest(
     # Required atoms (hard invariants: CVEs, IPs, UUIDs, SHAs, user required terms)
     required_atoms = [a for a in atoms if a.required]
     retained_required = [
-        a for a in required_atoms if a.surface in rendered_text
+        a
+        for a in required_atoms
+        if a.surface in rendered_text
+        or (a.kind == "quantity" and a.canonical and a.canonical in rendered_text.lower())
     ]
     required_coverage = (
         len(retained_required) / max(1, len(required_atoms)) if required_atoms else 1.0
