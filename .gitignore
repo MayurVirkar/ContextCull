@@ -1,0 +1,38 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+build/
+dist/
+wheels/
+*.egg-info/
+
+# Virtual environments
+.venv/
+venv/
+ENV/
+
+# Testing & Coverage
+.coverage
+htmlcov/
+.pytest_cache/
+.hypothesis/
+
+# Linting & Type Checking
+.ruff_cache/
+.pyright/
+
+# IDE & Editor metadata
+.serena/
+.vscode/
+.idea/
+
+# Local Scratch & Temporary files
+scratch/
+*.log
+nltk_data/

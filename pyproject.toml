@@ -1,0 +1,58 @@
+[project]
+name = "tep"
+version = "0.1.0"
+description = "Deterministic Token-Efficiency Protocol (TEP) context compiler"
+readme = "README.md"
+authors = [
+    { name = "Mayur Virkar", email = "mayurvirkar@gmail.com" }
+]
+requires-python = ">=3.13"
+dependencies = [
+    "ahocorasick-rs>=1.0.3",
+    "markdown-it-py>=4.2.0",
+    "numpy>=2.5.3",
+    "orjson>=3.12.0",
+    "pydantic>=2.13.5",
+    "pypdf>=6.19.0",
+    "regex>=2026.9.10",
+    "scikit-learn>=1.9.1",
+    "scipy>=1.18.1",
+    "sparse-dot-topn>=1.2.0",
+    "syntok>=1.4.4",
+    "tiktoken>=0.14.0",
+    "typer-slim>=0.24.0",
+]
+
+[project.scripts]
+tep = "tep.cli:main"
+
+[build-system]
+requires = ["uv_build>=0.12.13,<0.13.0"]
+build-backend = "uv_build"
+
+[dependency-groups]
+dev = [
+    "coverage>=7.16.1",
+    "hypothesis>=6.168.0",
+    "pyright>=1.1.414",
+    "pytest>=9.1.1",
+    "ruff>=0.16.8",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py313"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "SIM"]
+ignore = [
+    "B008",  # Typer argument defaults
+    "E501",  # Line length
+    "B905",  # zip strict parameter
+]
+
+[tool.pyright]
+include = ["src", "tests"]
+exclude = [".venv"]
+pythonVersion = "3.13"
+reportMissingTypeStubs = false
