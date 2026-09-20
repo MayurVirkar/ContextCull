@@ -45,8 +45,10 @@ def select_units_budget_free(
     Algorithm:
     1. Entity Coverage Floor: Guarantees 100% coverage of all detected critical entities and required atoms.
        Uses greedy submodular set-cover to select the minimal set of units covering all distinct entities.
-    2. Pareto Elbow Selection: Evaluates marginal information gain (new vocabulary entropy + PageRank centrality)
-       and stops when marginal gain drops below the knee threshold (diminishing returns).
+    2. Dynamic Pareto Knee (Kneedle Algorithm):
+       - Traces the cumulative information gain curve versus cumulative token expenditure.
+       - Automatically computes the optimal dynamic token budget at the point of maximum curvature (knee),
+         maximizing information density while eliminating redundant narrative scaffolding.
     3. Preserves source chronological order.
     """
     if not units:
@@ -90,33 +92,87 @@ def select_units_budget_free(
         else:
             break
 
-    # 2. Pareto Elbow Selection for narrative & structural context
+    # 2. Dynamic Pareto Knee Selection for narrative context
     scores_arr = np.array(scores) if scores is not None else np.ones(len(units))
     if len(scores_arr) < len(units):
         scores_arr = np.ones(len(units))
 
-    selected_indices = set(mandatory_indices)
-    covered_vocab: Counter[str] = Counter()
-    for idx in selected_indices:
+    # Tokenizer for token cost estimation
+    from tep.tokenize.profile import get_tokenizer
+
+    tok = tokenizer or get_tokenizer("openai:cl100k_base")
+
+    # Vocabulary covered by mandatory base units
+    covered_vocab: set[str] = set()
+    for idx in mandatory_indices:
         words = re.findall(r"\b\w{3,}\b", units[idx].text.lower())
         covered_vocab.update(words)
 
-    remaining_indices = [i for i in range(len(units)) if i not in selected_indices]
-    remaining_indices.sort(key=lambda i: scores_arr[i], reverse=True)
+    remaining_pool = [i for i in range(len(units)) if i not in mandatory_indices]
+    if not remaining_pool:
+        return [units[i] for i in sorted(mandatory_indices)]
 
-    elbow_threshold = 0.08  # Knee threshold for diminishing marginal returns
+    # Compute initial information density for all remaining candidates
+    unit_words = [set(re.findall(r"\b\w{3,}\b", units[i].text.lower())) for i in range(len(units))]
+    unit_costs = [max(1, tok.count_tokens(units[i].text)) for i in range(len(units))]
 
-    for idx in remaining_indices:
-        words = set(re.findall(r"\b\w{3,}\b", units[idx].text.lower()))
-        if not words:
-            continue
-        new_words = words - set(covered_vocab.keys())
-        marginal_gain = len(new_words) / len(words)
-        marginal_value = marginal_gain * (0.5 + 0.5 * float(scores_arr[idx]))
+    # Greedily build the Pareto curve by information density
+    chosen_order: list[int] = []
+    cum_tokens_list: list[int] = [sum(unit_costs[i] for i in mandatory_indices)]
+    cum_gain_list: list[float] = [float(len(covered_vocab))]
 
-        if marginal_value >= elbow_threshold:
-            selected_indices.add(idx)
-            covered_vocab.update(words)
+    curr_vocab = set(covered_vocab)
+    curr_tokens = cum_tokens_list[0]
+    pool = set(remaining_pool)
+
+    # Greedily select next candidate by marginal efficiency
+    while pool:
+        best_i = -1
+        best_density = 0.0
+        best_new_words: set[str] = set()
+
+        for i in pool:
+            new_words = unit_words[i] - curr_vocab
+            if not new_words:
+                continue
+            dens = (len(new_words) * (0.5 + 0.5 * float(scores_arr[i]))) / unit_costs[i]
+            if dens > best_density:
+                best_density = dens
+                best_i = i
+                best_new_words = new_words
+
+        if best_i >= 0 and best_density > 0.005:
+            pool.remove(best_i)
+            chosen_order.append(best_i)
+            curr_tokens += unit_costs[best_i]
+            curr_vocab.update(best_new_words)
+            cum_tokens_list.append(curr_tokens)
+            cum_gain_list.append(float(len(curr_vocab)))
+        else:
+            break
+
+    if len(chosen_order) <= 2:
+        selected_indices = set(mandatory_indices) | set(chosen_order)
+        return [units[i] for i in sorted(selected_indices)]
+
+    # Calculate optimal knee using Kneedle algorithm (maximum distance from chord)
+    x = np.array(cum_tokens_list, dtype=float)
+    y = np.array(cum_gain_list, dtype=float)
+
+    x_range = x[-1] - x[0]
+    y_range = y[-1] - y[0]
+
+    if x_range > 0 and y_range > 0:
+        x_norm = (x - x[0]) / x_range
+        y_norm = (y - y[0]) / y_range
+        # Perpendicular distance from normalized chord y = x
+        distances = y_norm - x_norm
+        knee_idx = int(np.argmax(distances))
+        selected_narrative = chosen_order[:knee_idx]
+    else:
+        selected_narrative = chosen_order
+
+    selected_indices = set(mandatory_indices) | set(selected_narrative)
 
     # 3. Restore source chronological order
     return [units[i] for i in sorted(selected_indices)]
