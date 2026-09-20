@@ -1,7 +1,7 @@
 [project]
-name = "tep"
+name = "contextforge"
 version = "0.1.0"
-description = "Deterministic Token-Efficiency Protocol (TEP) context compiler"
+description = "ContextForge: Deterministic Context Compiler & Pre-Processor for Frontier LLMs"
 readme = "README.md"
 authors = [
     { name = "Mayur Virkar", email = "mayurvirkar@gmail.com" }
@@ -22,7 +22,14 @@ dependencies = [
 ]
 
 [project.scripts]
+contextforge = "tep.cli:main"
+forge = "tep.cli:main"
 tep = "tep.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/MayurVirkar/ContextForge"
+Repository = "https://github.com/MayurVirkar/ContextForge.git"
+Issues = "https://github.com/MayurVirkar/ContextForge/issues"
 
 [build-system]
 requires = ["uv_build>=0.12.13,<0.13.0"]

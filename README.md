@@ -1,4 +1,4 @@
-# TEP v2: Token-Efficiency Protocol
+# ContextForge
 
 [![Python 3.13+](https://img.shields.io/badge/python-3.13+-blue.svg)](https://www.python.org/downloads/)
 [![Deterministic](https://img.shields.io/badge/execution-100%25%20deterministic-green.svg)]()
@@ -13,21 +13,21 @@
 
 ## ⚡ TL;DR (In Plain English)
 
-- **What is it?** TEP v2 is a fast, free, open-source pre-processor that sits between your raw data and your AI model (Google Gemini, Claude, OpenAI GPT).
+- **What is it?** **ContextForge** (powered by the Token-Efficiency Protocol) is a fast, free, open-source pre-processor that sits between your raw data and your AI model (Google Gemini, Claude, OpenAI GPT).
 - **What does it do?** It cuts document size by **50% to 85%** in under **35 milliseconds** by stripping away conversational fluff, repetitive email quote chains, and boilerplate, while **guaranteeing 100% preservation** of vital technical facts: CVE numbers, IP addresses, AWS ARNs, pod names, error codes, timestamps, and CLI commands.
 - **Why not just feed everything to the LLM?**
-  1. **Cost & Speed:** Feeding 20,000–100,000 tokens directly into frontier LLMs is slow and expensive. TEP reduces input tokens by up to 85%, cutting API costs and speeding up Time-To-First-Token (TTFT) by nearly **4×**.
-  2. **"Lost in the Middle":** When LLMs read giant documents, they often forget or hallucinate details buried in the middle. TEP extracts and surfaces every critical fact to the active context window.
-  3. **Classic summarizers fail:** Tools like LexRank or LSA look for "popular words." In technical reports, a critical security flaw or database IP only appears once, so classic tools drop up to 95% of them. TEP protects every unique technical entity by design.
+  1. **Cost & Speed:** Feeding 20,000–100,000 tokens directly into frontier LLMs is slow and expensive. ContextForge reduces input tokens by up to 85%, cutting API costs and speeding up Time-To-First-Token (TTFT) by nearly **4×**.
+  2. **"Lost in the Middle":** When LLMs read giant documents, they often forget or hallucinate details buried in the middle. ContextForge extracts and surfaces every critical fact to the active context window.
+  3. **Classic summarizers fail:** Tools like LexRank or LSA look for "popular words." In technical reports, a critical security flaw or database IP only appears once, so classic tools drop up to 95% of them. ContextForge protects every unique technical entity by design.
 - **How does it run?** 100% locally on your machine in standard Python 3.13. Zero GPUs, zero API keys, zero cloud dependencies, and zero compute costs.
 
 ---
 
-## 🥊 Head-to-Head: Direct LLM vs. TEP v2 + LLM
+## 🥊 Head-to-Head: Direct LLM vs. ContextForge + LLM
 
 We benchmarked a Frontier LLM (Cloud Gemini) summarizing a 38-page incident report and a complex multi-turn security email thread under two conditions:
 
-| Dimension | Direct LLM (Raw Input) | TEP v2 + LLM (Pre-processed) | The Difference / Benefit |
+| Dimension | Direct LLM (Raw Input) | ContextForge + LLM (Pre-processed) | The Difference / Benefit |
 | :--- | :--- | :--- | :--- |
 | **Input Tokens Fed to LLM** | 20,303 tokens (Report)<br>941 tokens (Email) | 8,473 tokens (Report)<br>429 tokens (Email) | **54% to 83% fewer tokens** sent to the LLM |
 | **LLM Response Latency (TTFT)** | ~3.5 seconds (quadratic attention over 20k+ tokens) | **<0.9 seconds** (sub-linear attention over clean context) | **3.8× faster** response time |
@@ -182,12 +182,12 @@ The recommended architecture pairs TEP v2 as a deterministic pre-processor with 
 
 ## Installation
 
-TEP v2 requires Python 3.13+. Install using `uv` (recommended) or `pip`:
+ContextForge requires Python 3.13+. Install using `uv` (recommended) or `pip`:
 
 ```bash
 # Clone the repository
-git clone https://github.com/MayurVirkar/TEPv2.git
-cd TEPv2
+git clone https://github.com/MayurVirkar/ContextForge.git
+cd ContextForge
 
 # Install dependencies using uv
 uv sync
@@ -200,40 +200,40 @@ pip install -e .
 
 ## CLI Usage
 
-TEP includes a command-line interface powered by Typer:
+ContextForge includes a high-speed command-line interface (`contextforge`, aliased to `forge` and `tep`):
 
 ### 1. Compile in Zero-Budget Mode (Natural Floor)
 Automatically compress a document to its natural information-dense floor without guessing token counts:
 
 ```bash
-tep compile examples/sample_incident.txt --output compiled.md --manifest manifest.json
+contextforge compile examples/sample_incident.txt --output compiled.md --manifest manifest.json
 ```
 
 ### 2. Compile with a Target Token Budget
 Enforce a hard token budget against a target tokenizer (e.g., `openai:cl100k_base`):
 
 ```bash
-tep compile examples/sample_incident.txt \
+contextforge compile examples/sample_incident.txt \
   --budget 8000 \
   --tokenizer openai:cl100k_base \
   --output summary_8k.md \
   --manifest manifest_8k.json
 ```
 
-If the requested budget is too small to safely retain all critical atoms, TEP raises `TARGET_BUDGET_UNSAFE` with the minimum safe token threshold.
+If the requested budget is too small to safely retain all critical atoms, ContextForge raises `TARGET_BUDGET_UNSAFE` with the minimum safe token threshold.
 
 ### 3. Inspect Blocks and Atoms
 View detected structural blocks and protected atoms:
 
 ```bash
-tep inspect examples/sample_incident.txt --show blocks,atoms
+contextforge inspect examples/sample_incident.txt --show blocks,atoms
 ```
 
 ### 4. Validate Provenance
 Verify that a compiled summary and manifest match the original source file 1:1:
 
 ```bash
-tep validate compiled.md --manifest manifest.json --source examples/sample_incident.txt
+contextforge validate compiled.md --manifest manifest.json --source examples/sample_incident.txt
 ```
 
 ---
@@ -265,7 +265,7 @@ if result.ok:
 ## Project Structure
 
 ```
-TEPv2/
+ContextForge/
 ├── pyproject.toml              # Build configuration & dependencies
 ├── README.md                   # Project documentation & benchmarks
 ├── LICENSE                     # MIT License
