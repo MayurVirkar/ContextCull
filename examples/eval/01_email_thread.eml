@@ -1,72 +1,2565 @@
-From: sarah.chen@acme-infra.internal
-To: incident-response@acme-infra.internal, devops-core@acme-infra.internal
-Subject: [P0 Incident] S3 Token Leak and Rogue Container in Cluster us-east-prod-1
-Date: Mon, 14 Jul 2026 08:15:22 +0000
-Message-ID: <inc-001@acme-infra.internal>
+From: Bob Smith <bob.smith@sre.corp>
+To: Charlie Davis <charlie.davis@dev.corp>
+Subject: Re: Update on Pod Failures and Memory Leaks [Ref-1]
+Date: Tue, 14 Jul 2026 08:10:00 +0000
+Message-ID: <20260714.1@security.corp>
+Content-Type: text/plain; charset="UTF-8"
 
-Team,
-At 08:12 UTC, GuardDuty flagged unauthorized AWS STS AssumeRole calls originating from external IP 198.51.100.44 against role arn:aws:iam::123456789012:role/DataPipelineWorker.
-The attacker appears to have harvested AWS secret access keys from a publicly exposed environment variable in staging.
-Immediate action items:
-1. Revoke active STS sessions for DataPipelineWorker.
-2. Isolate pod data-worker-7b9f8-x9z2q in namespace processing.
-3. Review CloudTrail logs for S3 PutObject or GetObject calls.
+Checking the logs now. `kubectl logs -n production deployment/auth-gateway --tail=100` shows `Segmentation fault` followed by panic in Go runtime.
 
-Sarah Chen
-Principal Reliability Engineer, Acme Corp
+Detailed Diagnostic Dump #1:
+- Node: ip-10-0-1-22.ec2.internal
+- Heap Usage: 65GB
+- Active Threads: 255
+------------------------------------------------------------------------
 
---------------------------------------------------------------------------------
-From: marcus.vance@acme-infra.internal
-To: sarah.chen@acme-infra.internal, incident-response@acme-infra.internal
-Subject: Re: [P0 Incident] S3 Token Leak and Rogue Container in Cluster us-east-prod-1
-Date: Mon, 14 Jul 2026 08:24:10 +0000
-In-Reply-To: <inc-001@acme-infra.internal>
+From: Charlie Davis <charlie.davis@dev.corp>
+To: Diana Prince <diana.prince@ciso.corp>
+Subject: Re: CVE-2026-3891 Exploited in Ingress Gateway? [Ref-2]
+Date: Tue, 14 Jul 2026 08:20:00 +0000
+Message-ID: <20260714.2@security.corp>
+Content-Type: text/plain; charset="UTF-8"
 
-> 1. Revoke active STS sessions for DataPipelineWorker.
-> 2. Isolate pod data-worker-7b9f8-x9z2q in namespace processing.
+Wait, look at this IP: 198.51.100.45. It's hammering the `/api/v1/auth/token` endpoint with anomalous payloads containing nested JSON structures.
 
-Confirmed: Active STS session revocation executed at 08:21 UTC via AWS CLI:
-`aws iam put-role-policy --role-name DataPipelineWorker --policy-name RevokeOlderSessions --policy-document file://revoke.json`
-All credentials issued prior to 2026-07-14T08:20:00Z are now invalidated.
+Detailed Diagnostic Dump #2:
+- Node: ip-10-0-2-22.ec2.internal
+- Heap Usage: 66GB
+- Active Threads: 260
+------------------------------------------------------------------------
 
-Pod data-worker-7b9f8-x9z2q has been cordoned and network policy applied to deny all ingress/egress.
-Memory dump in progress: 731 MB captured to s3://acme-forensics-vault/inc-2026-07-14/mem.raw.
+From: Diana Prince <diana.prince@ciso.corp>
+To: Eve Polastri <eve.polastri@infra.corp>
+Subject: Re: Forensic Analysis of AWS IAM Role Assumption [Ref-3]
+Date: Tue, 14 Jul 2026 08:30:00 +0000
+Message-ID: <20260714.3@security.corp>
+Content-Type: text/plain; charset="UTF-8"
 
-Marcus
+Could this be related to the newly disclosed CVE-2026-3891? The vulnerability affects Envoy and custom ingress proxies handling malformed HTTP/2 headers.
 
---------------------------------------------------------------------------------
-From: elena.rostova@acme-infra.internal
-To: incident-response@acme-infra.internal
-Subject: Re: [P0 Incident] S3 Token Leak and Rogue Container in Cluster us-east-prod-1
-Date: Mon, 14 Jul 2026 08:42:33 +0000
-In-Reply-To: <inc-001@acme-infra.internal>
+Detailed Diagnostic Dump #3:
+- Node: ip-10-0-3-22.ec2.internal
+- Heap Usage: 67GB
+- Active Threads: 265
+------------------------------------------------------------------------
 
-Forensics initial findings:
-The attacker gained access through CVE-2026-44192 in the legacy PDF generation microservice running on port 8080.
-Once inside, they executed a lateral movement script to scrape Kubernetes secrets from `/var/run/secrets/kubernetes.io/serviceaccount/token`.
-They attempted to query the internal Vault instance at 10.100.0.15:8200, but Vault rejected the token due to CIDR restriction policy.
-However, 14 write tokens for internal Artifactory repository `artifactory-build-cache` were discovered in `/tmp/.cache`.
+From: Eve Polastri <eve.polastri@infra.corp>
+To: Alice Vance <alice.vance@security.corp>
+Subject: Re: Patch Deployment and Rollback Plan [Ref-4]
+Date: Tue, 14 Jul 2026 08:40:00 +0000
+Message-ID: <20260714.4@security.corp>
+Content-Type: text/plain; charset="UTF-8"
 
-Actions underway:
-- Rotate all Artifactory API keys across Organization 1.
-- Patch PDF worker deployment with base image v2.4.1 containing the fix for CVE-2026-44192.
-- Enforce mTLS on all internal inter-service communication by 12:00 UTC.
+Checking AWS CloudTrail... ARN `arn:aws:iam::123456789012:role/ProductionS3Accessor` was assumed from an unusual external IP at 07:42 UTC.
 
-Elena Rostova
-Head of Security Operations
+Detailed Diagnostic Dump #4:
+- Node: ip-10-0-4-22.ec2.internal
+- Heap Usage: 68GB
+- Active Threads: 270
+------------------------------------------------------------------------
 
---------------------------------------------------------------------------------
-From: david.kim@acme-infra.internal
-To: incident-response@acme-infra.internal
-Subject: Re: [P0 Incident] S3 Token Leak and Rogue Container in Cluster us-east-prod-1
-Date: Mon, 14 Jul 2026 09:10:05 +0000
+From: Alice Vance <alice.vance@security.corp>
+To: Bob Smith <bob.smith@sre.corp>
+Subject: Re: CRITICAL: Production Outage in US-East-1 Cluster [Ref-5]
+Date: Tue, 14 Jul 2026 08:50:00 +0000
+Message-ID: <20260714.5@security.corp>
+Content-Type: text/plain; charset="UTF-8"
 
-Update on customer impact and blast radius:
-- Customer database clusters (Aurora PostgreSQL cluster-id `aurora-prod-analytics-01`) show ZERO unauthorized queries.
-- CloudTrail confirms no customer PII was accessed or downloaded.
-- Exfiltration was strictly confined to internal build artifacts and caching metadata.
-- Total downtime: 0 minutes for external customer APIs.
-- Next briefing scheduled for 10:00 UTC with VP Engineering.
+We are seeing high error rates (502/504) across all ingress gateways in us-east-1. Initial logs point to pod crashloops in deployment/auth-gateway.
 
-David Kim
-Director of Infrastructure
+Detailed Diagnostic Dump #5:
+- Node: ip-10-0-5-22.ec2.internal
+- Heap Usage: 69GB
+- Active Threads: 275
+------------------------------------------------------------------------
+
+From: Bob Smith <bob.smith@sre.corp>
+To: Charlie Davis <charlie.davis@dev.corp>
+Subject: Re: Update on Pod Failures and Memory Leaks [Ref-6]
+Date: Tue, 14 Jul 2026 09:00:00 +0000
+Message-ID: <20260714.6@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+Checking the logs now. `kubectl logs -n production deployment/auth-gateway --tail=100` shows `Segmentation fault` followed by panic in Go runtime.
+
+Detailed Diagnostic Dump #6:
+- Node: ip-10-0-6-22.ec2.internal
+- Heap Usage: 70GB
+- Active Threads: 280
+------------------------------------------------------------------------
+
+From: Charlie Davis <charlie.davis@dev.corp>
+To: Diana Prince <diana.prince@ciso.corp>
+Subject: Re: CVE-2026-3891 Exploited in Ingress Gateway? [Ref-7]
+Date: Tue, 14 Jul 2026 09:10:00 +0000
+Message-ID: <20260714.7@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+Wait, look at this IP: 198.51.100.45. It's hammering the `/api/v1/auth/token` endpoint with anomalous payloads containing nested JSON structures.
+
+Detailed Diagnostic Dump #7:
+- Node: ip-10-0-7-22.ec2.internal
+- Heap Usage: 71GB
+- Active Threads: 285
+------------------------------------------------------------------------
+
+From: Diana Prince <diana.prince@ciso.corp>
+To: Eve Polastri <eve.polastri@infra.corp>
+Subject: Re: Forensic Analysis of AWS IAM Role Assumption [Ref-8]
+Date: Tue, 14 Jul 2026 09:20:00 +0000
+Message-ID: <20260714.8@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+Could this be related to the newly disclosed CVE-2026-3891? The vulnerability affects Envoy and custom ingress proxies handling malformed HTTP/2 headers.
+
+Detailed Diagnostic Dump #8:
+- Node: ip-10-0-8-22.ec2.internal
+- Heap Usage: 72GB
+- Active Threads: 290
+------------------------------------------------------------------------
+
+From: Eve Polastri <eve.polastri@infra.corp>
+To: Alice Vance <alice.vance@security.corp>
+Subject: Re: Patch Deployment and Rollback Plan [Ref-9]
+Date: Tue, 14 Jul 2026 09:30:00 +0000
+Message-ID: <20260714.9@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+Checking AWS CloudTrail... ARN `arn:aws:iam::123456789012:role/ProductionS3Accessor` was assumed from an unusual external IP at 07:42 UTC.
+
+Detailed Diagnostic Dump #9:
+- Node: ip-10-0-9-22.ec2.internal
+- Heap Usage: 73GB
+- Active Threads: 295
+------------------------------------------------------------------------
+
+From: Alice Vance <alice.vance@security.corp>
+To: Bob Smith <bob.smith@sre.corp>
+Subject: Re: CRITICAL: Production Outage in US-East-1 Cluster [Ref-10]
+Date: Tue, 14 Jul 2026 09:40:00 +0000
+Message-ID: <20260714.10@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+We are seeing high error rates (502/504) across all ingress gateways in us-east-1. Initial logs point to pod crashloops in deployment/auth-gateway.
+
+Detailed Diagnostic Dump #10:
+- Node: ip-10-0-10-22.ec2.internal
+- Heap Usage: 74GB
+- Active Threads: 300
+------------------------------------------------------------------------
+
+From: Bob Smith <bob.smith@sre.corp>
+To: Charlie Davis <charlie.davis@dev.corp>
+Subject: Re: Update on Pod Failures and Memory Leaks [Ref-11]
+Date: Tue, 14 Jul 2026 09:50:00 +0000
+Message-ID: <20260714.11@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+Checking the logs now. `kubectl logs -n production deployment/auth-gateway --tail=100` shows `Segmentation fault` followed by panic in Go runtime.
+
+Detailed Diagnostic Dump #11:
+- Node: ip-10-0-11-22.ec2.internal
+- Heap Usage: 75GB
+- Active Threads: 305
+------------------------------------------------------------------------
+
+From: Charlie Davis <charlie.davis@dev.corp>
+To: Diana Prince <diana.prince@ciso.corp>
+Subject: Re: CVE-2026-3891 Exploited in Ingress Gateway? [Ref-12]
+Date: Tue, 14 Jul 2026 10:00:00 +0000
+Message-ID: <20260714.12@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+Wait, look at this IP: 198.51.100.45. It's hammering the `/api/v1/auth/token` endpoint with anomalous payloads containing nested JSON structures.
+
+Detailed Diagnostic Dump #12:
+- Node: ip-10-0-12-22.ec2.internal
+- Heap Usage: 76GB
+- Active Threads: 310
+------------------------------------------------------------------------
+
+From: Diana Prince <diana.prince@ciso.corp>
+To: Eve Polastri <eve.polastri@infra.corp>
+Subject: Re: Forensic Analysis of AWS IAM Role Assumption [Ref-13]
+Date: Tue, 14 Jul 2026 10:10:00 +0000
+Message-ID: <20260714.13@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+Could this be related to the newly disclosed CVE-2026-3891? The vulnerability affects Envoy and custom ingress proxies handling malformed HTTP/2 headers.
+
+Detailed Diagnostic Dump #13:
+- Node: ip-10-0-13-22.ec2.internal
+- Heap Usage: 77GB
+- Active Threads: 315
+------------------------------------------------------------------------
+
+From: Eve Polastri <eve.polastri@infra.corp>
+To: Alice Vance <alice.vance@security.corp>
+Subject: Re: Patch Deployment and Rollback Plan [Ref-14]
+Date: Tue, 14 Jul 2026 10:20:00 +0000
+Message-ID: <20260714.14@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+Checking AWS CloudTrail... ARN `arn:aws:iam::123456789012:role/ProductionS3Accessor` was assumed from an unusual external IP at 07:42 UTC.
+
+Detailed Diagnostic Dump #14:
+- Node: ip-10-0-14-22.ec2.internal
+- Heap Usage: 78GB
+- Active Threads: 320
+------------------------------------------------------------------------
+
+From: Alice Vance <alice.vance@security.corp>
+To: Bob Smith <bob.smith@sre.corp>
+Subject: Re: CRITICAL: Production Outage in US-East-1 Cluster [Ref-15]
+Date: Tue, 14 Jul 2026 10:30:00 +0000
+Message-ID: <20260714.15@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+We are seeing high error rates (502/504) across all ingress gateways in us-east-1. Initial logs point to pod crashloops in deployment/auth-gateway.
+
+Detailed Diagnostic Dump #15:
+- Node: ip-10-0-15-22.ec2.internal
+- Heap Usage: 79GB
+- Active Threads: 325
+------------------------------------------------------------------------
+
+From: Bob Smith <bob.smith@sre.corp>
+To: Charlie Davis <charlie.davis@dev.corp>
+Subject: Re: Update on Pod Failures and Memory Leaks [Ref-16]
+Date: Tue, 14 Jul 2026 10:40:00 +0000
+Message-ID: <20260714.16@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+Checking the logs now. `kubectl logs -n production deployment/auth-gateway --tail=100` shows `Segmentation fault` followed by panic in Go runtime.
+
+Detailed Diagnostic Dump #16:
+- Node: ip-10-0-16-22.ec2.internal
+- Heap Usage: 80GB
+- Active Threads: 330
+------------------------------------------------------------------------
+
+From: Charlie Davis <charlie.davis@dev.corp>
+To: Diana Prince <diana.prince@ciso.corp>
+Subject: Re: CVE-2026-3891 Exploited in Ingress Gateway? [Ref-17]
+Date: Tue, 14 Jul 2026 10:50:00 +0000
+Message-ID: <20260714.17@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+Wait, look at this IP: 198.51.100.45. It's hammering the `/api/v1/auth/token` endpoint with anomalous payloads containing nested JSON structures.
+
+Detailed Diagnostic Dump #17:
+- Node: ip-10-0-17-22.ec2.internal
+- Heap Usage: 81GB
+- Active Threads: 335
+------------------------------------------------------------------------
+
+From: Diana Prince <diana.prince@ciso.corp>
+To: Eve Polastri <eve.polastri@infra.corp>
+Subject: Re: Forensic Analysis of AWS IAM Role Assumption [Ref-18]
+Date: Tue, 14 Jul 2026 11:00:00 +0000
+Message-ID: <20260714.18@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+Could this be related to the newly disclosed CVE-2026-3891? The vulnerability affects Envoy and custom ingress proxies handling malformed HTTP/2 headers.
+
+Detailed Diagnostic Dump #18:
+- Node: ip-10-0-18-22.ec2.internal
+- Heap Usage: 82GB
+- Active Threads: 340
+------------------------------------------------------------------------
+
+From: Eve Polastri <eve.polastri@infra.corp>
+To: Alice Vance <alice.vance@security.corp>
+Subject: Re: Patch Deployment and Rollback Plan [Ref-19]
+Date: Tue, 14 Jul 2026 11:10:00 +0000
+Message-ID: <20260714.19@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+Checking AWS CloudTrail... ARN `arn:aws:iam::123456789012:role/ProductionS3Accessor` was assumed from an unusual external IP at 07:42 UTC.
+
+Detailed Diagnostic Dump #19:
+- Node: ip-10-0-19-22.ec2.internal
+- Heap Usage: 83GB
+- Active Threads: 345
+------------------------------------------------------------------------
+
+From: Alice Vance <alice.vance@security.corp>
+To: Bob Smith <bob.smith@sre.corp>
+Subject: Re: CRITICAL: Production Outage in US-East-1 Cluster [Ref-20]
+Date: Tue, 14 Jul 2026 11:20:00 +0000
+Message-ID: <20260714.20@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+We are seeing high error rates (502/504) across all ingress gateways in us-east-1. Initial logs point to pod crashloops in deployment/auth-gateway.
+
+Detailed Diagnostic Dump #20:
+- Node: ip-10-0-20-22.ec2.internal
+- Heap Usage: 84GB
+- Active Threads: 350
+------------------------------------------------------------------------
+
+From: Bob Smith <bob.smith@sre.corp>
+To: Charlie Davis <charlie.davis@dev.corp>
+Subject: Re: Update on Pod Failures and Memory Leaks [Ref-21]
+Date: Tue, 14 Jul 2026 11:30:00 +0000
+Message-ID: <20260714.21@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+Checking the logs now. `kubectl logs -n production deployment/auth-gateway --tail=100` shows `Segmentation fault` followed by panic in Go runtime.
+
+Detailed Diagnostic Dump #21:
+- Node: ip-10-0-21-22.ec2.internal
+- Heap Usage: 85GB
+- Active Threads: 355
+------------------------------------------------------------------------
+
+From: Charlie Davis <charlie.davis@dev.corp>
+To: Diana Prince <diana.prince@ciso.corp>
+Subject: Re: CVE-2026-3891 Exploited in Ingress Gateway? [Ref-22]
+Date: Tue, 14 Jul 2026 11:40:00 +0000
+Message-ID: <20260714.22@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+Wait, look at this IP: 198.51.100.45. It's hammering the `/api/v1/auth/token` endpoint with anomalous payloads containing nested JSON structures.
+
+Detailed Diagnostic Dump #22:
+- Node: ip-10-0-22-22.ec2.internal
+- Heap Usage: 86GB
+- Active Threads: 360
+------------------------------------------------------------------------
+
+From: Diana Prince <diana.prince@ciso.corp>
+To: Eve Polastri <eve.polastri@infra.corp>
+Subject: Re: Forensic Analysis of AWS IAM Role Assumption [Ref-23]
+Date: Tue, 14 Jul 2026 11:50:00 +0000
+Message-ID: <20260714.23@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+Could this be related to the newly disclosed CVE-2026-3891? The vulnerability affects Envoy and custom ingress proxies handling malformed HTTP/2 headers.
+
+Detailed Diagnostic Dump #23:
+- Node: ip-10-0-23-22.ec2.internal
+- Heap Usage: 87GB
+- Active Threads: 365
+------------------------------------------------------------------------
+
+From: Eve Polastri <eve.polastri@infra.corp>
+To: Alice Vance <alice.vance@security.corp>
+Subject: Re: Patch Deployment and Rollback Plan [Ref-24]
+Date: Tue, 14 Jul 2026 12:00:00 +0000
+Message-ID: <20260714.24@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+Checking AWS CloudTrail... ARN `arn:aws:iam::123456789012:role/ProductionS3Accessor` was assumed from an unusual external IP at 07:42 UTC.
+
+Detailed Diagnostic Dump #24:
+- Node: ip-10-0-24-22.ec2.internal
+- Heap Usage: 88GB
+- Active Threads: 370
+------------------------------------------------------------------------
+
+From: Alice Vance <alice.vance@security.corp>
+To: Bob Smith <bob.smith@sre.corp>
+Subject: Re: CRITICAL: Production Outage in US-East-1 Cluster [Ref-25]
+Date: Tue, 14 Jul 2026 12:10:00 +0000
+Message-ID: <20260714.25@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+We are seeing high error rates (502/504) across all ingress gateways in us-east-1. Initial logs point to pod crashloops in deployment/auth-gateway.
+
+Detailed Diagnostic Dump #25:
+- Node: ip-10-0-25-22.ec2.internal
+- Heap Usage: 89GB
+- Active Threads: 375
+------------------------------------------------------------------------
+
+From: Bob Smith <bob.smith@sre.corp>
+To: Charlie Davis <charlie.davis@dev.corp>
+Subject: Re: Update on Pod Failures and Memory Leaks [Ref-26]
+Date: Tue, 14 Jul 2026 12:20:00 +0000
+Message-ID: <20260714.26@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+Checking the logs now. `kubectl logs -n production deployment/auth-gateway --tail=100` shows `Segmentation fault` followed by panic in Go runtime.
+
+Detailed Diagnostic Dump #26:
+- Node: ip-10-0-26-22.ec2.internal
+- Heap Usage: 90GB
+- Active Threads: 380
+------------------------------------------------------------------------
+
+From: Charlie Davis <charlie.davis@dev.corp>
+To: Diana Prince <diana.prince@ciso.corp>
+Subject: Re: CVE-2026-3891 Exploited in Ingress Gateway? [Ref-27]
+Date: Tue, 14 Jul 2026 12:30:00 +0000
+Message-ID: <20260714.27@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+Wait, look at this IP: 198.51.100.45. It's hammering the `/api/v1/auth/token` endpoint with anomalous payloads containing nested JSON structures.
+
+Detailed Diagnostic Dump #27:
+- Node: ip-10-0-27-22.ec2.internal
+- Heap Usage: 91GB
+- Active Threads: 385
+------------------------------------------------------------------------
+
+From: Diana Prince <diana.prince@ciso.corp>
+To: Eve Polastri <eve.polastri@infra.corp>
+Subject: Re: Forensic Analysis of AWS IAM Role Assumption [Ref-28]
+Date: Tue, 14 Jul 2026 12:40:00 +0000
+Message-ID: <20260714.28@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+Could this be related to the newly disclosed CVE-2026-3891? The vulnerability affects Envoy and custom ingress proxies handling malformed HTTP/2 headers.
+
+Detailed Diagnostic Dump #28:
+- Node: ip-10-0-28-22.ec2.internal
+- Heap Usage: 92GB
+- Active Threads: 390
+------------------------------------------------------------------------
+
+From: Eve Polastri <eve.polastri@infra.corp>
+To: Alice Vance <alice.vance@security.corp>
+Subject: Re: Patch Deployment and Rollback Plan [Ref-29]
+Date: Tue, 14 Jul 2026 12:50:00 +0000
+Message-ID: <20260714.29@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+Checking AWS CloudTrail... ARN `arn:aws:iam::123456789012:role/ProductionS3Accessor` was assumed from an unusual external IP at 07:42 UTC.
+
+Detailed Diagnostic Dump #29:
+- Node: ip-10-0-29-22.ec2.internal
+- Heap Usage: 93GB
+- Active Threads: 395
+------------------------------------------------------------------------
+
+From: Alice Vance <alice.vance@security.corp>
+To: Bob Smith <bob.smith@sre.corp>
+Subject: Re: CRITICAL: Production Outage in US-East-1 Cluster [Ref-30]
+Date: Tue, 14 Jul 2026 13:00:00 +0000
+Message-ID: <20260714.30@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+We are seeing high error rates (502/504) across all ingress gateways in us-east-1. Initial logs point to pod crashloops in deployment/auth-gateway.
+
+Detailed Diagnostic Dump #30:
+- Node: ip-10-0-30-22.ec2.internal
+- Heap Usage: 94GB
+- Active Threads: 400
+------------------------------------------------------------------------
+
+From: Bob Smith <bob.smith@sre.corp>
+To: Charlie Davis <charlie.davis@dev.corp>
+Subject: Re: Update on Pod Failures and Memory Leaks [Ref-31]
+Date: Tue, 14 Jul 2026 13:10:00 +0000
+Message-ID: <20260714.31@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+Checking the logs now. `kubectl logs -n production deployment/auth-gateway --tail=100` shows `Segmentation fault` followed by panic in Go runtime.
+
+Detailed Diagnostic Dump #31:
+- Node: ip-10-0-31-22.ec2.internal
+- Heap Usage: 95GB
+- Active Threads: 405
+------------------------------------------------------------------------
+
+From: Charlie Davis <charlie.davis@dev.corp>
+To: Diana Prince <diana.prince@ciso.corp>
+Subject: Re: CVE-2026-3891 Exploited in Ingress Gateway? [Ref-32]
+Date: Tue, 14 Jul 2026 13:20:00 +0000
+Message-ID: <20260714.32@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+Wait, look at this IP: 198.51.100.45. It's hammering the `/api/v1/auth/token` endpoint with anomalous payloads containing nested JSON structures.
+
+Detailed Diagnostic Dump #32:
+- Node: ip-10-0-32-22.ec2.internal
+- Heap Usage: 96GB
+- Active Threads: 410
+------------------------------------------------------------------------
+
+From: Diana Prince <diana.prince@ciso.corp>
+To: Eve Polastri <eve.polastri@infra.corp>
+Subject: Re: Forensic Analysis of AWS IAM Role Assumption [Ref-33]
+Date: Tue, 14 Jul 2026 13:30:00 +0000
+Message-ID: <20260714.33@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+Could this be related to the newly disclosed CVE-2026-3891? The vulnerability affects Envoy and custom ingress proxies handling malformed HTTP/2 headers.
+
+Detailed Diagnostic Dump #33:
+- Node: ip-10-0-33-22.ec2.internal
+- Heap Usage: 97GB
+- Active Threads: 415
+------------------------------------------------------------------------
+
+From: Eve Polastri <eve.polastri@infra.corp>
+To: Alice Vance <alice.vance@security.corp>
+Subject: Re: Patch Deployment and Rollback Plan [Ref-34]
+Date: Tue, 14 Jul 2026 13:40:00 +0000
+Message-ID: <20260714.34@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+Checking AWS CloudTrail... ARN `arn:aws:iam::123456789012:role/ProductionS3Accessor` was assumed from an unusual external IP at 07:42 UTC.
+
+Detailed Diagnostic Dump #34:
+- Node: ip-10-0-34-22.ec2.internal
+- Heap Usage: 98GB
+- Active Threads: 420
+------------------------------------------------------------------------
+
+From: Alice Vance <alice.vance@security.corp>
+To: Bob Smith <bob.smith@sre.corp>
+Subject: Re: CRITICAL: Production Outage in US-East-1 Cluster [Ref-35]
+Date: Tue, 14 Jul 2026 13:50:00 +0000
+Message-ID: <20260714.35@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+We are seeing high error rates (502/504) across all ingress gateways in us-east-1. Initial logs point to pod crashloops in deployment/auth-gateway.
+
+Detailed Diagnostic Dump #35:
+- Node: ip-10-0-35-22.ec2.internal
+- Heap Usage: 99GB
+- Active Threads: 425
+------------------------------------------------------------------------
+
+From: Bob Smith <bob.smith@sre.corp>
+To: Charlie Davis <charlie.davis@dev.corp>
+Subject: Re: Update on Pod Failures and Memory Leaks [Ref-36]
+Date: Tue, 14 Jul 2026 14:00:00 +0000
+Message-ID: <20260714.36@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+Checking the logs now. `kubectl logs -n production deployment/auth-gateway --tail=100` shows `Segmentation fault` followed by panic in Go runtime.
+
+Detailed Diagnostic Dump #36:
+- Node: ip-10-0-36-22.ec2.internal
+- Heap Usage: 100GB
+- Active Threads: 430
+------------------------------------------------------------------------
+
+From: Charlie Davis <charlie.davis@dev.corp>
+To: Diana Prince <diana.prince@ciso.corp>
+Subject: Re: CVE-2026-3891 Exploited in Ingress Gateway? [Ref-37]
+Date: Tue, 14 Jul 2026 14:10:00 +0000
+Message-ID: <20260714.37@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+Wait, look at this IP: 198.51.100.45. It's hammering the `/api/v1/auth/token` endpoint with anomalous payloads containing nested JSON structures.
+
+Detailed Diagnostic Dump #37:
+- Node: ip-10-0-37-22.ec2.internal
+- Heap Usage: 101GB
+- Active Threads: 435
+------------------------------------------------------------------------
+
+From: Diana Prince <diana.prince@ciso.corp>
+To: Eve Polastri <eve.polastri@infra.corp>
+Subject: Re: Forensic Analysis of AWS IAM Role Assumption [Ref-38]
+Date: Tue, 14 Jul 2026 14:20:00 +0000
+Message-ID: <20260714.38@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+Could this be related to the newly disclosed CVE-2026-3891? The vulnerability affects Envoy and custom ingress proxies handling malformed HTTP/2 headers.
+
+Detailed Diagnostic Dump #38:
+- Node: ip-10-0-38-22.ec2.internal
+- Heap Usage: 102GB
+- Active Threads: 440
+------------------------------------------------------------------------
+
+From: Eve Polastri <eve.polastri@infra.corp>
+To: Alice Vance <alice.vance@security.corp>
+Subject: Re: Patch Deployment and Rollback Plan [Ref-39]
+Date: Tue, 14 Jul 2026 14:30:00 +0000
+Message-ID: <20260714.39@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+Checking AWS CloudTrail... ARN `arn:aws:iam::123456789012:role/ProductionS3Accessor` was assumed from an unusual external IP at 07:42 UTC.
+
+Detailed Diagnostic Dump #39:
+- Node: ip-10-0-39-22.ec2.internal
+- Heap Usage: 103GB
+- Active Threads: 445
+------------------------------------------------------------------------
+
+From: Alice Vance <alice.vance@security.corp>
+To: Bob Smith <bob.smith@sre.corp>
+Subject: Re: CRITICAL: Production Outage in US-East-1 Cluster [Ref-40]
+Date: Tue, 14 Jul 2026 14:40:00 +0000
+Message-ID: <20260714.40@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+We are seeing high error rates (502/504) across all ingress gateways in us-east-1. Initial logs point to pod crashloops in deployment/auth-gateway.
+
+Detailed Diagnostic Dump #40:
+- Node: ip-10-0-40-22.ec2.internal
+- Heap Usage: 104GB
+- Active Threads: 450
+------------------------------------------------------------------------
+
+From: Bob Smith <bob.smith@sre.corp>
+To: Charlie Davis <charlie.davis@dev.corp>
+Subject: Re: Update on Pod Failures and Memory Leaks [Ref-41]
+Date: Tue, 14 Jul 2026 14:50:00 +0000
+Message-ID: <20260714.41@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+Checking the logs now. `kubectl logs -n production deployment/auth-gateway --tail=100` shows `Segmentation fault` followed by panic in Go runtime.
+
+Detailed Diagnostic Dump #41:
+- Node: ip-10-0-41-22.ec2.internal
+- Heap Usage: 105GB
+- Active Threads: 455
+------------------------------------------------------------------------
+
+From: Charlie Davis <charlie.davis@dev.corp>
+To: Diana Prince <diana.prince@ciso.corp>
+Subject: Re: CVE-2026-3891 Exploited in Ingress Gateway? [Ref-42]
+Date: Tue, 14 Jul 2026 15:00:00 +0000
+Message-ID: <20260714.42@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+Wait, look at this IP: 198.51.100.45. It's hammering the `/api/v1/auth/token` endpoint with anomalous payloads containing nested JSON structures.
+
+Detailed Diagnostic Dump #42:
+- Node: ip-10-0-42-22.ec2.internal
+- Heap Usage: 106GB
+- Active Threads: 460
+------------------------------------------------------------------------
+
+From: Diana Prince <diana.prince@ciso.corp>
+To: Eve Polastri <eve.polastri@infra.corp>
+Subject: Re: Forensic Analysis of AWS IAM Role Assumption [Ref-43]
+Date: Tue, 14 Jul 2026 15:10:00 +0000
+Message-ID: <20260714.43@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+Could this be related to the newly disclosed CVE-2026-3891? The vulnerability affects Envoy and custom ingress proxies handling malformed HTTP/2 headers.
+
+Detailed Diagnostic Dump #43:
+- Node: ip-10-0-43-22.ec2.internal
+- Heap Usage: 107GB
+- Active Threads: 465
+------------------------------------------------------------------------
+
+From: Eve Polastri <eve.polastri@infra.corp>
+To: Alice Vance <alice.vance@security.corp>
+Subject: Re: Patch Deployment and Rollback Plan [Ref-44]
+Date: Tue, 14 Jul 2026 15:20:00 +0000
+Message-ID: <20260714.44@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+Checking AWS CloudTrail... ARN `arn:aws:iam::123456789012:role/ProductionS3Accessor` was assumed from an unusual external IP at 07:42 UTC.
+
+Detailed Diagnostic Dump #44:
+- Node: ip-10-0-44-22.ec2.internal
+- Heap Usage: 108GB
+- Active Threads: 470
+------------------------------------------------------------------------
+
+From: Alice Vance <alice.vance@security.corp>
+To: Bob Smith <bob.smith@sre.corp>
+Subject: Re: CRITICAL: Production Outage in US-East-1 Cluster [Ref-45]
+Date: Tue, 14 Jul 2026 15:30:00 +0000
+Message-ID: <20260714.45@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+We are seeing high error rates (502/504) across all ingress gateways in us-east-1. Initial logs point to pod crashloops in deployment/auth-gateway.
+
+Detailed Diagnostic Dump #45:
+- Node: ip-10-0-45-22.ec2.internal
+- Heap Usage: 109GB
+- Active Threads: 475
+------------------------------------------------------------------------
+
+From: Bob Smith <bob.smith@sre.corp>
+To: Charlie Davis <charlie.davis@dev.corp>
+Subject: Re: Update on Pod Failures and Memory Leaks [Ref-46]
+Date: Tue, 14 Jul 2026 15:40:00 +0000
+Message-ID: <20260714.46@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+Checking the logs now. `kubectl logs -n production deployment/auth-gateway --tail=100` shows `Segmentation fault` followed by panic in Go runtime.
+
+Detailed Diagnostic Dump #46:
+- Node: ip-10-0-46-22.ec2.internal
+- Heap Usage: 110GB
+- Active Threads: 480
+------------------------------------------------------------------------
+
+From: Charlie Davis <charlie.davis@dev.corp>
+To: Diana Prince <diana.prince@ciso.corp>
+Subject: Re: CVE-2026-3891 Exploited in Ingress Gateway? [Ref-47]
+Date: Tue, 14 Jul 2026 15:50:00 +0000
+Message-ID: <20260714.47@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+Wait, look at this IP: 198.51.100.45. It's hammering the `/api/v1/auth/token` endpoint with anomalous payloads containing nested JSON structures.
+
+Detailed Diagnostic Dump #47:
+- Node: ip-10-0-47-22.ec2.internal
+- Heap Usage: 111GB
+- Active Threads: 485
+------------------------------------------------------------------------
+
+From: Diana Prince <diana.prince@ciso.corp>
+To: Eve Polastri <eve.polastri@infra.corp>
+Subject: Re: Forensic Analysis of AWS IAM Role Assumption [Ref-48]
+Date: Tue, 14 Jul 2026 16:00:00 +0000
+Message-ID: <20260714.48@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+Could this be related to the newly disclosed CVE-2026-3891? The vulnerability affects Envoy and custom ingress proxies handling malformed HTTP/2 headers.
+
+Detailed Diagnostic Dump #48:
+- Node: ip-10-0-48-22.ec2.internal
+- Heap Usage: 112GB
+- Active Threads: 490
+------------------------------------------------------------------------
+
+From: Eve Polastri <eve.polastri@infra.corp>
+To: Alice Vance <alice.vance@security.corp>
+Subject: Re: Patch Deployment and Rollback Plan [Ref-49]
+Date: Tue, 14 Jul 2026 16:10:00 +0000
+Message-ID: <20260714.49@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+Checking AWS CloudTrail... ARN `arn:aws:iam::123456789012:role/ProductionS3Accessor` was assumed from an unusual external IP at 07:42 UTC.
+
+Detailed Diagnostic Dump #49:
+- Node: ip-10-0-49-22.ec2.internal
+- Heap Usage: 113GB
+- Active Threads: 495
+------------------------------------------------------------------------
+
+From: Alice Vance <alice.vance@security.corp>
+To: Bob Smith <bob.smith@sre.corp>
+Subject: Re: CRITICAL: Production Outage in US-East-1 Cluster [Ref-50]
+Date: Tue, 14 Jul 2026 16:20:00 +0000
+Message-ID: <20260714.50@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+We are seeing high error rates (502/504) across all ingress gateways in us-east-1. Initial logs point to pod crashloops in deployment/auth-gateway.
+
+Detailed Diagnostic Dump #50:
+- Node: ip-10-0-50-22.ec2.internal
+- Heap Usage: 114GB
+- Active Threads: 500
+------------------------------------------------------------------------
+
+From: Bob Smith <bob.smith@sre.corp>
+To: Charlie Davis <charlie.davis@dev.corp>
+Subject: Re: Update on Pod Failures and Memory Leaks [Ref-51]
+Date: Tue, 14 Jul 2026 16:30:00 +0000
+Message-ID: <20260714.51@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+Checking the logs now. `kubectl logs -n production deployment/auth-gateway --tail=100` shows `Segmentation fault` followed by panic in Go runtime.
+
+Detailed Diagnostic Dump #51:
+- Node: ip-10-0-51-22.ec2.internal
+- Heap Usage: 115GB
+- Active Threads: 505
+------------------------------------------------------------------------
+
+From: Charlie Davis <charlie.davis@dev.corp>
+To: Diana Prince <diana.prince@ciso.corp>
+Subject: Re: CVE-2026-3891 Exploited in Ingress Gateway? [Ref-52]
+Date: Tue, 14 Jul 2026 16:40:00 +0000
+Message-ID: <20260714.52@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+Wait, look at this IP: 198.51.100.45. It's hammering the `/api/v1/auth/token` endpoint with anomalous payloads containing nested JSON structures.
+
+Detailed Diagnostic Dump #52:
+- Node: ip-10-0-52-22.ec2.internal
+- Heap Usage: 116GB
+- Active Threads: 510
+------------------------------------------------------------------------
+
+From: Diana Prince <diana.prince@ciso.corp>
+To: Eve Polastri <eve.polastri@infra.corp>
+Subject: Re: Forensic Analysis of AWS IAM Role Assumption [Ref-53]
+Date: Tue, 14 Jul 2026 16:50:00 +0000
+Message-ID: <20260714.53@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+Could this be related to the newly disclosed CVE-2026-3891? The vulnerability affects Envoy and custom ingress proxies handling malformed HTTP/2 headers.
+
+Detailed Diagnostic Dump #53:
+- Node: ip-10-0-53-22.ec2.internal
+- Heap Usage: 117GB
+- Active Threads: 515
+------------------------------------------------------------------------
+
+From: Eve Polastri <eve.polastri@infra.corp>
+To: Alice Vance <alice.vance@security.corp>
+Subject: Re: Patch Deployment and Rollback Plan [Ref-54]
+Date: Tue, 14 Jul 2026 17:00:00 +0000
+Message-ID: <20260714.54@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+Checking AWS CloudTrail... ARN `arn:aws:iam::123456789012:role/ProductionS3Accessor` was assumed from an unusual external IP at 07:42 UTC.
+
+Detailed Diagnostic Dump #54:
+- Node: ip-10-0-54-22.ec2.internal
+- Heap Usage: 118GB
+- Active Threads: 520
+------------------------------------------------------------------------
+
+From: Alice Vance <alice.vance@security.corp>
+To: Bob Smith <bob.smith@sre.corp>
+Subject: Re: CRITICAL: Production Outage in US-East-1 Cluster [Ref-55]
+Date: Tue, 14 Jul 2026 17:10:00 +0000
+Message-ID: <20260714.55@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+We are seeing high error rates (502/504) across all ingress gateways in us-east-1. Initial logs point to pod crashloops in deployment/auth-gateway.
+
+Detailed Diagnostic Dump #55:
+- Node: ip-10-0-55-22.ec2.internal
+- Heap Usage: 119GB
+- Active Threads: 525
+------------------------------------------------------------------------
+
+From: Bob Smith <bob.smith@sre.corp>
+To: Charlie Davis <charlie.davis@dev.corp>
+Subject: Re: Update on Pod Failures and Memory Leaks [Ref-56]
+Date: Tue, 14 Jul 2026 17:20:00 +0000
+Message-ID: <20260714.56@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+Checking the logs now. `kubectl logs -n production deployment/auth-gateway --tail=100` shows `Segmentation fault` followed by panic in Go runtime.
+
+Detailed Diagnostic Dump #56:
+- Node: ip-10-0-56-22.ec2.internal
+- Heap Usage: 120GB
+- Active Threads: 530
+------------------------------------------------------------------------
+
+From: Charlie Davis <charlie.davis@dev.corp>
+To: Diana Prince <diana.prince@ciso.corp>
+Subject: Re: CVE-2026-3891 Exploited in Ingress Gateway? [Ref-57]
+Date: Tue, 14 Jul 2026 17:30:00 +0000
+Message-ID: <20260714.57@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+Wait, look at this IP: 198.51.100.45. It's hammering the `/api/v1/auth/token` endpoint with anomalous payloads containing nested JSON structures.
+
+Detailed Diagnostic Dump #57:
+- Node: ip-10-0-57-22.ec2.internal
+- Heap Usage: 121GB
+- Active Threads: 535
+------------------------------------------------------------------------
+
+From: Diana Prince <diana.prince@ciso.corp>
+To: Eve Polastri <eve.polastri@infra.corp>
+Subject: Re: Forensic Analysis of AWS IAM Role Assumption [Ref-58]
+Date: Tue, 14 Jul 2026 17:40:00 +0000
+Message-ID: <20260714.58@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+Could this be related to the newly disclosed CVE-2026-3891? The vulnerability affects Envoy and custom ingress proxies handling malformed HTTP/2 headers.
+
+Detailed Diagnostic Dump #58:
+- Node: ip-10-0-58-22.ec2.internal
+- Heap Usage: 122GB
+- Active Threads: 540
+------------------------------------------------------------------------
+
+From: Eve Polastri <eve.polastri@infra.corp>
+To: Alice Vance <alice.vance@security.corp>
+Subject: Re: Patch Deployment and Rollback Plan [Ref-59]
+Date: Tue, 14 Jul 2026 17:50:00 +0000
+Message-ID: <20260714.59@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+Checking AWS CloudTrail... ARN `arn:aws:iam::123456789012:role/ProductionS3Accessor` was assumed from an unusual external IP at 07:42 UTC.
+
+Detailed Diagnostic Dump #59:
+- Node: ip-10-0-59-22.ec2.internal
+- Heap Usage: 123GB
+- Active Threads: 545
+------------------------------------------------------------------------
+
+From: Alice Vance <alice.vance@security.corp>
+To: Bob Smith <bob.smith@sre.corp>
+Subject: Re: CRITICAL: Production Outage in US-East-1 Cluster [Ref-60]
+Date: Tue, 14 Jul 2026 18:00:00 +0000
+Message-ID: <20260714.60@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+We are seeing high error rates (502/504) across all ingress gateways in us-east-1. Initial logs point to pod crashloops in deployment/auth-gateway.
+
+Detailed Diagnostic Dump #60:
+- Node: ip-10-0-60-22.ec2.internal
+- Heap Usage: 124GB
+- Active Threads: 550
+------------------------------------------------------------------------
+
+From: Bob Smith <bob.smith@sre.corp>
+To: Charlie Davis <charlie.davis@dev.corp>
+Subject: Re: Update on Pod Failures and Memory Leaks [Ref-61]
+Date: Tue, 14 Jul 2026 18:10:00 +0000
+Message-ID: <20260714.61@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+Checking the logs now. `kubectl logs -n production deployment/auth-gateway --tail=100` shows `Segmentation fault` followed by panic in Go runtime.
+
+Detailed Diagnostic Dump #61:
+- Node: ip-10-0-61-22.ec2.internal
+- Heap Usage: 125GB
+- Active Threads: 555
+------------------------------------------------------------------------
+
+From: Charlie Davis <charlie.davis@dev.corp>
+To: Diana Prince <diana.prince@ciso.corp>
+Subject: Re: CVE-2026-3891 Exploited in Ingress Gateway? [Ref-62]
+Date: Tue, 14 Jul 2026 18:20:00 +0000
+Message-ID: <20260714.62@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+Wait, look at this IP: 198.51.100.45. It's hammering the `/api/v1/auth/token` endpoint with anomalous payloads containing nested JSON structures.
+
+Detailed Diagnostic Dump #62:
+- Node: ip-10-0-62-22.ec2.internal
+- Heap Usage: 126GB
+- Active Threads: 560
+------------------------------------------------------------------------
+
+From: Diana Prince <diana.prince@ciso.corp>
+To: Eve Polastri <eve.polastri@infra.corp>
+Subject: Re: Forensic Analysis of AWS IAM Role Assumption [Ref-63]
+Date: Tue, 14 Jul 2026 18:30:00 +0000
+Message-ID: <20260714.63@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+Could this be related to the newly disclosed CVE-2026-3891? The vulnerability affects Envoy and custom ingress proxies handling malformed HTTP/2 headers.
+
+Detailed Diagnostic Dump #63:
+- Node: ip-10-0-63-22.ec2.internal
+- Heap Usage: 127GB
+- Active Threads: 565
+------------------------------------------------------------------------
+
+From: Eve Polastri <eve.polastri@infra.corp>
+To: Alice Vance <alice.vance@security.corp>
+Subject: Re: Patch Deployment and Rollback Plan [Ref-64]
+Date: Tue, 14 Jul 2026 18:40:00 +0000
+Message-ID: <20260714.64@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+Checking AWS CloudTrail... ARN `arn:aws:iam::123456789012:role/ProductionS3Accessor` was assumed from an unusual external IP at 07:42 UTC.
+
+Detailed Diagnostic Dump #64:
+- Node: ip-10-0-64-22.ec2.internal
+- Heap Usage: 128GB
+- Active Threads: 570
+------------------------------------------------------------------------
+
+From: Alice Vance <alice.vance@security.corp>
+To: Bob Smith <bob.smith@sre.corp>
+Subject: Re: CRITICAL: Production Outage in US-East-1 Cluster [Ref-65]
+Date: Tue, 14 Jul 2026 18:50:00 +0000
+Message-ID: <20260714.65@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+We are seeing high error rates (502/504) across all ingress gateways in us-east-1. Initial logs point to pod crashloops in deployment/auth-gateway.
+
+Detailed Diagnostic Dump #65:
+- Node: ip-10-0-65-22.ec2.internal
+- Heap Usage: 129GB
+- Active Threads: 575
+------------------------------------------------------------------------
+
+From: Bob Smith <bob.smith@sre.corp>
+To: Charlie Davis <charlie.davis@dev.corp>
+Subject: Re: Update on Pod Failures and Memory Leaks [Ref-66]
+Date: Tue, 14 Jul 2026 19:00:00 +0000
+Message-ID: <20260714.66@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+Checking the logs now. `kubectl logs -n production deployment/auth-gateway --tail=100` shows `Segmentation fault` followed by panic in Go runtime.
+
+Detailed Diagnostic Dump #66:
+- Node: ip-10-0-66-22.ec2.internal
+- Heap Usage: 130GB
+- Active Threads: 580
+------------------------------------------------------------------------
+
+From: Charlie Davis <charlie.davis@dev.corp>
+To: Diana Prince <diana.prince@ciso.corp>
+Subject: Re: CVE-2026-3891 Exploited in Ingress Gateway? [Ref-67]
+Date: Tue, 14 Jul 2026 19:10:00 +0000
+Message-ID: <20260714.67@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+Wait, look at this IP: 198.51.100.45. It's hammering the `/api/v1/auth/token` endpoint with anomalous payloads containing nested JSON structures.
+
+Detailed Diagnostic Dump #67:
+- Node: ip-10-0-67-22.ec2.internal
+- Heap Usage: 131GB
+- Active Threads: 585
+------------------------------------------------------------------------
+
+From: Diana Prince <diana.prince@ciso.corp>
+To: Eve Polastri <eve.polastri@infra.corp>
+Subject: Re: Forensic Analysis of AWS IAM Role Assumption [Ref-68]
+Date: Tue, 14 Jul 2026 19:20:00 +0000
+Message-ID: <20260714.68@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+Could this be related to the newly disclosed CVE-2026-3891? The vulnerability affects Envoy and custom ingress proxies handling malformed HTTP/2 headers.
+
+Detailed Diagnostic Dump #68:
+- Node: ip-10-0-68-22.ec2.internal
+- Heap Usage: 132GB
+- Active Threads: 590
+------------------------------------------------------------------------
+
+From: Eve Polastri <eve.polastri@infra.corp>
+To: Alice Vance <alice.vance@security.corp>
+Subject: Re: Patch Deployment and Rollback Plan [Ref-69]
+Date: Tue, 14 Jul 2026 19:30:00 +0000
+Message-ID: <20260714.69@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+Checking AWS CloudTrail... ARN `arn:aws:iam::123456789012:role/ProductionS3Accessor` was assumed from an unusual external IP at 07:42 UTC.
+
+Detailed Diagnostic Dump #69:
+- Node: ip-10-0-69-22.ec2.internal
+- Heap Usage: 133GB
+- Active Threads: 595
+------------------------------------------------------------------------
+
+From: Alice Vance <alice.vance@security.corp>
+To: Bob Smith <bob.smith@sre.corp>
+Subject: Re: CRITICAL: Production Outage in US-East-1 Cluster [Ref-70]
+Date: Tue, 14 Jul 2026 19:40:00 +0000
+Message-ID: <20260714.70@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+We are seeing high error rates (502/504) across all ingress gateways in us-east-1. Initial logs point to pod crashloops in deployment/auth-gateway.
+
+Detailed Diagnostic Dump #70:
+- Node: ip-10-0-70-22.ec2.internal
+- Heap Usage: 134GB
+- Active Threads: 600
+------------------------------------------------------------------------
+
+From: Bob Smith <bob.smith@sre.corp>
+To: Charlie Davis <charlie.davis@dev.corp>
+Subject: Re: Update on Pod Failures and Memory Leaks [Ref-71]
+Date: Tue, 14 Jul 2026 19:50:00 +0000
+Message-ID: <20260714.71@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+Checking the logs now. `kubectl logs -n production deployment/auth-gateway --tail=100` shows `Segmentation fault` followed by panic in Go runtime.
+
+Detailed Diagnostic Dump #71:
+- Node: ip-10-0-71-22.ec2.internal
+- Heap Usage: 135GB
+- Active Threads: 605
+------------------------------------------------------------------------
+
+From: Charlie Davis <charlie.davis@dev.corp>
+To: Diana Prince <diana.prince@ciso.corp>
+Subject: Re: CVE-2026-3891 Exploited in Ingress Gateway? [Ref-72]
+Date: Tue, 14 Jul 2026 20:00:00 +0000
+Message-ID: <20260714.72@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+Wait, look at this IP: 198.51.100.45. It's hammering the `/api/v1/auth/token` endpoint with anomalous payloads containing nested JSON structures.
+
+Detailed Diagnostic Dump #72:
+- Node: ip-10-0-72-22.ec2.internal
+- Heap Usage: 136GB
+- Active Threads: 610
+------------------------------------------------------------------------
+
+From: Diana Prince <diana.prince@ciso.corp>
+To: Eve Polastri <eve.polastri@infra.corp>
+Subject: Re: Forensic Analysis of AWS IAM Role Assumption [Ref-73]
+Date: Tue, 14 Jul 2026 20:10:00 +0000
+Message-ID: <20260714.73@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+Could this be related to the newly disclosed CVE-2026-3891? The vulnerability affects Envoy and custom ingress proxies handling malformed HTTP/2 headers.
+
+Detailed Diagnostic Dump #73:
+- Node: ip-10-0-73-22.ec2.internal
+- Heap Usage: 137GB
+- Active Threads: 615
+------------------------------------------------------------------------
+
+From: Eve Polastri <eve.polastri@infra.corp>
+To: Alice Vance <alice.vance@security.corp>
+Subject: Re: Patch Deployment and Rollback Plan [Ref-74]
+Date: Tue, 14 Jul 2026 20:20:00 +0000
+Message-ID: <20260714.74@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+Checking AWS CloudTrail... ARN `arn:aws:iam::123456789012:role/ProductionS3Accessor` was assumed from an unusual external IP at 07:42 UTC.
+
+Detailed Diagnostic Dump #74:
+- Node: ip-10-0-74-22.ec2.internal
+- Heap Usage: 138GB
+- Active Threads: 620
+------------------------------------------------------------------------
+
+From: Alice Vance <alice.vance@security.corp>
+To: Bob Smith <bob.smith@sre.corp>
+Subject: Re: CRITICAL: Production Outage in US-East-1 Cluster [Ref-75]
+Date: Tue, 14 Jul 2026 20:30:00 +0000
+Message-ID: <20260714.75@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+We are seeing high error rates (502/504) across all ingress gateways in us-east-1. Initial logs point to pod crashloops in deployment/auth-gateway.
+
+Detailed Diagnostic Dump #75:
+- Node: ip-10-0-75-22.ec2.internal
+- Heap Usage: 139GB
+- Active Threads: 625
+------------------------------------------------------------------------
+
+From: Bob Smith <bob.smith@sre.corp>
+To: Charlie Davis <charlie.davis@dev.corp>
+Subject: Re: Update on Pod Failures and Memory Leaks [Ref-76]
+Date: Tue, 14 Jul 2026 20:40:00 +0000
+Message-ID: <20260714.76@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+Checking the logs now. `kubectl logs -n production deployment/auth-gateway --tail=100` shows `Segmentation fault` followed by panic in Go runtime.
+
+Detailed Diagnostic Dump #76:
+- Node: ip-10-0-76-22.ec2.internal
+- Heap Usage: 140GB
+- Active Threads: 630
+------------------------------------------------------------------------
+
+From: Charlie Davis <charlie.davis@dev.corp>
+To: Diana Prince <diana.prince@ciso.corp>
+Subject: Re: CVE-2026-3891 Exploited in Ingress Gateway? [Ref-77]
+Date: Tue, 14 Jul 2026 20:50:00 +0000
+Message-ID: <20260714.77@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+Wait, look at this IP: 198.51.100.45. It's hammering the `/api/v1/auth/token` endpoint with anomalous payloads containing nested JSON structures.
+
+Detailed Diagnostic Dump #77:
+- Node: ip-10-0-77-22.ec2.internal
+- Heap Usage: 141GB
+- Active Threads: 635
+------------------------------------------------------------------------
+
+From: Diana Prince <diana.prince@ciso.corp>
+To: Eve Polastri <eve.polastri@infra.corp>
+Subject: Re: Forensic Analysis of AWS IAM Role Assumption [Ref-78]
+Date: Tue, 14 Jul 2026 21:00:00 +0000
+Message-ID: <20260714.78@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+Could this be related to the newly disclosed CVE-2026-3891? The vulnerability affects Envoy and custom ingress proxies handling malformed HTTP/2 headers.
+
+Detailed Diagnostic Dump #78:
+- Node: ip-10-0-78-22.ec2.internal
+- Heap Usage: 142GB
+- Active Threads: 640
+------------------------------------------------------------------------
+
+From: Eve Polastri <eve.polastri@infra.corp>
+To: Alice Vance <alice.vance@security.corp>
+Subject: Re: Patch Deployment and Rollback Plan [Ref-79]
+Date: Tue, 14 Jul 2026 21:10:00 +0000
+Message-ID: <20260714.79@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+Checking AWS CloudTrail... ARN `arn:aws:iam::123456789012:role/ProductionS3Accessor` was assumed from an unusual external IP at 07:42 UTC.
+
+Detailed Diagnostic Dump #79:
+- Node: ip-10-0-79-22.ec2.internal
+- Heap Usage: 143GB
+- Active Threads: 645
+------------------------------------------------------------------------
+
+From: Alice Vance <alice.vance@security.corp>
+To: Bob Smith <bob.smith@sre.corp>
+Subject: Re: CRITICAL: Production Outage in US-East-1 Cluster [Ref-80]
+Date: Tue, 14 Jul 2026 21:20:00 +0000
+Message-ID: <20260714.80@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+We are seeing high error rates (502/504) across all ingress gateways in us-east-1. Initial logs point to pod crashloops in deployment/auth-gateway.
+
+Detailed Diagnostic Dump #80:
+- Node: ip-10-0-80-22.ec2.internal
+- Heap Usage: 144GB
+- Active Threads: 650
+------------------------------------------------------------------------
+
+From: Bob Smith <bob.smith@sre.corp>
+To: Charlie Davis <charlie.davis@dev.corp>
+Subject: Re: Update on Pod Failures and Memory Leaks [Ref-81]
+Date: Tue, 14 Jul 2026 21:30:00 +0000
+Message-ID: <20260714.81@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+Checking the logs now. `kubectl logs -n production deployment/auth-gateway --tail=100` shows `Segmentation fault` followed by panic in Go runtime.
+
+Detailed Diagnostic Dump #81:
+- Node: ip-10-0-81-22.ec2.internal
+- Heap Usage: 145GB
+- Active Threads: 655
+------------------------------------------------------------------------
+
+From: Charlie Davis <charlie.davis@dev.corp>
+To: Diana Prince <diana.prince@ciso.corp>
+Subject: Re: CVE-2026-3891 Exploited in Ingress Gateway? [Ref-82]
+Date: Tue, 14 Jul 2026 21:40:00 +0000
+Message-ID: <20260714.82@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+Wait, look at this IP: 198.51.100.45. It's hammering the `/api/v1/auth/token` endpoint with anomalous payloads containing nested JSON structures.
+
+Detailed Diagnostic Dump #82:
+- Node: ip-10-0-82-22.ec2.internal
+- Heap Usage: 146GB
+- Active Threads: 660
+------------------------------------------------------------------------
+
+From: Diana Prince <diana.prince@ciso.corp>
+To: Eve Polastri <eve.polastri@infra.corp>
+Subject: Re: Forensic Analysis of AWS IAM Role Assumption [Ref-83]
+Date: Tue, 14 Jul 2026 21:50:00 +0000
+Message-ID: <20260714.83@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+Could this be related to the newly disclosed CVE-2026-3891? The vulnerability affects Envoy and custom ingress proxies handling malformed HTTP/2 headers.
+
+Detailed Diagnostic Dump #83:
+- Node: ip-10-0-83-22.ec2.internal
+- Heap Usage: 147GB
+- Active Threads: 665
+------------------------------------------------------------------------
+
+From: Eve Polastri <eve.polastri@infra.corp>
+To: Alice Vance <alice.vance@security.corp>
+Subject: Re: Patch Deployment and Rollback Plan [Ref-84]
+Date: Tue, 14 Jul 2026 22:00:00 +0000
+Message-ID: <20260714.84@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+Checking AWS CloudTrail... ARN `arn:aws:iam::123456789012:role/ProductionS3Accessor` was assumed from an unusual external IP at 07:42 UTC.
+
+Detailed Diagnostic Dump #84:
+- Node: ip-10-0-84-22.ec2.internal
+- Heap Usage: 148GB
+- Active Threads: 670
+------------------------------------------------------------------------
+
+From: Alice Vance <alice.vance@security.corp>
+To: Bob Smith <bob.smith@sre.corp>
+Subject: Re: CRITICAL: Production Outage in US-East-1 Cluster [Ref-85]
+Date: Tue, 14 Jul 2026 22:10:00 +0000
+Message-ID: <20260714.85@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+We are seeing high error rates (502/504) across all ingress gateways in us-east-1. Initial logs point to pod crashloops in deployment/auth-gateway.
+
+Detailed Diagnostic Dump #85:
+- Node: ip-10-0-85-22.ec2.internal
+- Heap Usage: 149GB
+- Active Threads: 675
+------------------------------------------------------------------------
+
+From: Bob Smith <bob.smith@sre.corp>
+To: Charlie Davis <charlie.davis@dev.corp>
+Subject: Re: Update on Pod Failures and Memory Leaks [Ref-86]
+Date: Tue, 14 Jul 2026 22:20:00 +0000
+Message-ID: <20260714.86@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+Checking the logs now. `kubectl logs -n production deployment/auth-gateway --tail=100` shows `Segmentation fault` followed by panic in Go runtime.
+
+Detailed Diagnostic Dump #86:
+- Node: ip-10-0-86-22.ec2.internal
+- Heap Usage: 150GB
+- Active Threads: 680
+------------------------------------------------------------------------
+
+From: Charlie Davis <charlie.davis@dev.corp>
+To: Diana Prince <diana.prince@ciso.corp>
+Subject: Re: CVE-2026-3891 Exploited in Ingress Gateway? [Ref-87]
+Date: Tue, 14 Jul 2026 22:30:00 +0000
+Message-ID: <20260714.87@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+Wait, look at this IP: 198.51.100.45. It's hammering the `/api/v1/auth/token` endpoint with anomalous payloads containing nested JSON structures.
+
+Detailed Diagnostic Dump #87:
+- Node: ip-10-0-87-22.ec2.internal
+- Heap Usage: 151GB
+- Active Threads: 685
+------------------------------------------------------------------------
+
+From: Diana Prince <diana.prince@ciso.corp>
+To: Eve Polastri <eve.polastri@infra.corp>
+Subject: Re: Forensic Analysis of AWS IAM Role Assumption [Ref-88]
+Date: Tue, 14 Jul 2026 22:40:00 +0000
+Message-ID: <20260714.88@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+Could this be related to the newly disclosed CVE-2026-3891? The vulnerability affects Envoy and custom ingress proxies handling malformed HTTP/2 headers.
+
+Detailed Diagnostic Dump #88:
+- Node: ip-10-0-88-22.ec2.internal
+- Heap Usage: 152GB
+- Active Threads: 690
+------------------------------------------------------------------------
+
+From: Eve Polastri <eve.polastri@infra.corp>
+To: Alice Vance <alice.vance@security.corp>
+Subject: Re: Patch Deployment and Rollback Plan [Ref-89]
+Date: Tue, 14 Jul 2026 22:50:00 +0000
+Message-ID: <20260714.89@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+Checking AWS CloudTrail... ARN `arn:aws:iam::123456789012:role/ProductionS3Accessor` was assumed from an unusual external IP at 07:42 UTC.
+
+Detailed Diagnostic Dump #89:
+- Node: ip-10-0-89-22.ec2.internal
+- Heap Usage: 153GB
+- Active Threads: 695
+------------------------------------------------------------------------
+
+From: Alice Vance <alice.vance@security.corp>
+To: Bob Smith <bob.smith@sre.corp>
+Subject: Re: CRITICAL: Production Outage in US-East-1 Cluster [Ref-90]
+Date: Tue, 14 Jul 2026 23:00:00 +0000
+Message-ID: <20260714.90@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+We are seeing high error rates (502/504) across all ingress gateways in us-east-1. Initial logs point to pod crashloops in deployment/auth-gateway.
+
+Detailed Diagnostic Dump #90:
+- Node: ip-10-0-90-22.ec2.internal
+- Heap Usage: 154GB
+- Active Threads: 700
+------------------------------------------------------------------------
+
+From: Bob Smith <bob.smith@sre.corp>
+To: Charlie Davis <charlie.davis@dev.corp>
+Subject: Re: Update on Pod Failures and Memory Leaks [Ref-91]
+Date: Tue, 14 Jul 2026 23:10:00 +0000
+Message-ID: <20260714.91@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+Checking the logs now. `kubectl logs -n production deployment/auth-gateway --tail=100` shows `Segmentation fault` followed by panic in Go runtime.
+
+Detailed Diagnostic Dump #91:
+- Node: ip-10-0-91-22.ec2.internal
+- Heap Usage: 155GB
+- Active Threads: 705
+------------------------------------------------------------------------
+
+From: Charlie Davis <charlie.davis@dev.corp>
+To: Diana Prince <diana.prince@ciso.corp>
+Subject: Re: CVE-2026-3891 Exploited in Ingress Gateway? [Ref-92]
+Date: Tue, 14 Jul 2026 23:20:00 +0000
+Message-ID: <20260714.92@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+Wait, look at this IP: 198.51.100.45. It's hammering the `/api/v1/auth/token` endpoint with anomalous payloads containing nested JSON structures.
+
+Detailed Diagnostic Dump #92:
+- Node: ip-10-0-92-22.ec2.internal
+- Heap Usage: 156GB
+- Active Threads: 710
+------------------------------------------------------------------------
+
+From: Diana Prince <diana.prince@ciso.corp>
+To: Eve Polastri <eve.polastri@infra.corp>
+Subject: Re: Forensic Analysis of AWS IAM Role Assumption [Ref-93]
+Date: Tue, 14 Jul 2026 23:30:00 +0000
+Message-ID: <20260714.93@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+Could this be related to the newly disclosed CVE-2026-3891? The vulnerability affects Envoy and custom ingress proxies handling malformed HTTP/2 headers.
+
+Detailed Diagnostic Dump #93:
+- Node: ip-10-0-93-22.ec2.internal
+- Heap Usage: 157GB
+- Active Threads: 715
+------------------------------------------------------------------------
+
+From: Eve Polastri <eve.polastri@infra.corp>
+To: Alice Vance <alice.vance@security.corp>
+Subject: Re: Patch Deployment and Rollback Plan [Ref-94]
+Date: Tue, 14 Jul 2026 23:40:00 +0000
+Message-ID: <20260714.94@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+Checking AWS CloudTrail... ARN `arn:aws:iam::123456789012:role/ProductionS3Accessor` was assumed from an unusual external IP at 07:42 UTC.
+
+Detailed Diagnostic Dump #94:
+- Node: ip-10-0-94-22.ec2.internal
+- Heap Usage: 158GB
+- Active Threads: 720
+------------------------------------------------------------------------
+
+From: Alice Vance <alice.vance@security.corp>
+To: Bob Smith <bob.smith@sre.corp>
+Subject: Re: CRITICAL: Production Outage in US-East-1 Cluster [Ref-95]
+Date: Tue, 14 Jul 2026 23:50:00 +0000
+Message-ID: <20260714.95@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+We are seeing high error rates (502/504) across all ingress gateways in us-east-1. Initial logs point to pod crashloops in deployment/auth-gateway.
+
+Detailed Diagnostic Dump #95:
+- Node: ip-10-0-95-22.ec2.internal
+- Heap Usage: 159GB
+- Active Threads: 725
+------------------------------------------------------------------------
+
+From: Bob Smith <bob.smith@sre.corp>
+To: Charlie Davis <charlie.davis@dev.corp>
+Subject: Re: Update on Pod Failures and Memory Leaks [Ref-96]
+Date: Wed, 15 Jul 2026 00:00:00 +0000
+Message-ID: <20260714.96@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+Checking the logs now. `kubectl logs -n production deployment/auth-gateway --tail=100` shows `Segmentation fault` followed by panic in Go runtime.
+
+Detailed Diagnostic Dump #96:
+- Node: ip-10-0-96-22.ec2.internal
+- Heap Usage: 160GB
+- Active Threads: 730
+------------------------------------------------------------------------
+
+From: Charlie Davis <charlie.davis@dev.corp>
+To: Diana Prince <diana.prince@ciso.corp>
+Subject: Re: CVE-2026-3891 Exploited in Ingress Gateway? [Ref-97]
+Date: Wed, 15 Jul 2026 00:10:00 +0000
+Message-ID: <20260714.97@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+Wait, look at this IP: 198.51.100.45. It's hammering the `/api/v1/auth/token` endpoint with anomalous payloads containing nested JSON structures.
+
+Detailed Diagnostic Dump #97:
+- Node: ip-10-0-97-22.ec2.internal
+- Heap Usage: 161GB
+- Active Threads: 735
+------------------------------------------------------------------------
+
+From: Diana Prince <diana.prince@ciso.corp>
+To: Eve Polastri <eve.polastri@infra.corp>
+Subject: Re: Forensic Analysis of AWS IAM Role Assumption [Ref-98]
+Date: Wed, 15 Jul 2026 00:20:00 +0000
+Message-ID: <20260714.98@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+Could this be related to the newly disclosed CVE-2026-3891? The vulnerability affects Envoy and custom ingress proxies handling malformed HTTP/2 headers.
+
+Detailed Diagnostic Dump #98:
+- Node: ip-10-0-98-22.ec2.internal
+- Heap Usage: 162GB
+- Active Threads: 740
+------------------------------------------------------------------------
+
+From: Eve Polastri <eve.polastri@infra.corp>
+To: Alice Vance <alice.vance@security.corp>
+Subject: Re: Patch Deployment and Rollback Plan [Ref-99]
+Date: Wed, 15 Jul 2026 00:30:00 +0000
+Message-ID: <20260714.99@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+Checking AWS CloudTrail... ARN `arn:aws:iam::123456789012:role/ProductionS3Accessor` was assumed from an unusual external IP at 07:42 UTC.
+
+Detailed Diagnostic Dump #99:
+- Node: ip-10-0-99-22.ec2.internal
+- Heap Usage: 163GB
+- Active Threads: 745
+------------------------------------------------------------------------
+
+From: Alice Vance <alice.vance@security.corp>
+To: Bob Smith <bob.smith@sre.corp>
+Subject: Re: CRITICAL: Production Outage in US-East-1 Cluster [Ref-100]
+Date: Wed, 15 Jul 2026 00:40:00 +0000
+Message-ID: <20260714.100@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+We are seeing high error rates (502/504) across all ingress gateways in us-east-1. Initial logs point to pod crashloops in deployment/auth-gateway.
+
+Detailed Diagnostic Dump #100:
+- Node: ip-10-0-100-22.ec2.internal
+- Heap Usage: 164GB
+- Active Threads: 750
+------------------------------------------------------------------------
+
+From: Bob Smith <bob.smith@sre.corp>
+To: Charlie Davis <charlie.davis@dev.corp>
+Subject: Re: Update on Pod Failures and Memory Leaks [Ref-101]
+Date: Wed, 15 Jul 2026 00:50:00 +0000
+Message-ID: <20260714.101@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+Checking the logs now. `kubectl logs -n production deployment/auth-gateway --tail=100` shows `Segmentation fault` followed by panic in Go runtime.
+
+Detailed Diagnostic Dump #101:
+- Node: ip-10-0-101-22.ec2.internal
+- Heap Usage: 165GB
+- Active Threads: 755
+------------------------------------------------------------------------
+
+From: Charlie Davis <charlie.davis@dev.corp>
+To: Diana Prince <diana.prince@ciso.corp>
+Subject: Re: CVE-2026-3891 Exploited in Ingress Gateway? [Ref-102]
+Date: Wed, 15 Jul 2026 01:00:00 +0000
+Message-ID: <20260714.102@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+Wait, look at this IP: 198.51.100.45. It's hammering the `/api/v1/auth/token` endpoint with anomalous payloads containing nested JSON structures.
+
+Detailed Diagnostic Dump #102:
+- Node: ip-10-0-102-22.ec2.internal
+- Heap Usage: 166GB
+- Active Threads: 760
+------------------------------------------------------------------------
+
+From: Diana Prince <diana.prince@ciso.corp>
+To: Eve Polastri <eve.polastri@infra.corp>
+Subject: Re: Forensic Analysis of AWS IAM Role Assumption [Ref-103]
+Date: Wed, 15 Jul 2026 01:10:00 +0000
+Message-ID: <20260714.103@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+Could this be related to the newly disclosed CVE-2026-3891? The vulnerability affects Envoy and custom ingress proxies handling malformed HTTP/2 headers.
+
+Detailed Diagnostic Dump #103:
+- Node: ip-10-0-103-22.ec2.internal
+- Heap Usage: 167GB
+- Active Threads: 765
+------------------------------------------------------------------------
+
+From: Eve Polastri <eve.polastri@infra.corp>
+To: Alice Vance <alice.vance@security.corp>
+Subject: Re: Patch Deployment and Rollback Plan [Ref-104]
+Date: Wed, 15 Jul 2026 01:20:00 +0000
+Message-ID: <20260714.104@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+Checking AWS CloudTrail... ARN `arn:aws:iam::123456789012:role/ProductionS3Accessor` was assumed from an unusual external IP at 07:42 UTC.
+
+Detailed Diagnostic Dump #104:
+- Node: ip-10-0-104-22.ec2.internal
+- Heap Usage: 168GB
+- Active Threads: 770
+------------------------------------------------------------------------
+
+From: Alice Vance <alice.vance@security.corp>
+To: Bob Smith <bob.smith@sre.corp>
+Subject: Re: CRITICAL: Production Outage in US-East-1 Cluster [Ref-105]
+Date: Wed, 15 Jul 2026 01:30:00 +0000
+Message-ID: <20260714.105@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+We are seeing high error rates (502/504) across all ingress gateways in us-east-1. Initial logs point to pod crashloops in deployment/auth-gateway.
+
+Detailed Diagnostic Dump #105:
+- Node: ip-10-0-105-22.ec2.internal
+- Heap Usage: 169GB
+- Active Threads: 775
+------------------------------------------------------------------------
+
+From: Bob Smith <bob.smith@sre.corp>
+To: Charlie Davis <charlie.davis@dev.corp>
+Subject: Re: Update on Pod Failures and Memory Leaks [Ref-106]
+Date: Wed, 15 Jul 2026 01:40:00 +0000
+Message-ID: <20260714.106@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+Checking the logs now. `kubectl logs -n production deployment/auth-gateway --tail=100` shows `Segmentation fault` followed by panic in Go runtime.
+
+Detailed Diagnostic Dump #106:
+- Node: ip-10-0-106-22.ec2.internal
+- Heap Usage: 170GB
+- Active Threads: 780
+------------------------------------------------------------------------
+
+From: Charlie Davis <charlie.davis@dev.corp>
+To: Diana Prince <diana.prince@ciso.corp>
+Subject: Re: CVE-2026-3891 Exploited in Ingress Gateway? [Ref-107]
+Date: Wed, 15 Jul 2026 01:50:00 +0000
+Message-ID: <20260714.107@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+Wait, look at this IP: 198.51.100.45. It's hammering the `/api/v1/auth/token` endpoint with anomalous payloads containing nested JSON structures.
+
+Detailed Diagnostic Dump #107:
+- Node: ip-10-0-107-22.ec2.internal
+- Heap Usage: 171GB
+- Active Threads: 785
+------------------------------------------------------------------------
+
+From: Diana Prince <diana.prince@ciso.corp>
+To: Eve Polastri <eve.polastri@infra.corp>
+Subject: Re: Forensic Analysis of AWS IAM Role Assumption [Ref-108]
+Date: Wed, 15 Jul 2026 02:00:00 +0000
+Message-ID: <20260714.108@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+Could this be related to the newly disclosed CVE-2026-3891? The vulnerability affects Envoy and custom ingress proxies handling malformed HTTP/2 headers.
+
+Detailed Diagnostic Dump #108:
+- Node: ip-10-0-108-22.ec2.internal
+- Heap Usage: 172GB
+- Active Threads: 790
+------------------------------------------------------------------------
+
+From: Eve Polastri <eve.polastri@infra.corp>
+To: Alice Vance <alice.vance@security.corp>
+Subject: Re: Patch Deployment and Rollback Plan [Ref-109]
+Date: Wed, 15 Jul 2026 02:10:00 +0000
+Message-ID: <20260714.109@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+Checking AWS CloudTrail... ARN `arn:aws:iam::123456789012:role/ProductionS3Accessor` was assumed from an unusual external IP at 07:42 UTC.
+
+Detailed Diagnostic Dump #109:
+- Node: ip-10-0-109-22.ec2.internal
+- Heap Usage: 173GB
+- Active Threads: 795
+------------------------------------------------------------------------
+
+From: Alice Vance <alice.vance@security.corp>
+To: Bob Smith <bob.smith@sre.corp>
+Subject: Re: CRITICAL: Production Outage in US-East-1 Cluster [Ref-110]
+Date: Wed, 15 Jul 2026 02:20:00 +0000
+Message-ID: <20260714.110@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+We are seeing high error rates (502/504) across all ingress gateways in us-east-1. Initial logs point to pod crashloops in deployment/auth-gateway.
+
+Detailed Diagnostic Dump #110:
+- Node: ip-10-0-110-22.ec2.internal
+- Heap Usage: 174GB
+- Active Threads: 800
+------------------------------------------------------------------------
+
+From: Bob Smith <bob.smith@sre.corp>
+To: Charlie Davis <charlie.davis@dev.corp>
+Subject: Re: Update on Pod Failures and Memory Leaks [Ref-111]
+Date: Wed, 15 Jul 2026 02:30:00 +0000
+Message-ID: <20260714.111@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+Checking the logs now. `kubectl logs -n production deployment/auth-gateway --tail=100` shows `Segmentation fault` followed by panic in Go runtime.
+
+Detailed Diagnostic Dump #111:
+- Node: ip-10-0-111-22.ec2.internal
+- Heap Usage: 175GB
+- Active Threads: 805
+------------------------------------------------------------------------
+
+From: Charlie Davis <charlie.davis@dev.corp>
+To: Diana Prince <diana.prince@ciso.corp>
+Subject: Re: CVE-2026-3891 Exploited in Ingress Gateway? [Ref-112]
+Date: Wed, 15 Jul 2026 02:40:00 +0000
+Message-ID: <20260714.112@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+Wait, look at this IP: 198.51.100.45. It's hammering the `/api/v1/auth/token` endpoint with anomalous payloads containing nested JSON structures.
+
+Detailed Diagnostic Dump #112:
+- Node: ip-10-0-112-22.ec2.internal
+- Heap Usage: 176GB
+- Active Threads: 810
+------------------------------------------------------------------------
+
+From: Diana Prince <diana.prince@ciso.corp>
+To: Eve Polastri <eve.polastri@infra.corp>
+Subject: Re: Forensic Analysis of AWS IAM Role Assumption [Ref-113]
+Date: Wed, 15 Jul 2026 02:50:00 +0000
+Message-ID: <20260714.113@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+Could this be related to the newly disclosed CVE-2026-3891? The vulnerability affects Envoy and custom ingress proxies handling malformed HTTP/2 headers.
+
+Detailed Diagnostic Dump #113:
+- Node: ip-10-0-113-22.ec2.internal
+- Heap Usage: 177GB
+- Active Threads: 815
+------------------------------------------------------------------------
+
+From: Eve Polastri <eve.polastri@infra.corp>
+To: Alice Vance <alice.vance@security.corp>
+Subject: Re: Patch Deployment and Rollback Plan [Ref-114]
+Date: Wed, 15 Jul 2026 03:00:00 +0000
+Message-ID: <20260714.114@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+Checking AWS CloudTrail... ARN `arn:aws:iam::123456789012:role/ProductionS3Accessor` was assumed from an unusual external IP at 07:42 UTC.
+
+Detailed Diagnostic Dump #114:
+- Node: ip-10-0-114-22.ec2.internal
+- Heap Usage: 178GB
+- Active Threads: 820
+------------------------------------------------------------------------
+
+From: Alice Vance <alice.vance@security.corp>
+To: Bob Smith <bob.smith@sre.corp>
+Subject: Re: CRITICAL: Production Outage in US-East-1 Cluster [Ref-115]
+Date: Wed, 15 Jul 2026 03:10:00 +0000
+Message-ID: <20260714.115@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+We are seeing high error rates (502/504) across all ingress gateways in us-east-1. Initial logs point to pod crashloops in deployment/auth-gateway.
+
+Detailed Diagnostic Dump #115:
+- Node: ip-10-0-115-22.ec2.internal
+- Heap Usage: 179GB
+- Active Threads: 825
+------------------------------------------------------------------------
+
+From: Bob Smith <bob.smith@sre.corp>
+To: Charlie Davis <charlie.davis@dev.corp>
+Subject: Re: Update on Pod Failures and Memory Leaks [Ref-116]
+Date: Wed, 15 Jul 2026 03:20:00 +0000
+Message-ID: <20260714.116@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+Checking the logs now. `kubectl logs -n production deployment/auth-gateway --tail=100` shows `Segmentation fault` followed by panic in Go runtime.
+
+Detailed Diagnostic Dump #116:
+- Node: ip-10-0-116-22.ec2.internal
+- Heap Usage: 180GB
+- Active Threads: 830
+------------------------------------------------------------------------
+
+From: Charlie Davis <charlie.davis@dev.corp>
+To: Diana Prince <diana.prince@ciso.corp>
+Subject: Re: CVE-2026-3891 Exploited in Ingress Gateway? [Ref-117]
+Date: Wed, 15 Jul 2026 03:30:00 +0000
+Message-ID: <20260714.117@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+Wait, look at this IP: 198.51.100.45. It's hammering the `/api/v1/auth/token` endpoint with anomalous payloads containing nested JSON structures.
+
+Detailed Diagnostic Dump #117:
+- Node: ip-10-0-117-22.ec2.internal
+- Heap Usage: 181GB
+- Active Threads: 835
+------------------------------------------------------------------------
+
+From: Diana Prince <diana.prince@ciso.corp>
+To: Eve Polastri <eve.polastri@infra.corp>
+Subject: Re: Forensic Analysis of AWS IAM Role Assumption [Ref-118]
+Date: Wed, 15 Jul 2026 03:40:00 +0000
+Message-ID: <20260714.118@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+Could this be related to the newly disclosed CVE-2026-3891? The vulnerability affects Envoy and custom ingress proxies handling malformed HTTP/2 headers.
+
+Detailed Diagnostic Dump #118:
+- Node: ip-10-0-118-22.ec2.internal
+- Heap Usage: 182GB
+- Active Threads: 840
+------------------------------------------------------------------------
+
+From: Eve Polastri <eve.polastri@infra.corp>
+To: Alice Vance <alice.vance@security.corp>
+Subject: Re: Patch Deployment and Rollback Plan [Ref-119]
+Date: Wed, 15 Jul 2026 03:50:00 +0000
+Message-ID: <20260714.119@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+Checking AWS CloudTrail... ARN `arn:aws:iam::123456789012:role/ProductionS3Accessor` was assumed from an unusual external IP at 07:42 UTC.
+
+Detailed Diagnostic Dump #119:
+- Node: ip-10-0-119-22.ec2.internal
+- Heap Usage: 183GB
+- Active Threads: 845
+------------------------------------------------------------------------
+
+From: Alice Vance <alice.vance@security.corp>
+To: Bob Smith <bob.smith@sre.corp>
+Subject: Re: CRITICAL: Production Outage in US-East-1 Cluster [Ref-120]
+Date: Wed, 15 Jul 2026 04:00:00 +0000
+Message-ID: <20260714.120@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+We are seeing high error rates (502/504) across all ingress gateways in us-east-1. Initial logs point to pod crashloops in deployment/auth-gateway.
+
+Detailed Diagnostic Dump #120:
+- Node: ip-10-0-120-22.ec2.internal
+- Heap Usage: 184GB
+- Active Threads: 850
+------------------------------------------------------------------------
+
+From: Bob Smith <bob.smith@sre.corp>
+To: Charlie Davis <charlie.davis@dev.corp>
+Subject: Re: Update on Pod Failures and Memory Leaks [Ref-121]
+Date: Wed, 15 Jul 2026 04:10:00 +0000
+Message-ID: <20260714.121@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+Checking the logs now. `kubectl logs -n production deployment/auth-gateway --tail=100` shows `Segmentation fault` followed by panic in Go runtime.
+
+Detailed Diagnostic Dump #121:
+- Node: ip-10-0-121-22.ec2.internal
+- Heap Usage: 185GB
+- Active Threads: 855
+------------------------------------------------------------------------
+
+From: Charlie Davis <charlie.davis@dev.corp>
+To: Diana Prince <diana.prince@ciso.corp>
+Subject: Re: CVE-2026-3891 Exploited in Ingress Gateway? [Ref-122]
+Date: Wed, 15 Jul 2026 04:20:00 +0000
+Message-ID: <20260714.122@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+Wait, look at this IP: 198.51.100.45. It's hammering the `/api/v1/auth/token` endpoint with anomalous payloads containing nested JSON structures.
+
+Detailed Diagnostic Dump #122:
+- Node: ip-10-0-122-22.ec2.internal
+- Heap Usage: 186GB
+- Active Threads: 860
+------------------------------------------------------------------------
+
+From: Diana Prince <diana.prince@ciso.corp>
+To: Eve Polastri <eve.polastri@infra.corp>
+Subject: Re: Forensic Analysis of AWS IAM Role Assumption [Ref-123]
+Date: Wed, 15 Jul 2026 04:30:00 +0000
+Message-ID: <20260714.123@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+Could this be related to the newly disclosed CVE-2026-3891? The vulnerability affects Envoy and custom ingress proxies handling malformed HTTP/2 headers.
+
+Detailed Diagnostic Dump #123:
+- Node: ip-10-0-123-22.ec2.internal
+- Heap Usage: 187GB
+- Active Threads: 865
+------------------------------------------------------------------------
+
+From: Eve Polastri <eve.polastri@infra.corp>
+To: Alice Vance <alice.vance@security.corp>
+Subject: Re: Patch Deployment and Rollback Plan [Ref-124]
+Date: Wed, 15 Jul 2026 04:40:00 +0000
+Message-ID: <20260714.124@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+Checking AWS CloudTrail... ARN `arn:aws:iam::123456789012:role/ProductionS3Accessor` was assumed from an unusual external IP at 07:42 UTC.
+
+Detailed Diagnostic Dump #124:
+- Node: ip-10-0-124-22.ec2.internal
+- Heap Usage: 188GB
+- Active Threads: 870
+------------------------------------------------------------------------
+
+From: Alice Vance <alice.vance@security.corp>
+To: Bob Smith <bob.smith@sre.corp>
+Subject: Re: CRITICAL: Production Outage in US-East-1 Cluster [Ref-125]
+Date: Wed, 15 Jul 2026 04:50:00 +0000
+Message-ID: <20260714.125@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+We are seeing high error rates (502/504) across all ingress gateways in us-east-1. Initial logs point to pod crashloops in deployment/auth-gateway.
+
+Detailed Diagnostic Dump #125:
+- Node: ip-10-0-125-22.ec2.internal
+- Heap Usage: 189GB
+- Active Threads: 875
+------------------------------------------------------------------------
+
+From: Bob Smith <bob.smith@sre.corp>
+To: Charlie Davis <charlie.davis@dev.corp>
+Subject: Re: Update on Pod Failures and Memory Leaks [Ref-126]
+Date: Wed, 15 Jul 2026 05:00:00 +0000
+Message-ID: <20260714.126@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+Checking the logs now. `kubectl logs -n production deployment/auth-gateway --tail=100` shows `Segmentation fault` followed by panic in Go runtime.
+
+Detailed Diagnostic Dump #126:
+- Node: ip-10-0-126-22.ec2.internal
+- Heap Usage: 190GB
+- Active Threads: 880
+------------------------------------------------------------------------
+
+From: Charlie Davis <charlie.davis@dev.corp>
+To: Diana Prince <diana.prince@ciso.corp>
+Subject: Re: CVE-2026-3891 Exploited in Ingress Gateway? [Ref-127]
+Date: Wed, 15 Jul 2026 05:10:00 +0000
+Message-ID: <20260714.127@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+Wait, look at this IP: 198.51.100.45. It's hammering the `/api/v1/auth/token` endpoint with anomalous payloads containing nested JSON structures.
+
+Detailed Diagnostic Dump #127:
+- Node: ip-10-0-127-22.ec2.internal
+- Heap Usage: 191GB
+- Active Threads: 885
+------------------------------------------------------------------------
+
+From: Diana Prince <diana.prince@ciso.corp>
+To: Eve Polastri <eve.polastri@infra.corp>
+Subject: Re: Forensic Analysis of AWS IAM Role Assumption [Ref-128]
+Date: Wed, 15 Jul 2026 05:20:00 +0000
+Message-ID: <20260714.128@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+Could this be related to the newly disclosed CVE-2026-3891? The vulnerability affects Envoy and custom ingress proxies handling malformed HTTP/2 headers.
+
+Detailed Diagnostic Dump #128:
+- Node: ip-10-0-128-22.ec2.internal
+- Heap Usage: 192GB
+- Active Threads: 890
+------------------------------------------------------------------------
+
+From: Eve Polastri <eve.polastri@infra.corp>
+To: Alice Vance <alice.vance@security.corp>
+Subject: Re: Patch Deployment and Rollback Plan [Ref-129]
+Date: Wed, 15 Jul 2026 05:30:00 +0000
+Message-ID: <20260714.129@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+Checking AWS CloudTrail... ARN `arn:aws:iam::123456789012:role/ProductionS3Accessor` was assumed from an unusual external IP at 07:42 UTC.
+
+Detailed Diagnostic Dump #129:
+- Node: ip-10-0-129-22.ec2.internal
+- Heap Usage: 193GB
+- Active Threads: 895
+------------------------------------------------------------------------
+
+From: Alice Vance <alice.vance@security.corp>
+To: Bob Smith <bob.smith@sre.corp>
+Subject: Re: CRITICAL: Production Outage in US-East-1 Cluster [Ref-130]
+Date: Wed, 15 Jul 2026 05:40:00 +0000
+Message-ID: <20260714.130@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+We are seeing high error rates (502/504) across all ingress gateways in us-east-1. Initial logs point to pod crashloops in deployment/auth-gateway.
+
+Detailed Diagnostic Dump #130:
+- Node: ip-10-0-130-22.ec2.internal
+- Heap Usage: 194GB
+- Active Threads: 900
+------------------------------------------------------------------------
+
+From: Bob Smith <bob.smith@sre.corp>
+To: Charlie Davis <charlie.davis@dev.corp>
+Subject: Re: Update on Pod Failures and Memory Leaks [Ref-131]
+Date: Wed, 15 Jul 2026 05:50:00 +0000
+Message-ID: <20260714.131@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+Checking the logs now. `kubectl logs -n production deployment/auth-gateway --tail=100` shows `Segmentation fault` followed by panic in Go runtime.
+
+Detailed Diagnostic Dump #131:
+- Node: ip-10-0-131-22.ec2.internal
+- Heap Usage: 195GB
+- Active Threads: 905
+------------------------------------------------------------------------
+
+From: Charlie Davis <charlie.davis@dev.corp>
+To: Diana Prince <diana.prince@ciso.corp>
+Subject: Re: CVE-2026-3891 Exploited in Ingress Gateway? [Ref-132]
+Date: Wed, 15 Jul 2026 06:00:00 +0000
+Message-ID: <20260714.132@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+Wait, look at this IP: 198.51.100.45. It's hammering the `/api/v1/auth/token` endpoint with anomalous payloads containing nested JSON structures.
+
+Detailed Diagnostic Dump #132:
+- Node: ip-10-0-132-22.ec2.internal
+- Heap Usage: 196GB
+- Active Threads: 910
+------------------------------------------------------------------------
+
+From: Diana Prince <diana.prince@ciso.corp>
+To: Eve Polastri <eve.polastri@infra.corp>
+Subject: Re: Forensic Analysis of AWS IAM Role Assumption [Ref-133]
+Date: Wed, 15 Jul 2026 06:10:00 +0000
+Message-ID: <20260714.133@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+Could this be related to the newly disclosed CVE-2026-3891? The vulnerability affects Envoy and custom ingress proxies handling malformed HTTP/2 headers.
+
+Detailed Diagnostic Dump #133:
+- Node: ip-10-0-133-22.ec2.internal
+- Heap Usage: 197GB
+- Active Threads: 915
+------------------------------------------------------------------------
+
+From: Eve Polastri <eve.polastri@infra.corp>
+To: Alice Vance <alice.vance@security.corp>
+Subject: Re: Patch Deployment and Rollback Plan [Ref-134]
+Date: Wed, 15 Jul 2026 06:20:00 +0000
+Message-ID: <20260714.134@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+Checking AWS CloudTrail... ARN `arn:aws:iam::123456789012:role/ProductionS3Accessor` was assumed from an unusual external IP at 07:42 UTC.
+
+Detailed Diagnostic Dump #134:
+- Node: ip-10-0-134-22.ec2.internal
+- Heap Usage: 198GB
+- Active Threads: 920
+------------------------------------------------------------------------
+
+From: Alice Vance <alice.vance@security.corp>
+To: Bob Smith <bob.smith@sre.corp>
+Subject: Re: CRITICAL: Production Outage in US-East-1 Cluster [Ref-135]
+Date: Wed, 15 Jul 2026 06:30:00 +0000
+Message-ID: <20260714.135@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+We are seeing high error rates (502/504) across all ingress gateways in us-east-1. Initial logs point to pod crashloops in deployment/auth-gateway.
+
+Detailed Diagnostic Dump #135:
+- Node: ip-10-0-135-22.ec2.internal
+- Heap Usage: 199GB
+- Active Threads: 925
+------------------------------------------------------------------------
+
+From: Bob Smith <bob.smith@sre.corp>
+To: Charlie Davis <charlie.davis@dev.corp>
+Subject: Re: Update on Pod Failures and Memory Leaks [Ref-136]
+Date: Wed, 15 Jul 2026 06:40:00 +0000
+Message-ID: <20260714.136@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+Checking the logs now. `kubectl logs -n production deployment/auth-gateway --tail=100` shows `Segmentation fault` followed by panic in Go runtime.
+
+Detailed Diagnostic Dump #136:
+- Node: ip-10-0-136-22.ec2.internal
+- Heap Usage: 200GB
+- Active Threads: 930
+------------------------------------------------------------------------
+
+From: Charlie Davis <charlie.davis@dev.corp>
+To: Diana Prince <diana.prince@ciso.corp>
+Subject: Re: CVE-2026-3891 Exploited in Ingress Gateway? [Ref-137]
+Date: Wed, 15 Jul 2026 06:50:00 +0000
+Message-ID: <20260714.137@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+Wait, look at this IP: 198.51.100.45. It's hammering the `/api/v1/auth/token` endpoint with anomalous payloads containing nested JSON structures.
+
+Detailed Diagnostic Dump #137:
+- Node: ip-10-0-137-22.ec2.internal
+- Heap Usage: 201GB
+- Active Threads: 935
+------------------------------------------------------------------------
+
+From: Diana Prince <diana.prince@ciso.corp>
+To: Eve Polastri <eve.polastri@infra.corp>
+Subject: Re: Forensic Analysis of AWS IAM Role Assumption [Ref-138]
+Date: Wed, 15 Jul 2026 07:00:00 +0000
+Message-ID: <20260714.138@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+Could this be related to the newly disclosed CVE-2026-3891? The vulnerability affects Envoy and custom ingress proxies handling malformed HTTP/2 headers.
+
+Detailed Diagnostic Dump #138:
+- Node: ip-10-0-138-22.ec2.internal
+- Heap Usage: 202GB
+- Active Threads: 940
+------------------------------------------------------------------------
+
+From: Eve Polastri <eve.polastri@infra.corp>
+To: Alice Vance <alice.vance@security.corp>
+Subject: Re: Patch Deployment and Rollback Plan [Ref-139]
+Date: Wed, 15 Jul 2026 07:10:00 +0000
+Message-ID: <20260714.139@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+Checking AWS CloudTrail... ARN `arn:aws:iam::123456789012:role/ProductionS3Accessor` was assumed from an unusual external IP at 07:42 UTC.
+
+Detailed Diagnostic Dump #139:
+- Node: ip-10-0-139-22.ec2.internal
+- Heap Usage: 203GB
+- Active Threads: 945
+------------------------------------------------------------------------
+
+From: Alice Vance <alice.vance@security.corp>
+To: Bob Smith <bob.smith@sre.corp>
+Subject: Re: CRITICAL: Production Outage in US-East-1 Cluster [Ref-140]
+Date: Wed, 15 Jul 2026 07:20:00 +0000
+Message-ID: <20260714.140@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+We are seeing high error rates (502/504) across all ingress gateways in us-east-1. Initial logs point to pod crashloops in deployment/auth-gateway.
+
+Detailed Diagnostic Dump #140:
+- Node: ip-10-0-140-22.ec2.internal
+- Heap Usage: 204GB
+- Active Threads: 950
+------------------------------------------------------------------------
+
+From: Bob Smith <bob.smith@sre.corp>
+To: Charlie Davis <charlie.davis@dev.corp>
+Subject: Re: Update on Pod Failures and Memory Leaks [Ref-141]
+Date: Wed, 15 Jul 2026 07:30:00 +0000
+Message-ID: <20260714.141@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+Checking the logs now. `kubectl logs -n production deployment/auth-gateway --tail=100` shows `Segmentation fault` followed by panic in Go runtime.
+
+Detailed Diagnostic Dump #141:
+- Node: ip-10-0-141-22.ec2.internal
+- Heap Usage: 205GB
+- Active Threads: 955
+------------------------------------------------------------------------
+
+From: Charlie Davis <charlie.davis@dev.corp>
+To: Diana Prince <diana.prince@ciso.corp>
+Subject: Re: CVE-2026-3891 Exploited in Ingress Gateway? [Ref-142]
+Date: Wed, 15 Jul 2026 07:40:00 +0000
+Message-ID: <20260714.142@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+Wait, look at this IP: 198.51.100.45. It's hammering the `/api/v1/auth/token` endpoint with anomalous payloads containing nested JSON structures.
+
+Detailed Diagnostic Dump #142:
+- Node: ip-10-0-142-22.ec2.internal
+- Heap Usage: 206GB
+- Active Threads: 960
+------------------------------------------------------------------------
+
+From: Diana Prince <diana.prince@ciso.corp>
+To: Eve Polastri <eve.polastri@infra.corp>
+Subject: Re: Forensic Analysis of AWS IAM Role Assumption [Ref-143]
+Date: Wed, 15 Jul 2026 07:50:00 +0000
+Message-ID: <20260714.143@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+Could this be related to the newly disclosed CVE-2026-3891? The vulnerability affects Envoy and custom ingress proxies handling malformed HTTP/2 headers.
+
+Detailed Diagnostic Dump #143:
+- Node: ip-10-0-143-22.ec2.internal
+- Heap Usage: 207GB
+- Active Threads: 965
+------------------------------------------------------------------------
+
+From: Eve Polastri <eve.polastri@infra.corp>
+To: Alice Vance <alice.vance@security.corp>
+Subject: Re: Patch Deployment and Rollback Plan [Ref-144]
+Date: Wed, 15 Jul 2026 08:00:00 +0000
+Message-ID: <20260714.144@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+Checking AWS CloudTrail... ARN `arn:aws:iam::123456789012:role/ProductionS3Accessor` was assumed from an unusual external IP at 07:42 UTC.
+
+Detailed Diagnostic Dump #144:
+- Node: ip-10-0-144-22.ec2.internal
+- Heap Usage: 208GB
+- Active Threads: 970
+------------------------------------------------------------------------
+
+From: Alice Vance <alice.vance@security.corp>
+To: Bob Smith <bob.smith@sre.corp>
+Subject: Re: CRITICAL: Production Outage in US-East-1 Cluster [Ref-145]
+Date: Wed, 15 Jul 2026 08:10:00 +0000
+Message-ID: <20260714.145@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+We are seeing high error rates (502/504) across all ingress gateways in us-east-1. Initial logs point to pod crashloops in deployment/auth-gateway.
+
+Detailed Diagnostic Dump #145:
+- Node: ip-10-0-145-22.ec2.internal
+- Heap Usage: 209GB
+- Active Threads: 975
+------------------------------------------------------------------------
+
+From: Bob Smith <bob.smith@sre.corp>
+To: Charlie Davis <charlie.davis@dev.corp>
+Subject: Re: Update on Pod Failures and Memory Leaks [Ref-146]
+Date: Wed, 15 Jul 2026 08:20:00 +0000
+Message-ID: <20260714.146@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+Checking the logs now. `kubectl logs -n production deployment/auth-gateway --tail=100` shows `Segmentation fault` followed by panic in Go runtime.
+
+Detailed Diagnostic Dump #146:
+- Node: ip-10-0-146-22.ec2.internal
+- Heap Usage: 210GB
+- Active Threads: 980
+------------------------------------------------------------------------
+
+From: Charlie Davis <charlie.davis@dev.corp>
+To: Diana Prince <diana.prince@ciso.corp>
+Subject: Re: CVE-2026-3891 Exploited in Ingress Gateway? [Ref-147]
+Date: Wed, 15 Jul 2026 08:30:00 +0000
+Message-ID: <20260714.147@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+Wait, look at this IP: 198.51.100.45. It's hammering the `/api/v1/auth/token` endpoint with anomalous payloads containing nested JSON structures.
+
+Detailed Diagnostic Dump #147:
+- Node: ip-10-0-147-22.ec2.internal
+- Heap Usage: 211GB
+- Active Threads: 985
+------------------------------------------------------------------------
+
+From: Diana Prince <diana.prince@ciso.corp>
+To: Eve Polastri <eve.polastri@infra.corp>
+Subject: Re: Forensic Analysis of AWS IAM Role Assumption [Ref-148]
+Date: Wed, 15 Jul 2026 08:40:00 +0000
+Message-ID: <20260714.148@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+Could this be related to the newly disclosed CVE-2026-3891? The vulnerability affects Envoy and custom ingress proxies handling malformed HTTP/2 headers.
+
+Detailed Diagnostic Dump #148:
+- Node: ip-10-0-148-22.ec2.internal
+- Heap Usage: 212GB
+- Active Threads: 990
+------------------------------------------------------------------------
+
+From: Eve Polastri <eve.polastri@infra.corp>
+To: Alice Vance <alice.vance@security.corp>
+Subject: Re: Patch Deployment and Rollback Plan [Ref-149]
+Date: Wed, 15 Jul 2026 08:50:00 +0000
+Message-ID: <20260714.149@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+Checking AWS CloudTrail... ARN `arn:aws:iam::123456789012:role/ProductionS3Accessor` was assumed from an unusual external IP at 07:42 UTC.
+
+Detailed Diagnostic Dump #149:
+- Node: ip-10-0-149-22.ec2.internal
+- Heap Usage: 213GB
+- Active Threads: 995
+------------------------------------------------------------------------
+
+From: Alice Vance <alice.vance@security.corp>
+To: Bob Smith <bob.smith@sre.corp>
+Subject: Re: CRITICAL: Production Outage in US-East-1 Cluster [Ref-150]
+Date: Wed, 15 Jul 2026 09:00:00 +0000
+Message-ID: <20260714.150@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+We are seeing high error rates (502/504) across all ingress gateways in us-east-1. Initial logs point to pod crashloops in deployment/auth-gateway.
+
+Detailed Diagnostic Dump #150:
+- Node: ip-10-0-150-22.ec2.internal
+- Heap Usage: 214GB
+- Active Threads: 1000
+------------------------------------------------------------------------
+
+From: Bob Smith <bob.smith@sre.corp>
+To: Charlie Davis <charlie.davis@dev.corp>
+Subject: Re: Update on Pod Failures and Memory Leaks [Ref-151]
+Date: Wed, 15 Jul 2026 09:10:00 +0000
+Message-ID: <20260714.151@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+Checking the logs now. `kubectl logs -n production deployment/auth-gateway --tail=100` shows `Segmentation fault` followed by panic in Go runtime.
+
+Detailed Diagnostic Dump #151:
+- Node: ip-10-0-151-22.ec2.internal
+- Heap Usage: 215GB
+- Active Threads: 1005
+------------------------------------------------------------------------
+
+From: Charlie Davis <charlie.davis@dev.corp>
+To: Diana Prince <diana.prince@ciso.corp>
+Subject: Re: CVE-2026-3891 Exploited in Ingress Gateway? [Ref-152]
+Date: Wed, 15 Jul 2026 09:20:00 +0000
+Message-ID: <20260714.152@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+Wait, look at this IP: 198.51.100.45. It's hammering the `/api/v1/auth/token` endpoint with anomalous payloads containing nested JSON structures.
+
+Detailed Diagnostic Dump #152:
+- Node: ip-10-0-152-22.ec2.internal
+- Heap Usage: 216GB
+- Active Threads: 1010
+------------------------------------------------------------------------
+
+From: Diana Prince <diana.prince@ciso.corp>
+To: Eve Polastri <eve.polastri@infra.corp>
+Subject: Re: Forensic Analysis of AWS IAM Role Assumption [Ref-153]
+Date: Wed, 15 Jul 2026 09:30:00 +0000
+Message-ID: <20260714.153@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+Could this be related to the newly disclosed CVE-2026-3891? The vulnerability affects Envoy and custom ingress proxies handling malformed HTTP/2 headers.
+
+Detailed Diagnostic Dump #153:
+- Node: ip-10-0-153-22.ec2.internal
+- Heap Usage: 217GB
+- Active Threads: 1015
+------------------------------------------------------------------------
+
+From: Eve Polastri <eve.polastri@infra.corp>
+To: Alice Vance <alice.vance@security.corp>
+Subject: Re: Patch Deployment and Rollback Plan [Ref-154]
+Date: Wed, 15 Jul 2026 09:40:00 +0000
+Message-ID: <20260714.154@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+Checking AWS CloudTrail... ARN `arn:aws:iam::123456789012:role/ProductionS3Accessor` was assumed from an unusual external IP at 07:42 UTC.
+
+Detailed Diagnostic Dump #154:
+- Node: ip-10-0-154-22.ec2.internal
+- Heap Usage: 218GB
+- Active Threads: 1020
+------------------------------------------------------------------------
+
+From: Alice Vance <alice.vance@security.corp>
+To: Bob Smith <bob.smith@sre.corp>
+Subject: Re: CRITICAL: Production Outage in US-East-1 Cluster [Ref-155]
+Date: Wed, 15 Jul 2026 09:50:00 +0000
+Message-ID: <20260714.155@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+We are seeing high error rates (502/504) across all ingress gateways in us-east-1. Initial logs point to pod crashloops in deployment/auth-gateway.
+
+Detailed Diagnostic Dump #155:
+- Node: ip-10-0-155-22.ec2.internal
+- Heap Usage: 219GB
+- Active Threads: 1025
+------------------------------------------------------------------------
+
+From: Bob Smith <bob.smith@sre.corp>
+To: Charlie Davis <charlie.davis@dev.corp>
+Subject: Re: Update on Pod Failures and Memory Leaks [Ref-156]
+Date: Wed, 15 Jul 2026 10:00:00 +0000
+Message-ID: <20260714.156@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+Checking the logs now. `kubectl logs -n production deployment/auth-gateway --tail=100` shows `Segmentation fault` followed by panic in Go runtime.
+
+Detailed Diagnostic Dump #156:
+- Node: ip-10-0-156-22.ec2.internal
+- Heap Usage: 220GB
+- Active Threads: 1030
+------------------------------------------------------------------------
+
+From: Charlie Davis <charlie.davis@dev.corp>
+To: Diana Prince <diana.prince@ciso.corp>
+Subject: Re: CVE-2026-3891 Exploited in Ingress Gateway? [Ref-157]
+Date: Wed, 15 Jul 2026 10:10:00 +0000
+Message-ID: <20260714.157@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+Wait, look at this IP: 198.51.100.45. It's hammering the `/api/v1/auth/token` endpoint with anomalous payloads containing nested JSON structures.
+
+Detailed Diagnostic Dump #157:
+- Node: ip-10-0-157-22.ec2.internal
+- Heap Usage: 221GB
+- Active Threads: 1035
+------------------------------------------------------------------------
+
+From: Diana Prince <diana.prince@ciso.corp>
+To: Eve Polastri <eve.polastri@infra.corp>
+Subject: Re: Forensic Analysis of AWS IAM Role Assumption [Ref-158]
+Date: Wed, 15 Jul 2026 10:20:00 +0000
+Message-ID: <20260714.158@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+Could this be related to the newly disclosed CVE-2026-3891? The vulnerability affects Envoy and custom ingress proxies handling malformed HTTP/2 headers.
+
+Detailed Diagnostic Dump #158:
+- Node: ip-10-0-158-22.ec2.internal
+- Heap Usage: 222GB
+- Active Threads: 1040
+------------------------------------------------------------------------
+
+From: Eve Polastri <eve.polastri@infra.corp>
+To: Alice Vance <alice.vance@security.corp>
+Subject: Re: Patch Deployment and Rollback Plan [Ref-159]
+Date: Wed, 15 Jul 2026 10:30:00 +0000
+Message-ID: <20260714.159@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+Checking AWS CloudTrail... ARN `arn:aws:iam::123456789012:role/ProductionS3Accessor` was assumed from an unusual external IP at 07:42 UTC.
+
+Detailed Diagnostic Dump #159:
+- Node: ip-10-0-159-22.ec2.internal
+- Heap Usage: 223GB
+- Active Threads: 1045
+------------------------------------------------------------------------
+
+From: Alice Vance <alice.vance@security.corp>
+To: Bob Smith <bob.smith@sre.corp>
+Subject: Re: CRITICAL: Production Outage in US-East-1 Cluster [Ref-160]
+Date: Wed, 15 Jul 2026 10:40:00 +0000
+Message-ID: <20260714.160@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+We are seeing high error rates (502/504) across all ingress gateways in us-east-1. Initial logs point to pod crashloops in deployment/auth-gateway.
+
+Detailed Diagnostic Dump #160:
+- Node: ip-10-0-160-22.ec2.internal
+- Heap Usage: 224GB
+- Active Threads: 1050
+------------------------------------------------------------------------
+
+From: Bob Smith <bob.smith@sre.corp>
+To: Charlie Davis <charlie.davis@dev.corp>
+Subject: Re: Update on Pod Failures and Memory Leaks [Ref-161]
+Date: Wed, 15 Jul 2026 10:50:00 +0000
+Message-ID: <20260714.161@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+Checking the logs now. `kubectl logs -n production deployment/auth-gateway --tail=100` shows `Segmentation fault` followed by panic in Go runtime.
+
+Detailed Diagnostic Dump #161:
+- Node: ip-10-0-161-22.ec2.internal
+- Heap Usage: 225GB
+- Active Threads: 1055
+------------------------------------------------------------------------
+
+From: Charlie Davis <charlie.davis@dev.corp>
+To: Diana Prince <diana.prince@ciso.corp>
+Subject: Re: CVE-2026-3891 Exploited in Ingress Gateway? [Ref-162]
+Date: Wed, 15 Jul 2026 11:00:00 +0000
+Message-ID: <20260714.162@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+Wait, look at this IP: 198.51.100.45. It's hammering the `/api/v1/auth/token` endpoint with anomalous payloads containing nested JSON structures.
+
+Detailed Diagnostic Dump #162:
+- Node: ip-10-0-162-22.ec2.internal
+- Heap Usage: 226GB
+- Active Threads: 1060
+------------------------------------------------------------------------
+
+From: Diana Prince <diana.prince@ciso.corp>
+To: Eve Polastri <eve.polastri@infra.corp>
+Subject: Re: Forensic Analysis of AWS IAM Role Assumption [Ref-163]
+Date: Wed, 15 Jul 2026 11:10:00 +0000
+Message-ID: <20260714.163@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+Could this be related to the newly disclosed CVE-2026-3891? The vulnerability affects Envoy and custom ingress proxies handling malformed HTTP/2 headers.
+
+Detailed Diagnostic Dump #163:
+- Node: ip-10-0-163-22.ec2.internal
+- Heap Usage: 227GB
+- Active Threads: 1065
+------------------------------------------------------------------------
+
+From: Eve Polastri <eve.polastri@infra.corp>
+To: Alice Vance <alice.vance@security.corp>
+Subject: Re: Patch Deployment and Rollback Plan [Ref-164]
+Date: Wed, 15 Jul 2026 11:20:00 +0000
+Message-ID: <20260714.164@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+Checking AWS CloudTrail... ARN `arn:aws:iam::123456789012:role/ProductionS3Accessor` was assumed from an unusual external IP at 07:42 UTC.
+
+Detailed Diagnostic Dump #164:
+- Node: ip-10-0-164-22.ec2.internal
+- Heap Usage: 228GB
+- Active Threads: 1070
+------------------------------------------------------------------------
+
+From: Alice Vance <alice.vance@security.corp>
+To: Bob Smith <bob.smith@sre.corp>
+Subject: Re: CRITICAL: Production Outage in US-East-1 Cluster [Ref-165]
+Date: Wed, 15 Jul 2026 11:30:00 +0000
+Message-ID: <20260714.165@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+We are seeing high error rates (502/504) across all ingress gateways in us-east-1. Initial logs point to pod crashloops in deployment/auth-gateway.
+
+Detailed Diagnostic Dump #165:
+- Node: ip-10-0-165-22.ec2.internal
+- Heap Usage: 229GB
+- Active Threads: 1075
+------------------------------------------------------------------------
+
+From: Bob Smith <bob.smith@sre.corp>
+To: Charlie Davis <charlie.davis@dev.corp>
+Subject: Re: Update on Pod Failures and Memory Leaks [Ref-166]
+Date: Wed, 15 Jul 2026 11:40:00 +0000
+Message-ID: <20260714.166@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+Checking the logs now. `kubectl logs -n production deployment/auth-gateway --tail=100` shows `Segmentation fault` followed by panic in Go runtime.
+
+Detailed Diagnostic Dump #166:
+- Node: ip-10-0-166-22.ec2.internal
+- Heap Usage: 230GB
+- Active Threads: 1080
+------------------------------------------------------------------------
+
+From: Charlie Davis <charlie.davis@dev.corp>
+To: Diana Prince <diana.prince@ciso.corp>
+Subject: Re: CVE-2026-3891 Exploited in Ingress Gateway? [Ref-167]
+Date: Wed, 15 Jul 2026 11:50:00 +0000
+Message-ID: <20260714.167@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+Wait, look at this IP: 198.51.100.45. It's hammering the `/api/v1/auth/token` endpoint with anomalous payloads containing nested JSON structures.
+
+Detailed Diagnostic Dump #167:
+- Node: ip-10-0-167-22.ec2.internal
+- Heap Usage: 231GB
+- Active Threads: 1085
+------------------------------------------------------------------------
+
+From: Diana Prince <diana.prince@ciso.corp>
+To: Eve Polastri <eve.polastri@infra.corp>
+Subject: Re: Forensic Analysis of AWS IAM Role Assumption [Ref-168]
+Date: Wed, 15 Jul 2026 12:00:00 +0000
+Message-ID: <20260714.168@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+Could this be related to the newly disclosed CVE-2026-3891? The vulnerability affects Envoy and custom ingress proxies handling malformed HTTP/2 headers.
+
+Detailed Diagnostic Dump #168:
+- Node: ip-10-0-168-22.ec2.internal
+- Heap Usage: 232GB
+- Active Threads: 1090
+------------------------------------------------------------------------
+
+From: Eve Polastri <eve.polastri@infra.corp>
+To: Alice Vance <alice.vance@security.corp>
+Subject: Re: Patch Deployment and Rollback Plan [Ref-169]
+Date: Wed, 15 Jul 2026 12:10:00 +0000
+Message-ID: <20260714.169@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+Checking AWS CloudTrail... ARN `arn:aws:iam::123456789012:role/ProductionS3Accessor` was assumed from an unusual external IP at 07:42 UTC.
+
+Detailed Diagnostic Dump #169:
+- Node: ip-10-0-169-22.ec2.internal
+- Heap Usage: 233GB
+- Active Threads: 1095
+------------------------------------------------------------------------
+
+From: Alice Vance <alice.vance@security.corp>
+To: Bob Smith <bob.smith@sre.corp>
+Subject: Re: CRITICAL: Production Outage in US-East-1 Cluster [Ref-170]
+Date: Wed, 15 Jul 2026 12:20:00 +0000
+Message-ID: <20260714.170@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+We are seeing high error rates (502/504) across all ingress gateways in us-east-1. Initial logs point to pod crashloops in deployment/auth-gateway.
+
+Detailed Diagnostic Dump #170:
+- Node: ip-10-0-170-22.ec2.internal
+- Heap Usage: 234GB
+- Active Threads: 1100
+------------------------------------------------------------------------
+
+From: Bob Smith <bob.smith@sre.corp>
+To: Charlie Davis <charlie.davis@dev.corp>
+Subject: Re: Update on Pod Failures and Memory Leaks [Ref-171]
+Date: Wed, 15 Jul 2026 12:30:00 +0000
+Message-ID: <20260714.171@security.corp>
+Content-Type: text/plain; charset="UTF-8"
+
+Checking the logs now. `kubectl logs -n production deployment/auth-gateway --tail=100` shows `Segmentation fault` followed by panic in Go runtime.
+
+Detailed Diagnostic Dump #171:
+- Node: ip-10-0-171-22.ec2.internal
+- Heap Usage: 235GB
+- Active Threads: 1105
+------------------------------------------------------------------------
+

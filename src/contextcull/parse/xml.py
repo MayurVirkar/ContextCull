@@ -34,12 +34,14 @@ def parse_xml_blocks(ingest: IngestionResult) -> list[Block]:
     def find_span(content: str) -> tuple[int, int]:
         nonlocal char_pos
         idx = clean_text.find(content, char_pos)
+        if idx == -1:
+            idx = clean_text.find(content, 0)
         if idx != -1:
             start_c = idx
             end_c = idx + len(content)
             char_pos = end_c
             return start_c, end_c
-        return 0, len(clean_text)
+        return 0, 0
 
     # Process children
     for elem in root.iter():
@@ -75,7 +77,12 @@ def parse_xml_blocks(ingest: IngestionResult) -> list[Block]:
                 kind=BlockKind.STRUCTURED,
                 sources=(span,),
                 text=node_text,
-                metadata={"tag": tag_name, "attributes": elem.attrib, "formatted": block_text},
+                metadata={
+                    "kind": "rewrite",
+                    "tag": tag_name,
+                    "attributes": elem.attrib,
+                    "formatted": block_text,
+                },
             )
         )
 

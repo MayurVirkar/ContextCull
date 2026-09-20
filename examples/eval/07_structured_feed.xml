@@ -1,19 +1,1678 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-    <title>Acme Security Advisories</title>
-    <updated>2026-07-14T12:00:00Z</updated>
-    <entry>
-        <id>urn:uuid:6c9b3a11-89e4-42b7-a38f-998822001122</id>
-        <title>Advisory ACME-2026-08: Remote Code Execution in API Gateway</title>
-        <updated>2026-07-14T10:15:00Z</updated>
-        <summary>A critical vulnerability CVE-2026-88192 was identified in the API Gateway authentication filter. Attackers could bypass token verification by sending crafted HTTP headers.</summary>
-        <author><name>Security Response Team</name></author>
-    </entry>
-    <entry>
-        <id>urn:uuid:7d1c4b22-90f5-53c8-b49a-001133112233</id>
-        <title>Advisory ACME-2026-09: Denial of Service in Session Store</title>
-        <updated>2026-07-13T16:30:00Z</updated>
-        <summary>Vulnerability CVE-2026-77180 allows unauthenticated attackers to cause memory exhaustion in Redis cluster nodes by transmitting malformed WebSocket frames.</summary>
-        <author><name>Platform Engineering</name></author>
-    </entry>
+  <title>Global Security Advisory Feed</title>
+  <entry>
+    <title>Security Advisory CVE-2026-10001</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000001</id>
+    <updated>2026-09-20T18:08:59.370248</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10001 in package cloud-pkg-1. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10002</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000002</id>
+    <updated>2026-09-20T18:08:59.370399</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10002 in package cloud-pkg-2. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10003</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000003</id>
+    <updated>2026-09-20T18:08:59.370849</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10003 in package cloud-pkg-3. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10004</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000004</id>
+    <updated>2026-09-20T18:08:59.371425</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10004 in package cloud-pkg-4. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10005</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000005</id>
+    <updated>2026-09-20T18:08:59.371716</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10005 in package cloud-pkg-5. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10006</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000006</id>
+    <updated>2026-09-20T18:08:59.371961</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10006 in package cloud-pkg-6. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10007</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000007</id>
+    <updated>2026-09-20T18:08:59.372247</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10007 in package cloud-pkg-7. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10008</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000008</id>
+    <updated>2026-09-20T18:08:59.372663</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10008 in package cloud-pkg-8. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10009</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000009</id>
+    <updated>2026-09-20T18:08:59.372939</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10009 in package cloud-pkg-9. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10010</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000010</id>
+    <updated>2026-09-20T18:08:59.373415</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10010 in package cloud-pkg-10. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10011</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000011</id>
+    <updated>2026-09-20T18:08:59.373700</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10011 in package cloud-pkg-11. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10012</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000012</id>
+    <updated>2026-09-20T18:08:59.373989</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10012 in package cloud-pkg-12. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10013</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000013</id>
+    <updated>2026-09-20T18:08:59.374418</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10013 in package cloud-pkg-13. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10014</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000014</id>
+    <updated>2026-09-20T18:08:59.374757</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10014 in package cloud-pkg-14. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10015</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000015</id>
+    <updated>2026-09-20T18:08:59.375104</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10015 in package cloud-pkg-15. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10016</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000016</id>
+    <updated>2026-09-20T18:08:59.375440</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10016 in package cloud-pkg-16. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10017</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000017</id>
+    <updated>2026-09-20T18:08:59.375775</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10017 in package cloud-pkg-17. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10018</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000018</id>
+    <updated>2026-09-20T18:08:59.376219</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10018 in package cloud-pkg-18. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10019</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000019</id>
+    <updated>2026-09-20T18:08:59.376747</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10019 in package cloud-pkg-19. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10020</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000020</id>
+    <updated>2026-09-20T18:08:59.377138</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10020 in package cloud-pkg-20. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10021</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000021</id>
+    <updated>2026-09-20T18:08:59.377467</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10021 in package cloud-pkg-21. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10022</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000022</id>
+    <updated>2026-09-20T18:08:59.377902</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10022 in package cloud-pkg-22. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10023</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000023</id>
+    <updated>2026-09-20T18:08:59.378393</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10023 in package cloud-pkg-23. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10024</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000024</id>
+    <updated>2026-09-20T18:08:59.378847</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10024 in package cloud-pkg-24. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10025</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000025</id>
+    <updated>2026-09-20T18:08:59.379334</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10025 in package cloud-pkg-25. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10026</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000026</id>
+    <updated>2026-09-20T18:08:59.379862</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10026 in package cloud-pkg-26. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10027</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000027</id>
+    <updated>2026-09-20T18:08:59.380285</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10027 in package cloud-pkg-27. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10028</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000028</id>
+    <updated>2026-09-20T18:08:59.380927</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10028 in package cloud-pkg-28. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10029</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000029</id>
+    <updated>2026-09-20T18:08:59.381397</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10029 in package cloud-pkg-29. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10030</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000030</id>
+    <updated>2026-09-20T18:08:59.382087</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10030 in package cloud-pkg-30. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10031</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000031</id>
+    <updated>2026-09-20T18:08:59.382590</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10031 in package cloud-pkg-31. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10032</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000032</id>
+    <updated>2026-09-20T18:08:59.383213</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10032 in package cloud-pkg-32. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10033</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000033</id>
+    <updated>2026-09-20T18:08:59.383767</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10033 in package cloud-pkg-33. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10034</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000034</id>
+    <updated>2026-09-20T18:08:59.384322</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10034 in package cloud-pkg-34. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10035</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000035</id>
+    <updated>2026-09-20T18:08:59.384903</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10035 in package cloud-pkg-35. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10036</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000036</id>
+    <updated>2026-09-20T18:08:59.385751</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10036 in package cloud-pkg-36. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10037</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000037</id>
+    <updated>2026-09-20T18:08:59.386356</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10037 in package cloud-pkg-37. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10038</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000038</id>
+    <updated>2026-09-20T18:08:59.387000</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10038 in package cloud-pkg-38. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10039</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000039</id>
+    <updated>2026-09-20T18:08:59.387539</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10039 in package cloud-pkg-39. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10040</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000040</id>
+    <updated>2026-09-20T18:08:59.388052</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10040 in package cloud-pkg-40. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10041</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000041</id>
+    <updated>2026-09-20T18:08:59.388726</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10041 in package cloud-pkg-41. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10042</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000042</id>
+    <updated>2026-09-20T18:08:59.389215</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10042 in package cloud-pkg-42. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10043</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000043</id>
+    <updated>2026-09-20T18:08:59.389882</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10043 in package cloud-pkg-43. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10044</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000044</id>
+    <updated>2026-09-20T18:08:59.390428</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10044 in package cloud-pkg-44. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10045</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000045</id>
+    <updated>2026-09-20T18:08:59.390965</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10045 in package cloud-pkg-45. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10046</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000046</id>
+    <updated>2026-09-20T18:08:59.391609</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10046 in package cloud-pkg-46. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10047</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000047</id>
+    <updated>2026-09-20T18:08:59.392270</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10047 in package cloud-pkg-47. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10048</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000048</id>
+    <updated>2026-09-20T18:08:59.392850</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10048 in package cloud-pkg-48. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10049</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000049</id>
+    <updated>2026-09-20T18:08:59.393436</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10049 in package cloud-pkg-49. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10050</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000050</id>
+    <updated>2026-09-20T18:08:59.394034</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10050 in package cloud-pkg-50. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10051</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000051</id>
+    <updated>2026-09-20T18:08:59.394648</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10051 in package cloud-pkg-51. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10052</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000052</id>
+    <updated>2026-09-20T18:08:59.395594</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10052 in package cloud-pkg-52. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10053</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000053</id>
+    <updated>2026-09-20T18:08:59.396260</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10053 in package cloud-pkg-53. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10054</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000054</id>
+    <updated>2026-09-20T18:08:59.396953</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10054 in package cloud-pkg-54. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10055</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000055</id>
+    <updated>2026-09-20T18:08:59.397645</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10055 in package cloud-pkg-55. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10056</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000056</id>
+    <updated>2026-09-20T18:08:59.398426</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10056 in package cloud-pkg-56. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10057</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000057</id>
+    <updated>2026-09-20T18:08:59.399190</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10057 in package cloud-pkg-57. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10058</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000058</id>
+    <updated>2026-09-20T18:08:59.399822</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10058 in package cloud-pkg-58. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10059</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000059</id>
+    <updated>2026-09-20T18:08:59.400589</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10059 in package cloud-pkg-59. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10060</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000060</id>
+    <updated>2026-09-20T18:08:59.401491</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10060 in package cloud-pkg-60. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10061</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000061</id>
+    <updated>2026-09-20T18:08:59.402288</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10061 in package cloud-pkg-61. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10062</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000062</id>
+    <updated>2026-09-20T18:08:59.402958</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10062 in package cloud-pkg-62. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10063</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000063</id>
+    <updated>2026-09-20T18:08:59.403687</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10063 in package cloud-pkg-63. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10064</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000064</id>
+    <updated>2026-09-20T18:08:59.404526</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10064 in package cloud-pkg-64. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10065</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000065</id>
+    <updated>2026-09-20T18:08:59.405219</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10065 in package cloud-pkg-65. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10066</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000066</id>
+    <updated>2026-09-20T18:08:59.406019</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10066 in package cloud-pkg-66. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10067</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000067</id>
+    <updated>2026-09-20T18:08:59.406748</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10067 in package cloud-pkg-67. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10068</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000068</id>
+    <updated>2026-09-20T18:08:59.407469</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10068 in package cloud-pkg-68. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10069</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000069</id>
+    <updated>2026-09-20T18:08:59.408235</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10069 in package cloud-pkg-69. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10070</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000070</id>
+    <updated>2026-09-20T18:08:59.409164</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10070 in package cloud-pkg-70. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10071</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000071</id>
+    <updated>2026-09-20T18:08:59.410182</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10071 in package cloud-pkg-71. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10072</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000072</id>
+    <updated>2026-09-20T18:08:59.410866</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10072 in package cloud-pkg-72. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10073</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000073</id>
+    <updated>2026-09-20T18:08:59.411644</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10073 in package cloud-pkg-73. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10074</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000074</id>
+    <updated>2026-09-20T18:08:59.412569</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10074 in package cloud-pkg-74. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10075</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000075</id>
+    <updated>2026-09-20T18:08:59.413290</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10075 in package cloud-pkg-75. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10076</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000076</id>
+    <updated>2026-09-20T18:08:59.414132</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10076 in package cloud-pkg-76. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10077</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000077</id>
+    <updated>2026-09-20T18:08:59.414861</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10077 in package cloud-pkg-77. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10078</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000078</id>
+    <updated>2026-09-20T18:08:59.415529</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10078 in package cloud-pkg-78. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10079</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000079</id>
+    <updated>2026-09-20T18:08:59.416318</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10079 in package cloud-pkg-79. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10080</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000080</id>
+    <updated>2026-09-20T18:08:59.417038</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10080 in package cloud-pkg-80. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10081</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000081</id>
+    <updated>2026-09-20T18:08:59.417672</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10081 in package cloud-pkg-81. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10082</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000082</id>
+    <updated>2026-09-20T18:08:59.418359</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10082 in package cloud-pkg-82. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10083</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000083</id>
+    <updated>2026-09-20T18:08:59.419036</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10083 in package cloud-pkg-83. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10084</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000084</id>
+    <updated>2026-09-20T18:08:59.419699</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10084 in package cloud-pkg-84. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10085</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000085</id>
+    <updated>2026-09-20T18:08:59.420346</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10085 in package cloud-pkg-85. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10086</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000086</id>
+    <updated>2026-09-20T18:08:59.421123</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10086 in package cloud-pkg-86. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10087</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000087</id>
+    <updated>2026-09-20T18:08:59.421895</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10087 in package cloud-pkg-87. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10088</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000088</id>
+    <updated>2026-09-20T18:08:59.422737</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10088 in package cloud-pkg-88. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10089</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000089</id>
+    <updated>2026-09-20T18:08:59.423492</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10089 in package cloud-pkg-89. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10090</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000090</id>
+    <updated>2026-09-20T18:08:59.424221</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10090 in package cloud-pkg-90. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10091</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000091</id>
+    <updated>2026-09-20T18:08:59.425013</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10091 in package cloud-pkg-91. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10092</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000092</id>
+    <updated>2026-09-20T18:08:59.425725</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10092 in package cloud-pkg-92. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10093</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000093</id>
+    <updated>2026-09-20T18:08:59.426605</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10093 in package cloud-pkg-93. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10094</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000094</id>
+    <updated>2026-09-20T18:08:59.427357</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10094 in package cloud-pkg-94. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10095</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000095</id>
+    <updated>2026-09-20T18:08:59.428152</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10095 in package cloud-pkg-95. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10096</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000096</id>
+    <updated>2026-09-20T18:08:59.429015</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10096 in package cloud-pkg-96. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10097</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000097</id>
+    <updated>2026-09-20T18:08:59.429804</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10097 in package cloud-pkg-97. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10098</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000098</id>
+    <updated>2026-09-20T18:08:59.430722</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10098 in package cloud-pkg-98. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10099</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000099</id>
+    <updated>2026-09-20T18:08:59.431433</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10099 in package cloud-pkg-99. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10100</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000100</id>
+    <updated>2026-09-20T18:08:59.432207</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10100 in package cloud-pkg-100. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10101</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000101</id>
+    <updated>2026-09-20T18:08:59.432972</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10101 in package cloud-pkg-101. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10102</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000102</id>
+    <updated>2026-09-20T18:08:59.433789</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10102 in package cloud-pkg-102. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10103</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000103</id>
+    <updated>2026-09-20T18:08:59.434683</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10103 in package cloud-pkg-103. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10104</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000104</id>
+    <updated>2026-09-20T18:08:59.435464</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10104 in package cloud-pkg-104. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10105</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000105</id>
+    <updated>2026-09-20T18:08:59.436367</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10105 in package cloud-pkg-105. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10106</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000106</id>
+    <updated>2026-09-20T18:08:59.437476</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10106 in package cloud-pkg-106. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10107</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000107</id>
+    <updated>2026-09-20T18:08:59.438550</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10107 in package cloud-pkg-107. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10108</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000108</id>
+    <updated>2026-09-20T18:08:59.439553</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10108 in package cloud-pkg-108. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10109</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000109</id>
+    <updated>2026-09-20T18:08:59.440460</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10109 in package cloud-pkg-109. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10110</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000110</id>
+    <updated>2026-09-20T18:08:59.441297</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10110 in package cloud-pkg-110. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10111</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000111</id>
+    <updated>2026-09-20T18:08:59.442112</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10111 in package cloud-pkg-111. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10112</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000112</id>
+    <updated>2026-09-20T18:08:59.442903</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10112 in package cloud-pkg-112. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10113</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000113</id>
+    <updated>2026-09-20T18:08:59.443981</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10113 in package cloud-pkg-113. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10114</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000114</id>
+    <updated>2026-09-20T18:08:59.444818</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10114 in package cloud-pkg-114. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10115</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000115</id>
+    <updated>2026-09-20T18:08:59.445654</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10115 in package cloud-pkg-115. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10116</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000116</id>
+    <updated>2026-09-20T18:08:59.446768</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10116 in package cloud-pkg-116. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10117</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000117</id>
+    <updated>2026-09-20T18:08:59.447610</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10117 in package cloud-pkg-117. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10118</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000118</id>
+    <updated>2026-09-20T18:08:59.448591</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10118 in package cloud-pkg-118. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10119</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000119</id>
+    <updated>2026-09-20T18:08:59.449557</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10119 in package cloud-pkg-119. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10120</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000120</id>
+    <updated>2026-09-20T18:08:59.450455</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10120 in package cloud-pkg-120. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10121</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000121</id>
+    <updated>2026-09-20T18:08:59.451419</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10121 in package cloud-pkg-121. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10122</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000122</id>
+    <updated>2026-09-20T18:08:59.452391</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10122 in package cloud-pkg-122. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10123</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000123</id>
+    <updated>2026-09-20T18:08:59.453226</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10123 in package cloud-pkg-123. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10124</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000124</id>
+    <updated>2026-09-20T18:08:59.454205</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10124 in package cloud-pkg-124. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10125</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000125</id>
+    <updated>2026-09-20T18:08:59.455334</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10125 in package cloud-pkg-125. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10126</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000126</id>
+    <updated>2026-09-20T18:08:59.456365</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10126 in package cloud-pkg-126. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10127</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000127</id>
+    <updated>2026-09-20T18:08:59.457289</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10127 in package cloud-pkg-127. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10128</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000128</id>
+    <updated>2026-09-20T18:08:59.458447</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10128 in package cloud-pkg-128. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10129</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000129</id>
+    <updated>2026-09-20T18:08:59.459437</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10129 in package cloud-pkg-129. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10130</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000130</id>
+    <updated>2026-09-20T18:08:59.460395</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10130 in package cloud-pkg-130. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10131</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000131</id>
+    <updated>2026-09-20T18:08:59.461405</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10131 in package cloud-pkg-131. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10132</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000132</id>
+    <updated>2026-09-20T18:08:59.462337</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10132 in package cloud-pkg-132. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10133</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000133</id>
+    <updated>2026-09-20T18:08:59.463261</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10133 in package cloud-pkg-133. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10134</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000134</id>
+    <updated>2026-09-20T18:08:59.464219</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10134 in package cloud-pkg-134. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10135</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000135</id>
+    <updated>2026-09-20T18:08:59.465140</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10135 in package cloud-pkg-135. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10136</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000136</id>
+    <updated>2026-09-20T18:08:59.466124</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10136 in package cloud-pkg-136. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10137</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000137</id>
+    <updated>2026-09-20T18:08:59.467006</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10137 in package cloud-pkg-137. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10138</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000138</id>
+    <updated>2026-09-20T18:08:59.467994</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10138 in package cloud-pkg-138. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10139</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000139</id>
+    <updated>2026-09-20T18:08:59.468908</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10139 in package cloud-pkg-139. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10140</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000140</id>
+    <updated>2026-09-20T18:08:59.469804</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10140 in package cloud-pkg-140. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10141</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000141</id>
+    <updated>2026-09-20T18:08:59.470849</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10141 in package cloud-pkg-141. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10142</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000142</id>
+    <updated>2026-09-20T18:08:59.471792</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10142 in package cloud-pkg-142. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10143</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000143</id>
+    <updated>2026-09-20T18:08:59.472809</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10143 in package cloud-pkg-143. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10144</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000144</id>
+    <updated>2026-09-20T18:08:59.473751</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10144 in package cloud-pkg-144. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10145</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000145</id>
+    <updated>2026-09-20T18:08:59.474896</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10145 in package cloud-pkg-145. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10146</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000146</id>
+    <updated>2026-09-20T18:08:59.475912</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10146 in package cloud-pkg-146. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10147</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000147</id>
+    <updated>2026-09-20T18:08:59.476887</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10147 in package cloud-pkg-147. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10148</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000148</id>
+    <updated>2026-09-20T18:08:59.477924</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10148 in package cloud-pkg-148. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10149</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000149</id>
+    <updated>2026-09-20T18:08:59.478905</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10149 in package cloud-pkg-149. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10150</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000150</id>
+    <updated>2026-09-20T18:08:59.479876</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10150 in package cloud-pkg-150. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10151</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000151</id>
+    <updated>2026-09-20T18:08:59.480936</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10151 in package cloud-pkg-151. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10152</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000152</id>
+    <updated>2026-09-20T18:08:59.481931</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10152 in package cloud-pkg-152. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10153</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000153</id>
+    <updated>2026-09-20T18:08:59.483023</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10153 in package cloud-pkg-153. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10154</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000154</id>
+    <updated>2026-09-20T18:08:59.484077</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10154 in package cloud-pkg-154. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10155</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000155</id>
+    <updated>2026-09-20T18:08:59.485138</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10155 in package cloud-pkg-155. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10156</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000156</id>
+    <updated>2026-09-20T18:08:59.486092</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10156 in package cloud-pkg-156. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10157</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000157</id>
+    <updated>2026-09-20T18:08:59.487104</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10157 in package cloud-pkg-157. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10158</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000158</id>
+    <updated>2026-09-20T18:08:59.488154</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10158 in package cloud-pkg-158. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10159</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000159</id>
+    <updated>2026-09-20T18:08:59.489193</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10159 in package cloud-pkg-159. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10160</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000160</id>
+    <updated>2026-09-20T18:08:59.490202</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10160 in package cloud-pkg-160. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10161</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000161</id>
+    <updated>2026-09-20T18:08:59.491245</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10161 in package cloud-pkg-161. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10162</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000162</id>
+    <updated>2026-09-20T18:08:59.492239</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10162 in package cloud-pkg-162. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10163</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000163</id>
+    <updated>2026-09-20T18:08:59.493235</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10163 in package cloud-pkg-163. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10164</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000164</id>
+    <updated>2026-09-20T18:08:59.494277</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10164 in package cloud-pkg-164. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10165</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000165</id>
+    <updated>2026-09-20T18:08:59.495500</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10165 in package cloud-pkg-165. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10166</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000166</id>
+    <updated>2026-09-20T18:08:59.496673</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10166 in package cloud-pkg-166. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10167</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000167</id>
+    <updated>2026-09-20T18:08:59.498247</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10167 in package cloud-pkg-167. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10168</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000168</id>
+    <updated>2026-09-20T18:08:59.499494</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10168 in package cloud-pkg-168. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10169</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000169</id>
+    <updated>2026-09-20T18:08:59.500712</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10169 in package cloud-pkg-169. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10170</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000170</id>
+    <updated>2026-09-20T18:08:59.501758</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10170 in package cloud-pkg-170. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10171</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000171</id>
+    <updated>2026-09-20T18:08:59.502882</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10171 in package cloud-pkg-171. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10172</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000172</id>
+    <updated>2026-09-20T18:08:59.503948</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10172 in package cloud-pkg-172. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10173</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000173</id>
+    <updated>2026-09-20T18:08:59.505074</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10173 in package cloud-pkg-173. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10174</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000174</id>
+    <updated>2026-09-20T18:08:59.506311</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10174 in package cloud-pkg-174. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10175</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000175</id>
+    <updated>2026-09-20T18:08:59.507559</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10175 in package cloud-pkg-175. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10176</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000176</id>
+    <updated>2026-09-20T18:08:59.508792</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10176 in package cloud-pkg-176. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10177</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000177</id>
+    <updated>2026-09-20T18:08:59.509907</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10177 in package cloud-pkg-177. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10178</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000178</id>
+    <updated>2026-09-20T18:08:59.511171</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10178 in package cloud-pkg-178. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10179</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000179</id>
+    <updated>2026-09-20T18:08:59.512281</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10179 in package cloud-pkg-179. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10180</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000180</id>
+    <updated>2026-09-20T18:08:59.513318</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10180 in package cloud-pkg-180. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10181</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000181</id>
+    <updated>2026-09-20T18:08:59.514473</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10181 in package cloud-pkg-181. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10182</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000182</id>
+    <updated>2026-09-20T18:08:59.515677</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10182 in package cloud-pkg-182. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10183</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000183</id>
+    <updated>2026-09-20T18:08:59.517014</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10183 in package cloud-pkg-183. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10184</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000184</id>
+    <updated>2026-09-20T18:08:59.518477</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10184 in package cloud-pkg-184. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10185</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000185</id>
+    <updated>2026-09-20T18:08:59.519636</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10185 in package cloud-pkg-185. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10186</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000186</id>
+    <updated>2026-09-20T18:08:59.520721</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10186 in package cloud-pkg-186. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10187</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000187</id>
+    <updated>2026-09-20T18:08:59.521849</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10187 in package cloud-pkg-187. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10188</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000188</id>
+    <updated>2026-09-20T18:08:59.523038</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10188 in package cloud-pkg-188. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10189</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000189</id>
+    <updated>2026-09-20T18:08:59.524207</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10189 in package cloud-pkg-189. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10190</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000190</id>
+    <updated>2026-09-20T18:08:59.525354</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10190 in package cloud-pkg-190. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10191</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000191</id>
+    <updated>2026-09-20T18:08:59.526461</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10191 in package cloud-pkg-191. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10192</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000192</id>
+    <updated>2026-09-20T18:08:59.527774</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10192 in package cloud-pkg-192. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10193</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000193</id>
+    <updated>2026-09-20T18:08:59.529030</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10193 in package cloud-pkg-193. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10194</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000194</id>
+    <updated>2026-09-20T18:08:59.530247</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10194 in package cloud-pkg-194. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10195</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000195</id>
+    <updated>2026-09-20T18:08:59.531545</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10195 in package cloud-pkg-195. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10196</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000196</id>
+    <updated>2026-09-20T18:08:59.532807</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10196 in package cloud-pkg-196. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10197</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000197</id>
+    <updated>2026-09-20T18:08:59.534135</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10197 in package cloud-pkg-197. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10198</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000198</id>
+    <updated>2026-09-20T18:08:59.535565</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10198 in package cloud-pkg-198. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10199</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000199</id>
+    <updated>2026-09-20T18:08:59.536822</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10199 in package cloud-pkg-199. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10200</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000200</id>
+    <updated>2026-09-20T18:08:59.538301</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10200 in package cloud-pkg-200. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10201</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000201</id>
+    <updated>2026-09-20T18:08:59.539710</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10201 in package cloud-pkg-201. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10202</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000202</id>
+    <updated>2026-09-20T18:08:59.541031</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10202 in package cloud-pkg-202. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10203</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000203</id>
+    <updated>2026-09-20T18:08:59.542351</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10203 in package cloud-pkg-203. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10204</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000204</id>
+    <updated>2026-09-20T18:08:59.543850</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10204 in package cloud-pkg-204. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10205</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000205</id>
+    <updated>2026-09-20T18:08:59.545234</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10205 in package cloud-pkg-205. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10206</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000206</id>
+    <updated>2026-09-20T18:08:59.546423</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10206 in package cloud-pkg-206. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10207</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000207</id>
+    <updated>2026-09-20T18:08:59.547639</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10207 in package cloud-pkg-207. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10208</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000208</id>
+    <updated>2026-09-20T18:08:59.548945</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10208 in package cloud-pkg-208. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10209</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000209</id>
+    <updated>2026-09-20T18:08:59.550227</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10209 in package cloud-pkg-209. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10210</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000210</id>
+    <updated>2026-09-20T18:08:59.551511</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10210 in package cloud-pkg-210. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10211</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000211</id>
+    <updated>2026-09-20T18:08:59.552808</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10211 in package cloud-pkg-211. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10212</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000212</id>
+    <updated>2026-09-20T18:08:59.554184</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10212 in package cloud-pkg-212. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10213</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000213</id>
+    <updated>2026-09-20T18:08:59.555391</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10213 in package cloud-pkg-213. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10214</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000214</id>
+    <updated>2026-09-20T18:08:59.556946</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10214 in package cloud-pkg-214. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10215</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000215</id>
+    <updated>2026-09-20T18:08:59.558246</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10215 in package cloud-pkg-215. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10216</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000216</id>
+    <updated>2026-09-20T18:08:59.559468</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10216 in package cloud-pkg-216. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10217</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000217</id>
+    <updated>2026-09-20T18:08:59.560715</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10217 in package cloud-pkg-217. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10218</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000218</id>
+    <updated>2026-09-20T18:08:59.562055</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10218 in package cloud-pkg-218. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10219</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000219</id>
+    <updated>2026-09-20T18:08:59.563494</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10219 in package cloud-pkg-219. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10220</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000220</id>
+    <updated>2026-09-20T18:08:59.564899</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10220 in package cloud-pkg-220. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10221</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000221</id>
+    <updated>2026-09-20T18:08:59.566195</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10221 in package cloud-pkg-221. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10222</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000222</id>
+    <updated>2026-09-20T18:08:59.567466</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10222 in package cloud-pkg-222. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10223</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000223</id>
+    <updated>2026-09-20T18:08:59.568754</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10223 in package cloud-pkg-223. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10224</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000224</id>
+    <updated>2026-09-20T18:08:59.570181</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10224 in package cloud-pkg-224. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10225</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000225</id>
+    <updated>2026-09-20T18:08:59.571476</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10225 in package cloud-pkg-225. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10226</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000226</id>
+    <updated>2026-09-20T18:08:59.572809</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10226 in package cloud-pkg-226. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10227</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000227</id>
+    <updated>2026-09-20T18:08:59.574076</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10227 in package cloud-pkg-227. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10228</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000228</id>
+    <updated>2026-09-20T18:08:59.575338</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10228 in package cloud-pkg-228. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10229</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000229</id>
+    <updated>2026-09-20T18:08:59.576659</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10229 in package cloud-pkg-229. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10230</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000230</id>
+    <updated>2026-09-20T18:08:59.577987</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10230 in package cloud-pkg-230. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10231</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000231</id>
+    <updated>2026-09-20T18:08:59.579268</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10231 in package cloud-pkg-231. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10232</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000232</id>
+    <updated>2026-09-20T18:08:59.580570</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10232 in package cloud-pkg-232. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10233</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000233</id>
+    <updated>2026-09-20T18:08:59.581839</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10233 in package cloud-pkg-233. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10234</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000234</id>
+    <updated>2026-09-20T18:08:59.583136</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10234 in package cloud-pkg-234. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10235</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000235</id>
+    <updated>2026-09-20T18:08:59.584490</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10235 in package cloud-pkg-235. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10236</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000236</id>
+    <updated>2026-09-20T18:08:59.585793</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10236 in package cloud-pkg-236. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10237</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000237</id>
+    <updated>2026-09-20T18:08:59.587132</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10237 in package cloud-pkg-237. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10238</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000238</id>
+    <updated>2026-09-20T18:08:59.588555</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10238 in package cloud-pkg-238. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10239</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000239</id>
+    <updated>2026-09-20T18:08:59.589936</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10239 in package cloud-pkg-239. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10240</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000240</id>
+    <updated>2026-09-20T18:08:59.591395</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10240 in package cloud-pkg-240. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10241</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000241</id>
+    <updated>2026-09-20T18:08:59.592927</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10241 in package cloud-pkg-241. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10242</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000242</id>
+    <updated>2026-09-20T18:08:59.594625</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10242 in package cloud-pkg-242. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10243</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000243</id>
+    <updated>2026-09-20T18:08:59.595981</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10243 in package cloud-pkg-243. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10244</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000244</id>
+    <updated>2026-09-20T18:08:59.597400</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10244 in package cloud-pkg-244. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10245</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000245</id>
+    <updated>2026-09-20T18:08:59.598739</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10245 in package cloud-pkg-245. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10246</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000246</id>
+    <updated>2026-09-20T18:08:59.600491</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10246 in package cloud-pkg-246. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10247</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000247</id>
+    <updated>2026-09-20T18:08:59.601990</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10247 in package cloud-pkg-247. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10248</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000248</id>
+    <updated>2026-09-20T18:08:59.603402</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10248 in package cloud-pkg-248. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10249</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000249</id>
+    <updated>2026-09-20T18:08:59.604955</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10249 in package cloud-pkg-249. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10250</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000250</id>
+    <updated>2026-09-20T18:08:59.606408</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10250 in package cloud-pkg-250. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10251</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000251</id>
+    <updated>2026-09-20T18:08:59.607924</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10251 in package cloud-pkg-251. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10252</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000252</id>
+    <updated>2026-09-20T18:08:59.609421</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10252 in package cloud-pkg-252. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10253</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000253</id>
+    <updated>2026-09-20T18:08:59.610883</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10253 in package cloud-pkg-253. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10254</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000254</id>
+    <updated>2026-09-20T18:08:59.612252</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10254 in package cloud-pkg-254. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10255</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000255</id>
+    <updated>2026-09-20T18:08:59.613781</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10255 in package cloud-pkg-255. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10256</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000256</id>
+    <updated>2026-09-20T18:08:59.615310</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10256 in package cloud-pkg-256. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10257</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000257</id>
+    <updated>2026-09-20T18:08:59.616771</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10257 in package cloud-pkg-257. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10258</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000258</id>
+    <updated>2026-09-20T18:08:59.618126</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10258 in package cloud-pkg-258. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10259</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000259</id>
+    <updated>2026-09-20T18:08:59.619546</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10259 in package cloud-pkg-259. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10260</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000260</id>
+    <updated>2026-09-20T18:08:59.621052</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10260 in package cloud-pkg-260. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10261</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000261</id>
+    <updated>2026-09-20T18:08:59.622533</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10261 in package cloud-pkg-261. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10262</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000262</id>
+    <updated>2026-09-20T18:08:59.623931</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10262 in package cloud-pkg-262. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10263</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000263</id>
+    <updated>2026-09-20T18:08:59.625339</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10263 in package cloud-pkg-263. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10264</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000264</id>
+    <updated>2026-09-20T18:08:59.626906</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10264 in package cloud-pkg-264. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10265</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000265</id>
+    <updated>2026-09-20T18:08:59.628314</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10265 in package cloud-pkg-265. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10266</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000266</id>
+    <updated>2026-09-20T18:08:59.629710</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10266 in package cloud-pkg-266. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10267</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000267</id>
+    <updated>2026-09-20T18:08:59.631360</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10267 in package cloud-pkg-267. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10268</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000268</id>
+    <updated>2026-09-20T18:08:59.632847</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10268 in package cloud-pkg-268. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10269</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000269</id>
+    <updated>2026-09-20T18:08:59.634420</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10269 in package cloud-pkg-269. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10270</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000270</id>
+    <updated>2026-09-20T18:08:59.635975</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10270 in package cloud-pkg-270. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10271</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000271</id>
+    <updated>2026-09-20T18:08:59.637404</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10271 in package cloud-pkg-271. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10272</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000272</id>
+    <updated>2026-09-20T18:08:59.638997</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10272 in package cloud-pkg-272. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10273</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000273</id>
+    <updated>2026-09-20T18:08:59.640513</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10273 in package cloud-pkg-273. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10274</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000274</id>
+    <updated>2026-09-20T18:08:59.642120</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10274 in package cloud-pkg-274. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10275</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000275</id>
+    <updated>2026-09-20T18:08:59.643572</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10275 in package cloud-pkg-275. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10276</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000276</id>
+    <updated>2026-09-20T18:08:59.645248</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10276 in package cloud-pkg-276. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10277</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000277</id>
+    <updated>2026-09-20T18:08:59.646771</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10277 in package cloud-pkg-277. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10278</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000278</id>
+    <updated>2026-09-20T18:08:59.648375</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10278 in package cloud-pkg-278. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
+  <entry>
+    <title>Security Advisory CVE-2026-10279</title>
+    <id>urn:uuid:12345678-1234-5678-1234-000000000279</id>
+    <updated>2026-09-20T18:08:59.649857</updated>
+    <content type="html">&amp;lt;p&amp;gt;Vulnerability CVE-2026-10279 in package cloud-pkg-279. CVSS: 9.8. Detailed remediation steps and patch guidelines.&amp;lt;/p&amp;gt;</content>
+  </entry>
 </feed>
