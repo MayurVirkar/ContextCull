@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
-# TEP v2 Comprehensive Quality, Security, and Correctness Gate
+# ContextForge Comprehensive Quality, Security, and Correctness Gate
 set -euo pipefail
 
 echo "================================================================="
-echo "  TEP v2 Quality & Security Gate"
+echo "  ContextForge Quality & Security Gate"
 echo "================================================================="
 
 echo -e "\n[1/6] Checking Code Formatting (Ruff)..."

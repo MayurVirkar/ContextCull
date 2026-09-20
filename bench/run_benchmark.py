@@ -1,4 +1,4 @@
-"""Reproducible empirical benchmark comparing TEP v2 against Sumy (LexRank and LSA)."""
+"""Reproducible empirical benchmark comparing ContextForge against Sumy (LexRank and LSA)."""
 
 from __future__ import annotations
 
@@ -8,8 +8,7 @@ from pathlib import Path
 
 import tiktoken
 
-from tep.api import ContextCompiler
-from tep.ir.models import CompileMode, CompilePolicy
+from contextforge import CompileMode, CompilePolicy, ContextCompiler
 
 
 def run_benchmark(file_path: Path) -> None:
@@ -50,7 +49,7 @@ def run_benchmark(file_path: Path) -> None:
 
     results = []
 
-    # 1. TEP v2 Deterministic Zero-Budget Compiler
+    # 1. ContextForge Deterministic Zero-Budget Compiler
     compiler = ContextCompiler(mode=CompileMode.COMPACT)
     policy = CompilePolicy(mode=CompileMode.COMPACT, discourse_pruning=True)
 
@@ -69,7 +68,7 @@ def run_benchmark(file_path: Path) -> None:
 
     results.append(
         {
-            "engine": "TEP v2 (Zero-Budget, Generic)",
+            "engine": "ContextForge (Zero-Budget, Generic)",
             "latency_ms": tep_latency,
             "output_tokens": tep_tokens,
             "reduction_pct": tep_reduction,

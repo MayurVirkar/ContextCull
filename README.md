@@ -53,7 +53,7 @@ Evaluated on the 38-page incident report (`examples/sample_incident.txt`, 20,303
 
 | Summarizer Engine | Latency | Output Tokens | Token Reduction | Atoms Retained (19 Ground Truth) | Atoms Dropped |
 | :--- | :---: | :---: | :---: | :---: | :--- |
-| **TEP v2 (Zero-Budget, Generic)** | **161 ms** | **8,473** | **58.3%** | **18 / 19 (94.7%)** | `14 write tokens` |
+| **ContextForge (Zero-Budget, Generic)** | **161 ms** | **8,473** | **58.3%** | **18 / 19 (94.7%)** | `14 write tokens` |
 | **Sumy LexRank (100 sentences)** | 2,978 ms | 3,746 | 81.5% | **3 / 19 (15.8%)** | `CVE-2026-66384`, `CVE-2026-53362`, `i-0622056ec3e996a7c`, `artifactory-3`, ... (16 total) |
 | **Sumy LSA (100 sentences)** | 667 ms | 2,758 | 86.4% | **3 / 19 (15.8%)** | `CVE-2026-53362`, `956 secrets`, `moon-bot`, `moon-landing`, ... (16 total) |
 | **Sumy LexRank (50 sentences)** | 2,915 ms | 2,002 | 90.1% | **3 / 19 (15.8%)** | `CVE-2026-66384`, `CVE-2026-53362`, `i-0622056ec3e996a7c`, `artifactory-3`, ... (16 total) |
@@ -68,7 +68,7 @@ uv run python bench/run_benchmark.py examples/sample_incident.txt
 
 ## 10-Format Real-World Benchmark Matrix
 
-TEP v2 was evaluated across 10 distinct real-world formats spanning enterprise communication, unstructured literature, cloud telemetry, rich documents, and structured data (`examples/eval/`):
+ContextForge was evaluated across 10 distinct real-world formats spanning enterprise communication, unstructured literature, cloud telemetry, rich documents, and structured data (`examples/eval/`):
 
 | # | Format & Dataset | Raw Tokens | TEP Tokens | Token Reduction | TEP Latency | Critical Facts Retained | Status |
 | :-: | :--- | :---: | :---: | :---: | :---: | :---: | :---: |
@@ -92,7 +92,7 @@ uv run python scripts/run_10_evals.py
 
 ## End-to-End LLM Summarization Comparison (Subagent Evaluation)
 
-To evaluate downstream impact, an independent Frontier LLM subagent was tasked with generating summaries from both (A) raw source documents and (B) TEP v2 compiled outputs.
+To evaluate downstream impact, an independent Frontier LLM subagent was tasked with generating summaries from both (A) raw source documents and (B) ContextForge compiled outputs.
 
 ### Test 1: P0 Security Incident Email Thread (RFC 822)
 - **Input Savings**: **54.4% token reduction** (941 → 429 tokens), eliminating conversational pleasantries, signatures, and duplicate quote chains.
@@ -115,7 +115,7 @@ To evaluate downstream impact, an independent Frontier LLM subagent was tasked w
 
 ## Architecture: 10-Stage Deterministic Pipeline
 
-TEP v2 eliminates hallucination by operating as a pure compiler with zero neural weights at compile time:
+ContextForge eliminates hallucination by operating as a pure compiler with zero neural weights at compile time:
 
 ```mermaid
 flowchart TD
@@ -157,16 +157,16 @@ flowchart TD
 
 ---
 
-## Production Pipeline: TEP v2 + Cloud Gemini
+## Production Pipeline: ContextForge + Cloud Gemini
 
-The recommended architecture pairs TEP v2 as a deterministic pre-processor with Cloud Gemini as the synthesizer:
+The recommended architecture pairs ContextForge as a deterministic pre-processor with Cloud Gemini as the synthesizer:
 
 ```
 [Raw 38-page Doc / 20k tokens]
             │
             ▼  (161 ms, zero compute cost, 100% deterministic)
    ┌─────────────────┐
-   │     TEP v2      │ ──► Drops non-contributing scaffolding, locks in 95%+ critical facts
+   │  ContextForge   │ ──► Drops non-contributing scaffolding, locks in 95%+ critical facts
    └─────────────────┘
             │
             ▼  [Compiled Context: 7.8k - 12.9k tokens]
@@ -303,7 +303,7 @@ ContextForge/
 
 ## Quality, Security, and Correctness Gates
 
-TEP v2 enforces zero-compromise code security, static verification, and quality standards:
+ContextForge enforces zero-compromise code security, static verification, and quality standards:
 
 | Tool | Purpose | Configuration / Command |
 | :--- | :--- | :--- |

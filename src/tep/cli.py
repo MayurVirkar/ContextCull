@@ -15,8 +15,8 @@ from tep.ir.models import CompileMode, CompilePolicy, TokenBudget
 from tep.route.router import route_and_parse
 
 app = typer.Typer(
-    name="tep",
-    help="Deterministic Token-Efficiency Protocol (TEP) Context Compiler",
+    name="contextforge",
+    help="ContextForge: Deterministic Context Compiler & Pre-Processor for Frontier LLMs",
     add_completion=False,
 )
 

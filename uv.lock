@@ -281,6 +281,73 @@ wheels = [
 ]
 
 [[package]]
+name = "contextforge"
+version = "0.1.0"
+source = { editable = "." }
+dependencies = [
+    { name = "ahocorasick-rs" },
+    { name = "lingua-language-detector" },
+    { name = "markdown-it-py" },
+    { name = "numpy" },
+    { name = "orjson" },
+    { name = "pypdf" },
+    { name = "scikit-learn" },
+    { name = "scipy" },
+    { name = "sparse-dot-topn" },
+    { name = "tiktoken" },
+    { name = "typer-slim" },
+]
+
+[package.dev-dependencies]
+bench = [
+    { name = "nltk" },
+    { name = "sumy" },
+]
+dev = [
+    { name = "bandit" },
+    { name = "coverage" },
+    { name = "hypothesis" },
+    { name = "mutmut" },
+    { name = "pip-audit" },
+    { name = "pyright" },
+    { name = "pytest" },
+    { name = "pytest-cov" },
+    { name = "ruff" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "ahocorasick-rs", specifier = ">=1.0.3" },
+    { name = "lingua-language-detector", specifier = ">=2.0.2" },
+    { name = "markdown-it-py", specifier = ">=4.2.0" },
+    { name = "numpy", specifier = ">=2.5.3" },
+    { name = "orjson", specifier = ">=3.12.0" },
+    { name = "pypdf", specifier = ">=6.19.0" },
+    { name = "scikit-learn", specifier = ">=1.9.1" },
+    { name = "scipy", specifier = ">=1.18.1" },
+    { name = "sparse-dot-topn", specifier = ">=1.2.0" },
+    { name = "tiktoken", specifier = ">=0.14.0" },
+    { name = "typer-slim", specifier = ">=0.24.0" },
+]
+
+[package.metadata.requires-dev]
+bench = [
+    { name = "nltk", specifier = ">=3.9.1" },
+    { name = "sumy", specifier = ">=0.13.0" },
+]
+dev = [
+    { name = "bandit", specifier = ">=1.9.4" },
+    { name = "coverage", specifier = ">=7.16.1" },
+    { name = "hypothesis", specifier = ">=6.168.0" },
+    { name = "mutmut", specifier = ">=3.8.0" },
+    { name = "pip-audit", specifier = ">=2.10.1" },
+    { name = "pyright", specifier = ">=1.1.414" },
+    { name = "pytest", specifier = ">=9.1.1" },
+    { name = "pytest-cov", specifier = ">=6.0.0" },
+    { name = "ruff", specifier = ">=0.16.8" },
+]
+
+[[package]]
 name = "coverage"
 version = "7.16.1"
 source = { registry = "https://pypi.org/simple" }
@@ -1596,73 +1663,6 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/ee/51/3648443459336c72450dca6208539a184ba530cd463f7890bfdbf4576cbd/sumy-0.13.0.tar.gz", hash = "sha256:5bdf1af5286801a74e9b5fd3aa58c3ab2316318a42de3c12f38f9737bee6cfc2", size = 61882, upload-time = "2026-08-12T20:47:23.756Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/ab/db/58e3a0f0b49c252ab40d26350efefad7c2e728fc87f66f3ed347dd24779b/sumy-0.13.0-py3-none-any.whl", hash = "sha256:ec4ae798e74e68cc380991e88e8c91ad6c7e12034818044339b9b208130eab7e", size = 72209, upload-time = "2026-08-12T20:47:22.711Z" },
-]
-
-[[package]]
-name = "tep"
-version = "0.1.0"
-source = { editable = "." }
-dependencies = [
-    { name = "ahocorasick-rs" },
-    { name = "lingua-language-detector" },
-    { name = "markdown-it-py" },
-    { name = "numpy" },
-    { name = "orjson" },
-    { name = "pypdf" },
-    { name = "scikit-learn" },
-    { name = "scipy" },
-    { name = "sparse-dot-topn" },
-    { name = "tiktoken" },
-    { name = "typer-slim" },
-]
-
-[package.dev-dependencies]
-bench = [
-    { name = "nltk" },
-    { name = "sumy" },
-]
-dev = [
-    { name = "bandit" },
-    { name = "coverage" },
-    { name = "hypothesis" },
-    { name = "mutmut" },
-    { name = "pip-audit" },
-    { name = "pyright" },
-    { name = "pytest" },
-    { name = "pytest-cov" },
-    { name = "ruff" },
-]
-
-[package.metadata]
-requires-dist = [
-    { name = "ahocorasick-rs", specifier = ">=1.0.3" },
-    { name = "lingua-language-detector", specifier = ">=2.0.2" },
-    { name = "markdown-it-py", specifier = ">=4.2.0" },
-    { name = "numpy", specifier = ">=2.5.3" },
-    { name = "orjson", specifier = ">=3.12.0" },
-    { name = "pypdf", specifier = ">=6.19.0" },
-    { name = "scikit-learn", specifier = ">=1.9.1" },
-    { name = "scipy", specifier = ">=1.18.1" },
-    { name = "sparse-dot-topn", specifier = ">=1.2.0" },
-    { name = "tiktoken", specifier = ">=0.14.0" },
-    { name = "typer-slim", specifier = ">=0.24.0" },
-]
-
-[package.metadata.requires-dev]
-bench = [
-    { name = "nltk", specifier = ">=3.9.1" },
-    { name = "sumy", specifier = ">=0.13.0" },
-]
-dev = [
-    { name = "bandit", specifier = ">=1.9.4" },
-    { name = "coverage", specifier = ">=7.16.1" },
-    { name = "hypothesis", specifier = ">=6.168.0" },
-    { name = "mutmut", specifier = ">=3.8.0" },
-    { name = "pip-audit", specifier = ">=2.10.1" },
-    { name = "pyright", specifier = ">=1.1.414" },
-    { name = "pytest", specifier = ">=9.1.1" },
-    { name = "pytest-cov", specifier = ">=6.0.0" },
-    { name = "ruff", specifier = ">=0.16.8" },
 ]
 
 [[package]]

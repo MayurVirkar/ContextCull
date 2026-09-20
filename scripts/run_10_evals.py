@@ -1,12 +1,11 @@
-"""Run TEP v2 compilation benchmark across all 10 evaluation datasets."""
+"""Run ContextForge compilation benchmark across all 10 evaluation datasets."""
 
 import json
 import os
 import time
 from pathlib import Path
 
-from tep.api import ContextCompiler
-from tep.ir.models import CompileMode, CompilePolicy
+from contextforge import CompileMode, CompilePolicy, ContextCompiler
 from tep.tokenize.profile import get_tokenizer
 
 EVAL_DIR = Path("examples/eval")
