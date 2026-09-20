@@ -1,7 +1,41 @@
-"""Unit tests for protected atom detection against whitepaper benchmark terms."""
+"""Unit tests for protected atom detection against generic patterns and whitepaper benchmark terms."""
 
 from tep.detect.atoms import extract_atoms
 from tep.ingest.decoder import ingest_bytes
+
+
+def test_extract_generic_technical_atoms():
+    """Verify that CVEs, IPs, UUIDs, Git SHAs, and AWS Instance IDs are automatically detected and required."""
+    text = """
+    Incident details:
+    Vulnerability CVE-2026-66384 was exploited from 192.168.1.105 targeting AWS instance i-0622056ec3e996a7c.
+    Compromised session UUID: 123e4567-e89b-12d3-a456-426614174000.
+    Attacker committed malicious payload in git commit 4b825dc642cb6eb9a060e54bf8d69288fbee4904.
+    """
+    ingest = ingest_bytes(text.encode("utf-8"))
+    atoms = extract_atoms(ingest)
+
+    kinds = {a.kind: a for a in atoms}
+
+    assert "cve" in kinds
+    assert kinds["cve"].surface == "CVE-2026-66384"
+    assert kinds["cve"].required is True
+
+    assert "ipv4" in kinds
+    assert kinds["ipv4"].surface == "192.168.1.105"
+    assert kinds["ipv4"].required is True
+
+    assert "instance_id" in kinds
+    assert kinds["instance_id"].surface == "i-0622056ec3e996a7c"
+    assert kinds["instance_id"].required is True
+
+    assert "uuid" in kinds
+    assert kinds["uuid"].surface == "123e4567-e89b-12d3-a456-426614174000"
+    assert kinds["uuid"].required is True
+
+    assert "git_sha" in kinds
+    assert kinds["git_sha"].surface == "4b825dc642cb6eb9a060e54bf8d69288fbee4904"
+    assert kinds["git_sha"].required is True
 
 
 def test_extract_all_19_benchmark_atoms():
@@ -44,7 +78,6 @@ def test_extract_all_19_benchmark_atoms():
     atoms = extract_atoms(ingest, required_terms=required_terms)
 
     for term in required_terms:
-        # Check either exact surface match or contained in an extracted atom
         found = any(term in a.surface or term == a.surface for a in atoms)
         assert found, f"Benchmark atom '{term}' was not detected in extract_atoms"
 

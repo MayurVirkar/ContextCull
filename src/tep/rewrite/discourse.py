@@ -4,11 +4,10 @@ from __future__ import annotations
 
 import re
 
-# Comprehensive catalog of corporate, academic, and bureaucratic filler preambles
-# Supports English, German, French, Spanish, and mixed-language documents
+# Catalog of generic bureaucratic filler preambles and hedging phrases
+# Preserves attribution (who said what) to maintain semantic and legal invariants
 DISCOURSE_PREAMBLES = [
-    # English Preambles
-    re.compile(r"^(?:OpenAI|Responders|The team|Investigators)\s+(?:determined|found|noted|observed|identified|concluded)\s+that,?\s*", re.IGNORECASE),
+    # English Preambles (Hedges & Scaffolding)
     re.compile(r"^It\s+is\s+(?:important|worth|critical|notable)\s+to\s+note\s+that,?\s*", re.IGNORECASE),
     re.compile(r"^It\s+should\s+be\s+noted\s+that,?\s*", re.IGNORECASE),
     re.compile(r"^As\s+(?:previously|earlier|already)\s+(?:explained|described|noted|mentioned)(?:\s+in\s+Section\s+[A-Z0-9]+)?,?\s*", re.IGNORECASE),
@@ -22,15 +21,13 @@ DISCOURSE_PREAMBLES = [
     re.compile(r"^Furthermore,?\s*", re.IGNORECASE),
     re.compile(r"^Moreover,?\s*", re.IGNORECASE),
     re.compile(r"^Specifically,?\s*", re.IGNORECASE),
-    re.compile(r"^According\s+to\s+(?:the\s+investigation|the\s+report|OpenAI|findings),?\s*", re.IGNORECASE),
     re.compile(r"^In\s+order\s+to\s+(?:ensure|verify|investigate)\s+that,?\s*", re.IGNORECASE),
     re.compile(r"^As\s+a\s+result\s+of\s+(?:this|these)\s+(?:actions|findings),?\s*", re.IGNORECASE),
 
-    # German Preambles (Kanzleideutsch)
-    re.compile(r"^(?:Es\s+ist\s+(?:darauf\s+hinzuweisen|zu\s+beachten|festzuhalten),\s+dass,?\s*)", re.IGNORECASE),
-    re.compile(r"^(?:Es\s+sollte\s+beachtet\s+werden,\s+dass,?\s*)", re.IGNORECASE),
+    # German Preambles (Parenthetical / non-subordinating only; preserves V2 word order)
     re.compile(r"^(?:Wie\s+(?:bereits|oben)\s+(?:erwähnt|beschrieben|ausgeführt),?\s*)", re.IGNORECASE),
     re.compile(r"^(?:Im\s+Rahmen\s+der\s+(?:Durchführung|Untersuchung)\s+von\s+[^,]+,?\s*)", re.IGNORECASE),
+    re.compile(r"^(?:Darüber\s+hinaus|Zusätzlich|Ferner|Des\s+Weiteren),?\s*", re.IGNORECASE),
 
     # French Preambles (Langage administratif)
     re.compile(r"^(?:Il\s+convient\s+de\s+(?:noter|souligner)\s+que,?\s*)", re.IGNORECASE),
@@ -47,23 +44,29 @@ DISCOURSE_PREAMBLES = [
     re.compile(r"^(?:Es\s+preciso\s+mencionar\s+que,?\s*)", re.IGNORECASE),
 ]
 
+# Generic structural boilerplate patterns (multi-line aware)
 BOILERPLATE_PATTERNS = [
-    re.compile(r"^OpenAI\s*–\s*Hugging\s*Face\s*(?:Incident)?$", re.IGNORECASE),
-    re.compile(r"^Technical\s*Report$", re.IGNORECASE),
-    re.compile(r"^OpenAI$", re.IGNORECASE),
-    re.compile(r"^\d{1,3}$"),  # Isolated page numbers
-    # Table of Contents across languages (EN, DE, FR, ES, ZH, JA)
+    re.compile(r"^\d{1,4}$"),  # Isolated page numbers
+    # Table of Contents headers across languages (EN, DE, FR, ES, ZH, JA)
     re.compile(r"^(?:Table of Contents|Inhaltsverzeichnis|Table des matières|Índice|Tabla de contenidos|目录|目次)$", re.IGNORECASE),
-    re.compile(r"^[I|V|X]+\.\s+.*?\s+\d+$"),  # TOC entries
-    re.compile(r"^[A-Z]\.\s+.*?\s+\d+$"),    # TOC entries
+    re.compile(r"^[I|V|X]+\.\s+.*?\s+\d+$"),  # Roman numeral TOC entries
+    re.compile(r"^[A-Z]\.\s+.*?\s+\d+$"),    # Lettered TOC entries
+    re.compile(r"^\s*[-=_*~]{3,}\s*$"),      # Decorative horizontal dividers
 ]
 
 
 def is_structural_boilerplate(text: str) -> bool:
-    """Checks if a text block is pure structural boilerplate (headers, footers, page numbers, TOC)."""
+    """Checks if a text block is pure structural boilerplate (headers, footers, page numbers, TOC).
+
+    Preserves short factual tokens, numbers, and quantities.
+    """
     t = text.strip()
-    if not t or len(t) < 3:
+    if not t:
         return True
+    # If text is short (< 3 chars), drop only if it contains no alphanumeric or digit content
+    if len(t) < 3:
+        return not any(c.isalnum() for c in t)
+
     return any(pat.match(t) for pat in BOILERPLATE_PATTERNS)
 
 

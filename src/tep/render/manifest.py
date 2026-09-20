@@ -52,7 +52,7 @@ def render_and_manifest(
                     kind=seg.kind,
                     sources=seg.sources,
                     rule_id=seg.rule_id,
-                    text=text,
+                    text=seg.text or text,
                 )
             )
 
@@ -68,10 +68,25 @@ def render_and_manifest(
     output_tokens = tokenizer.count_tokens(rendered_text)
 
     compression = 1.0 - (output_tokens / max(1, input_tokens))
+
+    # Required atoms (hard invariants: CVEs, IPs, UUIDs, SHAs, user required terms)
+    required_atoms = [a for a in atoms if a.required]
+    retained_required = [
+        a for a in required_atoms if a.surface in rendered_text
+    ]
+    required_coverage = (
+        len(retained_required) / max(1, len(required_atoms)) if required_atoms else 1.0
+    )
+
+    # Total syntactic/modal atoms
     retained_atoms = [
         a for a in atoms if a.surface in rendered_text or a.canonical in rendered_text.lower()
     ]
-    atom_coverage = len(retained_atoms) / max(1, len(atoms))
+    total_atom_coverage = len(retained_atoms) / max(1, len(atoms))
+
+    copy_count = sum(1 for s in final_segments if s.kind == "copy")
+    rewrite_count = sum(1 for s in final_segments if s.kind == "rewrite")
+    aggregate_count = sum(1 for s in final_segments if s.kind == "aggregate")
 
     manifest = {
         "schema_version": "1.0",
@@ -95,12 +110,18 @@ def render_and_manifest(
             "input_tokens": input_tokens,
             "output_tokens": output_tokens,
             "compression_ratio": round(compression, 4),
-            "atom_coverage": round(atom_coverage, 4),
+            "required_atom_coverage": round(required_coverage, 4),
+            "retained_required_atoms_count": len(retained_required),
+            "total_required_atoms_count": len(required_atoms),
+            "total_atom_coverage": round(total_atom_coverage, 4),
             "retained_atoms_count": len(retained_atoms),
             "total_atoms_count": len(atoms),
+            "copy_segments_count": copy_count,
+            "rewrite_segments_count": rewrite_count,
+            "aggregate_segments_count": aggregate_count,
         },
         "output_segments": [s.to_dict() for s in final_segments],
-        "atoms": [a.to_dict() for a in retained_atoms],
+        "atoms": [a.to_dict() for a in retained_required],
         "diagnostics": list(diagnostics),
     }
 

@@ -23,12 +23,12 @@ def validate_invariants(
     Hard invariants:
     1. Every copied segment must match the source bytes at the referenced ByteSpan exactly.
     2. Every aggregate/rewrite segment must reference valid, in-bounds source byte spans.
-    3. All detected required atoms must be present in the output text.
-    4. Output tokens must not exceed the target budget when the tokenizer is exact and hard_budget is True.
+    3. All detected required atoms must be present in the output text by surface form.
+    4. Output tokens must not exceed the target budget when hard_budget is True.
     """
     violations: list[str] = []
 
-    # 1. Byte-exact provenance check for copied segments and in-bounds check for aggregates
+    # 1. Byte-exact provenance check for copied segments and in-bounds check for aggregates/rewrites
     for seg in output_segments:
         if seg.kind == "copy":
             for src in seg.sources:
@@ -49,17 +49,21 @@ def validate_invariants(
                         f"Provenance violation: {seg.kind} segment has out-of-bounds source span [{src.start}, {src.end})"
                     )
 
-    # 2. Required atom presence check
+    # 2. Required atom presence check (match surface form; allow quantity canonical normalization)
     for atom in required_atoms:
-        if atom.required and (
-            atom.surface not in output_text and atom.canonical not in output_text.lower()
-        ):
+        if not atom.required:
+            continue
+        has_surface = atom.surface in output_text
+        has_quantity_norm = (
+            atom.kind == "quantity" and atom.canonical and atom.canonical in output_text.lower()
+        )
+        if not (has_surface or has_quantity_norm):
             violations.append(
                 f"Atom violation: required atom '{atom.surface}' ({atom.kind}) was dropped from output"
             )
 
     # 3. Exact budget compliance
-    if budget is not None and budget.tokens is not None and tokenizer.is_exact() and budget.hard_budget:
+    if budget is not None and budget.tokens is not None and budget.hard_budget:
         out_tokens = tokenizer.count_tokens(output_text)
         if out_tokens > budget.tokens:
             violations.append(

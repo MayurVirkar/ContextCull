@@ -11,7 +11,7 @@ from tep.ir.models import (
     OutputSegment,
     TokenBudget,
 )
-from tep.ir.spans import ByteSpan, PageRegion, SourceMap, SourceRef
+from tep.ir.spans import ByteSpan, SourceMap, SourceRef
 
 __all__ = [
     "Atom",
@@ -23,7 +23,6 @@ __all__ = [
     "CompilePolicy",
     "CompileResult",
     "OutputSegment",
-    "PageRegion",
     "SourceMap",
     "SourceRef",
     "TokenBudget",

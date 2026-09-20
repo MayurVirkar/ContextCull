@@ -2,13 +2,17 @@
 
 from __future__ import annotations
 
+import hashlib
 from pathlib import Path
 
 import orjson
 import typer
 
 from tep.api import ContextCompiler
+from tep.detect.atoms import extract_atoms
+from tep.ingest.decoder import ingest_bytes
 from tep.ir.models import CompileMode, CompilePolicy, TokenBudget
+from tep.route.router import route_and_parse
 
 app = typer.Typer(
     name="tep",
@@ -33,18 +37,31 @@ def compile_cmd(
         typer.echo(f"Error: input file {input_file} does not exist", err=True)
         raise typer.Exit(code=1)
 
-    compiler = ContextCompiler.from_profile(mode)
+    try:
+        clean_mode = CompileMode(mode.lower())
+    except ValueError:
+        typer.echo(
+            f"Error: invalid mode '{mode}'. Choose from: verbatim, strict, compact, task",
+            err=True,
+        )
+        raise typer.Exit(code=1) from None
+
+    compiler = ContextCompiler(mode=clean_mode)
     budget = (
         TokenBudget(tokens=budget_tokens, profile=tokenizer_profile, hard_budget=hard_budget)
         if budget_tokens is not None
         else None
     )
     policy = CompilePolicy(
-        mode=CompileMode(mode.lower()),
+        mode=clean_mode,
         required_terms=tuple(required_terms),
     )
 
-    result = compiler.compile_file(input_file, budget=budget, policy=policy)
+    try:
+        result = compiler.compile_file(input_file, budget=budget, policy=policy)
+    except Exception as exc:
+        typer.echo(f"Compilation error: {exc}", err=True)
+        raise typer.Exit(code=2) from None
 
     if not result.ok:
         typer.echo(f"Compilation status: {result.status}", err=True)
@@ -74,10 +91,6 @@ def inspect_cmd(
     if not input_file.exists():
         typer.echo(f"Error: input file {input_file} does not exist", err=True)
         raise typer.Exit(code=1)
-
-    from tep.detect.atoms import extract_atoms
-    from tep.ingest.decoder import ingest_bytes
-    from tep.route.router import route_and_parse
 
     raw_bytes = input_file.read_bytes()
     ingest = ingest_bytes(raw_bytes)
@@ -116,7 +129,6 @@ def validate_cmd(
     manifest = orjson.loads(manifest_file.read_bytes())
 
     # Check document ID
-    import hashlib
     source_hash = f"sha256:{hashlib.sha256(raw_source).hexdigest()}"
     manifest_source_id = manifest.get("source", {}).get("document_id")
     if source_hash != manifest_source_id:
@@ -125,19 +137,25 @@ def validate_cmd(
 
     # Validate output segments
     segments = manifest.get("output_segments", [])
-    valid_count = 0
-    for seg in segments:
-        if seg.get("kind") == "copy":
-            for src in seg.get("sources", []):
-                s_bytes = raw_source[src["start"] : src["end"]]
-                s_str = s_bytes.decode("utf-8", errors="replace").strip()
-                if s_str and s_str in context_text:
-                    valid_count += 1
-                else:
-                    typer.echo(f"Invalid segment span: {src} not found in output", err=True)
-                    raise typer.Exit(code=2)
+    copy_segments = [s for s in segments if s.get("kind") == "copy"]
+    rewrite_segments = [s for s in segments if s.get("kind") == "rewrite"]
+    aggregate_segments = [s for s in segments if s.get("kind") == "aggregate"]
 
-    typer.echo(f"Validation PASSED: {len(segments)} segments verified (100% source-backed).")
+    valid_copy_count = 0
+    for seg in copy_segments:
+        for src in seg.get("sources", []):
+            s_bytes = raw_source[src["start"] : src["end"]]
+            s_str = s_bytes.decode("utf-8", errors="replace").strip()
+            if s_str and s_str in context_text:
+                valid_copy_count += 1
+            else:
+                typer.echo(f"Invalid segment span: {src} not found in output", err=True)
+                raise typer.Exit(code=2)
+
+    typer.echo(
+        f"Validation PASSED: {valid_copy_count} copy segments verified (100% byte-exact), "
+        f"{len(rewrite_segments)} rewritten segments, {len(aggregate_segments)} aggregated blocks."
+    )
 
 
 def main() -> None:

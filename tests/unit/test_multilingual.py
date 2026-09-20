@@ -56,16 +56,17 @@ def test_multilingual_vectorization() -> None:
         CandidateUnit("u4", "b1", (ByteSpan("doc1", 30, 40),), "多智能体系统自主运行并发现了安全漏洞。"),
     ]
     matrix = vectorize_units(units)
+    assert matrix.shape is not None
     assert matrix.shape[0] == 4
     assert matrix.shape[1] > 20  # Extracted features across all scripts
 
 
 def test_multilingual_discourse_pruning() -> None:
-    en_raw = "OpenAI determined that the models exploited a legacy endpoint."
+    en_raw = "It is important to note that the models exploited a legacy endpoint."
     assert prune_discourse_scaffolding(en_raw) == "The models exploited a legacy endpoint."
 
-    de_raw = "Es ist darauf hinzuweisen, dass die Tokens gestohlen wurden."
-    assert prune_discourse_scaffolding(de_raw) == "Die Tokens gestohlen wurden."
+    de_raw = "Wie bereits erwähnt, wurden die Tokens gestohlen."
+    assert prune_discourse_scaffolding(de_raw) == "Wurden die Tokens gestohlen."
 
     fr_raw = "Il convient de noter que l'accès a été révoqué."
     assert prune_discourse_scaffolding(fr_raw) == "L'accès a été révoqué."

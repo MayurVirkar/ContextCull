@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import logging
+from bisect import bisect_left
 from collections.abc import Sequence
 from pathlib import Path
 
@@ -28,6 +29,7 @@ from tep.rewrite.discourse import is_structural_boilerplate
 from tep.rewrite.engine import RewriteEngine
 from tep.route.router import route_and_parse
 from tep.segment.sentence import segment_sentences
+from tep.select.budget import select_units
 from tep.tokenize.profile import get_tokenizer
 from tep.validate.invariants import validate_invariants
 
@@ -104,8 +106,6 @@ class ContextCompiler:
 
         # Stage 6: Selection (Budget-Free or Constrained)
         try:
-            from tep.select.budget import select_units
-
             selected_units = select_units(
                 units=candidate_units,
                 atoms=atoms,
@@ -202,6 +202,24 @@ class ContextCompiler:
         units: list[CandidateUnit] = []
         order = 0
 
+        # Build bisect index for atoms by start byte
+        valid_atoms = [
+            (a.sources[0].start, a.sources[0].end, a.atom_id)
+            for a in atoms
+            if isinstance(a.sources[0], ByteSpan)
+        ]
+        valid_atoms.sort(key=lambda x: x[0])
+        atom_starts = [x[0] for x in valid_atoms]
+
+        def get_bound_atom_ids(start: int, end: int) -> tuple[str, ...]:
+            idx = bisect_left(atom_starts, start)
+            bound = []
+            while idx < len(valid_atoms) and valid_atoms[idx][0] <= end:
+                if valid_atoms[idx][1] <= end:
+                    bound.append(valid_atoms[idx][2])
+                idx += 1
+            return tuple(bound)
+
         for b in blocks:
             # Optionally filter out structural boilerplate
             if policy.filter_boilerplate and is_structural_boilerplate(b.text):
@@ -213,9 +231,6 @@ class ContextCompiler:
                 sentences = segment_sentences(b.text)
                 for s in sentences:
                     st = s.text.strip()
-                    if policy.filter_boilerplate and (is_structural_boilerplate(st) or len(st) < 10):
-                        continue
-
                     b_src = b.sources[0] if b.sources else None
                     b_start_byte = b_src.start if isinstance(b_src, ByteSpan) else 0
                     c_start, _ = ingest.source_map.byte_to_char_range(b_start_byte, b_start_byte)
@@ -223,14 +238,14 @@ class ContextCompiler:
                     s_char_end = c_start + s.end_char
 
                     span = clean_char_to_byte_span(ingest, s_char_start, min(s_char_end, len(ingest.clean_text)))
+                    bound_atom_ids = get_bound_atom_ids(span.start, span.end)
 
-                    bound_atom_ids = tuple(
-                        a.atom_id
-                        for a in atoms
-                        if isinstance(a.sources[0], ByteSpan)
-                        and span.start <= a.sources[0].start
-                        and a.sources[0].end <= span.end
-                    )
+                    # Preserve short factual lines if they contain bound atoms or numbers
+                    if policy.filter_boilerplate:
+                        if is_structural_boilerplate(st):
+                            continue
+                        if len(st) < 10 and not bound_atom_ids and not any(c.isdigit() for c in st):
+                            continue
 
                     units.append(
                         CandidateUnit(
@@ -246,18 +261,17 @@ class ContextCompiler:
                     order += 1
             else:
                 bt = b.text.strip()
-                if policy.filter_boilerplate and (is_structural_boilerplate(bt) or len(bt) < 10):
-                    continue
-
                 b_src = b.sources[0] if b.sources else None
-                bound_atom_ids = tuple(
-                    a.atom_id
-                    for a in atoms
-                    if isinstance(a.sources[0], ByteSpan)
-                    and isinstance(b_src, ByteSpan)
-                    and b_src.start <= a.sources[0].start
-                    and a.sources[0].end <= b_src.end
-                )
+                b_start = b_src.start if isinstance(b_src, ByteSpan) else 0
+                b_end = b_src.end if isinstance(b_src, ByteSpan) else 0
+                bound_atom_ids = get_bound_atom_ids(b_start, b_end)
+
+                if policy.filter_boilerplate:
+                    if is_structural_boilerplate(bt):
+                        continue
+                    if len(bt) < 10 and not bound_atom_ids and not any(c.isdigit() for c in bt):
+                        continue
+
                 units.append(
                     CandidateUnit(
                         unit_id=f"unit_{len(units):04d}",
@@ -286,5 +300,5 @@ def summarize(text: str) -> str:
         discourse_pruning=True,
         filter_boilerplate=True,
     )
-    result = compiler.compile(text, budget=None, policy=policy)
+    result = compiler.compile(text, policy=policy)
     return result.text

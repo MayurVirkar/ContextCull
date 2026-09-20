@@ -13,12 +13,20 @@ CARGO_TEST_RESULT_RE = re.compile(
     r"test result:\s*(FAILED|ok)\.\s*(\d+)\s*passed;\s*(\d+)\s*failed;\s*(\d+)\s*ignored.*finished in\s*([\d\.]+\w*)"
 )
 CARGO_FAILURE_LINE_RE = re.compile(r"test\s+([^\s]+)\s+\.\.\.\s+FAILED")
+CARGO_SECTION_RE = re.compile(
+    r"----\s+([^\s]+)\s+stdout\s+----(.*?)(?=----\s+[^\s]+\s+stdout\s+----|\nfailures:|\Z)",
+    re.DOTALL,
+)
 CARGO_ASSERT_FAIL_RE = re.compile(r"assertion `left == right` failed\s*\n\s*left:\s*(.+)\s*\n\s*right:\s*(.+)")
 CARGO_LOCATION_RE = re.compile(r"panicked at ([^:]+:\d+:\d+):")
 
 PYTEST_HEADER_RE = re.compile(r"==+ test session starts =+")
 PYTEST_RESULT_RE = re.compile(r"=+\s*(?:(\d+)\s*failed,?\s*)?(?:(\d+)\s*passed,?\s*)?.*in\s*([\d\.]+s)\s*=+")
-PYTEST_FAIL_LOCATION_RE = re.compile(r"([a-zA-Z0-9_\.\-/]+:\d+):\s*AssertionError")
+PYTEST_SECTION_RE = re.compile(
+    r"_{3,}\s*(\S+?)\s*_{3,}\n(.*?)(?=\n\s*_{3,}|\n\s*=+|\Z)",
+    re.DOTALL,
+)
+PYTEST_FAIL_LOCATION_RE = re.compile(r"([a-zA-Z0-9_\.\-/]+:\d+):\s*(?:AssertionError|in\s+)")
 PYTEST_ASSERT_RE = re.compile(r"E\s+assert\s+(.+)\s*==\s*(.+)")
 
 VITEST_FAIL_RE = re.compile(r"FAIL\s+([^\n]+)")
@@ -52,33 +60,51 @@ def parse_test_log_blocks(ingest: IngestionResult) -> list[Block]:
         if duration:
             summary_line += f" · {duration}"
 
-        # Find failures
-        for fail_match in CARGO_FAILURE_LINE_RE.finditer(clean_text):
-            test_name = fail_match.group(1)
-            loc_match = CARGO_LOCATION_RE.search(clean_text)
-            location = loc_match.group(1) if loc_match else ""
+        # First try to find detailed failure sections (panics and assertions per test)
+        sections = list(CARGO_SECTION_RE.finditer(clean_text))
+        if sections:
+            for s_match in sections:
+                test_name = s_match.group(1)
+                body = s_match.group(2)
 
-            assert_match = CARGO_ASSERT_FAIL_RE.search(clean_text)
-            exp_actual = ""
-            if assert_match:
-                exp_actual = f"exp: {assert_match.group(2).strip()} got: {assert_match.group(1).strip()}"
+                loc_match = CARGO_LOCATION_RE.search(body)
+                location = loc_match.group(1) if loc_match else ""
 
-            fail_desc = f"✗ {test_name}"
-            if location:
-                fail_desc += f" ({location})"
-            if exp_actual:
-                fail_desc += f" · {exp_actual}"
+                assert_match = CARGO_ASSERT_FAIL_RE.search(body)
+                exp_actual = ""
+                if assert_match:
+                    exp_actual = f"exp: {assert_match.group(2).strip()} got: {assert_match.group(1).strip()}"
 
-            span = clean_char_to_byte_span(ingest, fail_match.start(), fail_match.end())
-            blocks.append(
-                Block(
-                    block_id=f"block_{len(blocks):04d}_test_failure",
-                    kind=BlockKind.LOG,
-                    sources=(span,),
-                    text=fail_desc,
-                    metadata={"runner": "cargo", "test_name": test_name, "location": location, "kind": "aggregate"},
+                fail_desc = f"✗ {test_name}"
+                if location:
+                    fail_desc += f" ({location})"
+                if exp_actual:
+                    fail_desc += f" · {exp_actual}"
+
+                span = clean_char_to_byte_span(ingest, s_match.start(), s_match.end())
+                blocks.append(
+                    Block(
+                        block_id=f"block_{len(blocks):04d}_test_failure",
+                        kind=BlockKind.LOG,
+                        sources=(span,),
+                        text=fail_desc,
+                        metadata={"runner": "cargo", "test_name": test_name, "location": location, "kind": "aggregate"},
+                    )
                 )
-            )
+        else:
+            # Fallback to failure summary lines
+            for fail_match in CARGO_FAILURE_LINE_RE.finditer(clean_text):
+                test_name = fail_match.group(1)
+                span = clean_char_to_byte_span(ingest, fail_match.start(), fail_match.end())
+                blocks.append(
+                    Block(
+                        block_id=f"block_{len(blocks):04d}_test_failure",
+                        kind=BlockKind.LOG,
+                        sources=(span,),
+                        text=f"✗ {test_name}",
+                        metadata={"runner": "cargo", "test_name": test_name, "kind": "aggregate"},
+                    )
+                )
 
         # Append overall header
         if res_match:
@@ -108,35 +134,35 @@ def parse_test_log_blocks(ingest: IngestionResult) -> list[Block]:
         if duration:
             summary_line += f" · {duration}"
 
-        loc_match = PYTEST_FAIL_LOCATION_RE.search(clean_text)
-        location = loc_match.group(1) if loc_match else ""
+        # Find each individual failure section in pytest output
+        for s_match in PYTEST_SECTION_RE.finditer(clean_text):
+            test_name = s_match.group(1)
+            body = s_match.group(2)
 
-        assert_match = PYTEST_ASSERT_RE.search(clean_text)
-        exp_actual = ""
-        if assert_match:
-            exp_actual = f"exp: {assert_match.group(2).strip()} got: {assert_match.group(1).strip()}"
+            loc_match = PYTEST_FAIL_LOCATION_RE.search(body)
+            location = loc_match.group(1) if loc_match else ""
 
-        func_match = re.search(r"_{3,}\s*([^\s_]+)\s*_{3,}", clean_text)
-        test_name = func_match.group(1) if func_match else "test"
+            assert_match = PYTEST_ASSERT_RE.search(body)
+            exp_actual = ""
+            if assert_match:
+                exp_actual = f"exp: {assert_match.group(2).strip()} got: {assert_match.group(1).strip()}"
 
-        fail_desc = f"✗ {test_name}"
-        if location:
-            fail_desc += f" ({location})"
-        if exp_actual:
-            fail_desc += f" · {exp_actual}"
+            fail_desc = f"✗ {test_name}"
+            if location:
+                fail_desc += f" ({location})"
+            if exp_actual:
+                fail_desc += f" · {exp_actual}"
 
-        start_c = loc_match.start() if loc_match else 0
-        end_c = loc_match.end() if loc_match else len(clean_text)
-        span = clean_char_to_byte_span(ingest, start_c, end_c)
-        blocks.append(
-            Block(
-                block_id=f"block_{len(blocks):04d}_test_failure",
-                kind=BlockKind.LOG,
-                sources=(span,),
-                text=fail_desc,
-                metadata={"runner": "pytest", "test_name": test_name, "location": location, "kind": "aggregate"},
+            span = clean_char_to_byte_span(ingest, s_match.start(), s_match.end())
+            blocks.append(
+                Block(
+                    block_id=f"block_{len(blocks):04d}_test_failure",
+                    kind=BlockKind.LOG,
+                    sources=(span,),
+                    text=fail_desc,
+                    metadata={"runner": "pytest", "test_name": test_name, "location": location, "kind": "aggregate"},
+                )
             )
-        )
 
         if res_match:
             span_h = clean_char_to_byte_span(ingest, res_match.start(), res_match.end())

@@ -12,20 +12,20 @@ from tep.errors import BudgetUnsafeError
 from tep.ir.models import Atom, CandidateUnit, CompilePolicy, TokenBudget
 from tep.tokenize.profile import TokenizerProfile
 
-# Domain-specific regex patterns for critical factual entities
+# Generic regex patterns for critical factual entities (no document-specific terms)
 CRITICAL_ENTITY_PATTERNS = [
-    re.compile(r"CVE-\d{4}-\d{4,7}", re.IGNORECASE),
-    re.compile(r"\b\d{4}-\d{2}-\d{2}(?:\s+\d{2}:\d{2}(?:\s*UTC)?)?\b"),
-    re.compile(r"\b(?:i-[0-9a-f]{17}|host\s+[a-z0-9\-]+)\b"),
-    re.compile(r"\b(?:moon-[a-z0-9\-]+|workloads|xetcas)\b"),
-    re.compile(r"\b(?:GPT-5\.6\s+Sol|Astra|CyberGym|ExploitGym|WebCache|Artifactory|RefJinja|HDF5|JRuby)\b"),
-    re.compile(r"\b\d+(?:\.\d+)?(?:\s*(?:MB|GB|KB|s|ms|%|x))\b"),
-    re.compile(r"\b\d+\s+secrets\b"),
+    re.compile(r"\bCVE-\d{4}-\d{4,7}\b", re.IGNORECASE),
+    re.compile(r"\b\d{4}-\d{2}-\d{2}(?:[T\s]\d{2}:\d{2}(?::\d{2})?(?:\s*UTC)?)?\b"),
+    re.compile(r"\bi-[0-9a-f]{8,17}\b"),
+    re.compile(r"\b(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(?:\.(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}\b"),
+    re.compile(r"\b[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}\b"),
+    re.compile(r"\b[0-9a-fA-F]{40}\b|\b(?=[0-9a-f]{7,39}\b)(?=[0-9a-f]*\d)(?=[0-9a-f]*[a-f])[0-9a-f]{7,39}\b"),
+    re.compile(r"\b\d+(?:\.\d+)?(?:\s*(?:MB|GB|TB|KB|kB|ms|µs|ns|s|%|x))\b"),
 ]
 
 
 def extract_unit_entities(text: str) -> set[str]:
-    """Extracts critical domain entities from a unit text."""
+    """Extracts critical domain entities from a unit text using generic patterns."""
     entities: set[str] = set()
     for pat in CRITICAL_ENTITY_PATTERNS:
         for match in pat.finditer(text):
@@ -37,8 +37,8 @@ def select_units_budget_free(
     units: Sequence[CandidateUnit],
     atoms: Sequence[Atom],
     policy: CompilePolicy,
-    tokenizer: TokenizerProfile,
-    scores: np.ndarray | Sequence[float],
+    tokenizer: TokenizerProfile | None = None,
+    scores: np.ndarray | Sequence[float] | None = None,
 ) -> list[CandidateUnit]:
     """Selects candidate units without any user-imposed token budget.
 
@@ -51,83 +51,86 @@ def select_units_budget_free(
     if not units:
         return []
 
-    # Map atom_id to atom
-    atom_map = {a.atom_id: a for a in atoms}
     required_atom_ids = {a.atom_id for a in atoms if a.required}
 
     # Extract all entities across all units
     unit_entities = [extract_unit_entities(u.text) for u in units]
     doc_entities: set[str] = set()
-    for ents in unit_entities:
-        doc_entities.update(ents)
+    for ue in unit_entities:
+        doc_entities.update(ue)
 
-    selected_indices: set[int] = set()
+    # 1. Mandatory units: Any unit with a required atom or critical entity
+    mandatory_indices: set[int] = set()
     covered_entities: set[str] = set()
+    covered_required_atoms: set[str] = set()
 
-    # Mandatory units: required atoms and failure logs
-    for idx, u in enumerate(units):
-        if any(aid in required_atom_ids for aid in u.atom_ids):
-            selected_indices.add(idx)
-            covered_entities.update(unit_entities[idx])
-        if policy.preserve_failures and ("✗" in u.text or "FAILED" in u.text):
-            selected_indices.add(idx)
-            covered_entities.update(unit_entities[idx])
+    for i, u in enumerate(units):
+        has_required_atom = any(aid in required_atom_ids for aid in u.atom_ids)
+        has_critical_entity = bool(unit_entities[i])
+        if has_required_atom or has_critical_entity:
+            mandatory_indices.add(i)
+            covered_entities.update(unit_entities[i])
+            covered_required_atoms.update(aid for aid in u.atom_ids if aid in required_atom_ids)
 
-    # Pass 1: Entity-coverage minimum set (Submodular Greedy)
+    # Submodular greedy selection for any remaining required atoms/entities
     uncovered_entities = doc_entities - covered_entities
-    while uncovered_entities:
-        best_idx = -1
-        best_gain = 0.0
+    uncovered_atoms = required_atom_ids - covered_required_atoms
 
-        for idx in range(len(units)):
-            if idx in selected_indices:
+    while uncovered_entities or uncovered_atoms:
+        best_idx = -1
+        best_gain = 0
+        for i, u in enumerate(units):
+            if i in mandatory_indices:
                 continue
-            new_cov = len(unit_entities[idx].intersection(uncovered_entities))
-            if new_cov == 0:
-                continue
-            pr = float(scores[idx]) if idx < len(scores) else 0.5
-            gain = new_cov * 2.0 + pr
+            gain = len(unit_entities[i] & uncovered_entities) + len(set(u.atom_ids) & uncovered_atoms)
             if gain > best_gain:
                 best_gain = gain
-                best_idx = idx
+                best_idx = i
 
-        if best_idx == -1 or best_gain == 0:
+        if best_idx >= 0 and best_gain > 0:
+            mandatory_indices.add(best_idx)
+            uncovered_entities -= unit_entities[best_idx]
+            uncovered_atoms -= set(units[best_idx].atom_ids)
+        else:
             break
 
-        selected_indices.add(best_idx)
-        uncovered_entities.difference_update(unit_entities[best_idx])
-        covered_entities.update(unit_entities[best_idx])
+    # 2. Pareto Elbow Selection for narrative & structural context
+    scores_arr = np.array(scores) if scores is not None else np.ones(len(units))
+    if len(scores_arr) < len(units):
+        scores_arr = np.ones(len(units))
 
-    # Pass 2: Marginal Entropy Knee Selection
-    remaining_indices = [i for i in range(len(units)) if i not in selected_indices]
-    selected_words = Counter()
+    # Token-level vocabulary set already covered by mandatory units
+    selected_indices = set(mandatory_indices)
+    covered_vocab: Counter[str] = Counter()
     for idx in selected_indices:
-        selected_words.update(re.findall(r"\w+", units[idx].text.lower()))
+        words = re.findall(r"\b\w{3,}\b", units[idx].text.lower())
+        covered_vocab.update(words)
 
-    marginal_gains: list[tuple[float, int]] = []
+    # Candidate pool for narrative expansion
+    remaining_indices = [i for i in range(len(units)) if i not in selected_indices]
+    # Sort remaining candidates by PageRank centrality score descending
+    remaining_indices.sort(key=lambda i: scores_arr[i], reverse=True)
+
+    # Marginal entropy threshold: stop when new tokens offer minimal new vocabulary
+    elbow_threshold = 0.08  # Knee threshold for diminishing marginal returns
+
     for idx in remaining_indices:
-        words = re.findall(r"\w+", units[idx].text.lower())
+        words = set(re.findall(r"\b\w{3,}\b", units[idx].text.lower()))
         if not words:
             continue
-        new_words = sum(1 for w in words if selected_words[w] == 0)
-        pr = float(scores[idx]) if idx < len(scores) else 0.5
-        gain = (new_words / len(words)) * 0.7 + pr * 0.3
-        marginal_gains.append((gain, idx))
+        new_words = words - set(covered_vocab.keys())
+        marginal_gain = len(new_words) / len(words)
 
-    marginal_gains.sort(reverse=True, key=lambda x: x[0])
+        # Weight marginal gain by centrality score
+        marginal_value = marginal_gain * (0.5 + 0.5 * float(scores_arr[idx]))
 
-    if marginal_gains:
-        gains_array = np.array([g[0] for g in marginal_gains])
-        # Inflection point threshold: mean + 0.8 * std
-        threshold = float(np.mean(gains_array) + 0.8 * np.std(gains_array))
-        for gain, idx in marginal_gains:
-            if gain >= threshold:
-                selected_indices.add(idx)
-            else:
-                break
+        if marginal_value >= elbow_threshold:
+            selected_indices.add(idx)
+            covered_vocab.update(words)
 
-    sorted_indices = sorted(selected_indices, key=lambda i: units[i].source_order)
-    return [units[i] for i in sorted_indices]
+    # 3. Restore source chronological order
+    result = [units[i] for i in sorted(selected_indices)]
+    return result
 
 
 def select_units(
@@ -136,82 +139,60 @@ def select_units(
     budget: TokenBudget | None,
     policy: CompilePolicy,
     tokenizer: TokenizerProfile,
-    scores: np.ndarray | Sequence[float],
+    scores: np.ndarray | Sequence[float] | None = None,
 ) -> list[CandidateUnit]:
-    """Selects candidate units. If budget is None or budget.tokens is None, uses budget-free selection."""
+    """Dispatches to budget-free natural density selection or budget-constrained knapsack selection."""
     if budget is None or budget.tokens is None:
-        return select_units_budget_free(
-            units=units,
-            atoms=atoms,
-            policy=policy,
-            tokenizer=tokenizer,
-            scores=scores,
-        )
+        return select_units_budget_free(units, atoms, policy, tokenizer, scores)
 
+    # Budget-constrained selection
+    return select_units_constrained(units, atoms, budget, policy, tokenizer, scores)
+
+
+def select_units_constrained(
+    units: Sequence[CandidateUnit],
+    atoms: Sequence[Atom],
+    budget: TokenBudget,
+    policy: CompilePolicy,
+    tokenizer: TokenizerProfile,
+    scores: np.ndarray | Sequence[float] | None = None,
+) -> list[CandidateUnit]:
+    """Constraint-aware selection enforcing target token budget with fail-closed safety."""
     if not units:
         return []
 
-    atom_map = {a.atom_id: a for a in atoms}
-    mandatory_indices: set[int] = set()
     required_atom_ids = {a.atom_id for a in atoms if a.required}
+    unit_entities = [extract_unit_entities(u.text) for u in units]
 
-    for idx, u in enumerate(units):
-        if any(aid in required_atom_ids for aid in u.atom_ids):
-            mandatory_indices.add(idx)
-        if policy.preserve_failures and ("✗" in u.text or "FAILED" in u.text):
-            mandatory_indices.add(idx)
+    # Mandatory units for required atoms and critical entities
+    mandatory_indices: set[int] = set()
+    for i, u in enumerate(units):
+        if any(aid in required_atom_ids for aid in u.atom_ids) or unit_entities[i]:
+            mandatory_indices.add(i)
 
-    unit_costs = [max(1, tokenizer.count_tokens(u.text)) for u in units]
-    mandatory_tokens = sum(unit_costs[idx] for idx in mandatory_indices)
-    separator_overhead = len(mandatory_indices)
-    minimum_safe_tokens = mandatory_tokens + separator_overhead
+    # Calculate token cost of mandatory units
+    mandatory_tokens = sum(tokenizer.count_tokens(units[i].text) for i in mandatory_indices)
 
-    if minimum_safe_tokens > budget.tokens and budget.hard_budget:
-        missing_required = [
-            atom_map[aid].surface
-            for aid in required_atom_ids
-            if not any(aid in units[idx].atom_ids for idx in mandatory_indices)
-        ]
+    if budget.tokens is not None and mandatory_tokens > budget.tokens and budget.hard_budget:
+        missing_atoms = [a.surface for a in atoms if a.required]
         raise BudgetUnsafeError(
-            requested_tokens=budget.tokens,
-            minimum_safe_tokens=minimum_safe_tokens,
-            missing_atoms=missing_required,
-            mandatory_unit_ids=[units[i].unit_id for i in mandatory_indices],
-        )
+                requested_tokens=budget.tokens,
+                minimum_safe_tokens=mandatory_tokens,
+                missing_atoms=missing_atoms,
+                mandatory_unit_ids=[units[i].unit_id for i in mandatory_indices],
+            )
 
-    selected_indices: set[int] = set(mandatory_indices)
-    current_tokens = minimum_safe_tokens
-    covered_atom_ids = {aid for idx in selected_indices for aid in units[idx].atom_ids}
-    remaining_indices = [i for i in range(len(units)) if i not in selected_indices]
+    selected_indices = set(mandatory_indices)
+    current_tokens = mandatory_tokens
 
-    while current_tokens < budget.tokens and remaining_indices:
-        best_idx = -1
-        best_efficiency = -float("inf")
+    scores_arr = np.array(scores) if scores is not None else np.ones(len(units))
+    remaining = [i for i in range(len(units)) if i not in selected_indices]
+    remaining.sort(key=lambda i: scores_arr[i], reverse=True)
 
-        for idx in remaining_indices:
-            cost = unit_costs[idx]
-            if current_tokens + cost > budget.tokens:
-                continue
+    for idx in remaining:
+        cost = tokenizer.count_tokens(units[idx].text)
+        if budget.tokens is not None and current_tokens + cost <= budget.tokens:
+            selected_indices.add(idx)
+            current_tokens += cost
 
-            u = units[idx]
-            base_score = float(scores[idx]) if idx < len(scores) else 0.5
-            new_atoms = sum(1 for aid in u.atom_ids if aid not in covered_atom_ids)
-            atom_bonus = 0.3 * new_atoms
-
-            marginal_gain = base_score + atom_bonus
-            efficiency = marginal_gain / cost
-
-            if efficiency > best_efficiency:
-                best_efficiency = efficiency
-                best_idx = idx
-
-        if best_idx == -1:
-            break
-
-        selected_indices.add(best_idx)
-        current_tokens += unit_costs[best_idx]
-        covered_atom_ids.update(units[best_idx].atom_ids)
-        remaining_indices.remove(best_idx)
-
-    sorted_indices = sorted(selected_indices, key=lambda i: units[i].source_order)
-    return [units[i] for i in sorted_indices]
+    return [units[i] for i in sorted(selected_indices)]

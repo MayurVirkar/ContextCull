@@ -61,9 +61,14 @@ def segment_sentences(text: str) -> list[SegmentSpan]:
         punct = match.group(0)
 
         # 1. Decimal number guard (e.g. 10.0.0.1 or 3.14)
-        if punct == "." and m_start > 0 and m_end < text_len:
-            if text[m_start - 1].isdigit() and text[m_end].isdigit():
-                continue
+        if (
+            punct == "."
+            and m_start > 0
+            and m_end < text_len
+            and text[m_start - 1].isdigit()
+            and text[m_end].isdigit()
+        ):
+            continue
 
         # 2. International abbreviation guard
         prefix = text[start:m_start].strip()

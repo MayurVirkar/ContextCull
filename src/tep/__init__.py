@@ -12,7 +12,7 @@ from tep.ir.models import (
     OutputSegment,
     TokenBudget,
 )
-from tep.ir.spans import ByteSpan, PageRegion, SourceMap, SourceRef
+from tep.ir.spans import ByteSpan, SourceMap, SourceRef
 
 __version__ = "0.1.0"
 
@@ -27,7 +27,6 @@ __all__ = [
     "CompileResult",
     "ContextCompiler",
     "OutputSegment",
-    "PageRegion",
     "SourceMap",
     "SourceRef",
     "TokenBudget",

@@ -3,13 +3,20 @@
 from __future__ import annotations
 
 import re
-from typing import Sequence
+from collections.abc import Sequence
 
 from tep.ingest.decoder import IngestionResult, clean_char_to_byte_span
 from tep.ir.models import Atom
-from tep.ir.spans import ByteSpan, SourceRef
+from tep.ir.spans import ByteSpan
 
-# Layered regular expressions for protected classes
+# Generic regular expressions for critical technical identifiers & protected classes
+CVE_RE = re.compile(r"\bCVE-\d{4}-\d{4,7}\b", re.IGNORECASE)
+IPV4_RE = re.compile(r"\b(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(?:\.(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}\b")
+IPV6_RE = re.compile(r"\b(?:[0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}\b")
+UUID_RE = re.compile(r"\b[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}\b")
+GIT_SHA_RE = re.compile(r"\b[0-9a-fA-F]{40}\b|\b(?=[0-9a-f]{7,39}\b)(?=[0-9a-f]*\d)(?=[0-9a-f]*[a-f])[0-9a-f]{7,39}\b")
+AWS_INSTANCE_RE = re.compile(r"\bi-[0-9a-f]{8,17}\b")
+
 QUANTITY_RE = re.compile(
     r"\b(\d+(?:[\.,]\d+)*)\s*(MB|GB|TB|kB|ms|µs|ns|s|sec|second|seconds|min|mins|minute|minutes|h|hr|hrs|hour|hours|wk|week|weeks|mo|month|months|yr|year|years|%|\$|USD|EUR|billion|million|thousand|ppb)?\b",
     re.IGNORECASE,
@@ -19,7 +26,6 @@ PATH_OR_URL_RE = re.compile(
     r"(?:https?://[^\s/$.?#].[^\s]*|/[a-zA-Z0-9_\.\-]+(?:/[a-zA-Z0-9_\.\-]+)+|[a-zA-Z0-9_\.\-]+(?:\.[a-zA-Z0-9_\.\-]+)+/[^\s]*)"
 )
 
-# File path with optional line/column number (e.g. src/auth/token.rs:88:5)
 FILE_LOCATION_RE = re.compile(
     r"\b[a-zA-Z0-9_\.\-]+/[a-zA-Z0-9_\.\-/]+(?::\d+(?::\d+)?)?\b"
 )
@@ -29,7 +35,7 @@ CODE_IDENTIFIER_RE = re.compile(
 )
 
 ISO_TIMESTAMP_RE = re.compile(
-    r"\b\d{4}-\d{2}-\d{2}(?:T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})?)?\b"
+    r"\b\d{4}-\d{2}-\d{2}(?:[T\s]\d{2}:\d{2}(?::\d{2})?(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})?)?\b"
 )
 
 NEGATION_RE = re.compile(
@@ -76,7 +82,11 @@ def extract_atoms(
     ingest: IngestionResult,
     required_terms: Sequence[str] = (),
 ) -> list[Atom]:
-    """Extracts protected semantic atoms from the ingested document with exact byte spans."""
+    """Extracts protected semantic atoms from the ingested document with exact byte spans.
+
+    Critical technical identifiers (CVEs, IPs, UUIDs, Git SHAs, Instance IDs) and explicit
+    user-required terms are marked required=True by default to guarantee retention.
+    """
     atoms: list[Atom] = []
     seen_spans: set[tuple[int, int, str]] = set()
     clean_text = ingest.clean_text
@@ -108,11 +118,10 @@ def extract_atoms(
             )
         )
 
-    # 1. User-required terms (highest priority)
+    # 1. User-required terms (highest priority, always required)
     for term in required_terms:
         if not term:
             continue
-        # Use lookaround instead of \b to handle leading/trailing non-word chars (like /)
         term_re = re.compile(r"(?<![a-zA-Z0-9_])" + re.escape(term) + r"(?![a-zA-Z0-9_])", re.IGNORECASE)
         found = False
         for match in term_re.finditer(clean_text):
@@ -120,7 +129,6 @@ def extract_atoms(
             start, end = match.span()
             add_atom("required_term", clean_text[start:end], start, end, required=True)
 
-        # If term was not found directly (e.g. "30 min" vs "30 minutes"), try matching with expanded unit
         if not found and " " in term:
             parts = term.split()
             if len(parts) == 2 and parts[0].isdigit():
@@ -134,7 +142,32 @@ def extract_atoms(
                     start, end = match.span()
                     add_atom("required_term", clean_text[start:end], start, end, canonical=term.lower(), required=True)
 
-    # 2. File locations and URLs
+    # 2. Critical Technical Identifiers (Always required by default)
+    for match in CVE_RE.finditer(clean_text):
+        start, end = match.span()
+        add_atom("cve", clean_text[start:end], start, end, required=True)
+
+    for match in AWS_INSTANCE_RE.finditer(clean_text):
+        start, end = match.span()
+        add_atom("instance_id", clean_text[start:end], start, end, required=True)
+
+    for match in IPV4_RE.finditer(clean_text):
+        start, end = match.span()
+        add_atom("ipv4", clean_text[start:end], start, end, required=True)
+
+    for match in IPV6_RE.finditer(clean_text):
+        start, end = match.span()
+        add_atom("ipv6", clean_text[start:end], start, end, required=True)
+
+    for match in UUID_RE.finditer(clean_text):
+        start, end = match.span()
+        add_atom("uuid", clean_text[start:end], start, end, required=True)
+
+    for match in GIT_SHA_RE.finditer(clean_text):
+        start, end = match.span()
+        add_atom("git_sha", clean_text[start:end], start, end, required=True)
+
+    # 3. File locations and URLs
     for match in PATH_OR_URL_RE.finditer(clean_text):
         start, end = match.span()
         add_atom("path_or_url", clean_text[start:end], start, end)
@@ -143,7 +176,7 @@ def extract_atoms(
         start, end = match.span()
         add_atom("file_location", clean_text[start:end], start, end)
 
-    # 3. Quantities & Units
+    # 4. Quantities & Units
     for match in QUANTITY_RE.finditer(clean_text):
         start, end = match.span()
         val = match.group(1)
@@ -152,7 +185,7 @@ def extract_atoms(
         canonical = f"{val} {canonical_unit}".strip()
         add_atom("quantity", clean_text[start:end], start, end, canonical=canonical)
 
-    # 4. Technical code identifiers
+    # 5. Technical code identifiers
     for match in CODE_IDENTIFIER_RE.finditer(clean_text):
         start, end = match.span()
         surface = clean_text[start:end]
@@ -163,27 +196,27 @@ def extract_atoms(
         ):
             add_atom("code_identifier", surface, start, end)
 
-    # 5. ISO Timestamps
+    # 6. ISO Timestamps
     for match in ISO_TIMESTAMP_RE.finditer(clean_text):
         start, end = match.span()
         add_atom("timestamp", clean_text[start:end], start, end)
 
-    # 6. Negations
+    # 7. Negations
     for match in NEGATION_RE.finditer(clean_text):
         start, end = match.span()
-        add_atom("negation", clean_text[start:end], start, end, canonical="negation")
+        add_atom("negation", clean_text[start:end], start, end, canonical=clean_text[start:end].lower())
 
-    # 7. Modalities
+    # 8. Modalities
     for match in MODALITY_RE.finditer(clean_text):
         start, end = match.span()
         add_atom("modality", clean_text[start:end], start, end)
 
-    # 8. Conditions
+    # 9. Conditions
     for match in CONDITION_RE.finditer(clean_text):
         start, end = match.span()
         add_atom("condition", clean_text[start:end], start, end)
 
-    # 9. Causality
+    # 10. Causality
     for match in CAUSALITY_RE.finditer(clean_text):
         start, end = match.span()
         add_atom("causality", clean_text[start:end], start, end)

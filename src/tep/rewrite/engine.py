@@ -1,4 +1,4 @@
-"""Transactional rewriting engine with net token savings validation."""
+"""Transactional rewriting engine with net token savings and atom preservation validation."""
 
 from __future__ import annotations
 
@@ -36,7 +36,8 @@ class RewriteEngine:
             self._rule_ids.append(f"abbrev_{word}")
 
         if HAS_AHOCORASICK_RS and ahocorasick_rs is not None:
-            self._ac = ahocorasick_rs.AhoCorasick(self._patterns)
+            # Build Aho-Corasick automaton with lowercased patterns for fast substring pre-filtering
+            self._ac = ahocorasick_rs.AhoCorasick([p.lower() for p in self._patterns])
         else:
             self._ac = None
 
@@ -50,7 +51,9 @@ class RewriteEngine:
         """Rewrites a single candidate unit transactionally.
 
         In strict or verbatim mode, returns the original text without changes.
-        In compact/task mode, commits rewrites ONLY IF token cost strictly decreases.
+        In compact/task mode, commits rewrites ONLY IF:
+          1. Token cost strictly decreases (new_tokens < orig_tokens).
+          2. 100% of required atoms bound to this unit are preserved.
         """
         if policy.mode in (CompileMode.VERBATIM, CompileMode.STRICT):
             seg = OutputSegment(
@@ -66,6 +69,7 @@ class RewriteEngine:
         orig_tokens = tokenizer.count_tokens(orig_text)
 
         unit_atom_surfaces = {a.surface.lower() for a in atoms if a.atom_id in unit.atom_ids}
+        unit_required_atoms = [a for a in atoms if a.atom_id in unit.atom_ids and a.required]
 
         candidate_text = orig_text
         used_rules: list[str] = []
@@ -78,7 +82,18 @@ class RewriteEngine:
                 candidate_text = pruned
                 used_rules.append("discourse_prune")
 
-        for pat, repl, rule_id in zip(self._patterns, self._replacements, self._rule_ids):
+        # Fast pre-filtering with Aho-Corasick automaton if available
+        if self._ac is not None:
+            # m is a tuple (pattern_index, start, end)
+            matched_indices = sorted(set(m[0] for m in self._ac.find_matches_as_indexes(candidate_text.lower())))
+            rules_to_check = [
+                (self._patterns[i], self._replacements[i], self._rule_ids[i])
+                for i in matched_indices
+            ]
+        else:
+            rules_to_check = list(zip(self._patterns, self._replacements, self._rule_ids))
+
+        for pat, repl, rule_id in rules_to_check:
             if pat.lower() in unit_atom_surfaces:
                 continue
 
@@ -91,7 +106,10 @@ class RewriteEngine:
 
         new_tokens = tokenizer.count_tokens(candidate_text)
 
-        if new_tokens < orig_tokens and candidate_text != orig_text:
+        # Gate commit on both token reduction AND 100% required atom preservation
+        atoms_preserved = all(a.surface in candidate_text for a in unit_required_atoms)
+
+        if new_tokens < orig_tokens and candidate_text != orig_text and atoms_preserved:
             rule_str = "+".join(used_rules)
             seg = OutputSegment(
                 output_start=0,

@@ -25,7 +25,7 @@ def ingest_bytes(
     raw_bytes: bytes,
     document_id: str | None = None,
     encoding: str = "utf-8",
-    max_bytes: int = 50_000_000,
+    max_bytes: int = 10_000_000,
 ) -> IngestionResult:
     """Ingests raw bytes, computes a SHA-256 identifier, and builds a lossless SourceMap.
 
@@ -33,7 +33,9 @@ def ingest_bytes(
     Builds an ANSI-free clean view with exact index mapping back to canonical decoded characters.
     """
     if len(raw_bytes) > max_bytes:
-        raise TepError(f"Input size {len(raw_bytes)} bytes exceeds maximum permitted size {max_bytes} bytes")
+        raise TepError(
+            f"Input size {len(raw_bytes)} bytes exceeds maximum permitted size {max_bytes} bytes"
+        )
 
     if document_id is None:
         digest = hashlib.sha256(raw_bytes).hexdigest()
@@ -42,27 +44,34 @@ def ingest_bytes(
     source_map = SourceMap.from_bytes(raw_bytes, document_id=document_id, encoding=encoding)
     decoded = source_map.decoded_text
 
-    # Build clean view (ANSI stripped) with mapping back to decoded characters
-    clean_chars: list[str] = []
+    # Fast path: if no ANSI sequences are present, clean text is identical to decoded text
+    if not ANSI_ESCAPE_RE.search(decoded):
+        return IngestionResult(
+            document_id=document_id,
+            source_map=source_map,
+            clean_text=decoded,
+            clean_to_decoded_char=tuple(range(len(decoded) + 1)),
+        )
+
+    # ANSI stripped view with slice-based character mapping back to decoded characters
+    clean_parts: list[str] = []
     clean_to_decoded: list[int] = []
 
     last_idx = 0
     for match in ANSI_ESCAPE_RE.finditer(decoded):
         start, end = match.span()
-        # Add characters prior to ANSI escape
-        for idx in range(last_idx, start):
-            clean_chars.append(decoded[idx])
-            clean_to_decoded.append(idx)
+        if start > last_idx:
+            clean_parts.append(decoded[last_idx:start])
+            clean_to_decoded.extend(range(last_idx, start))
         last_idx = end
 
-    for idx in range(last_idx, len(decoded)):
-        clean_chars.append(decoded[idx])
-        clean_to_decoded.append(idx)
+    if last_idx < len(decoded):
+        clean_parts.append(decoded[last_idx:])
+        clean_to_decoded.extend(range(last_idx, len(decoded)))
 
     # Sentinel for end
     clean_to_decoded.append(len(decoded))
-
-    clean_text = "".join(clean_chars)
+    clean_text = "".join(clean_parts)
 
     return IngestionResult(
         document_id=document_id,
@@ -80,12 +89,8 @@ def clean_char_to_byte_span(
         raise ValueError(f"Clean character range [{clean_start}, {clean_end}) is out of bounds")
 
     if clean_start == clean_end:
-        dec_start = (
-            ingest.clean_to_decoded_char[clean_start]
-            if clean_start < len(ingest.clean_to_decoded_char)
-            else len(ingest.source_map.decoded_text)
-        )
-        return ingest.source_map.char_to_byte_span(dec_start, dec_start)
+        dec_pos = ingest.clean_to_decoded_char[clean_start]
+        return ingest.source_map.char_to_byte_span(dec_pos, dec_pos)
 
     dec_start = ingest.clean_to_decoded_char[clean_start]
     dec_end = ingest.clean_to_decoded_char[clean_end - 1] + 1

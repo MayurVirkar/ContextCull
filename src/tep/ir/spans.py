@@ -1,4 +1,4 @@
-"""Span and source location representations for exact provenance tracking."""
+"""Byte-level provenance spans, source references, and coordinate translation."""
 
 from __future__ import annotations
 
@@ -6,17 +6,23 @@ import bisect
 from dataclasses import dataclass
 
 
-@dataclass(frozen=True, slots=True, order=True)
+@dataclass(frozen=True, slots=True)
 class ByteSpan:
-    """Inclusive start, exclusive end offset in the original raw bytes."""
+    """An immutable byte range [start, end) within a specific source document."""
 
     document_id: str
     start: int
     end: int
 
     def __post_init__(self) -> None:
-        if self.start < 0 or self.end < self.start:
-            raise ValueError(f"Invalid byte span: [{self.start}, {self.end})")
+        if self.start < 0:
+            raise ValueError(f"ByteSpan start must be non-negative, got {self.start}")
+        if self.end < self.start:
+            raise ValueError(f"ByteSpan end ({self.end}) cannot be less than start ({self.start})")
+
+    @property
+    def byte_len(self) -> int:
+        return self.end - self.start
 
     @property
     def length(self) -> int:
@@ -43,38 +49,13 @@ class ByteSpan:
         }
 
 
-@dataclass(frozen=True, slots=True)
-class PageRegion:
-    """Bounding box in a paginated document (e.g. PDF)."""
-
-    document_id: str
-    page: int
-    x0: float
-    y0: float
-    x1: float
-    y1: float
-
-    def to_dict(self) -> dict[str, float | int | str]:
-        return {
-            "document_id": self.document_id,
-            "page": self.page,
-            "x0": self.x0,
-            "y0": self.y0,
-            "x1": self.x1,
-            "y1": self.y1,
-        }
-
-
-SourceRef = ByteSpan | PageRegion
+# Type alias representing any valid reference to a source span
+SourceRef = ByteSpan
 
 
 @dataclass(frozen=True, slots=True)
 class SourceMap:
-    """Bi-directional mapping between decoded text character offsets and raw byte offsets.
-
-    Preserves exact byte provenance across multi-byte UTF-8 sequences,
-    CRLF variations, and non-destructive views.
-    """
+    """Bidirectional mapping between raw document bytes and decoded character offsets."""
 
     document_id: str
     raw_bytes: bytes
@@ -86,19 +67,32 @@ class SourceMap:
     @classmethod
     def from_bytes(cls, raw: bytes, document_id: str, encoding: str = "utf-8") -> SourceMap:
         """Constructs a SourceMap by decoding raw bytes and recording byte offsets per character."""
-        # For standard UTF-8 (and other fixed/variable encodings), we map character index to byte offset
-        # efficiently by stepping through code points.
         text = raw.decode(encoding, errors="replace")
 
-        # Build character to byte offset table:
-        char_offsets: list[int] = []
-        byte_pos = 0
-
-        for char in text:
+        # Fast code-point based byte length computation for valid UTF-8
+        if encoding.lower() in ("utf-8", "utf8") and text.encode("utf-8") == raw:
+            n = len(text)
+            char_offsets = [0] * (n + 1)
+            byte_pos = 0
+            for i, char in enumerate(text):
+                char_offsets[i] = byte_pos
+                code = ord(char)
+                if code <= 0x7F:
+                    byte_pos += 1
+                elif code <= 0x7FF:
+                    byte_pos += 2
+                elif code <= 0xFFFF:
+                    byte_pos += 3
+                else:
+                    byte_pos += 4
+            char_offsets[n] = byte_pos
+        else:
+            char_offsets = []
+            byte_pos = 0
+            for char in text:
+                char_offsets.append(byte_pos)
+                byte_pos += len(char.encode(encoding))
             char_offsets.append(byte_pos)
-            byte_pos += len(char.encode(encoding))
-
-        char_offsets.append(byte_pos)  # End sentinel
 
         return cls(
             document_id=document_id,

@@ -2,13 +2,13 @@
 
 [![Python 3.13+](https://img.shields.io/badge/python-3.13+-blue.svg)](https://www.python.org/downloads/)
 [![Deterministic](https://img.shields.io/badge/execution-100%25%20deterministic-green.svg)]()
-[![Provenance](https://img.shields.io/badge/provenance-cryptographic%20SHA256-blueviolet.svg)]()
-[![Speed](https://img.shields.io/badge/latency-%3C300ms%20for%2038--pages-brightgreen.svg)]()
+[![Provenance](https://img.shields.io/badge/provenance-byte--exact%20SHA256-blueviolet.svg)]()
+[![Speed](https://img.shields.io/badge/latency-%3C200ms%20for%2038--pages-brightgreen.svg)]()
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 **TEP v2** is a high-performance, deterministic context compiler and extractive summarization engine. It compiles massive, unstructured technical documents, codebases, logs, and emails into dense, source-mapped context packages optimized for downstream Frontier LLMs (e.g., Google Cloud Gemini, Claude, GPT-4).
 
-TEP v2 reduces token consumption by **60% to 80% in under 300 milliseconds**, guarantees **100% retention of critical technical entities** (CVEs, IPs, commit hashes, secret counts), and outputs a **cryptographically verifiable byte-level provenance manifest**.
+TEP v2 reduces token consumption in **under 200 milliseconds**, guarantees **preservation of critical technical entities** (CVEs, IPs, UUIDs, commit hashes, instance IDs, quantities), and outputs a **verifiable byte-level provenance manifest**.
 
 ---
 
@@ -17,21 +17,27 @@ TEP v2 reduces token consumption by **60% to 80% in under 300 milliseconds**, gu
 1. **The LLM "Lost in the Middle" & Quadratic Cost Problem:**
    Feeding 20,000 to 100,000 tokens of raw documents directly into frontier models incurs high latency, quadratic self-attention cost ($O(N^2)$), and risk of hallucination or dropped context.
 2. **The Classic Summarizer "Centrality Trap" (Sumy / LexRank / LSA):**
-   Graph-centrality summarizers like LexRank and SVD-based engines like LSA select sentences with high vocabulary overlap with the rest of the text. However, in security and technical reports, **the most critical facts (a CVE ID, an AWS instance ID, an exfiltration count) appear in only 1 or 2 sentences**. Because they lack broad lexical overlap, standard LexRank and LSA assign them near-zero centrality and **drop up to 84% of critical facts**.
+   Graph-centrality summarizers like LexRank and SVD-based engines like LSA select sentences with high vocabulary overlap with the rest of the text. However, in security and technical reports, **the most critical facts (a CVE ID, an AWS instance ID, an exfiltration count) appear in only 1 or 2 sentences**. Because they lack broad lexical overlap, standard LexRank and LSA assign them near-zero centrality and **drop up to 95% of critical facts**.
 
 ---
 
 ## Empirical Benchmark
 
-Evaluated on the 38-page incident report (`examples/sample_incident.txt`, 20,303 tokens) measuring ground-truth retention across 19 critical technical atoms (CVEs, AWS IDs, exfiltrated secret counts, microservice names):
+Evaluated on the 38-page incident report (`examples/sample_incident.txt`, 20,303 tokens) measuring ground-truth retention across 19 critical technical atoms (CVEs, AWS IDs, exfiltrated secret counts, microservice names). Tested on Linux, Python 3.13.15:
 
 | Summarizer Engine | Latency | Output Tokens | Token Reduction | Atoms Retained (19 Ground Truth) | Atoms Dropped |
 | :--- | :---: | :---: | :---: | :---: | :--- |
-| **TEP v2 (Zero-Budget Mode)** | **289 ms** | **7,839** | **61.4%** | **18 / 19 (94.7%)** | **1** (14 write tokens) |
-| **Sumy LexRank (100 sentences)** | 3,044 ms | 3,745 | 81.6% | **5 / 19 (26.3%)** | **14 dropped** (`CVE-2026-66384`, `CVE-2026-53362`, `i-0622056ec3e996a7c`, `956 secrets`, etc.) |
-| **Sumy LexRank (50 sentences)** | 3,007 ms | 2,002 | 90.1% | **5 / 19 (26.3%)** | **14 dropped** (critical exploit chain lost) |
-| **Sumy LSA (100 sentences)** | 662 ms | 2,772 | 86.3% | **5 / 19 (26.3%)** | **14 dropped** (`CVE-2026-53362`, `956 secrets`, `RefJinja`, `HDF5`, etc.) |
-| **Sumy LSA (50 sentences)** | 696 ms | 1,490 | 92.7% | **3 / 19 (15.8%)** | **16 dropped** (lost almost the entire report) |
+| **TEP v2 (Zero-Budget, Generic)** | **161 ms** | **12,984** | **36.0%** | **18 / 19 (94.7%)** | `14 write tokens` |
+| **TEP v2 (Budget: 8,000 tokens)** | **172 ms** | **7,842** | **61.4%** | **18 / 19 (94.7%)** | `14 write tokens` |
+| **Sumy LexRank (100 sentences)** | 2,978 ms | 3,746 | 81.5% | **3 / 19 (15.8%)** | `CVE-2026-66384`, `CVE-2026-53362`, `i-0622056ec3e996a7c`, `artifactory-3`, ... (16 total) |
+| **Sumy LSA (100 sentences)** | 667 ms | 2,758 | 86.4% | **3 / 19 (15.8%)** | `CVE-2026-53362`, `956 secrets`, `moon-bot`, `moon-landing`, ... (16 total) |
+| **Sumy LexRank (50 sentences)** | 2,915 ms | 2,002 | 90.1% | **3 / 19 (15.8%)** | `CVE-2026-66384`, `CVE-2026-53362`, `i-0622056ec3e996a7c`, `artifactory-3`, ... (16 total) |
+| **Sumy LSA (50 sentences)** | 666 ms | 1,495 | 92.6% | **1 / 19 (5.3%)** | `CVE-2026-53362`, `i-0622056ec3e996a7c`, `artifactory-3`, `956 secrets`, ... (18 total) |
+
+To reproduce the benchmark table locally:
+```bash
+uv run python bench/run_benchmark.py examples/sample_incident.txt
+```
 
 ---
 
@@ -48,24 +54,24 @@ flowchart TD
     E --> F["Stage 5: Sparse TF-IDF & Vectorized LexRank Graph"]
     F & D --> G["Stage 6: Selection (Submodular Entity Floor + Marginal Entropy)"]
     G --> H["Stage 7: Structural Context Closure"]
-    H --> I["Stage 8: Transactional Rewriting (Discourse Pruning & Rules)"]
-    I --> J["Stage 9: Cryptographic Invariant Validation"]
+    H --> I["Stage 8: Transactional Rewriting (Discourse Pruning & Aho-Corasick)"]
+    I --> J["Stage 9: Invariant Validation"]
     J --> K["Stage 10: Render Context & SHA-256 Provenance Manifest"]
     K --> L["Downstream Frontier LLM (Cloud Gemini)"]
 ```
 
 ### Key Stages Explained
-1. **Immutable Ingestion & SourceMap:** Computes SHA-256 document fingerprint and byte-to-char translation table.
-2. **Block Parsing & Routing:** Classifies content blocks into Code, Logs, Markdown, Structured Headers, and Free Text.
-3. **Protected Atom Detection:** Uses high-throughput regex and Aho-Corasick automata to identify protected entities (CVEs, UUIDs, IP addresses, hashes, counts, credentials).
+1. **Immutable Ingestion & SourceMap:** Computes SHA-256 document fingerprint and byte-to-char translation table. Fast-paths ANSI-free inputs.
+2. **Block Parsing & Routing:** Classifies content blocks into Code, Logs (Cargo, Pytest, Vitest), Markdown, Headers, and Free Text.
+3. **Protected Atom Detection:** Regular expressions for critical identifiers (CVEs, IPv4/IPv6, UUIDs, Git SHAs, AWS Instance IDs, quantities, timestamps), automatically marking critical classes `required=True`.
 4. **Candidate Unit Segmentation:** Universal sentence segmentation across Western, CJK (`。！？`), Arabic, and Indic scripts.
-5. **Sparse LexRank Engine:** Computes top-$k$ cosine similarity graph via `sparse-dot-topn` and `scipy.sparse` power-iteration PageRank in ~15 ms (10.5x faster than dense Python implementations).
+5. **Sparse LexRank Engine:** Computes top-$k$ cosine similarity graph via `sparse-dot-topn` and `scipy.sparse` power-iteration PageRank in ~15 ms.
 6. **Submodular Entity Floor & Marginal Entropy Elbow:**
    - **Entity Floor:** Guarantees any sentence containing an essential entity atom is locked into the summary.
    - **Pareto Marginal Entropy:** In zero-budget mode, dynamically stops selecting narrative sentences when information gain flattens.
 7. **Context Closure:** Restores structural dependencies (headers, parent code blocks) so output units remain coherent.
-8. **Transactional Rewriting:** Losslessly prunes discourse boilerplate (*"as a result of"* $\rightarrow$ *"due to"*, *"in order to"* $\rightarrow$ *"to"*) and compresses common technical terms (*"configuration"* $\rightarrow$ *"cfg"*), checking that token cost strictly decreases.
-9. **Invariant Validation:** Enforces strict invariants: 100% source backing, zero introduced entities, and budget compliance.
+8. **Transactional Rewriting:** Losslessly prunes bureaucratic discourse scaffolding while strictly protecting attribution. Applies abbreviation rewrites via an Aho-Corasick automaton only if token cost strictly decreases and all required atoms are preserved.
+9. **Invariant Validation:** Enforces strict invariants: 100% source backing for copied segments, valid bounds for rewrites, zero dropped required atoms, and budget compliance.
 10. **Provenance Manifest:** Emits a JSON manifest detailing the exact byte spans `[start, end]` in the original source for every segment.
 
 ---
@@ -77,12 +83,12 @@ The recommended architecture pairs TEP v2 as a deterministic pre-processor with 
 ```
 [Raw 38-page Doc / 20k tokens]
             │
-            ▼  (289 ms, zero compute cost, 100% deterministic)
+            ▼  (161 ms, zero compute cost, 100% deterministic)
    ┌─────────────────┐
-   │     TEP v2      │ ──► Drops 61.4% tokens, retains 95%+ critical facts
+   │     TEP v2      │ ──► Drops non-contributing scaffolding, locks in 95%+ critical facts
    └─────────────────┘
             │
-            ▼  [Compiled Context: 7.8k tokens]
+            ▼  [Compiled Context: 7.8k - 12.9k tokens]
    ┌─────────────────┐
    │  Cloud Gemini   │ ──► Generates dense, executive smart-caveman summary
    └─────────────────┘
@@ -127,10 +133,10 @@ Enforce a hard token budget against a target tokenizer (e.g., `openai:cl100k_bas
 
 ```bash
 tep compile examples/sample_incident.txt \
-  --budget 4000 \
+  --budget 8000 \
   --tokenizer openai:cl100k_base \
-  --output summary_4k.md \
-  --manifest manifest_4k.json
+  --output summary_8k.md \
+  --manifest manifest_8k.json
 ```
 
 If the requested budget is too small to safely retain all critical atoms, TEP raises `TARGET_BUDGET_UNSAFE` with the minimum safe token threshold.
@@ -166,10 +172,11 @@ if result.ok:
     print(f"Compressed from {result.metrics['input_tokens']} to {result.metrics['output_tokens']} tokens")
     print(result.text)
     
-    # Access cryptographic provenance manifest
+    # Access provenance manifest
     manifest = result.manifest
     print(f"Document SHA-256: {manifest['source']['document_id']}")
-    print(f"Verified segments: {len(manifest['output_segments'])}")
+    print(f"Verified copy segments: {manifest['metrics']['copy_segments_count']}")
+    print(f"Required atom coverage: {manifest['metrics']['required_atom_coverage'] * 100:.1f}%")
 ```
 
 ---
@@ -180,6 +187,10 @@ if result.ok:
 TEPv2/
 ├── pyproject.toml              # Build configuration & dependencies
 ├── README.md                   # Project documentation & benchmarks
+├── LICENSE                     # MIT License
+├── .github/workflows/ci.yml    # GitHub Actions CI workflow
+├── bench/
+│   └── run_benchmark.py        # Reproducible empirical benchmark script
 ├── examples/
 │   └── sample_incident.txt     # Real-world 38-page benchmark incident report
 ├── src/
@@ -194,17 +205,17 @@ TEPv2/
 │       ├── ir/                 # Intermediate representation & span models
 │       ├── parse/              # Specialized parsers (Code, Markdown, Logs, Email)
 │       ├── rank/               # Vectorized sparse LexRank / PageRank
-│       ├── render/             # Output renderer & SHA-256 provenance manifest
+│       ├── render/             # Output renderer & provenance manifest
 │       ├── rewrite/            # Transactional discourse pruning & rule engine
 │       ├── route/              # Block router
 │       ├── segment/            # Universal multilingual sentence segmentation
 │       ├── select/             # Submodular entity floor & marginal entropy selection
 │       ├── tokenize/           # Tokenizer profile abstraction (tiktoken, etc.)
-│       └── validate/           # Cryptographic invariant validators
+│       └── validate/           # Invariant validators
 └── tests/
     ├── differential/           # Differential test suite vs. baseline models
     ├── property/               # Hypothesis property-based span invariance tests
-    └── unit/                   # Unit tests (atoms, budget, rewrite, spans, multilingual)
+    └── unit/                   # Unit tests (atoms, budget, rewrite, spans, logs, multilingual, provenance)
 ```
 
 ---
