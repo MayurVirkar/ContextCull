@@ -1,0 +1,43 @@
+{
+  "eventVersion": "1.08",
+  "userIdentity": {
+    "type": "IAMUser",
+    "principalId": "AIDAJQABLZS4A3QEXAMPLE",
+    "arn": "arn:aws:iam::123456789012:user/deployer-bot",
+    "accountId": "123456789012",
+    "userName": "deployer-bot"
+  },
+  "eventTime": "2026-07-14T08:12:00Z",
+  "eventSource": "ec2.amazonaws.com",
+  "eventName": "RunInstances",
+  "awsRegion": "us-east-1",
+  "sourceIPAddress": "198.51.100.44",
+  "userAgent": "aws-sdk-go/v1.44.0",
+  "requestParameters": {
+    "instanceType": "c6i.4xlarge",
+    "imageId": "ami-0c55b159cbfafe1f0",
+    "minCount": 4,
+    "maxCount": 4,
+    "securityGroupId": [
+      "sg-01a2b3c4d5e6f7890"
+    ]
+  },
+  "responseElements": {
+    "instancesSet": {
+      "items": [
+        {
+          "instanceId": "i-0622056ec3e996a7c",
+          "currentState": {
+            "name": "running"
+          }
+        },
+        {
+          "instanceId": "i-0733167fd4e007b8d",
+          "currentState": {
+            "name": "running"
+          }
+        }
+      ]
+    }
+  }
+}

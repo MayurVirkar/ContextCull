@@ -1,0 +1,12 @@
+[2026-07-14 08:00:12] @monitoring-bot: ALERT: CPU usage on host srv-prod-db-04 exceeded 95% for 5 minutes.
+[2026-07-14 08:01:05] @alex.t: Looking into srv-prod-db-04. PostgreSQL connection pool is saturated. 450/500 connections active.
+[2026-07-14 08:02:30] @maria.g: Seeing elevated 504 Gateway Timeouts on /api/v2/checkout. Latency spiked from 45ms to 3200ms.
+[2026-07-14 08:03:15] @alex.t: Found the culprit query: `SELECT * FROM orders WHERE status = 'pending' ORDER BY created_at DESC;` is doing a full table scan on 42M rows.
+[2026-07-14 08:04:45] @maria.g: Did someone drop the index `idx_orders_status_created` during last night's migration 20260713_drop_legacy_indexes.sql?
+[2026-07-14 08:06:20] @jason.k: Yes, migration 20260713 dropped it by mistake. I am creating the index concurrently right now:
+`CREATE INDEX CONCURRENTLY idx_orders_status_created ON orders (status, created_at DESC);`
+[2026-07-14 08:12:10] @jason.k: Index creation 60% complete. CPU dropping slightly to 82%.
+[2026-07-14 08:15:35] @jason.k: Index created successfully. Query execution time down to 1.2ms.
+[2026-07-14 08:16:05] @alex.t: Connection pool drained. Active connections back to 38.
+[2026-07-14 08:17:00] @maria.g: 504 errors dropped to 0. Checkout API p99 latency back to 42ms.
+[2026-07-14 08:20:00] @alex.t: Closing incident INC-84920. Post-mortem scheduled for tomorrow at 14:00 UTC.

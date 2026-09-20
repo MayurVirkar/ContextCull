@@ -28,18 +28,6 @@ CRITICAL_ENTITY_PATTERNS = [
         re.IGNORECASE,
     ),
     re.compile(r"\b[a-zA-Z][a-zA-Z0-9]*(?:-[a-zA-Z0-9]+)+\b"),
-    # URIs & endpoints
-    re.compile(r"\b[a-zA-Z][a-zA-Z0-9+.-]*://[^\s<>\"'()]+"),
-    # Absolute Unix paths
-    re.compile(r"(?:/[a-zA-Z0-9_\.\-]+){2,}"),
-    # AWS ARNs
-    re.compile(r"\barn:aws:[a-zA-Z0-9_\.\-]+:[a-zA-Z0-9_\.\-]*:\d{12}:[a-zA-Z0-9_\.\-/]+"),
-    # IP:port endpoints
-    re.compile(r"\b(?:\d{1,3}\.){3}\d{1,3}:\d{2,5}\b"),
-    # Critical compliance & security acronyms
-    re.compile(r"\b(?:PII|GDPR|HIPAA|SOC2|mTLS|CIDR|STS|IAM|ACL|RBAC)\b", re.IGNORECASE),
-    # Email addresses
-    re.compile(r"\b[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+\b"),
 ]
 
 
@@ -86,8 +74,7 @@ def select_units_budget_free(
     for i, u in enumerate(units):
         has_required = any(aid in required_atom_ids for aid in u.atom_ids)
         is_failure = policy.preserve_failures and "test_failure" in u.block_id
-        is_action = "_decision" in u.block_id or "_request" in u.block_id
-        if has_required or is_failure or is_action:
+        if has_required or is_failure:
             mandatory_indices.add(i)
             covered_entities.update(unit_entities[i])
 
@@ -234,13 +221,12 @@ def select_units_constrained(
     required_atom_ids = {a.atom_id for a in atoms if a.required}
     unit_entities = [extract_unit_entities(u.text) for u in units]
 
-    # Mandatory units: required atoms, test failures, and explicit decisions/requests
+    # Mandatory units: required atoms and test failures (if policy.preserve_failures)
     mandatory_indices: set[int] = set()
     for i, u in enumerate(units):
         has_required = any(aid in required_atom_ids for aid in u.atom_ids)
         is_failure = policy.preserve_failures and "test_failure" in u.block_id
-        is_action = "_decision" in u.block_id or "_request" in u.block_id
-        if has_required or is_failure or is_action:
+        if has_required or is_failure:
             mandatory_indices.add(i)
 
     # Calculate token cost of mandatory units

@@ -74,9 +74,8 @@ skips = [
 ]
 
 [tool.mutmut]
-paths_to_mutate = ["src/tep/"]
+source_paths = ["src/tep/"]
 runner = "python -m pytest -x -q"
-tests_dir = ["tests/"]
 
 [tool.coverage.run]
 source = ["src/tep"]

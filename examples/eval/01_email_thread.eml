@@ -1,0 +1,72 @@
+From: sarah.chen@acme-infra.internal
+To: incident-response@acme-infra.internal, devops-core@acme-infra.internal
+Subject: [P0 Incident] S3 Token Leak and Rogue Container in Cluster us-east-prod-1
+Date: Mon, 14 Jul 2026 08:15:22 +0000
+Message-ID: <inc-001@acme-infra.internal>
+
+Team,
+At 08:12 UTC, GuardDuty flagged unauthorized AWS STS AssumeRole calls originating from external IP 198.51.100.44 against role arn:aws:iam::123456789012:role/DataPipelineWorker.
+The attacker appears to have harvested AWS secret access keys from a publicly exposed environment variable in staging.
+Immediate action items:
+1. Revoke active STS sessions for DataPipelineWorker.
+2. Isolate pod data-worker-7b9f8-x9z2q in namespace processing.
+3. Review CloudTrail logs for S3 PutObject or GetObject calls.
+
+Sarah Chen
+Principal Reliability Engineer, Acme Corp
+
+--------------------------------------------------------------------------------
+From: marcus.vance@acme-infra.internal
+To: sarah.chen@acme-infra.internal, incident-response@acme-infra.internal
+Subject: Re: [P0 Incident] S3 Token Leak and Rogue Container in Cluster us-east-prod-1
+Date: Mon, 14 Jul 2026 08:24:10 +0000
+In-Reply-To: <inc-001@acme-infra.internal>
+
+> 1. Revoke active STS sessions for DataPipelineWorker.
+> 2. Isolate pod data-worker-7b9f8-x9z2q in namespace processing.
+
+Confirmed: Active STS session revocation executed at 08:21 UTC via AWS CLI:
+`aws iam put-role-policy --role-name DataPipelineWorker --policy-name RevokeOlderSessions --policy-document file://revoke.json`
+All credentials issued prior to 2026-07-14T08:20:00Z are now invalidated.
+
+Pod data-worker-7b9f8-x9z2q has been cordoned and network policy applied to deny all ingress/egress.
+Memory dump in progress: 731 MB captured to s3://acme-forensics-vault/inc-2026-07-14/mem.raw.
+
+Marcus
+
+--------------------------------------------------------------------------------
+From: elena.rostova@acme-infra.internal
+To: incident-response@acme-infra.internal
+Subject: Re: [P0 Incident] S3 Token Leak and Rogue Container in Cluster us-east-prod-1
+Date: Mon, 14 Jul 2026 08:42:33 +0000
+In-Reply-To: <inc-001@acme-infra.internal>
+
+Forensics initial findings:
+The attacker gained access through CVE-2026-44192 in the legacy PDF generation microservice running on port 8080.
+Once inside, they executed a lateral movement script to scrape Kubernetes secrets from `/var/run/secrets/kubernetes.io/serviceaccount/token`.
+They attempted to query the internal Vault instance at 10.100.0.15:8200, but Vault rejected the token due to CIDR restriction policy.
+However, 14 write tokens for internal Artifactory repository `artifactory-build-cache` were discovered in `/tmp/.cache`.
+
+Actions underway:
+- Rotate all Artifactory API keys across Organization 1.
+- Patch PDF worker deployment with base image v2.4.1 containing the fix for CVE-2026-44192.
+- Enforce mTLS on all internal inter-service communication by 12:00 UTC.
+
+Elena Rostova
+Head of Security Operations
+
+--------------------------------------------------------------------------------
+From: david.kim@acme-infra.internal
+To: incident-response@acme-infra.internal
+Subject: Re: [P0 Incident] S3 Token Leak and Rogue Container in Cluster us-east-prod-1
+Date: Mon, 14 Jul 2026 09:10:05 +0000
+
+Update on customer impact and blast radius:
+- Customer database clusters (Aurora PostgreSQL cluster-id `aurora-prod-analytics-01`) show ZERO unauthorized queries.
+- CloudTrail confirms no customer PII was accessed or downloaded.
+- Exfiltration was strictly confined to internal build artifacts and caching metadata.
+- Total downtime: 0 minutes for external customer APIs.
+- Next briefing scheduled for 10:00 UTC with VP Engineering.
+
+David Kim
+Director of Infrastructure

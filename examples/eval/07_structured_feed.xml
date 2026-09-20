@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <title>Acme Security Advisories</title>
+    <updated>2026-07-14T12:00:00Z</updated>
+    <entry>
+        <id>urn:uuid:6c9b3a11-89e4-42b7-a38f-998822001122</id>
+        <title>Advisory ACME-2026-08: Remote Code Execution in API Gateway</title>
+        <updated>2026-07-14T10:15:00Z</updated>
+        <summary>A critical vulnerability CVE-2026-88192 was identified in the API Gateway authentication filter. Attackers could bypass token verification by sending crafted HTTP headers.</summary>
+        <author><name>Security Response Team</name></author>
+    </entry>
+    <entry>
+        <id>urn:uuid:7d1c4b22-90f5-53c8-b49a-001133112233</id>
+        <title>Advisory ACME-2026-09: Denial of Service in Session Store</title>
+        <updated>2026-07-13T16:30:00Z</updated>
+        <summary>Vulnerability CVE-2026-77180 allows unauthenticated attackers to cause memory exhaustion in Redis cluster nodes by transmitting malformed WebSocket frames.</summary>
+        <author><name>Platform Engineering</name></author>
+    </entry>
+</feed>

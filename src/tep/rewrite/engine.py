@@ -75,19 +75,29 @@ class RewriteEngine:
         candidate_text = orig_text
         used_rules: list[str] = []
 
+        # Protect code spans (fenced code blocks first, then inline backticks) from rewrites
+        code_spans: list[str] = []
+
+        def _mask_code(m: re.Match) -> str:
+            code_spans.append(m.group(0))
+            return f"\x00CODE_{len(code_spans) - 1}\x00"
+
+        masked_text = re.sub(r"```[\s\S]*?```", _mask_code, candidate_text)
+        masked_text = re.sub(r"`[^`\r\n]+`", _mask_code, masked_text)
+
         if policy.discourse_pruning:
             from tep.rewrite.discourse import prune_discourse_scaffolding
 
-            pruned = prune_discourse_scaffolding(candidate_text)
-            if pruned != candidate_text:
-                candidate_text = pruned
+            pruned = prune_discourse_scaffolding(masked_text)
+            if pruned != masked_text:
+                masked_text = pruned
                 used_rules.append("discourse_prune")
 
         # Fast pre-filtering with Aho-Corasick automaton if available
         if self._ac is not None:
             # m is a tuple (pattern_index, start, end)
             matched_indices = sorted(
-                set(m[0] for m in self._ac.find_matches_as_indexes(candidate_text.lower()))
+                set(m[0] for m in self._ac.find_matches_as_indexes(masked_text.lower()))
             )
             rules_to_check = [
                 (self._patterns[i], self._replacements[i], self._rule_ids[i])
@@ -100,13 +110,21 @@ class RewriteEngine:
             if pat.lower() in unit_atom_surfaces:
                 continue
 
-            pattern_re = re.compile(r"\b" + re.escape(pat) + r"\b", re.IGNORECASE)
-            if pattern_re.search(candidate_text):
-                new_text = pattern_re.sub(repl, candidate_text)
-                if new_text != candidate_text:
-                    candidate_text = new_text
+            # Protect hyphenated flags (e.g. --policy-document) and paths (/foo/document)
+            pattern_re = re.compile(
+                r"(?<![\w\-\/])" + re.escape(pat) + r"(?![\w\-\/])", re.IGNORECASE
+            )
+            if pattern_re.search(masked_text):
+                new_text = pattern_re.sub(repl, masked_text)
+                if new_text != masked_text:
+                    masked_text = new_text
                     used_rules.append(rule_id)
 
+        # Restore protected code spans
+        for idx, span in enumerate(code_spans):
+            masked_text = masked_text.replace(f"\x00CODE_{idx}\x00", span)
+
+        candidate_text = masked_text
         new_tokens = tokenizer.count_tokens(candidate_text)
 
         # Gate commit on both token reduction AND 100% required atom preservation

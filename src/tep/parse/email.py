@@ -21,103 +21,130 @@ def is_email(text: str) -> bool:
 
 
 def parse_email_blocks(ingest: IngestionResult) -> list[Block]:
-    """Parses email text into header block and categorized body sentence blocks."""
+    """Parses email text (single or multi-message thread) into header and body blocks."""
     clean_text = ingest.clean_text
     blocks: list[Block] = []
 
-    from_match = FROM_HEADER_RE.search(clean_text)
-    subj_match = SUBJ_HEADER_RE.search(clean_text)
-
-    from_val = ""
-    if from_match:
-        raw_from = from_match.group(1).strip()
-        from_val = raw_from.split("<")[0].strip() or raw_from
-
-    subj_val = subj_match.group(1).strip() if subj_match else ""
-
-    header_parts: list[str] = []
-    if from_val:
-        header_parts.append(f"from: {from_val}")
-    if subj_val:
-        header_parts.append(f"subj: {subj_val}")
-
-    # Header block
-    if header_parts:
-        header_text = " · ".join(header_parts)
-        start_c = min(
-            from_match.start() if from_match else 0,
-            subj_match.start() if subj_match else 0,
+    pos = 0
+    messages: list[tuple[int, int]] = []
+    while pos < len(clean_text):
+        # Next message boundary: separator line or blank lines followed by From:
+        next_m = re.search(
+            r"(?:\r?\n\s*[-=_]{3,}\s*\r?\n+|\r?\n\s*\r?\n(?=From:\s*))",
+            clean_text[pos:],
+            re.IGNORECASE,
         )
-        end_c = max(
-            from_match.end() if from_match else 0,
-            subj_match.end() if subj_match else 0,
-        )
-        span = clean_char_to_byte_span(ingest, start_c, end_c)
-        blocks.append(
-            Block(
-                block_id="block_0000_email_header",
-                kind=BlockKind.EMAIL_HEADER,
-                sources=(span,),
-                text=header_text,
-                metadata={"from": from_val, "subject": subj_val, "kind": "aggregate"},
-            )
-        )
-
-    # Find body start (after headers)
-    body_start_idx = max(
-        from_match.end() if from_match else 0,
-        subj_match.end() if subj_match else 0,
-    )
-    raw_body = clean_text[body_start_idx:]
-
-    # Remove quote threads and signature markers
-    line_start_in_body = 0
-    clean_body_end = len(raw_body)
-
-    for line in raw_body.splitlines(keepends=True):
-        trimmed = line.strip()
-        if QUOTE_LINE_RE.match(trimmed) or trimmed.startswith("--"):
-            clean_body_end = line_start_in_body
+        if next_m:
+            end = pos + next_m.start()
+            messages.append((pos, end))
+            pos = pos + next_m.end()
+        else:
+            messages.append((pos, len(clean_text)))
             break
-        line_start_in_body += len(line)
 
-    body_text = raw_body[:clean_body_end]
-    body_offset = body_start_idx
-
-    # Segment sentences in body
-    sentences = segment_sentences(body_text)
-    for s in sentences:
-        s_text = s.text.strip()
-        # Skip trivial courtesy greetings
-        if (
-            len(s_text) <= 5
-            or s_text.lower().startswith("best regards")
-            or s_text.lower().startswith("thanks")
-        ):
+    for msg_start, msg_end in messages:
+        msg_chunk = clean_text[msg_start:msg_end]
+        if not msg_chunk.strip():
             continue
 
-        c_start = body_offset + s.start_char
-        c_end = body_offset + s.end_char
-        span = clean_char_to_byte_span(ingest, c_start, c_end)
-
-        # Categorize
-        if DECISION_RE.search(s_text):
-            category = "decision"
-        elif REQUEST_RE.search(s_text):
-            category = "request"
-        elif s_text.endswith("?") or s_text.startswith(("Do ", "What ", "How ", "Could ")):
-            category = "question"
+        # Split header section from body at first blank line
+        hdr_sep = re.search(r"\r?\n\s*\r?\n", msg_chunk)
+        if hdr_sep:
+            header_text_raw = msg_chunk[: hdr_sep.start()]
+            body_start_in_chunk = hdr_sep.end()
         else:
-            category = "fact"
+            header_text_raw = msg_chunk
+            body_start_in_chunk = len(msg_chunk)
 
-        blocks.append(
-            Block(
-                block_id=f"block_{len(blocks):04d}_{category}",
-                kind=BlockKind.PROSE,
-                sources=(span,),
-                text=s_text,
-                metadata={"category": category, "kind": "copy"},
+        from_m = FROM_HEADER_RE.search(header_text_raw)
+        subj_m = SUBJ_HEADER_RE.search(header_text_raw)
+
+        from_val = ""
+        if from_m:
+            raw_from = from_m.group(1).strip()
+            from_val = raw_from.split("<")[0].strip() or raw_from
+
+        subj_val = subj_m.group(1).strip() if subj_m else ""
+
+        header_parts: list[str] = []
+        if from_val:
+            header_parts.append(f"from: {from_val}")
+        if subj_val:
+            header_parts.append(f"subj: {subj_val}")
+
+        # Header block for this message
+        if header_parts:
+            header_summary = " · ".join(header_parts)
+            h_start = msg_start + min(
+                from_m.start() if from_m else 0,
+                subj_m.start() if subj_m else 0,
             )
-        )
+            h_end = msg_start + max(
+                from_m.end() if from_m else 0,
+                subj_m.end() if subj_m else 0,
+            )
+            span = clean_char_to_byte_span(ingest, h_start, h_end)
+            blocks.append(
+                Block(
+                    block_id=f"block_{len(blocks):04d}_email_header",
+                    kind=BlockKind.EMAIL_HEADER,
+                    sources=(span,),
+                    text=header_summary,
+                    metadata={"from": from_val, "subject": subj_val, "kind": "aggregate"},
+                )
+            )
+
+        body_text = msg_chunk[body_start_in_chunk:]
+        body_abs_offset = msg_start + body_start_in_chunk
+
+        # Mask quotes and signature delimiters in body to keep char indexing intact
+        masked_body_chars = list(body_text)
+        line_start = 0
+        in_sig = False
+        for line in body_text.splitlines(keepends=True):
+            trimmed = line.strip()
+            if in_sig or trimmed.startswith("--") or QUOTE_LINE_RE.match(trimmed):
+                if trimmed == "--" or trimmed.startswith("-- "):
+                    in_sig = True
+                for idx in range(line_start, line_start + len(line)):
+                    if masked_body_chars[idx] != "\n":
+                        masked_body_chars[idx] = " "
+            line_start += len(line)
+
+        masked_body = "".join(masked_body_chars)
+        sentences = segment_sentences(masked_body)
+
+        for s in sentences:
+            s_text = s.text.strip()
+            # Skip trivial courtesy greetings
+            if (
+                len(s_text) <= 5
+                or s_text.lower().startswith("best regards")
+                or s_text.lower().startswith("thanks")
+            ):
+                continue
+
+            c_start = body_abs_offset + s.start_char
+            c_end = body_abs_offset + s.end_char
+            span = clean_char_to_byte_span(ingest, c_start, c_end)
+
+            if DECISION_RE.search(s_text):
+                category = "decision"
+            elif REQUEST_RE.search(s_text):
+                category = "request"
+            elif s_text.endswith("?") or s_text.startswith(("Do ", "What ", "How ", "Could ")):
+                category = "question"
+            else:
+                category = "fact"
+
+            blocks.append(
+                Block(
+                    block_id=f"block_{len(blocks):04d}_{category}",
+                    kind=BlockKind.PROSE,
+                    sources=(span,),
+                    text=s_text,
+                    metadata={"category": category, "kind": "copy"},
+                )
+            )
 
     return blocks

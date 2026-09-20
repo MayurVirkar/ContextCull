@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Understanding Vector Embeddings and Approximate Nearest Neighbors</title>
+    <style>body { font-family: sans-serif; } .nav { display: none; }</style>
+    <script>var trackingId = "9e73f6ea-8ae4-4866-b936-bcb2f6ea82f1";</script>
+</head>
+<body>
+    <header><h1>Vector Search and Dense Retrieval in Modern AI</h1></header>
+    <article>
+        <h2>Introduction</h2>
+        <p>Vector embeddings transform high-dimensional unstructured data such as text, images, and audio into dense numerical vectors in a continuous geometric space. In this space, semantic similarity corresponds to geometric proximity, typically calculated using cosine similarity or Euclidean distance.</p>
+        <h2>Indexing Algorithms: HNSW vs IVF</h2>
+        <p>Hierarchical Navigable Small World (HNSW) graphs construct a multi-layer graph where upper layers contain long-range edges for rapid coarse navigation, and lower layers provide dense clustering for high precision. In benchmarks, HNSW achieves 98.5% recall at 12,000 queries per second (QPS).</p>
+        <p>Inverted File Index (IVF) partitions the vector space into Voronoi cells using k-means clustering. During query execution, only vectors belonging to the nearest centroids are scanned. While IVF uses significantly less memory than HNSW, it requires periodic index re-training when data distribution drifts.</p>
+        <h2>Production Considerations</h2>
+        <p>When deploying vector databases in production environments with over 100 million embeddings, memory efficiency is critical. Scalar quantization (SQ8) reduces 32-bit floating point vectors to 8-bit integers, yielding a 4x reduction in RAM usage with less than 1.5% drop in recall.</p>
+    </article>
+</body>
+</html>
