@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import bisect
 import re
 from collections.abc import Sequence
 
@@ -358,15 +359,26 @@ def extract_atoms(
                 if b.sources and isinstance(b.sources[0], ByteSpan)
             ]
             if valid_spans:
-                atoms = [
-                    a
-                    for a in atoms
-                    if any(
-                        isinstance(a.sources[0], ByteSpan)
-                        and a.sources[0].start >= s_start
-                        and a.sources[0].end <= s_end
-                        for s_start, s_end in valid_spans
-                    )
-                ]
+                valid_spans.sort(key=lambda s: s[0])
+                merged_spans: list[tuple[int, int]] = []
+                for s_start, s_end in valid_spans:
+                    if merged_spans and s_start <= merged_spans[-1][1]:
+                        merged_spans[-1] = (merged_spans[-1][0], max(merged_spans[-1][1], s_end))
+                    else:
+                        merged_spans.append((s_start, s_end))
+
+                span_starts = [s[0] for s in merged_spans]
+                filtered_atoms: list[Atom] = []
+                for a in atoms:
+                    if not a.sources or not isinstance(a.sources[0], ByteSpan):
+                        continue
+                    a_start = a.sources[0].start
+                    a_end = a.sources[0].end
+                    idx = bisect.bisect_right(span_starts, a_start) - 1
+                    if idx >= 0:
+                        s_start, s_end = merged_spans[idx]
+                        if a_start >= s_start and a_end <= s_end:
+                            filtered_atoms.append(a)
+                atoms = filtered_atoms
 
     return atoms

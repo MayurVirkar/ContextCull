@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import heapq
 import re
 from collections.abc import Sequence
 
@@ -97,40 +98,46 @@ def select_units_budget_free(
     unit_words = [set(re.findall(r"\b\w{3,}\b", units[i].text.lower())) for i in range(len(units))]
     unit_costs = [max(1, tok.count_tokens(units[i].text)) for i in range(len(units))]
 
-    # Greedily build the Pareto curve by information density
+    # Greedily build the Pareto curve by information density using Minoux lazy greedy
     chosen_order: list[int] = []
     cum_tokens_list: list[int] = [sum(unit_costs[i] for i in mandatory_indices)]
     cum_gain_list: list[float] = [float(len(covered_vocab))]
 
     curr_vocab = set(covered_vocab)
     curr_tokens = cum_tokens_list[0]
-    pool = set(remaining_pool)
 
-    # Greedily select next candidate by marginal efficiency
-    while pool:
-        best_i = -1
-        best_density = 0.0
-        best_new_words: set[str] = set()
-
-        for i in pool:
-            new_words = unit_words[i] - curr_vocab
-            if not new_words:
-                continue
+    # Max-heap storing upper bounds on marginal density: (-density, index, step_evaluated)
+    heap: list[tuple[float, int, int]] = []
+    for i in remaining_pool:
+        new_words = unit_words[i] - curr_vocab
+        if new_words:
             dens = (len(new_words) * (0.5 + 0.5 * float(scores_arr[i]))) / unit_costs[i]
-            if dens > best_density:
-                best_density = dens
-                best_i = i
-                best_new_words = new_words
+            if dens > 0.005:
+                heap.append((-dens, i, 0))
+    heapq.heapify(heap)
 
-        if best_i >= 0 and best_density > 0.005:
-            pool.remove(best_i)
-            chosen_order.append(best_i)
-            curr_tokens += unit_costs[best_i]
-            curr_vocab.update(best_new_words)
+    current_step = 0
+    while heap:
+        neg_dens, i, step_eval = heapq.heappop(heap)
+        dens = -neg_dens
+        if dens <= 0.005:
+            break
+
+        if step_eval == current_step:
+            # By submodularity, upper bounds of all other elements <= dens. Optimal choice.
+            chosen_order.append(i)
+            curr_tokens += unit_costs[i]
+            curr_vocab.update(unit_words[i])
             cum_tokens_list.append(curr_tokens)
             cum_gain_list.append(float(len(curr_vocab)))
+            current_step += 1
         else:
-            break
+            # Recompute marginal density against current vocabulary
+            new_words = unit_words[i] - curr_vocab
+            if new_words:
+                new_dens = (len(new_words) * (0.5 + 0.5 * float(scores_arr[i]))) / unit_costs[i]
+                if new_dens > 0.005:
+                    heapq.heappush(heap, (-new_dens, i, current_step))
 
     if len(chosen_order) <= 2:
         selected_indices = set(mandatory_indices) | set(chosen_order)

@@ -42,6 +42,11 @@ class RewriteEngine:
         else:
             self._ac = None
 
+        self._pattern_res = [
+            re.compile(r"(?<![\w\-\/])" + re.escape(pat) + r"(?![\w\-\/])", re.IGNORECASE)
+            for pat in self._patterns
+        ]
+
     def rewrite_unit(
         self,
         unit: CandidateUnit,
@@ -106,20 +111,19 @@ class RewriteEngine:
                 reverse=True,
             )
             rules_to_check = [
-                (self._patterns[i], self._replacements[i], self._rule_ids[i])
+                (self._patterns[i], self._replacements[i], self._rule_ids[i], self._pattern_res[i])
                 for i in matched_indices
             ]
         else:
-            rules_to_check = list(zip(self._patterns, self._replacements, self._rule_ids))
+            rules_to_check = list(
+                zip(self._patterns, self._replacements, self._rule_ids, self._pattern_res)
+            )
 
-        for pat, repl, rule_id in rules_to_check:
+        for pat, repl, rule_id, pattern_re in rules_to_check:
             if pat.lower() in unit_atom_surfaces:
                 continue
 
             # Protect hyphenated flags (e.g. --policy-document) and paths (/foo/document)
-            pattern_re = re.compile(
-                r"(?<![\w\-\/])" + re.escape(pat) + r"(?![\w\-\/])", re.IGNORECASE
-            )
             if pattern_re.search(masked_text):
                 new_text = pattern_re.sub(repl, masked_text)
                 if new_text != masked_text:

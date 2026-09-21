@@ -132,9 +132,9 @@ def compress_retrieved_docs(docs: list[Document]) -> list[Document]:
 
 ---
 
-## 🌐 Multilingual Evaluation & Full Books (Top 10 Languages)
+## 🌐 Multilingual Evaluation & Full Books (Top Languages + Hebrew)
 
-ContextCull includes **100% public domain, copyright-free** full books and evaluation corpora covering the top 10 languages of the world (`examples/eval/multilingual/`), verified across **1,000 automated multilingual tests** (100 tests per language):
+ContextCull includes **100% public domain, copyright-free** full books and evaluation corpora covering the top languages of the world + Hebrew (`examples/eval/multilingual/`), verified across **1,100 automated multilingual tests** (100 tests per language):
 
 | # | Language | Script | Full Book / Corpus | Author / Source | License |
 | :-: | :--- | :--- | :--- | :--- | :--- |
@@ -149,24 +149,26 @@ ContextCull includes **100% public domain, copyright-free** full books and evalu
 | **9** | **Portuguese** | Latin | *Dom Casmurro* (418 KB) | Machado de Assis (Gutenberg #55752) | Public Domain |
 | **10** | **Russian** | Cyrillic | *Sevastopol Sketches* (72 KB) | Leo Tolstoy (Gutenberg #53434) | Public Domain |
 | **11** | **Japanese** | Kanji/Kana | *Kokoro* / こころ (346 KB) | Natsume Soseki (Gutenberg #24816) | Public Domain |
+| **12** | **Hebrew** | Hebrew | *Sefer Bereshit (Book of Genesis)* (177 KB) | Classical Hebrew Masoretic Text | Public Domain |
 
 ### Empirical Multilingual & Book Benchmark Results
 
-Evaluated with zero configuration across all 11 public-domain corpora (>1.18 million total tokens). Benchmarked on Linux, Python 3.13.15:
+Evaluated with zero configuration across all 12 public-domain corpora (>1.27 million total tokens). Benchmarked on Linux, Python 3.13.15:
 
 | # | Language | Work / Author | Raw Tokens | Compiled Tokens | Token Reduction | Latency | Status |
 | :-: | :--- | :--- | :---: | :---: | :---: | :---: | :---: |
-| **1** | **English (Lit)** | *Alice's Adventures in Wonderland* (Carroll) | 41,432 | 17,537 | **57.7%** | **725 ms** | PASS |
-| **2** | **English (Math)** | *Calculus Made Easy* (Thompson) | 29,398 | 15,938 | **45.8%** | **453 ms** | PASS |
-| **3** | **Chinese** | *The Art of War* / 孙子兵法 (Sun Tzu) | 38,502 | 18,387 | **52.2%** | **522 ms** | PASS |
-| **4** | **Hindi** | *Idgah & Classic Stories* (Premchand) | 16,632 | 9,076 | **45.4%** | **60 ms** | PASS |
-| **5** | **Spanish** | *Don Quijote de la Mancha* (Cervantes) | 668,532 | 439,235 | **34.3%** | **23,204 ms** | PASS |
-| **6** | **French** | *Le Tour du monde en 80 jours* (Verne) | 135,485 | 56,038 | **58.6%** | **3,410 ms** | PASS |
-| **7** | **Arabic** | *Kalila wa Dimna & Arabian Nights* (Ibn al-Muqaffa) | 11,345 | 9,384 | **17.3%** | **43 ms** | PASS |
-| **8** | **Bengali** | *Gitanjali & Selected Works* (Tagore) | 17,144 | 10,578 | **38.3%** | **55 ms** | PASS |
-| **9** | **Portuguese** | *Dom Casmurro* (Assis) | 127,646 | 75,836 | **40.6%** | **3,104 ms** | PASS |
-| **10** | **Russian** | *Sevastopol Sketches* (Tolstoy) | 15,731 | 8,032 | **48.9%** | **216 ms** | PASS |
-| **11** | **Japanese** | *Kokoro* / こころ (Soseki) | 81,171 | 81,072 | **0.1%** | **934 ms** | PASS |
+| **1** | **English (Lit)** | *Alice's Adventures in Wonderland* (Carroll) | 41,432 | 17,537 | **57.7%** | **516 ms** | PASS |
+| **2** | **English (Math)** | *Calculus Made Easy* (Thompson) | 29,398 | 15,938 | **45.8%** | **335 ms** | PASS |
+| **3** | **Chinese** | *The Art of War* / 孙子兵法 (Sun Tzu) | 38,502 | 18,387 | **52.2%** | **372 ms** | PASS |
+| **4** | **Hindi** | *Idgah & Classic Stories* (Premchand) | 16,632 | 9,076 | **45.4%** | **61 ms** | PASS |
+| **5** | **Spanish** | *Don Quijote de la Mancha* (Cervantes) | 668,532 | 439,235 | **34.3%** | **14,999 ms** | PASS |
+| **6** | **French** | *Le Tour du monde en 80 jours* (Verne) | 135,485 | 56,038 | **58.6%** | **1,395 ms** | PASS |
+| **7** | **Arabic** | *Kalila wa Dimna & Arabian Nights* (Ibn al-Muqaffa) | 11,345 | 9,384 | **17.3%** | **44 ms** | PASS |
+| **8** | **Bengali** | *Gitanjali & Selected Works* (Tagore) | 17,144 | 10,578 | **38.3%** | **51 ms** | PASS |
+| **9** | **Portuguese** | *Dom Casmurro* (Assis) | 127,646 | 75,836 | **40.6%** | **1,885 ms** | PASS |
+| **10** | **Russian** | *Sevastopol Sketches* (Tolstoy) | 15,731 | 8,032 | **48.9%** | **174 ms** | PASS |
+| **11** | **Japanese** | *Kokoro* / こころ (Soseki) | 81,171 | 81,072 | **0.1%** | **935 ms** | PASS |
+| **12** | **Hebrew** | *Sefer Bereshit (Genesis)* | 95,457 | 93,065 | **2.5%** | **202 ms** | PASS |
 
 To reproduce the multilingual benchmark locally:
 ```bash
@@ -460,8 +462,8 @@ ContextCull is designed for mission-critical production pipelines where dropped 
 ┌─────────────────────────────────────────────────────────────────────────────┐
 │                       ContextCull Verification Matrix                       │
 ├───────────────────────┬─────────────────────────────────────────────────────┤
-│ 2,057 Automated Tests │ 100% passing in < 4.6 seconds                       │
-│ 95.24% Test Coverage  │ 1,932 statements scanned, 92 missed                 │
+│ 2,157 Automated Tests │ 100% passing in < 5.0 seconds                       │
+│ 95.14% Test Coverage  │ 1,956 statements scanned, 95 missed                 │
 │ Mutation Testing      │ Mutmut: 4,366 mutants generated, 2,458 killed (0 un)│
 │ Invariant Guarantees  │ Strict transactional rollback & byte provenance     │
 │ Security & Quality    │ Ruff, Pyright, Bandit AST scan, pip-audit CVE scan  │
@@ -472,14 +474,14 @@ ContextCull is designed for mission-critical production pipelines where dropped 
 
 | Test Suite | Focus & Edge Cases Tested | Test Count |
 | :--- | :--- | :--- |
-| **Multilingual Top 10 Languages (`tests/multilingual/`)** | 100 tests per language (English, Chinese, Hindi, Spanish, French, Arabic, Bengali, Portuguese, Russian, Japanese) covering native script boundary detection, embedded technical entities, multi-byte coordinate translation, and negation preservation. | 1,000 tests |
+| **Multilingual Top Languages & Hebrew (`tests/multilingual/`)** | 100 tests per language (English, Chinese, Hindi, Spanish, French, Arabic, Bengali, Portuguese, Russian, Japanese, Hebrew) covering native script boundary detection, embedded technical entities, multi-byte coordinate translation, and negation preservation. | 1,100 tests |
 | **`test_adversarial_ingest_comprehensive.py`** | Multi-byte coordinate translation (UTF-8, UTF-16 BE/LE BOMs, Latin-1 fallback), ANSI sequence stripping (TrueColor, 256-color, OSC window titles), null-byte resilience, and slice-level provenance bounds. | 77 tests |
 | **`test_parsers_deep_edge_cases.py`** | Defused XML entity expansion (`billion laughs`), deeply nested HTML/DOM trees, generic Rust/TypeScript syntax (`fn test<T>()`, `export type`), polyglot test logs (Vitest, Jest, Pytest, Go, Cargo), and RFC 822 email MIME boundaries. | 55 tests |
 | **`test_atoms_and_entities_deep.py`** | Exact extraction of technical atoms: IPv4/IPv6 addresses, AWS ARNs, UUIDs, Git commit hashes, CVE identifiers, latencies (`ms`, `µs`, `ns`), and spaced currencies (`$ 100`, `€ 50`). | 50 tests |
 | **`test_rewrite_and_protection_deep.py`** | Aho-Corasick overlapping pattern matching (preventing prefix masking on plurals like `seconds` vs `second`), backtick code block shielding, CLI flag protection (`--policy-document`), and transactional rollback on atom violation. | 33 tests |
 | **`test_budget_concurrency_and_stress.py`** | 8-thread concurrent compilation stress, budget sweep (20 to 220 tokens) verifying atomic floor constraints, and `BudgetUnsafeError` diagnostic payload integrity. | 25 tests |
 | **`test_parameterized_abbreviations_stress.py`** | Exhaustive boundary and casing stress (lowercase, titlecase) across all 120+ technical abbreviations. | 288 tests |
-| **Core Unit, Property & Differential** | Property-based testing via `Hypothesis`, sentence segmentation, PageRank sparse graph centrality, and Rust baseline differential parity. | 525 tests |
+| **Core Unit, Property & Differential** | Property-based testing via `Hypothesis`, sentence segmentation, PageRank sparse graph centrality, and Rust baseline differential parity. | 529 tests |
 
 ### The 6 Quality & Security Gates
 
@@ -494,7 +496,7 @@ Every commit must clear all 6 automated verification steps in [`scripts/gate.sh`
 3. **Pyright Type Checking**: Strict static typing verification across all modules with zero type errors.
 4. **Bandit AST Security Scan**: Scans AST for security vulnerabilities (e.g., shell injections, insecure deserialization, defused XML handling).
 5. **pip-audit Supply-Chain Audit**: Verifies all dependencies against the PyPA vulnerability advisory database.
-6. **Pytest Coverage Gate**: Executes the full 2,057-test suite with a mandatory coverage threshold (currently operating at **95.24%**).
+6. **Pytest Coverage Gate**: Executes the full 2,157-test suite with a mandatory coverage threshold (currently operating at **95.14%**).
 
 ### Mutation Testing with Mutmut
 
