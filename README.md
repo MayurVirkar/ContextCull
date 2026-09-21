@@ -150,6 +150,29 @@ ContextCull includes **100% public domain, copyright-free** full books and evalu
 | **10** | **Russian** | Cyrillic | *Sevastopol Sketches* (72 KB) | Leo Tolstoy (Gutenberg #53434) | Public Domain |
 | **11** | **Japanese** | Kanji/Kana | *Kokoro* / こころ (346 KB) | Natsume Soseki (Gutenberg #24816) | Public Domain |
 
+### Empirical Multilingual & Book Benchmark Results
+
+Evaluated with zero configuration across all 11 public-domain corpora (>1.18 million total tokens). Benchmarked on Linux, Python 3.13.15:
+
+| # | Language | Work / Author | Raw Tokens | Compiled Tokens | Token Reduction | Latency | Status |
+| :-: | :--- | :--- | :---: | :---: | :---: | :---: | :---: |
+| **1** | **English (Lit)** | *Alice's Adventures in Wonderland* (Carroll) | 41,432 | 17,537 | **57.7%** | **725 ms** | PASS |
+| **2** | **English (Math)** | *Calculus Made Easy* (Thompson) | 29,398 | 15,938 | **45.8%** | **453 ms** | PASS |
+| **3** | **Chinese** | *The Art of War* / 孙子兵法 (Sun Tzu) | 38,502 | 18,387 | **52.2%** | **522 ms** | PASS |
+| **4** | **Hindi** | *Idgah & Classic Stories* (Premchand) | 16,632 | 9,076 | **45.4%** | **60 ms** | PASS |
+| **5** | **Spanish** | *Don Quijote de la Mancha* (Cervantes) | 668,532 | 439,235 | **34.3%** | **23,204 ms** | PASS |
+| **6** | **French** | *Le Tour du monde en 80 jours* (Verne) | 135,485 | 56,038 | **58.6%** | **3,410 ms** | PASS |
+| **7** | **Arabic** | *Kalila wa Dimna & Arabian Nights* (Ibn al-Muqaffa) | 11,345 | 9,384 | **17.3%** | **43 ms** | PASS |
+| **8** | **Bengali** | *Gitanjali & Selected Works* (Tagore) | 17,144 | 10,578 | **38.3%** | **55 ms** | PASS |
+| **9** | **Portuguese** | *Dom Casmurro* (Assis) | 127,646 | 75,836 | **40.6%** | **3,104 ms** | PASS |
+| **10** | **Russian** | *Sevastopol Sketches* (Tolstoy) | 15,731 | 8,032 | **48.9%** | **216 ms** | PASS |
+| **11** | **Japanese** | *Kokoro* / こころ (Soseki) | 81,171 | 81,072 | **0.1%** | **934 ms** | PASS |
+
+To reproduce the multilingual benchmark locally:
+```bash
+python scripts/run_multilingual_bench.py
+```
+
 ---
 
 ## The Problem: Why Raw LLMs and Classic Summarizers Fail
@@ -437,8 +460,8 @@ ContextCull is designed for mission-critical production pipelines where dropped 
 ┌─────────────────────────────────────────────────────────────────────────────┐
 │                       ContextCull Verification Matrix                       │
 ├───────────────────────┬─────────────────────────────────────────────────────┤
-│ 2,053 Automated Tests │ 100% passing in < 4.5 seconds                       │
-│ 95.99% Test Coverage  │ 1,843 statements scanned, 74 missed                 │
+│ 2,057 Automated Tests │ 100% passing in < 4.6 seconds                       │
+│ 95.24% Test Coverage  │ 1,932 statements scanned, 92 missed                 │
 │ Mutation Testing      │ Mutmut: 4,366 mutants generated, 2,458 killed (0 un)│
 │ Invariant Guarantees  │ Strict transactional rollback & byte provenance     │
 │ Security & Quality    │ Ruff, Pyright, Bandit AST scan, pip-audit CVE scan  │
@@ -471,7 +494,7 @@ Every commit must clear all 6 automated verification steps in [`scripts/gate.sh`
 3. **Pyright Type Checking**: Strict static typing verification across all modules with zero type errors.
 4. **Bandit AST Security Scan**: Scans AST for security vulnerabilities (e.g., shell injections, insecure deserialization, defused XML handling).
 5. **pip-audit Supply-Chain Audit**: Verifies all dependencies against the PyPA vulnerability advisory database.
-6. **Pytest Coverage Gate**: Executes the full 2,053-test suite with a mandatory coverage threshold (currently operating at **95.99%**).
+6. **Pytest Coverage Gate**: Executes the full 2,057-test suite with a mandatory coverage threshold (currently operating at **95.24%**).
 
 ### Mutation Testing with Mutmut
 
