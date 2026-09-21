@@ -11,7 +11,7 @@ from contextcull.closure.context import apply_context_closure
 from contextcull.detect.atoms import extract_atoms
 from contextcull.errors import BudgetUnsafeError, InvariantViolationError
 from contextcull.features.vectorizer import vectorize_units
-from contextcull.ingest.decoder import clean_char_to_byte_span, ingest_bytes
+from contextcull.ingest.decoder import clean_char_to_byte_span, ingest_document
 from contextcull.ir.models import (
     Atom,
     Block,
@@ -27,7 +27,6 @@ from contextcull.rank.pagerank import build_sparse_similarity_graph, determinist
 from contextcull.render.manifest import render_and_manifest
 from contextcull.rewrite.discourse import is_structural_boilerplate
 from contextcull.rewrite.engine import RewriteEngine
-from contextcull.route.router import route_and_parse
 from contextcull.segment.sentence import segment_sentences
 from contextcull.select.budget import select_units
 from contextcull.tokenize.profile import get_tokenizer
@@ -84,11 +83,8 @@ class ContextCompiler:
         profile_name = budget.profile if budget is not None else "openai:cl100k_base"
         tokenizer = get_tokenizer(profile_name)
 
-        # Stage 1: Immutable Ingestion & SourceMap
-        ingest = ingest_bytes(raw_bytes)
-
-        # Stage 2: Block Parsing & Routing
-        blocks = route_and_parse(ingest)
+        # Stage 1: Immutable Ingestion, SourceMap & Block Parsing
+        ingest, blocks = ingest_document(raw_bytes)
 
         # Stage 3: Protected Atom Detection
         atoms = extract_atoms(ingest, required_terms=policy.required_terms, blocks=blocks)
@@ -165,7 +161,7 @@ class ContextCompiler:
             validate_invariants(
                 output_text=rendered_preliminary,
                 output_segments=flat_segments,
-                raw_source_bytes=raw_bytes,
+                raw_source_bytes=ingest.source_map.raw_bytes,
                 required_atoms=[a for a in atoms if a.required],
                 tokenizer=tokenizer,
                 budget=budget,

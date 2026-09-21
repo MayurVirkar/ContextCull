@@ -19,6 +19,7 @@ class IngestionResult(NamedTuple):
     clean_text: str  # ANSI-free text for scoring and regex matching
     # clean_to_decoded_char[i] maps character index in clean_text to character index in source_map.decoded_text
     clean_to_decoded_char: tuple[int, ...]
+    raw_file_bytes: bytes | None = None
 
 
 def ingest_bytes(
@@ -26,6 +27,7 @@ def ingest_bytes(
     document_id: str | None = None,
     encoding: str = "utf-8",
     max_bytes: int = 10_000_000,
+    raw_file_bytes: bytes | None = None,
 ) -> IngestionResult:
     """Ingests raw bytes, computes a SHA-256 identifier, and builds a lossless SourceMap.
 
@@ -66,6 +68,7 @@ def ingest_bytes(
             source_map=source_map,
             clean_text=decoded,
             clean_to_decoded_char=tuple(range(len(decoded) + 1)),
+            raw_file_bytes=raw_file_bytes,
         )
 
     # ANSI stripped view with slice-based character mapping back to decoded characters
@@ -93,6 +96,7 @@ def ingest_bytes(
         source_map=source_map,
         clean_text=clean_text,
         clean_to_decoded_char=tuple(clean_to_decoded),
+        raw_file_bytes=raw_file_bytes,
     )
 
 
@@ -108,3 +112,43 @@ def clean_char_to_byte_span(ingest: IngestionResult, clean_start: int, clean_end
     dec_start = ingest.clean_to_decoded_char[clean_start]
     dec_end = ingest.clean_to_decoded_char[clean_end - 1] + 1
     return ingest.source_map.char_to_byte_span(dec_start, dec_end)
+
+
+def ingest_document(
+    raw_bytes: bytes,
+    document_id: str | None = None,
+    encoding: str = "utf-8",
+    max_bytes: int = 10_000_000,
+) -> tuple[IngestionResult, list]:
+    """Ingests raw bytes or binary documents (PDF, DOCX) into clean text, SourceMap, and structured blocks."""
+    from contextcull.parse.docx import extract_docx_blocks_and_text, is_docx
+    from contextcull.parse.pdf import extract_pdf_blocks_and_text, is_pdf
+    from contextcull.route.router import route_and_parse
+
+    doc_id = document_id or f"sha256:{hashlib.sha256(raw_bytes).hexdigest()}"
+
+    if is_pdf(raw_bytes):
+        blocks, extracted_text = extract_pdf_blocks_and_text(raw_bytes, doc_id)
+        if extracted_text:
+            ingest = ingest_bytes(
+                extracted_text.encode("utf-8"),
+                document_id=doc_id,
+                max_bytes=max_bytes,
+                raw_file_bytes=raw_bytes,
+            )
+            return ingest, blocks
+
+    if is_docx(raw_bytes):
+        blocks, extracted_text = extract_docx_blocks_and_text(raw_bytes, doc_id)
+        if extracted_text:
+            ingest = ingest_bytes(
+                extracted_text.encode("utf-8"),
+                document_id=doc_id,
+                max_bytes=max_bytes,
+                raw_file_bytes=raw_bytes,
+            )
+            return ingest, blocks
+
+    ingest = ingest_bytes(raw_bytes, document_id=doc_id, encoding=encoding, max_bytes=max_bytes)
+    blocks = route_and_parse(ingest)
+    return ingest, blocks

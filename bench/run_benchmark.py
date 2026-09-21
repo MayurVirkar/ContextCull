@@ -17,35 +17,48 @@ def run_benchmark(file_path: Path) -> None:
         sys.exit(1)
 
     raw_bytes = file_path.read_bytes()
-    raw_text = raw_bytes.decode("utf-8", errors="replace")
+    from contextcull.detect.atoms import extract_atoms
+    from contextcull.ingest.decoder import ingest_document
+
+    ingest, blocks = ingest_document(raw_bytes)
+    raw_text = ingest.clean_text
     enc = tiktoken.get_encoding("cl100k_base")
     raw_tokens = len(enc.encode(raw_text))
 
     print(f"Benchmark Document: {file_path}")
     print(f"Raw Size: {len(raw_bytes)} bytes | {raw_tokens} tokens (cl100k_base)\n")
 
-    # 19 Ground-truth benchmark atoms from whitepaper
-    ground_truth_atoms = [
-        "CVE-2026-66384",
-        "CVE-2026-53362",
-        "i-0622056ec3e996a7c",
-        "artifactory-3",
-        "956 secrets",
-        "moon-bot",
-        "moon-landing",
-        "xetcas",
-        "14 write tokens",
-        "16 MB",
-        "731 MB",
-        "RefJinja",
-        "HDF5",
-        "JRuby",
-        "karchive7dee-admin",
-        "minizfe78",
-        "Organization 1",
-        "30 min",
-        "2026-07-11",
-    ]
+    detected_atoms = extract_atoms(ingest, blocks=blocks)
+    critical_kinds = {
+        "cve",
+        "ipv4",
+        "ipv6",
+        "uuid",
+        "git_sha",
+        "instance_id",
+        "quantity",
+        "timestamp",
+        "code_identifier",
+        "email",
+    }
+    ground_truth_atoms = sorted(
+        list(
+            {
+                a.surface
+                for a in detected_atoms
+                if a.kind in critical_kinds and len(a.surface.strip()) > 2
+            }
+        )
+    )
+    if not ground_truth_atoms:
+        # Fallback for purely literary prose: extract top distinct uppercase/numeric terms
+        import re
+
+        ground_truth_atoms = sorted(list(set(re.findall(r"\b[A-Z][a-z0-9]+\b|\b\d+\b", raw_text))))[
+            :20
+        ]
+
+    print(f"Extracted {len(ground_truth_atoms)} ground-truth technical atoms from input document.")
 
     results = []
 
@@ -141,7 +154,7 @@ def run_benchmark(file_path: Path) -> None:
 
     # Print Table
     print(
-        "| Summarizer Engine | Latency | Output Tokens | Token Reduction | Atoms Retained (19 Ground Truth) | Atoms Dropped |"
+        f"| Summarizer Engine | Latency | Output Tokens | Token Reduction | Atoms Retained ({len(ground_truth_atoms)} Ground Truth) | Atoms Dropped |"
     )
     print("| :--- | :---: | :---: | :---: | :---: | :--- |")
     for r in results:

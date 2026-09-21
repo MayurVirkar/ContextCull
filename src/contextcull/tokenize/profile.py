@@ -25,27 +25,34 @@ class TokenizerProfile(Protocol):
 
 
 class TiktokenProfile:
-    """Exact tokenizer profile using OpenAI tiktoken."""
+    """Exact tokenizer profile using OpenAI tiktoken with offline fallback."""
 
     def __init__(self, encoding_name: str = "cl100k_base") -> None:
         self._encoding_name = encoding_name
+        self._encoding = None
         try:
-            self._encoding = tiktoken.get_encoding(encoding_name)
-        except (ValueError, KeyError):
             try:
+                self._encoding = tiktoken.get_encoding(encoding_name)
+            except (ValueError, KeyError):
                 self._encoding = tiktoken.encoding_for_model(encoding_name)
-            except (ValueError, KeyError) as exc:
-                raise ValueError(
-                    f"Unsupported tiktoken model or encoding: '{encoding_name}'"
-                ) from exc
+        except (ValueError, KeyError) as exc:
+            raise ValueError(f"Unsupported tiktoken model or encoding: '{encoding_name}'") from exc
+        except Exception:
+            # Offline sandbox fallback: if tiktoken fails to fetch encoding blob over network
+            self._encoding = None
 
     def count_tokens(self, text: str) -> int:
         if not text:
             return 0
-        return len(self._encoding.encode(text, disallowed_special=()))
+        if self._encoding is not None:
+            return len(self._encoding.encode(text, disallowed_special=()))
+        # Fast offline fallback when network is unavailable in sandboxes
+        words = len(text.split())
+        chars = len(text)
+        return max(1, (chars // 4 + int(words * 1.3)) // 2)
 
     def is_exact(self) -> bool:
-        return True
+        return self._encoding is not None
 
     @property
     def profile_name(self) -> str:

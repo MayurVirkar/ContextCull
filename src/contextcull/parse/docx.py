@@ -26,51 +26,55 @@ def is_docx(raw_bytes: bytes) -> bool:
         return False
 
 
-def parse_docx_blocks(ingest: IngestionResult) -> list[Block]:
+def extract_docx_blocks_and_text(raw_bytes: bytes, document_id: str) -> tuple[list[Block], str]:
     """Extracts paragraphs, headings, and tables from a DOCX document."""
-    raw_bytes = ingest.source_map.raw_bytes
     try:
         with zipfile.ZipFile(io.BytesIO(raw_bytes)) as z:
             doc_xml = z.read("word/document.xml")
         root = ET.fromstring(doc_xml)
     except Exception:
-        return []
+        return [], ""
 
     blocks: list[Block] = []
-    file_span = ByteSpan(ingest.document_id, 0, len(raw_bytes))
+    text_chunks: list[str] = []
+    current_byte_offset = 0
 
-    # Iterate over body elements (paragraphs and tables)
     body = root.find("w:body", NS_MAP)
     if body is None:
-        return []
+        return [], ""
 
     for elem in body:
         tag = elem.tag.split("}")[-1] if "}" in elem.tag else elem.tag
 
         if tag == "p":
-            # Paragraph
             text_nodes = elem.findall(".//w:t", NS_MAP)
             text = "".join(t.text or "" for t in text_nodes).strip()
             if not text:
                 continue
 
-            # Check for heading style
             p_style = elem.find(".//w:pStyle", NS_MAP)
             style_val = p_style.get(f"{{{W_NS}}}val", "") if p_style is not None else ""
             is_heading = "heading" in style_val.lower() or "title" in style_val.lower()
 
+            text_bytes = text.encode("utf-8")
+            span = ByteSpan(
+                document_id,
+                current_byte_offset,
+                current_byte_offset + len(text_bytes),
+            )
             blocks.append(
                 Block(
                     block_id=f"block_{len(blocks):04d}_{'heading' if is_heading else 'prose'}",
                     kind=BlockKind.HEADING if is_heading else BlockKind.PROSE,
-                    sources=(file_span,),
+                    sources=(span,),
                     text=text,
                     metadata={"kind": "rewrite", "style": style_val},
                 )
             )
+            text_chunks.append(text)
+            current_byte_offset += len(text_bytes) + 2
 
         elif tag == "tbl":
-            # Table
             rows: list[list[str]] = []
             for row in elem.findall(".//w:tr", NS_MAP):
                 cells: list[str] = []
@@ -83,14 +87,32 @@ def parse_docx_blocks(ingest: IngestionResult) -> list[Block]:
             if rows:
                 table_lines = [" | ".join(r) for r in rows]
                 table_text = "\n".join(table_lines)
+                tbl_bytes = table_text.encode("utf-8")
+                span = ByteSpan(
+                    document_id,
+                    current_byte_offset,
+                    current_byte_offset + len(tbl_bytes),
+                )
                 blocks.append(
                     Block(
                         block_id=f"block_{len(blocks):04d}_table",
                         kind=BlockKind.TABLE,
-                        sources=(file_span,),
+                        sources=(span,),
                         text=table_text,
                         metadata={"kind": "rewrite", "rows": len(rows)},
                     )
                 )
+                text_chunks.append(table_text)
+                current_byte_offset += len(tbl_bytes) + 2
 
+    extracted_text = "\n\n".join(text_chunks)
+    return blocks, extracted_text
+
+
+def parse_docx_blocks(ingest: IngestionResult) -> list[Block]:
+    """Extracts paragraphs, headings, and tables from a DOCX document."""
+    raw_bytes = (
+        ingest.raw_file_bytes if ingest.raw_file_bytes is not None else ingest.source_map.raw_bytes
+    )
+    blocks, _ = extract_docx_blocks_and_text(raw_bytes, ingest.document_id)
     return blocks

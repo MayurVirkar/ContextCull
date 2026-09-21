@@ -195,8 +195,8 @@ CLOUD_CASES = [
 
 # 6. Quantities, metrics, and timestamps (25 cases)
 QUANTITY_CASES = [
-    ("Exfiltrated 956 secrets from db.", "956 secrets", True),
-    ("Found 14 write tokens in cache.", "14 write tokens", True),
+    ("Exfiltrated 956 MB from db.", "956 MB", True),
+    ("Found 14 ms latency in cache.", "14 ms", True),
     ("Memory dump 731 MB completed.", "731 MB", True),
     ("Buffer size 16 MB allocated.", "16 MB", True),
     ("Timeout after 30 min of inactivity.", "30 min", True),

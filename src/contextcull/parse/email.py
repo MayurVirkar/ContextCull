@@ -12,6 +12,10 @@ FROM_HEADER_RE = re.compile(r"(?i)^From:\s*(.+)$", re.MULTILINE)
 SUBJ_HEADER_RE = re.compile(r"(?i)^Subject:\s*(.+)$", re.MULTILINE)
 QUOTE_LINE_RE = re.compile(r"^(?:>|On\s+.+wrote:)", re.MULTILINE)
 
+HEADER_FIELD_RE = re.compile(
+    r"(?m)^(?:(From)\s+|([A-Za-z0-9\-]+):\s*)",
+    re.IGNORECASE,
+)
 REQUEST_RE = re.compile(r"(?i)\b(?:please|could you|action required|need you to|kindly)\b")
 DECISION_RE = re.compile(r"(?i)\b(?:decided to|agreed to|approved|confirmed|concluded)\b")
 
@@ -56,43 +60,61 @@ def parse_email_blocks(ingest: IngestionResult) -> list[Block]:
             header_text_raw = msg_chunk
             body_start_in_chunk = len(msg_chunk)
 
-        from_m = FROM_HEADER_RE.search(header_text_raw)
-        subj_m = SUBJ_HEADER_RE.search(header_text_raw)
-
-        from_val = ""
-        if from_m:
-            raw_from = from_m.group(1).strip()
-            from_val = raw_from.split("<")[0].strip() or raw_from
-
-        subj_val = subj_m.group(1).strip() if subj_m else ""
-
-        header_parts: list[str] = []
-        if from_val:
-            header_parts.append(f"from: {from_val}")
-        if subj_val:
-            header_parts.append(f"subj: {subj_val}")
-
-        # Header block for this message
-        if header_parts:
-            header_summary = " · ".join(header_parts)
-            h_start = msg_start + min(
-                from_m.start() if from_m else 0,
-                subj_m.start() if subj_m else 0,
-            )
-            h_end = msg_start + max(
-                from_m.end() if from_m else 0,
-                subj_m.end() if subj_m else 0,
-            )
-            span = clean_char_to_byte_span(ingest, h_start, h_end)
-            blocks.append(
-                Block(
-                    block_id=f"block_{len(blocks):04d}_email_header",
-                    kind=BlockKind.EMAIL_HEADER,
-                    sources=(span,),
-                    text=header_summary,
-                    metadata={"from": from_val, "subject": subj_val, "kind": "aggregate"},
+        # Extract headers with exact byte spans
+        hdr_matches = list(HEADER_FIELD_RE.finditer(header_text_raw))
+        if hdr_matches:
+            for idx_h, h_match in enumerate(hdr_matches):
+                h_start_in_hdr = h_match.start()
+                h_end_in_hdr = (
+                    hdr_matches[idx_h + 1].start()
+                    if idx_h + 1 < len(hdr_matches)
+                    else len(header_text_raw)
                 )
-            )
+                raw_hdr_seg = header_text_raw[h_start_in_hdr:h_end_in_hdr]
+                stripped_hdr = raw_hdr_seg.strip()
+                if not stripped_hdr:
+                    continue
+
+                leading_ws = len(raw_hdr_seg) - len(raw_hdr_seg.lstrip())
+                trailing_ws = len(raw_hdr_seg) - len(raw_hdr_seg.rstrip())
+                adj_start = msg_start + h_start_in_hdr + leading_ws
+                adj_end = msg_start + h_end_in_hdr - trailing_ws
+                span = clean_char_to_byte_span(ingest, adj_start, adj_end)
+
+                hdr_name = (h_match.group(1) or h_match.group(2) or "header").lower()
+                blocks.append(
+                    Block(
+                        block_id=f"block_{len(blocks):04d}_email_header_{hdr_name}",
+                        kind=BlockKind.EMAIL_HEADER,
+                        sources=(span,),
+                        text=stripped_hdr,
+                        metadata={"header": hdr_name, "kind": "copy"},
+                    )
+                )
+        else:
+            from_m = FROM_HEADER_RE.search(header_text_raw)
+            subj_m = SUBJ_HEADER_RE.search(header_text_raw)
+            if from_m or subj_m:
+                h_start = msg_start + min(
+                    from_m.start() if from_m else 0,
+                    subj_m.start() if subj_m else 0,
+                )
+                h_end = msg_start + max(
+                    from_m.end() if from_m else 0,
+                    subj_m.end() if subj_m else 0,
+                )
+                raw_h = clean_text[h_start:h_end].strip()
+                if raw_h:
+                    span = clean_char_to_byte_span(ingest, h_start, h_start + len(raw_h))
+                    blocks.append(
+                        Block(
+                            block_id=f"block_{len(blocks):04d}_email_header",
+                            kind=BlockKind.EMAIL_HEADER,
+                            sources=(span,),
+                            text=raw_h,
+                            metadata={"kind": "copy"},
+                        )
+                    )
 
         body_text = msg_chunk[body_start_in_chunk:]
         body_abs_offset = msg_start + body_start_in_chunk

@@ -16,16 +16,16 @@ def is_pdf(raw_bytes: bytes) -> bool:
     return raw_bytes.startswith(b"%PDF-")
 
 
-def parse_pdf_blocks(ingest: IngestionResult) -> list[Block]:
-    """Extracts text blocks from a PDF document page by page."""
-    raw_bytes = ingest.source_map.raw_bytes
+def extract_pdf_blocks_and_text(raw_bytes: bytes, document_id: str) -> tuple[list[Block], str]:
+    """Extracts structured blocks and continuous text from a PDF document."""
     try:
         reader = PdfReader(io.BytesIO(raw_bytes))
     except Exception:
-        return []
+        return [], ""
 
     blocks: list[Block] = []
-    file_span = ByteSpan(ingest.document_id, 0, len(raw_bytes))
+    text_chunks: list[str] = []
+    current_byte_offset = 0
 
     for page_num, page in enumerate(reader.pages):
         try:
@@ -43,15 +43,23 @@ def parse_pdf_blocks(ingest: IngestionResult) -> list[Block]:
                     para = " ".join(curr_paras)
                     if para:
                         is_heading = len(para) < 80 and (para.isupper() or para.istitle())
+                        para_bytes = para.encode("utf-8")
+                        span = ByteSpan(
+                            document_id,
+                            current_byte_offset,
+                            current_byte_offset + len(para_bytes),
+                        )
                         blocks.append(
                             Block(
                                 block_id=f"block_{len(blocks):04d}_{'heading' if is_heading else 'prose'}",
                                 kind=BlockKind.HEADING if is_heading else BlockKind.PROSE,
-                                sources=(file_span,),
+                                sources=(span,),
                                 text=para,
                                 metadata={"kind": "rewrite", "page": page_num + 1},
                             )
                         )
+                        text_chunks.append(para)
+                        current_byte_offset += len(para_bytes) + 2  # for "\n\n"
                     curr_paras = []
             else:
                 curr_paras.append(line_str)
@@ -60,14 +68,32 @@ def parse_pdf_blocks(ingest: IngestionResult) -> list[Block]:
             para = " ".join(curr_paras)
             if para:
                 is_heading = len(para) < 80 and (para.isupper() or para.istitle())
+                para_bytes = para.encode("utf-8")
+                span = ByteSpan(
+                    document_id,
+                    current_byte_offset,
+                    current_byte_offset + len(para_bytes),
+                )
                 blocks.append(
                     Block(
                         block_id=f"block_{len(blocks):04d}_{'heading' if is_heading else 'prose'}",
                         kind=BlockKind.HEADING if is_heading else BlockKind.PROSE,
-                        sources=(file_span,),
+                        sources=(span,),
                         text=para,
                         metadata={"kind": "rewrite", "page": page_num + 1},
                     )
                 )
+                text_chunks.append(para)
+                current_byte_offset += len(para_bytes) + 2
 
+    extracted_text = "\n\n".join(text_chunks)
+    return blocks, extracted_text
+
+
+def parse_pdf_blocks(ingest: IngestionResult) -> list[Block]:
+    """Extracts text blocks from a PDF document page by page."""
+    raw_bytes = (
+        ingest.raw_file_bytes if ingest.raw_file_bytes is not None else ingest.source_map.raw_bytes
+    )
+    blocks, _ = extract_pdf_blocks_and_text(raw_bytes, ingest.document_id)
     return blocks

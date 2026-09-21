@@ -10,9 +10,8 @@ import typer
 
 from contextcull.api import ContextCompiler
 from contextcull.detect.atoms import extract_atoms
-from contextcull.ingest.decoder import ingest_bytes
+from contextcull.ingest.decoder import ingest_document
 from contextcull.ir.models import CompileMode, CompilePolicy, TokenBudget
-from contextcull.route.router import route_and_parse
 
 app = typer.Typer(
     name="contextcull",
@@ -109,9 +108,8 @@ def inspect_cmd(
         raise typer.Exit(code=1)
 
     raw_bytes = input_file.read_bytes()
-    ingest = ingest_bytes(raw_bytes)
-    blocks = route_and_parse(ingest)
-    atoms = extract_atoms(ingest)
+    ingest, blocks = ingest_document(raw_bytes)
+    atoms = extract_atoms(ingest, blocks=blocks)
 
     typer.echo(f"Document ID: {ingest.document_id}")
     typer.echo(f"Total Bytes: {len(raw_bytes)} | Clean Chars: {len(ingest.clean_text)}")

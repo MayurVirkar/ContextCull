@@ -43,11 +43,13 @@ def run_evals():
         with open(file_path, "rb") as f:
             raw_bytes = f.read()
 
-        raw_tokens = tokenizer.count_tokens(raw_bytes.decode("utf-8", errors="replace"))
-
         t0 = time.perf_counter()
         res = compiler.compile(raw_bytes, policy=policy)
         t1 = time.perf_counter()
+
+        raw_tokens = res.metrics.get("input_tokens", 0)
+        if not raw_tokens:
+            raw_tokens = tokenizer.count_tokens(raw_bytes.decode("utf-8", errors="replace"))
 
         latency_ms = (t1 - t0) * 1000.0
         tep_tokens = tokenizer.count_tokens(res.text) if res.text else 0

@@ -26,7 +26,7 @@ GIT_SHA_RE = re.compile(
 AWS_INSTANCE_RE = re.compile(r"\bi-[0-9a-f]{8,17}\b")
 
 QUANTITY_RE = re.compile(
-    r"\b(\d+(?:[\.,]\d+)*)\s*(MB|GB|TB|kB|KB|ms|µs|ns|s|sec|second|seconds|min|mins|minute|minutes|h|hr|hrs|hour|hours|d|day|days|wk|week|weeks|mo|month|months|yr|year|years|\$|USD|EUR|billion|million|thousand|ppb|M|secrets|write tokens)\b|\b(\d+(?:[\.,]\d+)*)%",
+    r"\b(\d+(?:[\.,]\d+)*)\s*(MB|GB|TB|kB|KB|ms|µs|ns|s|sec|second|seconds|min|mins|minute|minutes|h|hr|hrs|hour|hours|d|day|days|wk|week|weeks|mo|month|months|yr|year|years|\$|USD|EUR|billion|million|thousand|ppb|M)\b|\b(\d+(?:[\.,]\d+)*)%",
     re.IGNORECASE,
 )
 CURRENCY_RE = re.compile(
@@ -55,14 +55,28 @@ ISO_TIMESTAMP_RE = re.compile(
     r"\b\d{4}-\d{2}-\d{2}(?:[T\s]\d{2}:\d{2}(?::\d{2})?(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})?)?\b|\b\d{2}:\d{2}(?::\d{2})?(?:\s*UTC)\b"
 )
 
+HEBREW_NEGATION = r"לא|ללא|אין|אל|בלי|אינו|אינה|אינם|אינן"
+WESTERN_NEGATION = (
+    r"no|not|never|without|neither|nor|cannot|zero|"
+    r"não|nunca|jamais|sem|nenhum|nenhuma|"
+    r"jamás|sin|ningún|ninguno|ninguna|tampoco|"
+    r"pas|aucun|aucune|sans|rien|"
+    r"nicht|kein|keine|keinen|keinem|nie|niemals|ohne"
+)
+OTHER_NEGATION = r"не|нет|никогда|без|никакой|नहीं|मत|बिना|না|নয়|বিনা|لم|لن|ليس|بدון"
+
 BOUND_NEGATION_RE = re.compile(
-    r"\b(no|not|never|without|neither|nor|cannot|zero)\s+([a-zA-Z0-9_\-]+(?:\s+[a-zA-Z0-9_\-]+){0,2})\b",
+    rf"\b(?:{WESTERN_NEGATION}|{HEBREW_NEGATION}|{OTHER_NEGATION})\s+([^\s\.,;!?:\"'\(\)\[\]\{{\}}]+(?:\s+[^\s\.,;!?:\"'\(\)\[\]\{{\}}]+){{0,2}})(?:\b|(?<=[\u05f3\u05f4]))",
     re.IGNORECASE,
 )
 
 NEGATION_RE = re.compile(
-    r"\b(not|never|no|without|neither|nor|cannot)\b",
+    rf"\b(?:{WESTERN_NEGATION}|{HEBREW_NEGATION}|{OTHER_NEGATION})\b",
     re.IGNORECASE,
+)
+
+CJK_NEGATION_RE = re.compile(
+    r"(?:不|没|没有|未|无|非)(?:[\u4e00-\u9fff]{1,4})",
 )
 
 MODALITY_RE = re.compile(
@@ -101,6 +115,7 @@ CRITICAL_ENTITY_PATTERNS: list[re.Pattern] = [
     CODE_IDENTIFIER_RE,
     ISO_TIMESTAMP_RE,
     BOUND_NEGATION_RE,
+    CJK_NEGATION_RE,
     COMPLIANCE_ACRONYM_RE,
     EMAIL_RE,
 ]
@@ -277,6 +292,17 @@ def extract_atoms(
 
     # 7. Bound Negations (Protected semantic atoms to prevent statement inversion)
     for match in BOUND_NEGATION_RE.finditer(clean_text):
+        start, end = match.span()
+        add_atom(
+            "bound_negation",
+            clean_text[start:end],
+            start,
+            end,
+            canonical=clean_text[start:end].lower(),
+            required=False,
+        )
+
+    for match in CJK_NEGATION_RE.finditer(clean_text):
         start, end = match.span()
         add_atom(
             "bound_negation",
