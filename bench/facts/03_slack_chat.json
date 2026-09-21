@@ -1,0 +1,28 @@
+{
+  "file": "03_slack_chat.txt",
+  "note": "Hand-picked from real #ubuntu IRC logs (2024-01-15/16), spread across both days of the transcript.",
+  "facts": [
+    "kotgc",
+    "EFI partition",
+    "black screen",
+    "bug #2047590",
+    "6.5.0-14 kernel will not boot",
+    "glumbletross",
+    "encryption keys keep crashing",
+    "ubuntu-bug <package>",
+    "search for source packages",
+    "VirtualBox from the Jammy repository",
+    "GCC-12 error",
+    "HWE kernel",
+    "php8.1 to php8.2",
+    "open source amd drivers",
+    "bigger mouse curser",
+    "imgur.com/a/mtqwLsl",
+    "ipv6 newbie",
+    "stable prefix",
+    "nm-connection-editor",
+    "22.04 LTS is the current long term support release",
+    "vim-editor",
+    "8.2.788"
+  ]
+}

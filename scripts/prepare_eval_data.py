@@ -102,7 +102,8 @@ chat_transcript = """[2026-07-14 08:00:12] @monitoring-bot: ALERT: CPU usage on 
 """
 (EVAL_DIR / "03_slack_chat.txt").write_text(chat_transcript, encoding="utf-8")
 
-# 4. Technical Report DOCX (Word OpenXML)
+# 4. Technical Report DOCX (Word OpenXML) - SYNTHETIC: invented CVE IDs, cluster
+# IDs and metrics for eval purposes only, not a real report.
 docx_buf = io.BytesIO()
 docx_xml = b"""<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
@@ -160,7 +161,7 @@ docx_xml = b"""<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 with zipfile.ZipFile(docx_buf, "w") as z:
     z.writestr("word/document.xml", docx_xml)
     z.writestr("[Content_Types].xml", b"<Types/>")
-(EVAL_DIR / "04_technical_report.docx").write_bytes(docx_buf.getvalue())
+(EVAL_DIR / "04_synthetic_technical_report.docx").write_bytes(docx_buf.getvalue())
 
 # 5. Web Article HTML
 html_article = """<!DOCTYPE html>

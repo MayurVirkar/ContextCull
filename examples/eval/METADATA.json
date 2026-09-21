@@ -1,0 +1,96 @@
+{
+  "description": "Source provenance for the 10 primary examples/eval/ documents used by scripts/run_10_evals.py and bench/run_benchmark.py. sha256/bytes reflect the files as currently checked in; re-run scripts/download_public_eval_datasets.py to refresh live sources (content may drift upstream).",
+  "datasets": [
+    {
+      "file": "01_email_thread.eml",
+      "synthetic": false,
+      "source": "https://spamassassin.apache.org/old/publiccorpus/20030228_easy_ham.tar.bz2",
+      "description": "First 15 messages of the Apache SpamAssassin public 'easy_ham' corpus, concatenated as an mbox-style thread.",
+      "license": "Apache SpamAssassin public corpus (redistributable for research/testing)",
+      "sha256": "48c0f5955742239c5ad2023c44b3507ff8f08a683bff48c147303160f54bee6d",
+      "bytes": 67683
+    },
+    {
+      "file": "02_novel_chapter.txt",
+      "synthetic": false,
+      "source": "https://www.gutenberg.org/cache/epub/84/pg84.txt",
+      "description": "Frankenstein; or, The Modern Prometheus by Mary Shelley (Project Gutenberg #84), truncated to ~150KB at a paragraph boundary (Letters through Chapter 4).",
+      "license": "Public Domain (Project Gutenberg #84)",
+      "truncated_to_paragraph_boundary": true,
+      "sha256": "1fb46ec846cd7fea2ff95659fffcc178c6875b8301726b3774feaf0762ded2ff",
+      "bytes": 150721
+    },
+    {
+      "file": "03_slack_chat.txt",
+      "synthetic": false,
+      "source": "https://irclogs.ubuntu.com/2024/01/15/%23ubuntu.txt ; https://irclogs.ubuntu.com/2024/01/16/%23ubuntu.txt",
+      "description": "Two days of public #ubuntu IRC channel logs.",
+      "license": "Ubuntu IRC logs (publicly published channel logs)",
+      "sha256": "2cd1905b83baf10a9daf47fb263ac25f6626163352737fc6b03fbe59d074facd",
+      "bytes": 53875
+    },
+    {
+      "file": "04_synthetic_technical_report.docx",
+      "synthetic": true,
+      "source": "generated in scripts/download_public_eval_datasets.py and scripts/prepare_eval_data.py",
+      "description": "Invented quarterly infrastructure report (fictional CVE IDs CVE-2026-31184 / CVE-2026-29910 / CVE-2026-18823, fictional cluster metrics). Not real-world data; kept as a format-diversity fixture (DOCX/OpenXML) for the eval suite.",
+      "license": "N/A (synthetic)",
+      "sha256": "9b3f8288cd627b0e2bcd108547718e49076f269d3110e43480657f0f2bd7b777",
+      "bytes": 3047
+    },
+    {
+      "file": "05_web_article.html",
+      "synthetic": false,
+      "source": "https://en.wikipedia.org/wiki/Transformer_(deep_learning_architecture)",
+      "description": "Wikipedia article HTML, as served.",
+      "license": "CC BY-SA 4.0 (Wikipedia)",
+      "sha256": "3e06466eca4da1f6376d3b4402da24e10beea652309362f065ec5d6d302db359",
+      "bytes": 1084117
+    },
+    {
+      "file": "06_academic_paper.pdf",
+      "synthetic": false,
+      "source": "https://arxiv.org/pdf/1706.03762.pdf",
+      "description": "\"Attention Is All You Need\" (Vaswani et al., 2017), arXiv:1706.03762.",
+      "license": "arXiv.org perpetual non-exclusive license (redistributable)",
+      "sha256": "bdfaa68d8984f0dc02beaca527b76f207d99b666d31d1da728ee0728182df697",
+      "bytes": 2215244
+    },
+    {
+      "file": "07_structured_feed.xml",
+      "synthetic": false,
+      "source": "https://www.cisa.gov/cybersecurity-advisories/all.xml",
+      "description": "CISA cybersecurity advisories RSS feed, as served.",
+      "license": "U.S. Government Work (public domain)",
+      "sha256": "921f3d74f85c432963726019a86914bf61bc71c4111ccc4ad390966d182abc44",
+      "bytes": 427927
+    },
+    {
+      "file": "08_cloud_audit.json",
+      "synthetic": false,
+      "source": "https://raw.githubusercontent.com/CVEProject/cvelistV5/main/cves/2024/21xxx/CVE-2024-21626.json",
+      "description": "Official CVE Program CVE Record JSON 5.x for CVE-2024-21626 (runc container escape).",
+      "license": "CC0 1.0 (CVE Program cvelistV5)",
+      "sha256": "01fcea3424b99ef74eb94560c87ec7b7bed735a62ac80a2865c34341b9ecb298",
+      "bytes": 81440
+    },
+    {
+      "file": "09_incident_metrics.csv",
+      "synthetic": false,
+      "source": "https://raw.githubusercontent.com/numenta/NAB/master/data/realAWSCloudwatch/ec2_cpu_utilization_5f5533.csv",
+      "description": "Numenta Anomaly Benchmark (NAB), realAWSCloudwatch EC2 CPU utilization telemetry.",
+      "license": "AGPL-3.0 (NAB dataset; used for eval/benchmarking, not redistributed as a product)",
+      "sha256": "01613e6f632d067f11a5dfd40a188b0789752b388d9bc77a398bd06333878a76",
+      "bytes": 119229
+    },
+    {
+      "file": "10_source_module.py",
+      "synthetic": false,
+      "source": "https://raw.githubusercontent.com/python/cpython/main/Lib/difflib.py",
+      "description": "CPython standard library difflib module source.",
+      "license": "PSF License (CPython)",
+      "sha256": "3729784776a3455d98eb1aedf29844414f9babe23b1a0eab447a2f196216392f",
+      "bytes": 86246
+    }
+  ]
+}

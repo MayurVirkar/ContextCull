@@ -3,6 +3,14 @@
 Derived from write-good, proselint, plainlanguage.gov, and standard technical dictionaries.
 All rules are guarded by tokenizer token-cost validation: substitutions are committed
 ONLY if the resulting token count strictly decreases and no protected atom is violated.
+
+ABBREVIATIONS (word-level) are applied ONLY when CompilePolicy.abbreviations=True (opt-in,
+default off) since they mangle ordinary prose ("It was on a dreary night of Nov"). The dict
+below is pruned to unambiguous technical jargon only -- no month/day names, no everyday words
+that double as technical terms (security, context, information, command, process, ...), and
+no bare unit words (those live in UNIT_ABBREVIATIONS, applied only directly after a number,
+e.g. "30 minutes" -> "30 min"). PHRASE_RULES (wordiness reductions) are unaffected and remain
+on by default in COMPACT/TASK mode.
 """
 
 from __future__ import annotations
@@ -21,52 +29,10 @@ class PhraseRule(NamedTuple):
 # 1. TECHNICAL, TEMPORAL & QUANTITATIVE ABBREVIATIONS
 # =========================================================================
 ABBREVIATIONS: dict[str, str] = {
-    # Calendar & Days
-    "monday": "Mon",
-    "tuesday": "Tue",
-    "wednesday": "Wed",
-    "thursday": "Thu",
-    "friday": "Fri",
-    "saturday": "Sat",
-    "sunday": "Sun",
-    "january": "Jan",
-    "february": "Feb",
-    "march": "Mar",
-    "april": "Apr",
-    "june": "Jun",
-    "july": "Jul",
-    "august": "Aug",
-    "september": "Sep",
-    "october": "Oct",
-    "november": "Nov",
-    "december": "Dec",
-    # Units of Time
-    "millisecond": "ms",
-    "milliseconds": "ms",
-    "microsecond": "µs",
-    "microseconds": "µs",
-    "nanosecond": "ns",
-    "nanoseconds": "ns",
-    "seconds": "s",
-    "minutes": "min",
-    "hour": "h",
-    "hours": "h",
-    "week": "wk",
-    "weeks": "wk",
-    "month": "mo",
-    "months": "mo",
-    "year": "yr",
-    "years": "yr",
-    # Units of Data & Storage
-    "kilobyte": "kB",
-    "kilobytes": "kB",
-    "megabyte": "MB",
-    "megabytes": "MB",
-    "gigabyte": "GB",
-    "gigabytes": "GB",
-    "terabyte": "TB",
-    "terabytes": "TB",
-    # Systems, Infrastructure & Architecture
+    # Systems, Infrastructure & Architecture (unambiguous technical jargon only --
+    # no month/day names, no everyday words that double as technical terms such as
+    # security, context, information, command, process, token, reference, connection,
+    # constant, production, expected -- those are real-world ambiguous and excluded)
     "database": "db",
     "databases": "dbs",
     "configuration": "cfg",
@@ -76,8 +42,6 @@ ABBREVIATIONS: dict[str, str] = {
     "environments": "envs",
     "repository": "repo",
     "repositories": "repos",
-    "connection": "conn",
-    "connections": "conns",
     "parameter": "param",
     "parameters": "params",
     "argument": "arg",
@@ -86,10 +50,6 @@ ABBREVIATIONS: dict[str, str] = {
     "functions": "fns",
     "directory": "dir",
     "directories": "dirs",
-    "reference": "ref",
-    "references": "refs",
-    "token": "tok",
-    "tokens": "toks",
     "maximum": "max",
     "minimum": "min",
     "initialize": "init",
@@ -99,14 +59,9 @@ ABBREVIATIONS: dict[str, str] = {
     "assertions": "asserts",
     "request": "req",
     "requests": "reqs",
-    "context": "ctx",
-    "expected": "exp",
     "performance": "perf",
-    "security": "sec",
     "authentication": "auth",
     "authorization": "authz",
-    "production": "prod",
-    "staging": "staging",
     "transaction": "tx",
     "transactions": "txs",
     "kubernetes": "k8s",
@@ -129,7 +84,6 @@ ABBREVIATIONS: dict[str, str] = {
     "destinations": "dests",
     "identifier": "id",
     "identifiers": "ids",
-    "information": "info",
     "dependency": "dep",
     "dependencies": "deps",
     "software": "sw",
@@ -139,20 +93,14 @@ ABBREVIATIONS: dict[str, str] = {
     "packets": "pkts",
     "message": "msg",
     "messages": "msgs",
-    "command": "cmd",
-    "commands": "cmds",
     "library": "lib",
     "libraries": "libs",
     "binary": "bin",
     "binaries": "bins",
     "executable": "exe",
     "executables": "exes",
-    "process": "proc",
-    "processes": "procs",
     "variable": "var",
     "variables": "vars",
-    "constant": "const",
-    "constants": "consts",
     "document": "doc",
     "documents": "docs",
     "documentation": "docs",
@@ -165,6 +113,39 @@ ABBREVIATIONS: dict[str, str] = {
     "aproximadamente": "aprox.",
     "madame": "Mme",
     "monsieur": "M.",
+}
+
+# Unit-of-measure words: abbreviated ONLY when directly preceded by a number
+# ("30 minutes" -> "30 min", "3 years" -> "3 yr"). Never applied to bare prose
+# use of these words (e.g. "wait a minute", "next year") -- see UNIT_RULES in
+# rewrite/engine.py for the number-gated application.
+UNIT_ABBREVIATIONS: dict[str, str] = {
+    "millisecond": "ms",
+    "milliseconds": "ms",
+    "microsecond": "µs",
+    "microseconds": "µs",
+    "nanosecond": "ns",
+    "nanoseconds": "ns",
+    "second": "s",
+    "seconds": "s",
+    "minute": "min",
+    "minutes": "min",
+    "hour": "h",
+    "hours": "h",
+    "week": "wk",
+    "weeks": "wk",
+    "month": "mo",
+    "months": "mo",
+    "year": "yr",
+    "years": "yr",
+    "kilobyte": "kB",
+    "kilobytes": "kB",
+    "megabyte": "MB",
+    "megabytes": "MB",
+    "gigabyte": "GB",
+    "gigabytes": "GB",
+    "terabyte": "TB",
+    "terabytes": "TB",
 }
 
 

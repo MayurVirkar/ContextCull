@@ -1,0 +1,27 @@
+{
+  "file": "06_academic_paper.pdf",
+  "note": "Hand-picked hyperparameters/results from 'Attention Is All You Need' (Vaswani et al. 2017, arXiv:1706.03762). Matched against text as extracted by pypdf and whitespace-normalized (subscripts like d_model extract as 'dmodel' with no underscore - facts are spelled to match the extractor, not the typeset PDF).",
+  "extraction": "pypdf PdfReader.extract_text() per page, joined, then re.sub(r'\\s+', ' ', text)",
+  "facts": [
+    "dmodel",
+    "512",
+    "dff",
+    "2048",
+    "h = 8",
+    "N = 6",
+    "warmup_steps",
+    "4000",
+    "0.98",
+    "label smoothing",
+    "0.1",
+    "beam size",
+    "0.6",
+    "28.4",
+    "41.8",
+    "91.3",
+    "92.7",
+    "12 hours",
+    "3.5 days",
+    "P100"
+  ]
+}

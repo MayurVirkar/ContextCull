@@ -45,3 +45,24 @@ class SourceMapError(ContextCullError):
 
 class ParseError(ContextCullError):
     """Raised when block or structural parsing fails."""
+
+
+class InputTooLargeError(ContextCullError):
+    """Raised when input byte length exceeds the permitted maximum.
+
+    Callers that want a clean CompileResult status (rather than an exception)
+    should catch ContextCullError and use the `.status` class attribute.
+    """
+
+    status = "INPUT_TOO_LARGE"
+
+
+class UndecodableInputError(ContextCullError):
+    """Raised when input bytes cannot be reliably decoded to text.
+
+    E.g. byte-order-mark-less UTF-16 where endianness cannot be determined
+    with confidence: decoding it as UTF-8 would "succeed" but silently
+    produce empty or garbage text instead of failing loudly.
+    """
+
+    status = "UNDECODABLE_INPUT"

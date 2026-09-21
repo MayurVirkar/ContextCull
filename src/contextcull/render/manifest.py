@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import hashlib
 import sys
 from collections.abc import Sequence
 
@@ -15,6 +16,43 @@ from contextcull.ir.models import (
     TokenBudget,
 )
 from contextcull.tokenize.profile import TokenizerProfile
+
+
+def _source_manifest(ingest: IngestionResult, extracted_byte_length: int) -> dict[str, object]:
+    """Builds the manifest `source` block, honestly declaring what byte spans index into.
+
+    For binary formats (PDF/DOCX), `ingest.raw_file_bytes` holds the original file and
+    `ingest.source_map.raw_bytes` holds the UTF-8 bytes of the text EXTRACTED from it —
+    output_segments' byte spans index the latter, not the former. Recording
+    `span_basis: "extracted_text"` (vs "raw_bytes" for plain-text sources) plus a hash of
+    the extracted text lets `contextcull validate` re-extract and check spans honestly,
+    instead of silently comparing them against the wrong bytes.
+    """
+    if ingest.raw_file_bytes is None:
+        return {
+            "document_id": ingest.document_id,
+            "byte_length": extracted_byte_length,
+            "format": "text",
+            "span_basis": "raw_bytes",
+        }
+
+    from contextcull.parse.docx import is_docx
+    from contextcull.parse.pdf import is_pdf
+
+    if is_pdf(ingest.raw_file_bytes):
+        fmt = "pdf"
+    elif is_docx(ingest.raw_file_bytes):
+        fmt = "docx"
+    else:
+        fmt = "binary"
+
+    return {
+        "document_id": ingest.document_id,
+        "byte_length": extracted_byte_length,
+        "format": fmt,
+        "span_basis": "extracted_text",
+        "extracted_text_sha256": f"sha256:{hashlib.sha256(ingest.source_map.raw_bytes).hexdigest()}",
+    }
 
 
 def render_and_manifest(
@@ -91,13 +129,12 @@ def render_and_manifest(
     rewrite_count = sum(1 for s in final_segments if s.kind == "rewrite")
     aggregate_count = sum(1 for s in final_segments if s.kind == "aggregate")
 
+    source_manifest = _source_manifest(ingest, input_bytes)
+
     manifest = {
         "schema_version": "1.0",
         "status": "OK",
-        "source": {
-            "document_id": ingest.document_id,
-            "byte_length": input_bytes,
-        },
+        "source": source_manifest,
         "environment": {
             "contextcull_version": "1.0.0",
             "tep_version": "1.0.0",

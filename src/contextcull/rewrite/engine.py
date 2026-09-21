@@ -6,7 +6,7 @@ import re
 from collections.abc import Sequence
 
 from contextcull.ir.models import Atom, CandidateUnit, CompileMode, CompilePolicy, OutputSegment
-from contextcull.rewrite.rules import ABBREVIATIONS, PHRASE_RULES
+from contextcull.rewrite.rules import ABBREVIATIONS, PHRASE_RULES, UNIT_ABBREVIATIONS
 from contextcull.tokenize.profile import TokenizerProfile
 
 try:
@@ -16,6 +16,21 @@ try:
 except ImportError:
     ahocorasick_rs = None
     HAS_AHOCORASICK_RS = False
+
+# Lines that look like email/mail headers ("From:", "References:", "X-Mailer:") --
+# abbreviations are never applied inside these, only the header name but any content
+# on the same unit, since header field names and display names are not prose.
+_HEADER_LINE_RE = re.compile(r"^[ \t]*[A-Za-z][A-Za-z-]*:\s")
+
+# "30 minutes" -> "30 min", "3 years" -> "3 yr" -- only fires directly after a number.
+_UNIT_RULES: list[tuple[re.Pattern, str, str]] = [
+    (
+        re.compile(r"(?<!\d)(\d+(?:\.\d+)?)\s+" + re.escape(word) + r"\b", re.IGNORECASE),
+        abbrev,
+        f"unit_{word}",
+    )
+    for word, abbrev in UNIT_ABBREVIATIONS.items()
+]
 
 
 class RewriteEngine:
@@ -47,6 +62,18 @@ class RewriteEngine:
             for pat in self._patterns
         ]
 
+        # Cache of atom_id -> Atom built once per distinct `atoms` sequence (keyed by
+        # identity), so rewrite_unit doesn't rescan the full atom list for every unit.
+        self._atoms_index_cache: tuple[int, int, dict[str, Atom]] | None = None
+
+    def _atoms_by_id(self, atoms: Sequence[Atom]) -> dict[str, Atom]:
+        cache = self._atoms_index_cache
+        if cache is not None and cache[0] == id(atoms) and cache[1] == len(atoms):
+            return cache[2]
+        index = {a.atom_id: a for a in atoms}
+        self._atoms_index_cache = (id(atoms), len(atoms), index)
+        return index
+
     def rewrite_unit(
         self,
         unit: CandidateUnit,
@@ -75,8 +102,13 @@ class RewriteEngine:
         orig_text = unit.text
         orig_tokens = tokenizer.count_tokens(orig_text)
 
-        unit_atom_surfaces = {a.surface.lower() for a in atoms if a.atom_id in unit.atom_ids}
-        unit_required_atoms = [a for a in atoms if a.atom_id in unit.atom_ids and a.required]
+        atoms_by_id = self._atoms_by_id(atoms)
+        unit_atom_surfaces = {
+            a.surface.lower() for aid in unit.atom_ids if (a := atoms_by_id.get(aid)) is not None
+        }
+        unit_required_atoms = [
+            a for aid in unit.atom_ids if (a := atoms_by_id.get(aid)) is not None and a.required
+        ]
 
         candidate_text = orig_text
         used_rules: list[str] = []
@@ -99,6 +131,11 @@ class RewriteEngine:
                 masked_text = pruned
                 used_rules.append("discourse_prune")
 
+        # Email/header-like lines ("From:", "References:", ...) are never abbreviated --
+        # header field names and display names are not prose and abbreviating them
+        # (e.g. "References:" -> "refs:", "NOI Administrator" -> "NOI admin") corrupts them.
+        header_like = bool(_HEADER_LINE_RE.match(masked_text))
+
         # Fast pre-filtering with Aho-Corasick automaton if available
         if self._ac is not None:
             # m is a tuple (pattern_index, start, end)
@@ -120,12 +157,38 @@ class RewriteEngine:
             )
 
         for pat, repl, rule_id, pattern_re in rules_to_check:
+            is_abbrev = rule_id.startswith("abbrev_")
+            if is_abbrev and (not policy.abbreviations or header_like):
+                continue
             if pat.lower() in unit_atom_surfaces:
                 continue
 
-            # Protect hyphenated flags (e.g. --policy-document) and paths (/foo/document)
-            if pattern_re.search(masked_text):
+            if is_abbrev:
+                # Never rewrite a capitalized word mid-unit -- likely a proper noun
+                # ("Security Service", "March" as a name). Sentence-initial capitals
+                # (position 0) are still eligible.
+                def _replace_if_safe(m: re.Match, _repl: str = repl) -> str:
+                    token = m.group(0)
+                    if token[:1].isupper() and m.start() != 0:
+                        return token
+                    return _repl
+
+                new_text = pattern_re.sub(_replace_if_safe, masked_text)
+            else:
+                if not pattern_re.search(masked_text):
+                    continue
                 new_text = pattern_re.sub(repl, masked_text)
+
+            if new_text != masked_text:
+                masked_text = new_text
+                used_rules.append(rule_id)
+
+        # Number-gated unit abbreviations ("30 minutes" -> "30 min")
+        if policy.abbreviations and not header_like:
+            for unit_re, abbrev, rule_id in _UNIT_RULES:
+                if not unit_re.search(masked_text):
+                    continue
+                new_text = unit_re.sub(lambda m, _a=abbrev: f"{m.group(1)} {_a}", masked_text)
                 if new_text != masked_text:
                     masked_text = new_text
                     used_rules.append(rule_id)
@@ -140,14 +203,7 @@ class RewriteEngine:
         # Gate commit on both token reduction AND 100% required atom preservation
         atoms_preserved = all(a.surface in candidate_text for a in unit_required_atoms)
 
-        if (
-            (
-                new_tokens < orig_tokens
-                or (new_tokens == orig_tokens and len(candidate_text) < len(orig_text))
-            )
-            and candidate_text != orig_text
-            and atoms_preserved
-        ):
+        if new_tokens < orig_tokens and candidate_text != orig_text and atoms_preserved:
             rule_str = "+".join(used_rules)
             seg = OutputSegment(
                 output_start=0,

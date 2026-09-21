@@ -1,0 +1,22 @@
+{
+  "file": "10_source_module.py",
+  "note": "Function/class signatures hand-picked from CPython's difflib.py, spread from the top of the module to HtmlDiff near the end.",
+  "facts": [
+    "def _calculate_ratio",
+    "class SequenceMatcher",
+    "def find_longest_match",
+    "def get_matching_blocks",
+    "def get_opcodes",
+    "def quick_ratio",
+    "def get_close_matches",
+    "class Differ",
+    "def _fancy_replace",
+    "def IS_LINE_JUNK",
+    "def unified_diff",
+    "def context_diff",
+    "def diff_bytes",
+    "def ndiff",
+    "class HtmlDiff",
+    "def _mdiff"
+  ]
+}

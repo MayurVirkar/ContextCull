@@ -75,8 +75,22 @@ def segment_sentences(text: str) -> list[SegmentSpan]:
         if _ABBREVIATION_SUFFIX_RE.search(prefix):
             continue
 
-        # 3. Western punctuation must be followed by whitespace, newline, quote, or end of string
-        if punct in (".", "!", "?", "...", "!?") and m_end < text_len:
+        # Any run made purely of Western terminators (., !, ? and every combination the
+        # regex can match: "...", "!?", "?!", "..", "!!", "....", ...) — not the CJK/Arabic/
+        # Indic single-char terminators or the paragraph-break alternative.
+        is_western_terminator = bool(punct) and all(c in ".!?" for c in punct)
+
+        # 3. An ellipsis (a run of 2+ dots) followed - after optional whitespace - by a
+        # parenthetical or a lowercase continuation is a pause, not a sentence boundary.
+        if is_western_terminator and set(punct) == {"."} and len(punct) >= 2 and m_end < text_len:
+            look = m_end
+            while look < text_len and text[look].isspace():
+                look += 1
+            if look < text_len and (text[look] == "(" or text[look].islower()):
+                continue
+
+        # 4. Western punctuation must be followed by whitespace, newline, quote, or end of string
+        if is_western_terminator and m_end < text_len:
             next_char = text[m_end]
             if not (next_char.isspace() or next_char in ('"', "'", ")", "]", "}", "»", "”")):
                 continue

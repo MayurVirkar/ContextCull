@@ -7,14 +7,12 @@ from pathlib import Path
 from contextcull.api import ContextCompiler
 from contextcull.ir.models import CompileMode, CompilePolicy, TokenBudget
 
-RUST_BIN_PATH = os.environ.get(
-    "TEP_RUST_BIN", "/home/mayur/projects/Summarizer/target/release/tep-test"
-)
-RUST_BIN = Path(RUST_BIN_PATH)
+RUST_BIN_PATH = os.environ.get("TEP_RUST_BIN")
+RUST_BIN = Path(RUST_BIN_PATH) if RUST_BIN_PATH else None
 
 
 def run_rust_tep(text: str) -> str | None:
-    if not RUST_BIN.exists():
+    if RUST_BIN is None or not RUST_BIN.exists():
         return None
     try:
         proc = subprocess.run(

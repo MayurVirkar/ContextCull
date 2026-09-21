@@ -15,14 +15,34 @@ CVE_RE = re.compile(r"\bCVE-\d{4}-\d{4,7}\b", re.IGNORECASE)
 IPV4_RE = re.compile(
     r"\b(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(?:\.(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}(?::\d{2,5})?\b"
 )
+# Preceding-word context that indicates a dotted-quad number is a version/section number,
+# not a real IP address (e.g. "Upgrade from 1.2.3.4", "section 3.1.4.1"). Checked as the
+# token immediately before the match, so it never suppresses real IPs elsewhere in prose
+# (e.g. "host 10.0.0.1", "Received: ... [10.0.0.1]").
+_IPV4_VERSION_CONTEXT_RE = re.compile(
+    r"(?:upgrad(?:e|ed|ing)\s+from|downgrad(?:e|ed|ing)\s+from|version|release|section|upgrade|downgrade|v)[\s:#]{0,3}$",
+    re.IGNORECASE,
+)
 IPV6_RE = re.compile(
     r"\b[0-9a-fA-F]{1,4}(?::[0-9a-fA-F]{1,4})*::(?:[0-9a-fA-F]{1,4}(?::[0-9a-fA-F]{1,4})*)?\b|\b(?:[0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}\b|::1\b"
 )
 UUID_RE = re.compile(
     r"\b[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}\b"
 )
-GIT_SHA_RE = re.compile(
-    r"\b[0-9a-fA-F]{64}\b|\b[0-9a-fA-F]{40}\b|\b(?=[0-9a-f]{7,39}\b)(?=[0-9a-f]*\d)(?=[0-9a-f]*[a-f])[0-9a-f]{7,39}\b"
+# Full-length hashes (40 = SHA-1, 64 = SHA-256) are unconditionally real git SHAs.
+GIT_SHA_RE = re.compile(r"\b[0-9a-fA-F]{64}\b|\b[0-9a-fA-F]{40}\b")
+# Short hashes (7-12 hex chars, mixed digit+letter) are only treated as git SHAs when
+# adjacent to a git-related context word -- otherwise short hex-looking tokens (scientific
+# notation "1e10000", random hex-ish words "12abcdef"/"deadbee1", MIME boundaries, CSS
+# colors) get flagged as required "hard invariant" atoms and inflate the mandatory floor.
+GIT_SHA_SHORT_CANDIDATE_RE = re.compile(
+    r"\b(?=[0-9a-f]{7,12}\b)(?=[0-9a-f]*\d)(?=[0-9a-f]*[a-f])[0-9a-f]{7,12}\b", re.IGNORECASE
+)
+_GIT_SHA_SCI_NOTATION_RE = re.compile(r"^\d+e\d+$", re.IGNORECASE)
+_GIT_SHA_CONTEXT_RE = re.compile(
+    r"\b(?:commit|sha1?|sha256|rev|revision|rollback|hash|merge|cherry-pick|cherry-picked|"
+    r"fixes|fixed|tag|tagged|verified|build|ref|branch|head|rebase|parent|tree|blob)\b",
+    re.IGNORECASE,
 )
 AWS_INSTANCE_RE = re.compile(r"\bi-[0-9a-f]{8,17}\b")
 
@@ -64,7 +84,7 @@ WESTERN_NEGATION = (
     r"pas|aucun|aucune|sans|rien|"
     r"nicht|kein|keine|keinen|keinem|nie|niemals|ohne"
 )
-OTHER_NEGATION = r"не|нет|никогда|без|никакой|नहीं|मत|बिना|না|নয়|বিনা|لم|لن|ليس|بدון"
+OTHER_NEGATION = r"не|нет|никогда|без|никакой|नहीं|मत|बिना|না|নয়|বিনা|لم|لن|ليس|بدون"
 
 BOUND_NEGATION_RE = re.compile(
     rf"\b(?:{WESTERN_NEGATION}|{HEBREW_NEGATION}|{OTHER_NEGATION})\s+([^\s\.,;!?:\"'\(\)\[\]\{{\}}]+(?:\s+[^\s\.,;!?:\"'\(\)\[\]\{{\}}]+){{0,2}})(?:\b|(?<=[\u05f3\u05f4]))",
@@ -104,7 +124,9 @@ EMAIL_RE = re.compile(r"\b[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+\b")
 
 CRITICAL_ENTITY_PATTERNS: list[re.Pattern] = [
     CVE_RE,
-    IPV4_RE,
+    # IPV4_RE and GIT_SHA_RE (short-hash form) are intentionally excluded here: they need
+    # context filtering (see iter_ipv4_spans / iter_git_sha_spans below) that a plain
+    # Pattern.finditer() can't express. GIT_SHA_RE (full 40/64-hex) is safe unfiltered.
     IPV6_RE,
     UUID_RE,
     GIT_SHA_RE,
@@ -122,12 +144,46 @@ CRITICAL_ENTITY_PATTERNS: list[re.Pattern] = [
 ]
 
 
+def iter_ipv4_spans(text: str) -> list[tuple[int, int]]:
+    """Yields (start, end) spans for real IPv4 addresses, rejecting dotted-quad numbers
+    that are really version/section numbers (see _IPV4_VERSION_CONTEXT_RE)."""
+    spans = []
+    for match in IPV4_RE.finditer(text):
+        start, end = match.span()
+        window = text[max(0, start - 24) : start]
+        if _IPV4_VERSION_CONTEXT_RE.search(window):
+            continue
+        spans.append((start, end))
+    return spans
+
+
+def iter_git_sha_spans(text: str) -> list[tuple[int, int]]:
+    """Yields (start, end) spans for git SHAs: full 40/64-hex hashes unconditionally, plus
+    short 7-12 hex hashes only when adjacent to a git-related context word (commit, sha,
+    rev, hash, merge, cherry-pick, fixes). Rejects scientific-notation tokens ("1e10000")."""
+    spans = [m.span() for m in GIT_SHA_RE.finditer(text)]
+    for match in GIT_SHA_SHORT_CANDIDATE_RE.finditer(text):
+        token = match.group(0)
+        if _GIT_SHA_SCI_NOTATION_RE.match(token):
+            continue
+        start, end = match.span()
+        before = text[max(0, start - 20) : start]
+        after = text[end : end + 20]
+        if _GIT_SHA_CONTEXT_RE.search(before) or _GIT_SHA_CONTEXT_RE.search(after):
+            spans.append((start, end))
+    return spans
+
+
 def extract_unit_entities(text: str) -> set[str]:
     """Extracts critical domain entities from a unit text using unified atom patterns."""
     entities: set[str] = set()
     for pat in CRITICAL_ENTITY_PATTERNS:
         for match in pat.finditer(text):
             entities.add(match.group(0).strip())
+    for start, end in iter_ipv4_spans(text):
+        entities.add(text[start:end].strip())
+    for start, end in iter_git_sha_spans(text):
+        entities.add(text[start:end].strip())
     return entities
 
 
@@ -234,8 +290,7 @@ def extract_atoms(
         start, end = match.span()
         add_atom("instance_id", clean_text[start:end], start, end, required=True)
 
-    for match in IPV4_RE.finditer(clean_text):
-        start, end = match.span()
+    for start, end in iter_ipv4_spans(clean_text):
         add_atom("ipv4", clean_text[start:end], start, end, required=True)
 
     for match in IPV6_RE.finditer(clean_text):
@@ -246,8 +301,7 @@ def extract_atoms(
         start, end = match.span()
         add_atom("uuid", clean_text[start:end], start, end, required=True)
 
-    for match in GIT_SHA_RE.finditer(clean_text):
-        start, end = match.span()
+    for start, end in iter_git_sha_spans(clean_text):
         add_atom("git_sha", clean_text[start:end], start, end, required=True)
 
     # 3. File locations and URLs
@@ -273,17 +327,34 @@ def extract_atoms(
         surface = clean_text[start:end]
         add_atom("quantity", surface, start, end, canonical=surface.lower())
 
-    # 5. Technical code identifiers
+    # 5. Technical code identifiers (skip any span already covered by a path_or_url or
+    # file_location atom). Spans are sorted + merged once so each match is checked with a
+    # single bisect lookup instead of scanning every previously-added atom (was O(n*m)).
+    _url_file_spans = sorted(
+        (a.sources[0].start, a.sources[0].end)
+        for a in atoms
+        if a.kind in ("path_or_url", "file_location") and isinstance(a.sources[0], ByteSpan)
+    )
+    _merged_url_file_spans: list[tuple[int, int]] = []
+    for s_start, s_end in _url_file_spans:
+        if _merged_url_file_spans and s_start <= _merged_url_file_spans[-1][1]:
+            _merged_url_file_spans[-1] = (
+                _merged_url_file_spans[-1][0],
+                max(_merged_url_file_spans[-1][1], s_end),
+            )
+        else:
+            _merged_url_file_spans.append((s_start, s_end))
+    _url_file_starts = [s[0] for s in _merged_url_file_spans]
+
     for match in CODE_IDENTIFIER_RE.finditer(clean_text):
         start, end = match.span()
         surface = clean_text[start:end]
-        if not any(
-            isinstance(a.sources[0], ByteSpan)
-            and start >= a.sources[0].start
-            and end <= a.sources[0].end
-            for a in atoms
-            if a.kind in ("path_or_url", "file_location")
-        ):
+        idx = bisect.bisect_right(_url_file_starts, start) - 1
+        covered = False
+        if idx >= 0:
+            s_start, s_end = _merged_url_file_spans[idx]
+            covered = start >= s_start and end <= s_end
+        if not covered:
             add_atom("code_identifier", surface, start, end)
 
     # 6. ISO Timestamps

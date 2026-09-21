@@ -95,38 +95,41 @@ def parse_csv_blocks(ingest: IngestionResult) -> list[Block]:
     if not reader:
         return []
 
-    blocks: list[Block] = []
-    header = reader[0]
-    header_str = " | ".join(header)
-    span = clean_char_to_byte_span(ingest, 0, len(ingest.clean_text))
+    # Emit verbatim source slices (kind "copy") so rows keep their original bytes and
+    # compiled output is never longer than the input.
+    text = ingest.clean_text
+    line_spans: list[tuple[int, int]] = []
+    pos = 0
+    for line in text.splitlines(keepends=True):
+        body = line.rstrip("\r\n")
+        if body.strip():
+            line_spans.append((pos, pos + len(body)))
+        pos += len(line)
+    if not line_spans:
+        return []
 
-    # Header block
-    blocks.append(
-        Block(
-            block_id="block_0000_csv_header",
+    def _block(block_id: str, first: int, last: int, meta: dict) -> Block:
+        c_start, c_end = line_spans[first][0], line_spans[last][1]
+        return Block(
+            block_id=block_id,
             kind=BlockKind.TABLE,
-            sources=(span,),
-            text=header_str,
-            metadata={"kind": "rewrite", "format": "csv", "role": "header", "columns": header},
+            sources=(clean_char_to_byte_span(ingest, c_start, c_end),),
+            text=text[c_start:c_end],
+            metadata={"kind": "copy", "format": "csv", **meta},
         )
-    )
 
-    # Chunk rows into logical table blocks of 10 rows
-    for chunk_idx, i in enumerate(range(1, len(reader), 10)):
-        rows = reader[i : i + 10]
-        row_lines = [" | ".join(r) for r in rows]
+    blocks: list[Block] = [
+        _block("block_0000_csv_header", 0, 0, {"role": "header", "columns": reader[0]})
+    ]
+    # Chunk data lines into logical table blocks of 10 rows
+    for chunk_idx, i in enumerate(range(1, len(line_spans), 10)):
+        last = min(i + 9, len(line_spans) - 1)
         blocks.append(
-            Block(
-                block_id=f"block_{len(blocks):04d}_csv_rows",
-                kind=BlockKind.TABLE,
-                sources=(span,),
-                text="\n".join(row_lines),
-                metadata={
-                    "kind": "rewrite",
-                    "format": "csv",
-                    "chunk": chunk_idx,
-                    "row_count": len(rows),
-                },
+            _block(
+                f"block_{len(blocks):04d}_csv_rows",
+                i,
+                last,
+                {"chunk": chunk_idx, "row_count": last - i + 1},
             )
         )
 

@@ -10,6 +10,12 @@ from contextcull.ingest.decoder import IngestionResult
 from contextcull.ir.models import Block, BlockKind
 from contextcull.ir.spans import ByteSpan
 
+# Documented ceilings against pathological PDFs (thousands of pages, or pages that decode
+# to huge amounts of text) hanging or exhausting memory during extraction. Extraction stops
+# early once either cap is hit rather than continuing unbounded.
+MAX_PDF_PAGES = 5000
+MAX_PDF_EXTRACTED_CHARS = 10_000_000
+
 
 def is_pdf(raw_bytes: bytes) -> bool:
     """Detects whether raw bytes represent a PDF file."""
@@ -26,12 +32,20 @@ def extract_pdf_blocks_and_text(raw_bytes: bytes, document_id: str) -> tuple[lis
     blocks: list[Block] = []
     text_chunks: list[str] = []
     current_byte_offset = 0
+    total_chars = 0
 
     for page_num, page in enumerate(reader.pages):
+        if page_num >= MAX_PDF_PAGES:
+            break
+
         try:
             page_text = page.extract_text() or ""
         except Exception:
             continue
+
+        if total_chars + len(page_text) > MAX_PDF_EXTRACTED_CHARS:
+            break
+        total_chars += len(page_text)
 
         lines = page_text.splitlines()
         curr_paras: list[str] = []

@@ -86,9 +86,16 @@ def is_structural_boilerplate(text: str) -> bool:
 
 def prune_discourse_scaffolding(text: str) -> str:
     """Strips leading bureaucratic framing and hedging phrases while preserving the core factual clause."""
-    cleaned = text.strip()
+    original = text.strip()
+    cleaned = original
+    removed = False
     for pat in DISCOURSE_PREAMBLES:
-        cleaned = pat.sub("", cleaned)
-    if cleaned and cleaned[0].islower():
+        new_cleaned = pat.sub("", cleaned)
+        if new_cleaned != cleaned:
+            removed = True
+            cleaned = new_cleaned
+    # Only re-capitalize the leading letter when a preamble was actually stripped --
+    # otherwise untouched text (e.g. "ps: I'll call you") gets corrupted ("Ps: ...").
+    if removed and cleaned and cleaned[0].islower():
         cleaned = cleaned[0].upper() + cleaned[1:]
     return cleaned

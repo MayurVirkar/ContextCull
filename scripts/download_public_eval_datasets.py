@@ -52,10 +52,18 @@ def main():
     print("[2/10] Downloading literature (Project Gutenberg: Frankenstein)...")
     try:
         novel_bytes = fetch_url("https://www.gutenberg.org/cache/epub/84/pg84.txt")
-        # Extract first 150 KB (Letters through Chapter 4)
-        novel_text = novel_bytes[:150_000].decode("utf-8", errors="replace")
+        # Truncate to ~150 KB at a paragraph boundary (Letters through Chapter 4),
+        # never mid-word: cut back to the last blank-line break before the limit.
+        full_text = novel_bytes.decode("utf-8", errors="replace")
+        head = full_text[:150_000]
+        boundary = head.rfind("\n\n")
+        if boundary <= 0:
+            boundary = head.rfind("\n")
+        novel_text = head[:boundary].rstrip() + "\n" if boundary > 0 else head
         (EVAL_DIR / "02_novel_chapter.txt").write_text(novel_text, encoding="utf-8")
-        print(f"  ✓ 02_novel_chapter.txt: {len(novel_text.encode('utf-8'))} bytes")
+        print(
+            f"  ✓ 02_novel_chapter.txt: {len(novel_text.encode('utf-8'))} bytes (truncated at paragraph boundary)"
+        )
     except Exception as e:
         print(f"  ✗ 02_novel_chapter.txt failed: {e}")
 
@@ -74,8 +82,11 @@ def main():
     except Exception as e:
         print(f"  ✗ 03_slack_chat.txt failed: {e}")
 
-    # 4. Technical Report: OpenXML DOCX Document
-    print("[4/10] Generating technical report DOCX (OpenXML)...")
+    # 4. Technical Report: SYNTHETIC OpenXML DOCX Document.
+    # This is generated (not a real-world download): the CVE IDs, cluster IDs and
+    # metrics below are invented for eval purposes only. Filename is prefixed
+    # "synthetic" so it isn't mistaken for authentic public data.
+    print("[4/10] Generating SYNTHETIC technical report DOCX (OpenXML)...")
     try:
         docx_buf = io.BytesIO()
         docx_xml = b"""<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
@@ -133,10 +144,10 @@ def main():
         with zipfile.ZipFile(docx_buf, "w") as z:
             z.writestr("word/document.xml", docx_xml)
             z.writestr("[Content_Types].xml", b"<Types/>")
-        (EVAL_DIR / "04_technical_report.docx").write_bytes(docx_buf.getvalue())
-        print(f"  ✓ 04_technical_report.docx: {len(docx_buf.getvalue())} bytes")
+        (EVAL_DIR / "04_synthetic_technical_report.docx").write_bytes(docx_buf.getvalue())
+        print(f"  ✓ 04_synthetic_technical_report.docx: {len(docx_buf.getvalue())} bytes")
     except Exception as e:
-        print(f"  ✗ 04_technical_report.docx failed: {e}")
+        print(f"  ✗ 04_synthetic_technical_report.docx failed: {e}")
 
     # 5. Web Article: Wikipedia (Transformer Architecture)
     print("[5/10] Downloading web article (Wikipedia: Transformer)...")

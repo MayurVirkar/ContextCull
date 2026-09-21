@@ -1,0 +1,24 @@
+{
+  "file": "05_web_article.html",
+  "note": "Hand-picked from the Wikipedia 'Transformer (deep learning)' article, spread from the intro through history and architecture sections. Matched against stdlib html.parser visible-text extraction (script/style/nav/header/footer skipped).",
+  "facts": [
+    "multi-head attention mechanism",
+    "Attention Is All You Need",
+    "BERT",
+    "GPTs",
+    "Elman network",
+    "vanishing-gradient problem",
+    "gated recurrent units",
+    "Jakob Uszkoreit",
+    "2017-06-12",
+    "TensorFlow",
+    "ELMo",
+    "OpenAI GPT series",
+    "ChatGPT",
+    "DALL-E",
+    "Stable Diffusion 3",
+    "pre-LN Transformer",
+    "man bites dog",
+    "positional encoding"
+  ]
+}

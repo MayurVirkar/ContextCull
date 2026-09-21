@@ -1,0 +1,2 @@
+# Evaluation corpora are byte-exact fixtures (sha256 in METADATA.json); never normalise line endings.
+examples/eval/** -text

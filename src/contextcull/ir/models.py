@@ -128,6 +128,7 @@ class CompilePolicy:
     min_safe_tokens: int = 0
     discourse_pruning: bool = True
     filter_boilerplate: bool = True
+    abbreviations: bool = False
 
 
 @dataclass(frozen=True, slots=True)

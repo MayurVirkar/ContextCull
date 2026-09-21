@@ -1,90 +1,151 @@
 {
-  "description": "Authentic 100% public-domain multilingual evaluation datasets covering the top 10 world languages + full books.",
-  "license": "Public Domain (Project Gutenberg / Pre-1929 Literature / Public Records)",
+  "description": "Genuine public-domain multilingual evaluation corpora, one real source text per language, verified for title match and target-script letter ratio >= 80%. No synthetic or generated filler text. Files > 500KB are truncated at a paragraph boundary (Don Quijote is kept at full length per the eval spec).",
+  "verification": "title substring match + script-ratio check, see scripts/download_multilingual_public_evals.py",
+  "dropped_languages": [],
   "datasets": [
     {
       "file": "01_en_literature_alice.txt",
       "language": "en",
       "author": "Lewis Carroll",
-      "title": "Alice in Wonderland",
-      "source": "Project Gutenberg #11"
+      "title": "Alice's Adventures in Wonderland",
+      "source": "https://www.gutenberg.org/cache/epub/11/pg11.txt",
+      "license": "Public Domain (Project Gutenberg #11)",
+      "script_ratio": 1.0,
+      "bytes": 154473,
+      "sha256": "65c5ebedfb6fe332d89574aae63286cf89f625a901be9f0ba31d7f981b020e53",
+      "truncated_to_paragraph_boundary": false
     },
     {
       "file": "02_en_math_calculus.txt",
       "language": "en",
       "author": "Silvanus P. Thompson",
       "title": "Calculus Made Easy",
-      "source": "Project Gutenberg #35170"
+      "source": "https://www.gutenberg.org/ebooks/33283.html.images",
+      "license": "Public Domain (Project Gutenberg #33283; no plain-text edition, extracted from HTML)",
+      "script_ratio": 1.0,
+      "bytes": 208050,
+      "sha256": "9c88fc7491d952c4810864c57f065e980afbde362560a280e02837f266e3b186",
+      "truncated_to_paragraph_boundary": false
     },
     {
-      "file": "03_zh_art_of_war.txt",
+      "file": "03_zh_journey_to_the_west.txt",
       "language": "zh",
-      "author": "Sun Tzu",
-      "title": "The Art of War",
-      "source": "Project Gutenberg #2388"
+      "author": "Wu Cheng'en",
+      "title": "西遊記 (Journey to the West)",
+      "source": "https://www.gutenberg.org/cache/epub/23962/pg23962.txt",
+      "license": "Public Domain (Project Gutenberg #23962)",
+      "script_ratio": 0.9998,
+      "bytes": 499928,
+      "sha256": "7ed2b48cad6b3008becadc25e23107995c9c071799b95f6d8701cf5333889d9e",
+      "truncated_to_paragraph_boundary": true
     },
     {
       "file": "04_hi_premchand_stories.txt",
       "language": "hi",
       "author": "Munshi Premchand",
-      "title": "Idgah & Classic Stories",
-      "source": "Public Domain Hindi Literature"
+      "title": "Idgah; A Night in the Fields; My Elder Brother (from Mansarovar I)",
+      "source": "https://hi.wikisource.org/wiki/मानसरोवर_१/ईदगाह ; https://hi.wikisource.org/wiki/मानसरोवर_१/पूस_की_रात ; https://hi.wikisource.org/wiki/मानसरोवर_१/बड़े_भाई_साहब",
+      "license": "Public Domain (author d. 1936); Wikisource transcription CC BY-SA 4.0",
+      "script_ratio": 1.0,
+      "bytes": 129749,
+      "sha256": "1f155cf89df94454cc1e4cd09ae9e7921e2d66d7fe27e1d5620e0a2b81205c75",
+      "truncated_to_paragraph_boundary": false
     },
     {
       "file": "05_es_don_quijote.txt",
       "language": "es",
       "author": "Miguel de Cervantes",
       "title": "Don Quijote de la Mancha",
-      "source": "Project Gutenberg #2000"
+      "source": "https://www.gutenberg.org/cache/epub/2000/pg2000.txt",
+      "license": "Public Domain (Project Gutenberg #2000)",
+      "script_ratio": 1.0,
+      "bytes": 2205979,
+      "sha256": "3e5afb0052906229f0d7bf099888749789d61ea28925762ac17db99bea000d91",
+      "truncated_to_paragraph_boundary": false
     },
     {
       "file": "06_fr_tour_du_monde.txt",
       "language": "fr",
       "author": "Jules Verne",
-      "title": "Le Tour du monde en 80 jours",
-      "source": "Project Gutenberg #800"
+      "title": "Le Tour du monde en quatre-vingts jours",
+      "source": "https://www.gutenberg.org/cache/epub/800/pg800.txt",
+      "license": "Public Domain (Project Gutenberg #800)",
+      "script_ratio": 1.0,
+      "bytes": 442304,
+      "sha256": "67c9655402af4f1ef4c9722873f1d6a70bf54a0e7135087425b6f9eeaf286ff1",
+      "truncated_to_paragraph_boundary": false
     },
     {
       "file": "07_ar_kalila_wa_dimna.txt",
       "language": "ar",
       "author": "Ibn al-Muqaffa",
-      "title": "Kalila wa Dimna & Arabian Nights",
-      "source": "Public Domain Classical Arabic"
+      "title": "كليلة ودمنة (Kalila wa Dimna)",
+      "source": "https://ar.wikisource.org/wiki/كليلة_ودمنة/باب_مقدمة_الكتاب ; https://ar.wikisource.org/wiki/كليلة_ودمنة/باب_بعثة_برزويه_إلى_بلاد_الهند",
+      "license": "Public Domain (8th century text); Wikisource transcription CC BY-SA 4.0",
+      "script_ratio": 1.0,
+      "bytes": 72917,
+      "sha256": "7c88ad9c4078e8ca9c55aeccbc5096f073d666472ac82953e11e095800456946",
+      "truncated_to_paragraph_boundary": false
     },
     {
       "file": "08_bn_gitanjali.txt",
       "language": "bn",
       "author": "Rabindranath Tagore",
-      "title": "Gitanjali & Selected Works",
-      "source": "Public Domain Bengali Literature"
+      "title": "গীতাঞ্জলি (Gitanjali, 1913 Bengali original)",
+      "source": "https://bn.wikisource.org/wiki/গীতাঞ্জলি_(১৯১৩)",
+      "license": "Public Domain (author d. 1941); Wikisource transcription CC BY-SA 4.0",
+      "script_ratio": 1.0,
+      "bytes": 25106,
+      "sha256": "cbd08b8204cd2012ebb72466db7448257320db0b6139e4fb1edb2c2fd4ec270e",
+      "truncated_to_paragraph_boundary": false
     },
     {
       "file": "09_pt_dom_casmurro.txt",
       "language": "pt",
       "author": "Machado de Assis",
       "title": "Dom Casmurro",
-      "source": "Project Gutenberg #55752"
+      "source": "https://www.gutenberg.org/cache/epub/55752/pg55752.txt",
+      "license": "Public Domain (Project Gutenberg #55752)",
+      "script_ratio": 1.0,
+      "bytes": 398165,
+      "sha256": "cff67110befa4db7638ebd487ca01d0978460ad43025120a1064f98c93443cef",
+      "truncated_to_paragraph_boundary": false
     },
     {
-      "file": "10_ru_sevastopol_tolstoy.txt",
+      "file": "10_ru_rachinsky_arithmetic.txt",
       "language": "ru",
-      "author": "Leo Tolstoy",
-      "title": "Sevastopol Sketches",
-      "source": "Project Gutenberg #53434"
+      "author": "Sergei Rachinsky",
+      "title": "1001 задача для умственного счета",
+      "source": "https://www.gutenberg.org/ebooks/16527.txt.utf-8",
+      "license": "Public Domain (Project Gutenberg #16527)",
+      "script_ratio": 1.0,
+      "bytes": 251487,
+      "sha256": "3e8a2ead003f74fdb78bc80894b2843788f1ca1bb92619e29b0375b7c1da6a83",
+      "truncated_to_paragraph_boundary": false
     },
     {
-      "file": "11_ja_soseki_kokoro.txt",
+      "file": "11_ja_akutagawa_rashomon.txt",
       "language": "ja",
-      "author": "Natsume Soseki",
-      "title": "Kokoro",
-      "source": "Project Gutenberg #24816"
+      "author": "Akutagawa Ryūnosuke",
+      "title": "羅生門 (Rashomon)",
+      "source": "https://www.gutenberg.org/cache/epub/1982/pg1982.txt",
+      "license": "Public Domain (Project Gutenberg #1982)",
+      "script_ratio": 0.9329,
+      "bytes": 18701,
+      "sha256": "5d9d06de4d988d0859a8d0775b204bc6b55198a00d136e6ec03c8875d17d4322",
+      "truncated_to_paragraph_boundary": false
     },
     {
       "file": "12_he_bereshit_genesis.txt",
       "language": "he",
-      "author": "Classical Hebrew Literature",
+      "author": "Classical Hebrew (Masoretic Text)",
       "title": "Sefer Bereshit (Book of Genesis)",
-      "source": "Public Domain Hebrew Masoretic Text"
+      "source": "pre-existing file, not re-fetched; re-verified in place (title + script ratio) this pass",
+      "license": "Public Domain (Masoretic Text, unpointed consonantal transcription)",
+      "script_ratio": 1.0,
+      "bytes": 177211,
+      "sha256": "6bff2777200fcfba8af5cce63237d1a3caba3c8382c4a89f2b939cecba8cf5ce",
+      "truncated_to_paragraph_boundary": false
     }
   ]
 }

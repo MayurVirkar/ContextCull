@@ -1,0 +1,21 @@
+{
+  "file": "07_structured_feed.xml",
+  "note": "Hand-picked from the live CISA cybersecurity advisories RSS feed, spread across items in the feed.",
+  "facts": [
+    "CVE-2025-39964",
+    "CVE-2026-53266",
+    "CVE-2025-39682",
+    "ABB Ability Edgenius",
+    "Schneider Electric PowerChute Serial Shutdown",
+    "Hitachi Energy FACTS Control Platform",
+    "Bransys ELD",
+    "Using Cyber Decoys to Strengthen Detection and Response",
+    "Siemens Reyrolle 7SR5",
+    "KEV Nomination Form",
+    "BOD 26-04",
+    "Mitsubishi Electric GX Works3",
+    "Modicon M340",
+    "CVE-2026-13336",
+    "NetBotz 5 750/755"
+  ]
+}

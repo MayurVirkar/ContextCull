@@ -9,7 +9,7 @@ from pathlib import Path
 
 from contextcull.closure.context import apply_context_closure
 from contextcull.detect.atoms import extract_atoms
-from contextcull.errors import BudgetUnsafeError, InvariantViolationError
+from contextcull.errors import BudgetUnsafeError, ContextCullError, InvariantViolationError
 from contextcull.features.vectorizer import vectorize_units
 from contextcull.ingest.decoder import clean_char_to_byte_span, ingest_document
 from contextcull.ir.models import (
@@ -66,8 +66,10 @@ class ContextCompiler:
         """Compiles raw text or bytes into a source-mapped, optimally compressed context package.
 
         When budget is None, ContextCull operates in budget-free natural density mode:
-        guaranteeing 100% entity and atom coverage while pruning narrative scaffolding
-        and stopping at the Pareto marginal entropy elbow.
+        guaranteeing full coverage of critical entities and required (mandatory) atoms, then
+        greedily growing a vocabulary-coverage curve versus cumulative tokens and cutting it
+        at the Kneedle knee to prune redundant narrative scaffolding. Non-required atoms are
+        retained on this best-effort basis, not guaranteed.
         """
         raw_bytes = input_data.encode("utf-8") if isinstance(input_data, str) else input_data
 
@@ -84,7 +86,17 @@ class ContextCompiler:
         tokenizer = get_tokenizer(profile_name)
 
         # Stage 1: Immutable Ingestion, SourceMap & Block Parsing
-        ingest, blocks = ingest_document(raw_bytes)
+        try:
+            ingest, blocks = ingest_document(raw_bytes)
+        except ContextCullError as exc:
+            status = getattr(exc, "status", "INGEST_FAILED")
+            return CompileResult(
+                status=status,
+                text="",
+                manifest={"schema_version": "1.0", "status": status, "error": str(exc)},
+                metrics={},
+                diagnostics=(str(exc),),
+            )
 
         # Stage 3: Protected Atom Detection
         atoms = extract_atoms(ingest, required_terms=policy.required_terms, blocks=blocks)
@@ -109,6 +121,7 @@ class ContextCompiler:
                 policy=policy,
                 tokenizer=tokenizer,
                 scores=scores,  # type: ignore
+                blocks=blocks,
             )
         except BudgetUnsafeError as exc:
             return CompileResult(
@@ -165,6 +178,7 @@ class ContextCompiler:
                 required_atoms=[a for a in atoms if a.required],
                 tokenizer=tokenizer,
                 budget=budget,
+                source_encoding=ingest.source_map.encoding,
             )
         except InvariantViolationError as exc:
             return CompileResult(

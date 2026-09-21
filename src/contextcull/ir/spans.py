@@ -63,6 +63,12 @@ class SourceMap:
     # char_to_byte[i] is the byte offset of character i in raw_bytes.
     # char_to_byte[len(decoded_text)] is the byte offset of the end of the text.
     char_to_byte: tuple[int, ...]
+    # The concrete codec that byte offsets are computed against, and that must be used
+    # to decode any sub-span of raw_bytes (e.g. "utf-8", "latin-1", "utf-16-le", "utf-16-be").
+    # Never a BOM-sniffing alias ("utf-16", "utf-8-sig"): a byte span rarely starts at
+    # offset 0, so re-decoding it with a BOM-sniffing codec would look for a BOM that
+    # isn't there.
+    encoding: str = "utf-8"
 
     @classmethod
     def from_bytes(cls, raw: bytes, document_id: str, encoding: str = "utf-8") -> SourceMap:
@@ -86,6 +92,7 @@ class SourceMap:
                 else:
                     byte_pos += 4
             char_offsets[n] = byte_pos
+            enc_for_char = "utf-8"
         else:
             char_offsets = []
             byte_pos = 0
@@ -114,6 +121,7 @@ class SourceMap:
             raw_bytes=raw,
             decoded_text=text,
             char_to_byte=tuple(char_offsets),
+            encoding=enc_for_char,
         )
 
     def char_to_byte_span(self, char_start: int, char_end: int) -> ByteSpan:
@@ -139,6 +147,6 @@ class SourceMap:
         return (c_start, max(c_start, c_end))
 
     def slice_source(self, span: ByteSpan) -> str:
-        """Returns the decoded string corresponding to a ByteSpan."""
+        """Returns the decoded string corresponding to a ByteSpan, using the document's own encoding."""
         raw_slice = span.slice_bytes(self.raw_bytes)
-        return raw_slice.decode("utf-8", errors="replace")
+        return raw_slice.decode(self.encoding, errors="replace")

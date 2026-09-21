@@ -1,0 +1,21 @@
+{
+  "file": "08_cloud_audit.json",
+  "note": "Hand-picked from the official CVE Program CVE Record (CVE-2024-21626, runc container escape), spread across metadata, CVSS metrics, description and references.",
+  "facts": [
+    "CVE-2024-21626",
+    "CWE-403",
+    "CWE-668",
+    "8.6",
+    "CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:C/C:H/I:H/A:H",
+    "GHSA-xr7r-f8xq-vfvv",
+    "runc 1.1.12",
+    "attack 3a",
+    "attack 3b",
+    "1.1.11 and earlier",
+    "opencontainers",
+    "container escape",
+    "GitHub_M",
+    "2024-01-31",
+    "packetstormsecurity.com"
+  ]
+}

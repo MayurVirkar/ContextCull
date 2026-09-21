@@ -1,0 +1,24 @@
+{
+  "file": "01_email_thread.eml",
+  "note": "Hand-picked from the raw Apache SpamAssassin easy_ham corpus text, spread across multiple messages in the thread.",
+  "facts": [
+    "nmh-1.0.4",
+    "very repeatable",
+    "1 hit",
+    "240 ft",
+    "Kerdylio",
+    "one and a half tons",
+    "2000 new infections",
+    "1 in every 300",
+    "Rolf Eden, 72",
+    "24 of his 28",
+    "Amavis-Postfix",
+    "ClamAV",
+    "populating md0 with tar",
+    "dump instead of tar",
+    "paulgraham.com/spam.html",
+    "creme fraiche",
+    "more than a million",
+    "exmh.TODO"
+  ]
+}

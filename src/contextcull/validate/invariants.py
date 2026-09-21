@@ -17,6 +17,7 @@ def validate_invariants(
     required_atoms: Sequence[Atom],
     tokenizer: TokenizerProfile,
     budget: TokenBudget | None = None,
+    source_encoding: str = "utf-8",
 ) -> None:
     """Validates all hard invariants on final compiled context.
 
@@ -25,6 +26,10 @@ def validate_invariants(
     2. Every aggregate/rewrite segment must reference valid, in-bounds source byte spans.
     3. All detected required atoms must be present in the output text by surface form.
     4. Output tokens must not exceed the target budget when hard_budget is True.
+
+    `source_encoding` must be the document's own SourceMap.encoding (e.g. "utf-8",
+    "latin-1", "utf-16-le") so `raw_source_bytes` spans decode correctly for non-UTF-8
+    documents; it defaults to "utf-8" for backward compatibility.
     """
     violations: list[str] = []
 
@@ -33,22 +38,37 @@ def validate_invariants(
     # 1. Byte-exact provenance check for copied segments and in-bounds check for aggregates/rewrites
     for seg in output_segments:
         if seg.kind == "copy":
-            seg_str = (seg.text or "").strip().replace("\r\n", "\n")
+            seg_text = seg.text or output_text.encode("utf-8")[
+                seg.output_start : seg.output_end
+            ].decode("utf-8", errors="replace")
+            seg_str = seg_text.strip().replace("\r\n", "\n")
             for src in seg.sources:
                 if isinstance(src, ByteSpan):
                     span_bytes = raw_source_bytes[src.start : src.end]
                     span_str = (
-                        span_bytes.decode("utf-8", errors="replace").strip().replace("\r\n", "\n")
+                        span_bytes.decode(source_encoding, errors="replace")
+                        .strip()
+                        .replace("\r\n", "\n")
                     )
-                    if span_str and span_str not in clean_output:
+                    if len(seg.sources) == 1:
+                        # Primary check: this segment's text must equal its one source span
+                        # byte-for-byte (after decode). Exact per-segment equality, not a
+                        # "does this substring appear somewhere in the output" scan, which
+                        # can pass by coincidence (e.g. a repeated short phrase) even when
+                        # THIS segment's provenance is wrong.
+                        if span_str and seg_str != span_str:
+                            violations.append(
+                                f"Provenance violation: copied segment text does not match source span "
+                                f"[{src.start}, {src.end}) bytes: '{seg_str[:30]}' != '{span_str[:30]}'"
+                            )
+                    elif span_str and span_str not in clean_output:
+                        # Secondary fallback for multi-source copy segments (e.g. an aggregated
+                        # copy stitched from several spans): no single span is expected to equal
+                        # the whole segment, so containment in the rendered output is the best
+                        # available check.
                         violations.append(
                             f"Provenance violation: copied source span [{src.start}, {src.end}) "
                             f"('{span_str[:30]}...') not found in output text"
-                        )
-                    if len(seg.sources) == 1 and seg_str and span_str and seg_str != span_str:
-                        violations.append(
-                            f"Provenance violation: copied segment text does not match source span "
-                            f"[{src.start}, {src.end}) bytes: '{seg_str[:30]}' != '{span_str[:30]}'"
                         )
         elif seg.kind == "rewrite":
             if not seg.rule_id:

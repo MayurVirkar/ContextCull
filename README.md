@@ -1,517 +1,597 @@
 # ContextCull
 
-[![Release: v1.0.0](https://img.shields.io/badge/release-v1.0.0-blue.svg)](https://github.com/MayurVirkar/ContextCull/releases/tag/v1.0.0)
+[![CI](https://github.com/MayurVirkar/ContextCull/actions/workflows/ci.yml/badge.svg)](https://github.com/MayurVirkar/ContextCull/actions/workflows/ci.yml)
 [![Python 3.13+](https://img.shields.io/badge/python-3.13+-blue.svg)](https://www.python.org/downloads/)
-[![Deterministic](https://img.shields.io/badge/execution-100%25%20deterministic-green.svg)]()
-[![Provenance](https://img.shields.io/badge/provenance-byte--exact%20SHA256-blueviolet.svg)]()
-[![Speed](https://img.shields.io/badge/latency-%3C35ms%20typical-brightgreen.svg)]()
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Quality Gate](https://img.shields.io/badge/quality%20gate-passing%20(6%2F6)-success.svg)]()
 
-> **Deterministic context compiler that shrinks massive technical documents, logs, and emails by 50%–85% in milliseconds before they hit your LLM—without losing a single critical entity.**
-
----
-
-## ⚡ TL;DR
-
-- **What is it?** **ContextCull** (powered by the Token-Efficiency Protocol) is a fast, free, open-source pre-processor that sits between your raw data and your AI model (Google Gemini, Claude, OpenAI GPT).
-- **What does it do?** It cuts document size by **50% to 85%** in under **35 milliseconds** by stripping away conversational fluff, repetitive email quote chains, and boilerplate, while **guaranteeing 100% preservation** of vital technical facts: CVE numbers, IP addresses, AWS ARNs, pod names, error codes, timestamps, and CLI commands.
-- **Why not just feed everything to the LLM?**
-  1. **Cost & Speed:** Feeding 20,000–100,000 tokens directly into frontier LLMs is slow and expensive. ContextCull reduces input tokens by up to 85%, cutting API costs and speeding up Time-To-First-Token (TTFT) by nearly **4×**.
-  2. **"Lost in the Middle":** When LLMs read giant documents, they often forget or hallucinate details buried in the middle. ContextCull extracts and surfaces every critical fact to the active context window.
-  3. **Classic summarizers fail:** Tools like LexRank or LSA look for "popular words." In technical reports, a critical security flaw or database IP only appears once, so classic tools drop up to 95% of them. ContextCull protects every unique technical entity by design.
-- **How does it run?** 100% locally on your machine in standard Python 3.13. Zero GPUs, zero API keys, zero cloud dependencies, and zero compute costs.
-
----
-
-## 🥊 Head-to-Head: Direct LLM vs. ContextCull + LLM
-
-We benchmarked a Frontier LLM (Cloud Gemini) summarizing massive technical documents under two conditions:
-
-| Dimension | Direct LLM (Raw Input) | ContextCull + LLM (Pre-processed) | The Difference / Benefit |
-| :--- | :--- | :--- | :--- |
-| **Input Tokens Fed to LLM** | 21,662 tokens (Email)<br>34,165 tokens (Text) | 962 tokens (Email)<br>2,057 tokens (Text) | **94% to 95.6% fewer tokens** sent to the LLM |
-| **LLM Response Latency (TTFT)** | ~3.8 seconds (quadratic attention over 20k–35k tokens) | **<0.8 seconds** (sub-linear attention over clean context) | **4.7× faster** response time |
-| **API Cost per Request** | Full price ($0.075 / 100k tokens) | **94% to 95% cheaper** | Immediate operational cost savings |
-| **Critical Entity Retention** | Drops buried IDs & patches | **100% technical atoms retained** | **Zero factual loss** |
-| **CLI & Syntax Fidelity** | Models often hallucinate or paraphrase flags | **100% verbatim copy spans** | Valid, copy-pasteable commands & code |
-| **Context Fading Risk** | High ("Lost in the Middle" drops buried facts) | **Zero** (critical facts locked into prompt floor) | Reliable, grounded outputs |
-
----
-
-## 📦 Installation
-
-ContextCull requires **Python 3.13+**. Install via your preferred package manager:
-
-### Using pip
-```bash
-pip install contextcull
-```
-
-### Using uv
-```bash
-uv add contextcull
-```
-
-### Install Directly from GitHub (Latest v1.0.0)
-```bash
-pip install git+https://github.com/MayurVirkar/ContextCull.git@v1.0.0
-```
-
-### Local Development Setup
-```bash
-git clone https://github.com/MayurVirkar/ContextCull.git
-cd ContextCull
-uv sync
-bash scripts/gate.sh
-```
-
----
-
-## 🚀 Quickstart: Using ContextCull in Your Project
-
-### 1. Simple Drop-In Pre-Processor (Zero Configuration)
-Compress any raw document, email, or log string to its natural information-theoretic floor before feeding it to your LLM:
-
-```python
-from contextcull import ContextCompiler
-
-compiler = ContextCompiler()
-
-# Read your large prompt or context
-with open("incident_report.txt", "r") as f:
-    raw_document = f.read()
-
-# Compile: shrinks boilerplate by 50%-85% in <35ms while retaining 100% of CVEs, IPs, ARNs, code
-result = compiler.compile(raw_document)
-
-if result.ok:
-    print(
-        f"Compressed from {result.metrics['input_tokens']} -> {result.metrics['output_tokens']} tokens"
-    )
-
-    # Send the condensed, entity-safe context to your LLM:
-    # response = client.chat.completions.create(
-    #     model="gpt-4o",
-    #     messages=[{"role": "user", "content": result.text}]
-    # )
-```
-
-### 2. Enforcing a Hard Token Budget
-If you have a strict context window limit (e.g., reserving 2,000 tokens for RAG context):
-
-```python
-from contextcull import ContextCompiler, TokenBudget
-
-compiler = ContextCompiler()
-budget = TokenBudget(tokens=2000, profile="openai:cl100k_base", hard_budget=True)
-
-# Compiles strictly within 2,000 tokens; guarantees 100% critical entity retention
-result = compiler.compile(raw_document, budget=budget)
-```
-
-### 3. Integrating with LangChain / LlamaIndex
-Use ContextCull as a deterministic document compressor in your RAG pipeline:
-
-```python
-from langchain_core.documents import Document
-from contextcull import ContextCompiler
-
-compiler = ContextCompiler()
-
-
-def compress_retrieved_docs(docs: list[Document]) -> list[Document]:
-    """Pre-processes retrieved chunks, stripping boilerplate and duplicate sentences."""
-    compressed_docs = []
-    for doc in docs:
-        res = compiler.compile(doc.page_content)
-        if res.ok and res.text:
-            compressed_docs.append(Document(page_content=res.text, metadata=doc.metadata))
-    return compressed_docs
-```
-
----
-
-## 🌐 Multilingual Evaluation & Full Books (Top Languages + Hebrew)
-
-ContextCull includes **100% public domain, copyright-free** full books and evaluation corpora covering the top languages of the world + Hebrew (`examples/eval/multilingual/`), verified across **1,100 automated multilingual tests** (100 tests per language):
-
-| # | Language | Script | Full Book / Corpus | Author / Source | License |
-| :-: | :--- | :--- | :--- | :--- | :--- |
-| **1** | **English (Literature)** | Latin | *Alice's Adventures in Wonderland* (174 KB) | Lewis Carroll (Gutenberg #11) | Public Domain |
-| **2** | **English (Mathematics)** | Latin | *Calculus Made Easy* (122 KB) | Silvanus P. Thompson (Gutenberg #35170) | Public Domain |
-| **3** | **Chinese (Simplified/Trad)** | Hanzi | *The Art of War* / 孙子兵法 (148 KB) | Sun Tzu (Gutenberg #2388) | Public Domain |
-| **4** | **Hindi** | Devanagari | *Idgah & Classic Stories* (43 KB) | Munshi Premchand | Public Domain |
-| **5** | **Spanish** | Latin | *Don Quijote de la Mancha* (2.2 MB full book) | Miguel de Cervantes (Gutenberg #2000) | Public Domain |
-| **6** | **French** | Latin | *Le Tour du monde en 80 jours* (462 KB) | Jules Verne (Gutenberg #800) | Public Domain |
-| **7** | **Arabic** | Arabic | *Kalila wa Dimna & Arabian Nights* (28 KB) | Ibn al-Muqaffa / Classical Arabic | Public Domain |
-| **8** | **Bengali** | Bengali | *Gitanjali & Selected Works* (37 KB) | Rabindranath Tagore | Public Domain |
-| **9** | **Portuguese** | Latin | *Dom Casmurro* (418 KB) | Machado de Assis (Gutenberg #55752) | Public Domain |
-| **10** | **Russian** | Cyrillic | *Sevastopol Sketches* (72 KB) | Leo Tolstoy (Gutenberg #53434) | Public Domain |
-| **11** | **Japanese** | Kanji/Kana | *Kokoro* / こころ (346 KB) | Natsume Soseki (Gutenberg #24816) | Public Domain |
-| **12** | **Hebrew** | Hebrew | *Sefer Bereshit (Book of Genesis)* (177 KB) | Classical Hebrew Masoretic Text | Public Domain |
-
-### Empirical Multilingual & Book Benchmark Results
-
-Evaluated with zero configuration across all 12 public-domain corpora (>1.27 million total tokens). Benchmarked on Linux, Python 3.13.15:
-
-| # | Language | Work / Author | Raw Tokens | Compiled Tokens | Token Reduction | Latency | Status |
-| :-: | :--- | :--- | :---: | :---: | :---: | :---: | :---: |
-| **1** | **English (Lit)** | *Alice's Adventures in Wonderland* (Carroll) | 41,432 | 17,537 | **57.7%** | **516 ms** | PASS |
-| **2** | **English (Math)** | *Calculus Made Easy* (Thompson) | 29,398 | 15,938 | **45.8%** | **335 ms** | PASS |
-| **3** | **Chinese** | *The Art of War* / 孙子兵法 (Sun Tzu) | 38,502 | 18,387 | **52.2%** | **372 ms** | PASS |
-| **4** | **Hindi** | *Idgah & Classic Stories* (Premchand) | 16,632 | 9,076 | **45.4%** | **61 ms** | PASS |
-| **5** | **Spanish** | *Don Quijote de la Mancha* (Cervantes) | 668,532 | 439,235 | **34.3%** | **14,999 ms** | PASS |
-| **6** | **French** | *Le Tour du monde en 80 jours* (Verne) | 135,485 | 56,038 | **58.6%** | **1,395 ms** | PASS |
-| **7** | **Arabic** | *Kalila wa Dimna & Arabian Nights* (Ibn al-Muqaffa) | 11,345 | 9,384 | **17.3%** | **44 ms** | PASS |
-| **8** | **Bengali** | *Gitanjali & Selected Works* (Tagore) | 17,144 | 10,578 | **38.3%** | **51 ms** | PASS |
-| **9** | **Portuguese** | *Dom Casmurro* (Assis) | 127,646 | 75,836 | **40.6%** | **1,885 ms** | PASS |
-| **10** | **Russian** | *Sevastopol Sketches* (Tolstoy) | 15,731 | 8,032 | **48.9%** | **174 ms** | PASS |
-| **11** | **Japanese** | *Kokoro* / こころ (Soseki) | 81,171 | 81,072 | **0.1%** | **935 ms** | PASS |
-| **12** | **Hebrew** | *Sefer Bereshit (Genesis)* | 95,457 | 93,065 | **2.5%** | **202 ms** | PASS |
-
-To reproduce the multilingual benchmark locally:
-```bash
-python scripts/run_multilingual_bench.py
-```
-
----
-
-## The Problem: Why Raw LLMs and Classic Summarizers Fail
-
-1. **The LLM "Lost in the Middle" & Quadratic Cost Problem:**
-   Feeding 20,000 to 100,000 tokens of raw documents directly into frontier models incurs high latency, quadratic self-attention cost ($O(N^2)$), and risk of hallucination or dropped context.
-2. **The Classic Summarizer "Centrality Trap" (Sumy / LexRank / LSA):**
-   Graph-centrality summarizers like LexRank and SVD-based engines like LSA select sentences with high vocabulary overlap with the rest of the text. However, in security and technical reports, **the most critical facts (a CVE ID, an AWS instance ID, an exfiltration count) appear in only 1 or 2 sentences**. Because they lack broad lexical overlap, standard LexRank and LSA assign them near-zero centrality and **drop up to 95% of critical facts**.
-
----
-
-## Empirical Benchmark: Open-Source Enterprise Email Thread
-
-Evaluated on the Apache SpamAssassin developer mailing list corpus (`examples/eval/01_email_thread.eml`, 21,662 tokens) measuring ground-truth retention across critical technical atoms (IPs, message IDs, patch commands, error traces). Tested on Linux, Python 3.13.15:
-
-| Summarizer Engine | Latency | Output Tokens | Token Reduction | Atoms Retained (192 Ground Truth) | Atoms Dropped |
-| :--- | :---: | :---: | :---: | :---: | :--- |
-| **ContextCull (Zero-Budget, Generic)** | **166 ms** | **14,352** | **33.7%** | **189 / 192 (98.4%)** | `2 week`, `23 hours`, `60 seconds` |
-| **Sumy LexRank (100 sent)** | 436 ms | 16,644 | 23.2% | 183 / 192 (95.3%) | `10 million`, `1960s`, `4852-4852`, `60 seconds`, ... (9 total) |
-| **Sumy LSA (100 sent)** | 140 ms | 15,877 | 26.7% | 176 / 192 (91.7%) | `10.1.2.1`, `172.16.52.254`, `192.12.3.99`, `1960s`, ... (16 total) |
-| **Sumy LexRank (50 sent)** | 419 ms | 10,653 | 50.8% | 123 / 192 (64.1%) | `0004gj-00`, `001001c249e6`, `10 million`, `10.1.2.1`, ... (69 total) |
-| **Sumy LSA (50 sent)** | 143 ms | 5,830 | 73.1% | 90 / 192 (46.9%) | `0004gj-00`, `10 million`, `10.1.2.1`, `1029945287.4797.TMDA@deepeddy.vircio.com`, ... (102 total) |
-
-To reproduce the benchmark table locally:
-```bash
-uv run python bench/run_benchmark.py examples/eval/01_email_thread.eml
-```
-
----
-
-## 10-Format Authentic Open-Source Benchmark Matrix
-
-ContextCull was evaluated across 10 genuine open-source public datasets spanning enterprise communications, public-domain literature, open-source IRC channels, cloud telemetry, research papers, and Python standard library code (`examples/eval/`):
-
-| # | Format & Dataset | Source / Origin | Raw Tokens | Compiled Tokens | Token Reduction | Latency | Status |
-| :-: | :--- | :--- | :---: | :---: | :---: | :---: | :---: |
-| **1** | **Email Thread (RFC 822)** | [Apache SpamAssassin Dev Corpus](https://spamassassin.apache.org/) | 21,662 | 14,352 | **33.7%** | **176 ms** | PASS |
-| **2** | **Novel Chapter (Literature)** | [Project Gutenberg: Frankenstein](https://www.gutenberg.org/ebooks/84) | 34,165 | 18,666 | **45.4%** | **507 ms** | PASS |
-| **3** | **Slack / IRC Chat** | [Ubuntu Community IRC Logs](https://irclogs.ubuntu.com/) | 16,213 | 11,126 | **31.4%** | **150 ms** | PASS |
-| **4** | **Technical Report (DOCX)** | OpenXML Infrastructure Audit Report | 236 | 237 | **-0.4%** | **4.8 ms** | PASS |
-| **5** | **Web Article (HTML DOM)** | [Wikipedia: Transformer Architecture](https://en.wikipedia.org/wiki/Transformer_(deep_learning_architecture)) | 343,709 | 18,722 | **94.6%** | **9,266 ms** | PASS |
-| **6** | **Academic Paper (PDF)** | [arXiv:1706.03762 (Attention Is All You Need)](https://arxiv.org/abs/1706.03762) | 9,579 | 4,535 | **52.7%** | **756 ms** | PASS |
-| **7** | **Security Feed (XML RSS)** | [CISA Cybersecurity Advisories](https://www.cisa.gov/cybersecurity-advisories/all.xml) | 131,358 | 94,606 | **28.0%** | **1,224 ms** | PASS |
-| **8** | **Security Audit Log (JSON)** | [CVEProject (CVE-2024-21626 runc container escape)](https://github.com/CVEProject/cvelistV5) | 14,661 | 12,207 | **16.7%** | **105 ms** | PASS |
-| **9** | **Metrics Log (CSV)** | [Numenta Anomaly Benchmark (AWS EC2 Telemetry)](https://github.com/numenta/NAB) | 72,396 | 76,428 | **-5.6%** | **106,451 ms** | PASS |
-| **10** | **Source Code (Python AST)** | [CPython Standard Library (difflib.py)](https://github.com/python/cpython) | 21,241 | 9,940 | **53.2%** | **140 ms** | PASS |
-
-Run the comprehensive 10-format suite:
-```bash
-uv run python scripts/run_10_evals.py
-```
-
----
-
-## Invariant Guarantee Scope: Hard Invariants vs. Soft Optimization
-
-ContextCull clearly separates deterministic invariants from submodular optimization:
-
-- **Hard Invariants (`required=True`)**:
-  - **Classes**: CVE numbers (`CVE-2026-XXXX`), IPv4 and IPv6 addresses, UUIDs, Git commit SHAs, AWS instance IDs (`i-0...`), and user-specified `required_terms`.
-  - **Guarantee**: **100% mathematical retention**. If any required atom is dropped during selection or rewrite, compilation aborts and raises `InvariantViolationError`.
-- **Soft Semantic Atoms (`required=False`)**:
-  - **Classes**: Quantities & units (`150 ms`, `4 GB`), timestamps (`2026-07-11`), file paths / URLs, bound negations (`no access`, `לא תאפשר`, `不能访问`), compliance acronyms (`SOC2`, `mTLS`), and email addresses.
-  - **Optimization**: Retained via greedy submodular set-cover weighted by graph centrality and token budget constraints.
-
----
-
-## End-to-End LLM Summarization Comparison (Subagent Evaluation)
-
-To evaluate downstream impact, an independent Frontier LLM subagent was tasked with generating summaries from both (A) raw source documents and (B) ContextCull compiled outputs.
-
-### Test 1: Open-Source Developer Email Thread (RFC 822)
-- **Input Savings**: **33.7% token reduction** (21,662 → 14,352 tokens), eliminating mailing list boilerplate, duplicate quote chains, MIME boundaries, and message signatures.
-- **Entity & Fact Retention**:
-  - **100% Core Identifiers Intact**: All 51 IPv4 addresses preserved, 47 Message-IDs, patch references, sender addresses (`exmh-workers-admin@redhat.com`), Postfix transaction IDs, and localhost routing.
-  - **100% Technical Bug Traces**: Tracebacks, Exim/Postfix configuration flags, and file paths preserved without alteration.
-  - **100% Verbatim Code & Syntax**: Inline diffs, patch lines, and shell commands preserved without paraphrase.
-- **Verdict**: **100% factual equivalence** at a fraction of the raw LLM input token cost.
-
-### Test 2: Technical Report (DOCX Format)
-- **Input Savings**: Extracted clean document XML directly, stripping formatting overhead.
-- **Entity & Fact Retention**:
-  - **100% Security Vulnerabilities**: `CVE-2026-31184` (RCE in ingress gateway), `CVE-2026-29910` (DoS in cache daemon), and `CVE-2026-18823` (credential leakage in test runner).
-  - **100% Cluster Telemetry**: Regional availability table for `us-east-1` (99.992%, 38 ms), `eu-west-1` (99.978%, 44 ms), and `ap-southeast-1` (99.989%, 52 ms).
-  - **100% Strategic Roadmap**: Migration to Kubernetes 1.31 and tier-1 automated canary rollouts.
-- **Verdict**: **Zero technical data loss**. Real technical facts protected 100%.
-
----
-
-## Architecture: 10-Stage Deterministic Pipeline
-
-ContextCull eliminates hallucination by operating as a pure compiler with zero neural weights at compile time:
-
-```mermaid
-flowchart TD
-    A["Raw Input (Bytes / File / Markdown / Logs)"] --> B["Stage 1: Ingestion & Invariant SourceMap"]
-    B --> C["Stage 2: Structural Routing & Block Parsing"]
-    B --> D["Stage 3: Protected Atom Detection (CVEs, IPs, Hashes, IDs)"]
-    C & D --> E["Stage 4: Multilingual Candidate Segmentation"]
-    E --> F["Stage 5: Sparse TF-IDF & Vectorized LexRank Graph"]
-    F & D --> G["Stage 6: Selection (Submodular Entity Floor + Marginal Entropy)"]
-    G --> H["Stage 7: Structural Context Closure"]
-    H --> I["Stage 8: Transactional Rewriting (Discourse Pruning & Aho-Corasick)"]
-    I --> J["Stage 9: Invariant Validation"]
-    J --> K["Stage 10: Render Context & SHA-256 Provenance Manifest"]
-    K --> L["Downstream Frontier LLM (Cloud Gemini)"]
-```
-
-### Key Stages Explained
-1. **Immutable Ingestion & SourceMap:** Computes SHA-256 document fingerprint and byte-to-char translation table. Fast-paths ANSI-free inputs.
-2. **Block Parsing & Routing:** Classifies and parses content across diverse document formats:
-   - **HTML / Web Pages** (`.html`, `.htm`): Cleans DOM, strips scripts/styles/navigation, extracts headings, prose, lists, tables with exact source spans.
-   - **XML** (`.xml`): Secure parsing of structured tags, attributes, and data elements via `defusedxml`.
-   - **DOCX** (`.docx`): Direct OpenXML zip extraction of Word paragraphs, headings, and tables.
-   - **PDF** (`.pdf`): Multi-page text extraction preserving document headings, paragraphs, and tables.
-   - **JSON & CSV** (`.json`, `.csv`): Structured key-value fields and tabular records.
-   - **Markdown** (`.md`): CommonMark AST parsing for headings, tables, code fences, and lists.
-   - **Source Code & Logs**: High-precision parsing for Python, Rust, TS, Go, Cargo, Pytest, Vitest.
-   - **RFC 822 Emails**: Header extraction (From, To, Subject, Date) and body segmentation.
-   - **Plain Text**: Universal sentence boundary detection across Western, CJK, Arabic, and Indic scripts.
-3. **Protected Atom Detection:** Regular expressions for critical identifiers (CVEs, IPv4/IPv6, UUIDs, Git SHAs, AWS Instance IDs, quantities, timestamps), automatically marking critical classes `required=True`.
-4. **Candidate Unit Segmentation:** Universal sentence segmentation across Western, CJK (`。！？`), Arabic, and Indic scripts.
-5. **Sparse LexRank Engine:** Computes top-$k$ cosine similarity graph via `sparse-dot-topn` and `scipy.sparse` power-iteration PageRank in ~15 ms.
-6. **Submodular Entity Floor & Marginal Entropy Elbow:**
-   - **Entity Floor:** Guarantees any sentence containing an essential entity atom is locked into the summary.
-   - **Pareto Marginal Entropy:** In zero-budget mode, dynamically stops selecting narrative sentences when information gain flattens.
-7. **Context Closure:** Restores structural dependencies (headers, parent code blocks) so output units remain coherent.
-8. **Transactional Rewriting:** Losslessly prunes bureaucratic discourse scaffolding while strictly protecting attribution. Applies abbreviation rewrites via an Aho-Corasick automaton only if token cost strictly decreases and all required atoms are preserved.
-9. **Invariant Validation:** Enforces strict invariants: 100% source backing for copied segments, valid bounds for rewrites, zero dropped required atoms, and budget compliance.
-10. **Provenance Manifest:** Emits a JSON manifest detailing the exact byte spans `[start, end]` in the original source for every segment.
-
----
-
-## Production Pipeline: ContextCull + Cloud Gemini
-
-The recommended architecture pairs ContextCull as a deterministic pre-processor with Cloud Gemini as the synthesizer:
-
-```
-[Raw 38-page Doc / 20k tokens]
-            │
-            ▼  (161 ms, zero compute cost, 100% deterministic)
-   ┌─────────────────┐
-   │  ContextCull   │ ──► Drops non-contributing scaffolding, locks in 95%+ critical facts
-   └─────────────────┘
-            │
-            ▼  [Compiled Context: 7.8k - 12.9k tokens]
-   ┌─────────────────┐
-   │  Cloud Gemini   │ ──► Generates dense, executive smart-caveman summary
-   └─────────────────┘
-            │
-            ▼
-[Final Actionable Summary]
-```
-
----
+ContextCull is a deterministic, extractive pre-processor for LLM prompts. You give it a long
+document (an email archive, chat log, web page, PDF, Word file, JSON/XML/CSV export or a source
+file). It removes structural noise and low-information sentences, and returns two things:
+
+- a shorter text made only of sentences and lines taken from the input;
+- a JSON manifest that maps every piece of that text back to byte offsets in the original file.
+
+It does not generate text and has no model weights. It makes no network calls, and the same
+input always produces byte-identical output.
+
+## Contents
+
+- [When to use it](#when-to-use-it)
+- [Results at a glance](#results-at-a-glance)
+- [Installation](#installation)
+- [Quick start](#quick-start)
+- [What is guaranteed](#what-is-guaranteed)
+- [Provenance manifest and validation](#provenance-manifest-and-validation)
+- [Supported input formats](#supported-input-formats)
+- [How the pipeline works](#how-the-pipeline-works)
+- [Modes and policy options](#modes-and-policy-options)
+- [Benchmarks](#benchmarks)
+- [Multilingual corpora](#multilingual-corpora)
+- [Known limitations](#known-limitations)
+- [Development](#development)
+- [Project layout](#project-layout)
+
+## When to use it
+
+ContextCull works well when:
+
+- the input carries a lot of structural overhead: mail transport headers, HTML markup and
+  navigation, mailing-list footers, quoted reply chains, test-runner noise. On the email
+  corpus below it cuts 83.7% of tokens and keeps 16 of 18 hand-picked body facts;
+- you need to show where every line of a prompt came from, for audits or when debugging a
+  retrieval pipeline;
+- specific identifiers must survive. CVE IDs, IPv4/IPv6 addresses, UUIDs, git SHAs, AWS
+  instance IDs, and any terms you pass with `--require-term` are guaranteed to appear in the
+  output. If they can't all fit in a token budget, the compile fails instead.
+
+It is the wrong tool when:
+
+- you want a summary in the LLM sense. ContextCull selects sentences; it does not paraphrase,
+  merge or explain them;
+- the text is already dense prose. On a Frankenstein excerpt, simply keeping the first half of
+  the book retained more of our test facts (14/20) than ContextCull did at the same length
+  (9/20);
+- every fact matters. Outside the required identifier classes, sentence selection is a
+  heuristic. On the *Attention Is All You Need* paper it keeps 11 of 20 hand-picked
+  numeric details (hyperparameters, scores) while halving the length;
+- the input is a numeric table. CSV rows that each carry a timestamp are all treated as
+  entity-bearing and kept, so a metrics CSV is returned almost unchanged.
+
+## Results at a glance
+
+These numbers come from the benchmark in `bench/`, run on Linux with Python 3.13.15. The
+[Benchmarks](#benchmarks) section has the method and the full tables.
+
+- **Recall** means hand-labelled facts from the raw document (`bench/facts/*.json`) that
+  appear verbatim in the output.
+- **Tokens** are `cl100k_base`.
+- **"Plain text"** is what a trivial parser already gives you: stdlib `email` for mail,
+  `html.parser` visible text for HTML, `pypdf` text for PDF, the file itself otherwise.
+- **"Lead"** is the first N tokens of the plain text, where N is ContextCull's output size.
+
+| Document | Plain-text tokens | ContextCull tokens | Reduction vs plain text | ContextCull recall | Lead recall (same size) | Latency |
+| :--- | ---: | ---: | ---: | :---: | :---: | ---: |
+| Email corpus (15 SpamAssassin messages) | 7,150 | 3,534 | 50.6% | 16/18 | 11/18 | 94 ms |
+| Ubuntu IRC log | 16,213 | 11,407 | 29.6% | 17/22 | 9/22 | 134 ms |
+| Wikipedia article (HTML) | 31,268 | 18,722 | 40.1% | 13/18 | 18/18 | 1,684 ms |
+| *Attention Is All You Need* (PDF) | 9,565 | 4,535 | 52.6% | 11/20 | 13/20 | 813 ms |
+| Frankenstein, first chapters | 34,336 | 18,737 | 45.4% | 9/20 | 14/20 | 345 ms |
+| CPython `difflib.py` | 21,241 | 10,295 | 51.5% | 7/16 | 9/16 | 128 ms |
+| CISA advisories (XML) | 131,358 | 94,559 | 28.0% | 14/15 | 15/15 | 869 ms |
+| CVE record (JSON) | 14,661 | 12,207 | 16.7% | 15/15 | 15/15 | 70 ms |
+| EC2 CPU metrics (CSV) | 72,396 | 72,395 | 0.0% | 20/20 | 20/20 | 582 ms |
+
+Measured against raw input, the reductions look larger: 83.7% for the email, 94.6% for the
+HTML, 99.7% for the PDF. That is mostly because of what the format parsers strip, not
+because of sentence selection. The plain-text column is the fairer comparison.
+
+On structure-heavy inputs (mail, chat logs), ContextCull keeps noticeably more facts than a
+same-size cut or Sumy LexRank/LSA. On clean prose, papers and code it does not beat a simple
+"take the beginning" cut.
 
 ## Installation
 
-ContextCull requires Python 3.13+. Install using `uv` (recommended) or `pip`:
+Requires Python 3.13 or newer. ContextCull is not on PyPI yet, so install it from GitHub:
 
 ```bash
-# Clone the repository
+pip install "git+https://github.com/MayurVirkar/ContextCull.git"
+```
+
+To pin the tagged release:
+
+```bash
+pip install "git+https://github.com/MayurVirkar/ContextCull.git@v1.0.0"
+```
+
+For development:
+
+```bash
 git clone https://github.com/MayurVirkar/ContextCull.git
 cd ContextCull
-
-# Install dependencies using uv
-uv sync
-
-# Or using pip
-pip install -e .
+uv sync --all-groups
+bash scripts/gate.sh
 ```
 
----
+Runtime dependencies are `numpy`, `scipy`, `scikit-learn`, `sparse-dot-topn`, `tiktoken`,
+`markdown-it-py`, `pypdf`, `defusedxml`, `lingua-language-detector`, `ahocorasick-rs`,
+`orjson` and `typer-slim`.
 
-## CLI Usage
+## Quick start
 
-ContextCull includes a high-speed command-line interface (`contextcull`, aliased to `cull`):
+### Command line
 
-### 1. Compile in Zero-Budget Mode (Natural Floor)
-Automatically compress a document to its natural information-dense floor without guessing token counts:
-
-```bash
-contextcull compile examples/eval/01_email_thread.eml --output compiled.md --manifest manifest.json
-```
-
-### 2. Compile with a Target Token Budget
-Enforce a hard token budget against a target tokenizer (e.g., `openai:cl100k_base`):
+The package installs two equivalent commands, `contextcull` and `cull`.
 
 ```bash
+# Compile with no token budget. ContextCull decides how much to keep.
+contextcull compile examples/eval/01_email_thread.eml -o compiled.md --manifest manifest.json
+
+# Compile into a hard budget of 1,000 cl100k_base tokens.
 contextcull compile examples/eval/01_email_thread.eml \
-  --budget 1000 \
-  --tokenizer openai:cl100k_base \
-  --output summary_1k.md \
-  --manifest manifest_1k.json
-```
+  --budget 1000 --tokenizer openai:cl100k_base \
+  -o summary_1k.md --manifest manifest_1k.json
 
-If the requested budget is too small to safely retain all critical atoms, ContextCull raises `TARGET_BUDGET_UNSAFE` with the minimum safe token threshold.
+# Make sure specific terms survive (repeatable).
+contextcull compile report.txt -r "PostgreSQL" -r "us-east-1"
 
-### 3. Inspect Blocks and Atoms
-View detected structural blocks and protected atoms:
-
-```bash
+# Show the parsed blocks and detected atoms.
 contextcull inspect examples/eval/01_email_thread.eml --show blocks,atoms
-```
 
-### 4. Validate Provenance
-Verify that a compiled summary and manifest match the original source file 1:1:
-
-```bash
+# Check a compiled file against its manifest and the original source.
 contextcull validate compiled.md --manifest manifest.json --source examples/eval/01_email_thread.eml
 ```
 
----
+`compile` options:
 
-## Python API Usage
+| Option | Default | Meaning |
+| :--- | :--- | :--- |
+| `--budget`, `-b` | none | Target output size in tokens. Without it, ContextCull picks its own cut-off (see [Selection](#how-the-pipeline-works)). |
+| `--tokenizer`, `-t` | `openai:cl100k_base` | Tokenizer used for counting. Accepts `openai:<encoding or model>`, `cl100k_base`, `o200k_base`, `p50k_base`, `r50k_base`, `gpt-4`, `gpt-4o`, `gpt-3.5-turbo`, or `heuristic:<name>` for a rough 4-characters-per-token estimate. Unknown names are rejected. |
+| `--mode`, `-m` | `compact` | `verbatim`, `strict`, `compact` or `task` (see [Modes](#modes-and-policy-options)). |
+| `--output`, `-o` | stdout | Where to write the compiled text. |
+| `--manifest` | none | Where to write the provenance manifest (JSON). |
+| `--require-term`, `-r` | none | A term that must appear in the output. Repeatable. |
+| `--hard-budget / --soft-budget` | hard | With a hard budget, the compile fails if the required content cannot fit. |
+| `--abbreviations / --no-abbreviations` | off | Replace long technical words with standard short forms (e.g. `configuration` → `cfg`) when that saves tokens. |
+
+The CLI exits with `0` on success and a non-zero code on any other status.
+
+### Python
 
 ```python
-from contextcull.api import ContextCompiler
-from contextcull.ir.models import CompilePolicy, TokenBudget
+from contextcull import ContextCompiler, CompilePolicy, TokenBudget
 
-compiler = ContextCompiler.from_profile("compact")
+compiler = ContextCompiler()  # compact mode
 
-# Zero-Budget Natural Floor Compilation
 result = compiler.compile_file("examples/eval/01_email_thread.eml")
-
 if result.ok:
-    print(
-        f"Compressed from {result.metrics['input_tokens']} to {result.metrics['output_tokens']} tokens"
-    )
-    print(result.text)
-
-    # Access provenance manifest
+    print(result.metrics["input_tokens"], "->", result.metrics["output_tokens"], "tokens")
+    prompt_context = result.text
     manifest = result.manifest
-    print(f"Document SHA-256: {manifest['source']['document_id']}")
-    print(f"Verified copy segments: {manifest['metrics']['copy_segments_count']}")
-    print(f"Required atom coverage: {manifest['metrics']['required_atom_coverage'] * 100:.1f}%")
+
+# Hard budget, plus terms that must survive:
+result = compiler.compile(
+    open("report.txt", "rb").read(),
+    budget=TokenBudget(tokens=2000, profile="openai:cl100k_base", hard_budget=True),
+    policy=CompilePolicy(required_terms=("PostgreSQL", "us-east-1")),
+)
+if result.status == "TARGET_BUDGET_UNSAFE":
+    print("Need at least", result.metrics["minimum_safe_tokens"], "tokens")
 ```
 
----
+`compile()` accepts `str` or `bytes`. `compile_file()` reads the file as bytes, so PDF and DOCX
+work directly. Both return a `CompileResult` with these fields:
 
-## Project Structure
+- `status`
+- `ok`
+- `text`
+- `manifest`
+- `metrics`
+- `diagnostics`
+
+`result.write_text(path)` and `result.write_manifest(path)` save the text and the manifest.
+
+A one-call helper is also available: `from contextcull import summarize; summarize(text) -> str`.
+
+## What is guaranteed
+
+**Deterministic output.** The same input bytes, options and package version always give the
+same output bytes. This was checked across different `PYTHONHASHSEED` values.
+
+**Required atoms always survive.** Detection is regex-based. These classes are marked required:
+
+| Class | Example |
+| :--- | :--- |
+| CVE identifiers | `CVE-2024-21626` |
+| IPv4 addresses | `10.0.0.12`, `10.0.0.12:8080` |
+| IPv6 addresses | `2001:db8::1` |
+| UUIDs | `123e4567-e89b-12d3-a456-426614174000` |
+| AWS instance IDs | `i-0abc12345def67890` |
+| Full git SHAs | 40 or 64 hex characters |
+| Short git SHAs | 7–12 hex characters next to a word like *commit*, *sha*, *rev*, *merge* or *fixes* |
+| Your own terms | anything passed with `--require-term` or `CompilePolicy.required_terms` |
+
+Dotted numbers that follow *version*, *release*, *section* or *upgrade from* are not treated as
+IP addresses.
+
+- **Without a budget,** every sentence or block that contains a required atom is kept.
+- **With a hard budget,** if those sentences don't fit, the compile returns
+  `TARGET_BUDGET_UNSAFE`. It reports `minimum_safe_tokens` and the atoms that would be lost.
+- **After selection,** a final validation step checks that every required atom is in the
+  output. If one is missing, the result is `INVARIANT_FAILED` and no text is returned.
+
+**Soft atoms are best effort.** These are extracted too, and they steer selection, but they are
+not guaranteed:
+
+- quantities with units;
+- currency amounts;
+- timestamps;
+- file paths and URLs;
+- code identifiers;
+- e-mail addresses;
+- compliance acronyms (GDPR, SOC2, …);
+- negations ("not approved", "без", "不能").
+
+**Hard budgets are respected.** When a hard budget returns `OK`, the output's exact token count
+under the chosen tokenizer is at or below the budget. Heading context that selection pulls in
+and the newlines between units both count towards that total.
+
+**Every output line points back to the source.** See the next section.
+
+### Result statuses
+
+| Status | Meaning |
+| :--- | :--- |
+| `OK` | Compiled successfully. |
+| `TARGET_BUDGET_UNSAFE` | Hard budget too small for the required content. `metrics["minimum_safe_tokens"]` says how much is needed; the manifest lists `missing_atoms`. |
+| `INVARIANT_FAILED` | Final validation found a provenance mismatch, a missing required atom or a budget overrun. No text is returned; `diagnostics` explains why. |
+| `INPUT_TOO_LARGE` | Input (or extracted text) is over 10 MB. |
+| `UNDECODABLE_INPUT` | The text encoding could not be determined, e.g. ambiguous UTF-16 without a byte-order mark. |
+
+Empty input returns `OK` with empty text.
+
+## Provenance manifest and validation
+
+Each manifest records:
+
+- the source's SHA-256;
+- the format, and what the byte offsets refer to (`span_basis`);
+- the tokenizer and compile mode;
+- metrics;
+- one entry per output segment.
+
+Here is a manifest for a small plain-text input:
+
+```json
+{
+  "schema_version": "1.0",
+  "status": "OK",
+  "source": {
+    "document_id": "sha256:bdf6dab3…",
+    "byte_length": 262,
+    "format": "text",
+    "span_basis": "raw_bytes"
+  },
+  "tokenizer": { "profile": "openai:cl100k_base", "exact": true },
+  "metrics": {
+    "input_tokens": 69, "output_tokens": 64, "compression_ratio": 0.0725,
+    "required_atom_coverage": 1.0, "retained_required_atoms_count": 2,
+    "copy_segments_count": 3, "rewrite_segments_count": 1, "aggregate_segments_count": 0
+  },
+  "output_segments": [
+    { "output_start": 23, "output_end": 102, "kind": "copy",
+      "sources": [{ "document_id": "sha256:bdf6dab3…", "start": 24, "end": 103 }],
+      "rule_id": null }
+  ]
+}
+```
+
+- `output_start`/`output_end` are byte offsets in the compiled text.
+- `sources[].start`/`end` are byte offsets in the source.
+- `required_atom_coverage` counts only required atoms. `total_atom_coverage` is a weaker
+  presence check over all detected atoms.
+
+Segments come in three kinds:
+
+| Kind | What it is | How `validate` checks it |
+| :--- | :--- | :--- |
+| `copy` | The text is exactly the source bytes at the given span. | Decodes the source span with the document's encoding and compares it to the output bytes. |
+| `rewrite` | The source sentence after a rule-based rewrite. `rule_id` names the rules applied, e.g. `discourse_prune` or `wg_in_order_to`. | Bounds and rule attribution only. The text is intentionally different from the source. |
+| `aggregate` | Text assembled by a format parser, e.g. an email header block (the message's `From`/`To`/`Cc`/`Subject`/`Date` lines joined together) or a test-runner summary line. | Bounds only. |
+
+**PDF and DOCX spans point into extracted text.** For these files the spans index the text
+that ContextCull extracted, not the binary file, and the manifest says so with
+`"span_basis": "extracted_text"` and `extracted_text_sha256`. `contextcull validate`
+re-extracts the text from the source file, checks that hash, and then verifies spans against
+it. Blocks produced by the PDF and DOCX parsers are marked `rewrite`, so they get bounds and
+hash checks, not byte-for-byte checks.
+
+`validate` prints what it actually checked. If it could not byte-verify any segment, it
+exits with code 3 and prints a warning. Pass `--allow-unverified` to accept that.
+
+## Supported input formats
+
+The router picks one parser per document, in this order:
+
+| Format | How it is detected | What the parser produces |
+| :--- | :--- | :--- |
+| PDF | `%PDF` magic bytes | Page text via `pypdf`, split into headings and paragraphs. Capped at 5,000 pages and 10 M extracted characters. |
+| DOCX | ZIP containing `word/document.xml` | Paragraphs, headings and tables. The XML is read with a 10 MB decompressed-size cap and parsed with `defusedxml`. |
+| HTML | Markup sniffing | Visible text only (scripts, styles and navigation dropped), split into headings, prose, lists and tables. |
+| XML | Markup sniffing | Element text via `defusedxml`. |
+| JSON | Parses as JSON | Key/value records. |
+| CSV/TSV | `csv.Sniffer` | Header line plus 10-row chunks, copied verbatim. |
+| Test-runner logs | Cargo, pytest, Vitest, Go test markers | A pass/fail summary line plus one block per failure with its location and assertion. |
+| Source code | Test markers such as `#[test]`, `def test_`, `it('…')` | One block per function or test. |
+| Email (RFC 822 / mbox) | `From:` and `Subject:` headers | Per message: one header block with From, To, Cc, Subject and Date. Transport and list headers (Received, Return-Path, X-*, List-*, …) are dropped. Quoted replies, signatures and list footers (Yahoo Groups, SourceForge, Mailman) are removed; the body is split into sentences. |
+| Markdown | `#`, fences, tables or list markers | CommonMark blocks via `markdown-it-py`. |
+| Plain text | Fallback | Paragraphs, then sentences. |
+
+Text inputs can be in any of these encodings:
+
+- UTF-8, with or without a BOM;
+- UTF-16 LE or BE, with a BOM, or without one when the byte pattern is unambiguous;
+- Latin-1 as a fallback.
+
+ANSI colour escapes are stripped for analysis, but offsets still refer to the original bytes.
+
+Sentence splitting handles Western punctuation, CJK `。！？`, Arabic `؟ ۔`, and Devanagari `।`.
+It does not split on decimals, IP addresses, or common abbreviations (e.g., z. B., p. ex., …).
+It also does not split on an ellipsis followed by lowercase text or a parenthesis.
+
+## How the pipeline works
+
+1. **Ingest.** The input is hashed (SHA-256), its encoding detected, and a table built that
+   maps each character to its byte offset. Inputs over 10 MB are rejected.
+2. **Parse.** The document is routed to one of the format parsers above, which produce typed
+   blocks (heading, prose, list, table, code, log, email header, …), each with a source span.
+3. **Detect atoms.** Regular expressions find required and soft atoms (see
+   [What is guaranteed](#what-is-guaranteed)). Atoms outside the parsed blocks, such as the
+   contents of `<script>` tags, are discarded.
+4. **Segment.** Prose blocks are split into sentences; other blocks stay whole. Each unit
+   records which atoms it contains. Boilerplate is filtered out: page numbers, tables of
+   contents, and very short lines with no atoms or digits.
+5. **Rank.** Units are vectorised with TF-IDF (word 1–2-grams; the token pattern also handles
+   CJK). A sparse top-k cosine-similarity graph is built with `sparse-dot-topn`, and PageRank
+   runs over it. This stage takes about 15 ms for ~700 units.
+6. **Select.**
+   - *Without a budget:* units with required atoms, test failures and email
+     decisions/requests are kept. A greedy set cover then adds units until every distinct
+     entity string is covered. The remaining units are added greedily, best new-vocabulary
+     per token first (weighted by PageRank). That growth curve is cut at its knee, found
+     with the Kneedle method.
+   - *With a budget:* the mandatory units are placed first, then units that cover new
+     entities, then units ranked by PageRank. Each unit's cost includes any heading it will
+     pull in and the newline that separates it. If the exact token count of the result
+     still overshoots, the lowest-ranked units are dropped until it fits.
+7. **Closure.** The nearest preceding heading of each selected unit is added, so selected text
+   keeps its section context.
+8. **Rewrite** (`compact`/`task` modes only).
+   - A fixed list of wordiness rules is applied, e.g. "in order to" → "to", or "due to the
+     fact that" → "because".
+   - Leading filler such as "It should be noted that" or "Furthermore," is removed.
+   - Numeric units get short forms, e.g. "30 minutes" → "30 min".
+   - With `abbreviations=True`, a short list of unambiguous technical terms is shortened as well.
+   - Text inside backticks, header-like lines and capitalised mid-sentence words are never
+     rewritten.
+   - A rewrite is kept only if it strictly lowers the token count and every required atom in
+     the unit survives; otherwise the original text is used.
+9. **Validate.** Copy segments are compared to their source bytes. Required atoms are checked
+   for presence, and the budget is re-checked with the exact tokenizer.
+10. **Render.** Units are joined with newlines in source order, and the manifest is written.
+
+## Modes and policy options
+
+| Mode | Behaviour |
+| :--- | :--- |
+| `verbatim`, `strict` | Selection only. No rewriting; every emitted unit is copied or parser-aggregated. (The two modes currently behave identically.) |
+| `compact` (default), `task` | Selection plus the rewrite stage above. (Currently identical; `task` is reserved for future query-aware selection.) |
+
+`CompilePolicy` fields that affect output:
+
+| Field | Default | Effect |
+| :--- | :--- | :--- |
+| `mode` | `compact` | See above. |
+| `required_terms` | `()` | Extra terms that must survive. |
+| `abbreviations` | `False` | Enable technical-term abbreviations in the rewrite stage. |
+| `discourse_pruning` | `True` | Strip leading filler phrases in the rewrite stage. |
+| `filter_boilerplate` | `True` | Drop page numbers, tables of contents and very short atom-free lines before ranking. |
+| `preserve_failures` | `True` | Always keep test-failure blocks. |
+| `max_k_neighbors` | `10` | Neighbours per unit in the similarity graph. |
+| `pagerank_damping` | `0.85` | PageRank damping factor. |
+
+`preserve_negation`, `preserve_modality`, `preserve_causality`, `source_order`, `with_legend`
+and `min_safe_tokens` exist on the dataclass but are not used by the current pipeline.
+
+## Benchmarks
+
+### Method
+
+The benchmark (`bench/run_benchmark.py`) avoids grading ContextCull with its own detectors:
+
+- **Ground truth** comes from `bench/facts/<doc>.json`: 15–22 strings per document, picked by
+  hand from the raw text. They cover body facts as well as identifiers, and a fact counts only
+  if it appears verbatim in the output (whitespace normalised). The synthetic DOCX has no fact
+  list.
+- **Baselines** are compared at the same token count as ContextCull's output (`cl100k_base`):
+  - *lead*: the first N tokens of the plain text;
+  - *Sumy LexRank* and *Sumy LSA*: the sentence count is binary-searched to match N;
+  - *format-native full*: the plain text itself, at full length.
+- **Sumy input cap.** Sumy only sees the first ~40,000 characters of long documents, because
+  its LSA recomputes an SVD on every call. On the novel, the XML, the JSON and the CSV it
+  therefore returns less text than the matched size; the full report flags this.
+- **Latency** is the median of 5 runs after a warm-up, measured in-process on a shared 32-vCPU
+  Linux machine.
+- **Status and regression are reported separately.** An output larger than its input is
+  flagged as a regression, never counted as a pass.
+
+Reproduce:
+
+```bash
+uv run --group bench python bench/run_benchmark.py --all   # writes bench/results/benchmark_results.{md,json}
+python scripts/run_10_evals.py                             # compile-only table for the 10 formats
+python scripts/run_multilingual_bench.py                   # compile-only table for the 12 corpora
+```
+
+### Recall at matched size
+
+This table compares fact recall for every engine. The full per-document tables, with token
+counts and latencies, are in [`bench/results/benchmark_results.md`](bench/results/benchmark_results.md).
+
+| Document | ContextCull | Lead | Sumy LexRank | Sumy LSA | Plain text (full) |
+| :--- | :---: | :---: | :---: | :---: | :---: |
+| Email corpus | **16/18** | 11/18 | 6/18 | 11/18 | 18/18 |
+| Ubuntu IRC log | **17/22** | 9/22 | 15/22 | 14/22 | 22/22 |
+| Wikipedia (HTML) | 13/18 | **18/18** | 18/18 † | 18/18 † | 18/18 |
+| Attention paper (PDF) | 11/20 | 13/20 | **14/20** | 9/20 | 20/20 |
+| Frankenstein | 9/20 | **14/20** | 8/20 † | 8/20 † | 20/20 |
+| `difflib.py` | 7/16 | **9/16** | 9/16 | 9/16 | 16/16 |
+| CISA feed (XML) | 14/15 | **15/15** | 6/15 † | 6/15 † | 15/15 |
+| CVE record (JSON) | 15/15 | 15/15 | 15/15 † | 15/15 † | 15/15 |
+| EC2 metrics (CSV) | 20/20 | 20/20 | 7/20 † | 7/20 † | 20/20 |
+
+† Sumy's output was shorter than the matched size because of its input cap.
+
+### Compile-only results for the 10 evaluation files
+
+These are reductions against the raw file, as produced by `scripts/run_10_evals.py`.
+
+| # | File | Source | Raw tokens | Output tokens | Reduction | Latency |
+| :-: | :--- | :--- | ---: | ---: | ---: | ---: |
+| 1 | `01_email_thread.eml` | Apache SpamAssassin public corpus (15 unrelated messages, 2002) | 21,662 | 3,534 | 83.7% | 95 ms |
+| 2 | `02_novel_chapter.txt` | *Frankenstein*, Project Gutenberg #84 (first ~150 KB) | 34,336 | 18,737 | 45.4% | 346 ms |
+| 3 | `03_slack_chat.txt` | Ubuntu IRC logs, `#ubuntu`, 15–16 Jan 2024 | 16,213 | 11,407 | 29.6% | 134 ms |
+| 4 | `04_synthetic_technical_report.docx` | **Synthetic**, generated by `scripts/` (invented CVE IDs) | 236 | 237 | −0.4% (regression) | 4 ms |
+| 5 | `05_web_article.html` | Wikipedia, "Transformer (deep learning architecture)" | 343,709 | 18,722 | 94.6% | 1,687 ms |
+| 6 | `06_academic_paper.pdf` | arXiv 1706.03762 | 9,579 † | 4,535 | 52.7% | 802 ms |
+| 7 | `07_structured_feed.xml` | CISA cybersecurity advisories feed | 131,358 | 94,559 | 28.0% | 875 ms |
+| 8 | `08_cloud_audit.json` | CVE-2024-21626 record, CVEProject/cvelistV5 | 14,661 | 12,207 | 16.7% | 69 ms |
+| 9 | `09_incident_metrics.csv` | Numenta Anomaly Benchmark, EC2 CPU utilisation | 72,396 | 72,395 | 0.0% | 580 ms |
+| 10 | `10_source_module.py` | CPython `Lib/difflib.py` | 21,241 | 10,295 | 51.5% | 127 ms |
+
+† For PDF and DOCX, "raw tokens" means tokens of the extracted text.
+
+The synthetic DOCX is only 236 tokens, and ContextCull keeps all of it; joining the
+paragraphs adds one token. Source URLs, licences and SHA-256 hashes for every file are in
+`examples/eval/METADATA.json`.
+
+## Multilingual corpora
+
+`examples/eval/multilingual/` holds 12 public-domain texts. For each one, the download script
+(`scripts/download_multilingual_public_evals.py`) checks two things before saving it:
+
+- the title line matches;
+- at least 80% of the letters are in the expected script.
+
+| # | Language | Text | Source | Raw tokens | Output tokens | Reduction | Latency |
+| :-: | :--- | :--- | :--- | ---: | ---: | ---: | ---: |
+| 1 | English | *Alice's Adventures in Wonderland*, Carroll | Gutenberg #11 | 37,328 | 15,094 | 59.6% | 318 ms |
+| 2 | English | *Calculus Made Easy*, Thompson | Gutenberg #33283 (from HTML) | 51,877 | 12,562 | 75.8% | 507 ms |
+| 3 | Chinese | 西遊記 *Journey to the West*, Wu Cheng'en (truncated to ~500 KB) | Gutenberg #23962 | 251,906 | 140,252 | 44.3% | 943 ms |
+| 4 | Hindi | Premchand: *Idgah*, *Poos ki Raat*, *Bade Bhai Sahab* | hi.wikisource.org | 52,141 | 9,578 | 81.6% | 159 ms |
+| 5 | Spanish | *Don Quijote*, Cervantes (full, 2.2 MB) | Gutenberg #2000 | 664,427 | 438,643 | 34.0% | 9,208 ms |
+| 6 | French | *Le Tour du monde en quatre-vingts jours*, Verne | Gutenberg #800 | 131,363 | 53,205 | 59.5% | 939 ms |
+| 7 | Arabic | كليلة ودمنة *Kalila wa Dimna*, two chapters | ar.wikisource.org | 29,701 | 15,970 | 46.2% | 91 ms |
+| 8 | Bengali | গীতাঞ্জলি *Gitanjali* (1913), Tagore, 16 poems | bn.wikisource.org | 11,831 | 1,487 | 87.4% | 30 ms |
+| 9 | Portuguese | *Dom Casmurro*, Machado de Assis | Gutenberg #55752 | 123,493 | 73,969 | 40.1% | 1,156 ms |
+| 10 | Russian | *1001 задача для умственного счёта*, Rachinsky | Gutenberg #16527 | 75,824 | 75,592 | 0.3% | 339 ms |
+| 11 | Japanese | 羅生門 *Rashōmon*, Akutagawa | Gutenberg #1982 | 6,990 | 2,348 | 66.4% | 15 ms |
+| 12 | Hebrew | ספר בראשית *Genesis* (unpointed Masoretic text) | — | 95,457 | 93,065 | 2.5% | 194 ms |
+
+These are compile-only numbers. No fact lists exist for these corpora, so they show how much
+text is removed and how fast, not what is kept. The Russian text is an arithmetic problem
+book, where nearly every line holds numbers; the Hebrew text is one verse per line. Both
+compress very little for that reason. Wikisource transcriptions are CC BY-SA 4.0; the
+underlying works are public domain.
+
+## Known limitations
+
+- **Selection is a heuristic.**
+  - Outside required atoms, it can drop sentences a reader would consider essential.
+  - In the email benchmark, two body facts are still lost ("populating md0 with tar",
+    "exmh.TODO"). They reach the selector but fall below the knee cut.
+  - On the paper, most dropped facts are hyperparameters written in tables and inline maths.
+- **No query awareness.** Selection does not know what question the LLM will be asked.
+  `task` mode is reserved for that but currently behaves like `compact`.
+- **Short inputs pass through almost unchanged.** With only a few sentences, the knee cut
+  usually keeps all of them.
+- **Numeric tables barely compress.** Every row that holds a timestamp or quantity counts as
+  entity-bearing.
+- **One parser per document.** A Markdown file with an embedded email, or a log inside
+  prose, is handled by whichever parser the router picks first.
+- **PDF quality depends on `pypdf`.** Multi-column layouts, tables and maths can come out in
+  a scrambled order.
+- **Language support is regex-based.** Negation detection covers common words in English,
+  Spanish, Portuguese, French, German, Russian, Hindi, Bengali, Arabic, Persian, Hebrew and
+  Chinese. Devanagari and Bengali vowel signs break `\b` word boundaries, so plain-word
+  negation matching in those scripts is weaker than the bound-negation pattern.
+  `lingua-language-detector` is used only by `contextcull.detect.language` and is not part of
+  the compile path.
+- **Size limit.** Input over 10 MB (after PDF/DOCX extraction) is rejected with
+  `INPUT_TOO_LARGE`.
+- **Not on PyPI yet.**
+
+## Development
+
+```bash
+uv sync --all-groups
+bash scripts/gate.sh
+```
+
+`scripts/gate.sh` runs the same six steps as CI (`.github/workflows/ci.yml`):
+
+1. `ruff format --check`
+2. `ruff check`
+3. `pyright`
+4. `bandit` over `src/`, skipping B105, B110 and B112 (reasons in `pyproject.toml`)
+5. `pip-audit` over the locked runtime dependencies
+6. `pytest` with coverage, which must be at least 80%
+
+Current local result: 1,282 tests pass in about 5 s, with 95.19% line coverage of
+`src/contextcull` (`cli.py` is excluded from coverage).
+
+The test suite covers:
+
+- **Units:** `tests/unit/`. Per-stage tests, provenance round-trips, encoding edge cases
+  (UTF-8/UTF-16 with and without a BOM, Latin-1, ANSI escapes), DOCX zip-bomb rejection, PDF
+  caps, and budget sweeps over Markdown with headings.
+- **Property:** `tests/property/`. Hypothesis tests for SourceMap byte-offset round-trips.
+- **Multilingual:** `tests/multilingual/`. 187 tests, about 17 per language across 11
+  languages, generated by `scripts/generate_multilingual_tests.py` from hand-written native
+  sentences. They cover segmentation, atom extraction, negation, byte-exact spans, and an
+  end-to-end compile on a slice of each real corpus.
+- **Differential:** `tests/differential/`. Compares against the Rust `tep-test` binary when
+  `TEP_RUST_BIN` points to it; otherwise only the Python assertions run.
+
+## Project layout
 
 ```
 ContextCull/
-├── pyproject.toml              # Build configuration & dependencies
-├── README.md                   # Project documentation & benchmarks
-├── LICENSE                     # MIT License
-├── .github/workflows/ci.yml    # GitHub Actions CI workflow
-├── bench/
-│   └── run_benchmark.py        # Reproducible empirical benchmark script
-├── examples/
-│   └── eval/                   # 10 authentic open-source public evaluation datasets
-├── src/
-│   └── contextcull/
-│       ├── api.py              # ContextCompiler main entry point
-│       ├── cli.py              # Command-line interface
-│       ├── errors.py           # Protocol & budget error types
-│       ├── closure/            # Structural hierarchy & context closure
-│       ├── detect/             # Protected atom & multilingual language detection
-│       ├── features/           # Universal TF-IDF vectorizer
-│       ├── ingest/             # SourceMap & byte-exact decoders
-│       ├── ir/                 # Intermediate representation & span models
-│       ├── parse/              # Parsers (HTML, XML, DOCX, PDF, JSON, CSV, Code, Markdown, Logs, Email)
-│       ├── rank/               # Vectorized sparse LexRank / PageRank
-│       ├── render/             # Output renderer & provenance manifest
-│       ├── rewrite/            # Transactional discourse pruning & rule engine
-│       ├── route/              # Block router
-│       ├── segment/            # Universal multilingual sentence segmentation
-│       ├── select/             # Submodular entity floor & marginal entropy selection
-│       ├── tokenize/           # Tokenizer profile abstraction (tiktoken, etc.)
-│       └── validate/           # Invariant validators
-└── tests/
-    ├── differential/           # Differential test suite vs. baseline models
-    ├── property/               # Hypothesis property-based span invariance tests
-    └── unit/                   # Unit tests (atoms, budget, rewrite, spans, logs, multilingual, provenance)
+├── src/contextcull/
+│   ├── api.py            # ContextCompiler: runs the pipeline
+│   ├── cli.py            # contextcull / cull commands
+│   ├── errors.py         # exception types and their result statuses
+│   ├── ingest/           # hashing, encoding detection, byte↔char source map
+│   ├── route/            # picks a parser per document
+│   ├── parse/            # pdf, docx, html, xml, json/csv, logs, code, email, markdown, text
+│   ├── detect/           # atom regexes (required/soft), language detection helper
+│   ├── segment/          # sentence splitting
+│   ├── features/         # TF-IDF vectoriser
+│   ├── rank/             # sparse similarity graph + PageRank
+│   ├── select/           # budget-free (knee) and budgeted selection
+│   ├── closure/          # heading closure
+│   ├── rewrite/          # wordiness rules, filler pruning, abbreviations
+│   ├── validate/         # final invariant checks
+│   ├── render/           # output assembly and manifest
+│   └── ir/               # data classes: spans, blocks, atoms, units, policy, result
+├── bench/                # benchmark script, hand-labelled facts, results
+├── examples/eval/        # 10 evaluation files + 12 multilingual corpora, with METADATA.json
+├── scripts/              # dataset download, eval runners, test generator, gate.sh
+└── tests/                # unit, property, multilingual, differential
 ```
-
----
-
-## Industrial-Grade Test Suite & Correctness Invariants
-
-ContextCull is designed for mission-critical production pipelines where dropped entities, corrupted syntax, or hallucinations cause severe downstream failures. To guarantee zero information loss on technical entities, ContextCull is backed by an exhaustive, multi-layered test harness:
-
-```
-┌─────────────────────────────────────────────────────────────────────────────┐
-│                       ContextCull Verification Matrix                       │
-├───────────────────────┬─────────────────────────────────────────────────────┤
-│ 2,157 Automated Tests │ 100% passing in < 5.0 seconds                       │
-│ 95.14% Test Coverage  │ 1,956 statements scanned, 95 missed                 │
-│ Mutation Testing      │ Mutmut: 4,366 mutants generated, 2,458 killed (0 un)│
-│ Invariant Guarantees  │ Strict transactional rollback & byte provenance     │
-│ Security & Quality    │ Ruff, Pyright, Bandit AST scan, pip-audit CVE scan  │
-└───────────────────────┴─────────────────────────────────────────────────────┘
-```
-
-### Test Architecture & Coverage Breakdown
-
-| Test Suite | Focus & Edge Cases Tested | Test Count |
-| :--- | :--- | :--- |
-| **Multilingual Top Languages & Hebrew (`tests/multilingual/`)** | 100 tests per language (English, Chinese, Hindi, Spanish, French, Arabic, Bengali, Portuguese, Russian, Japanese, Hebrew) covering native script boundary detection, embedded technical entities, multi-byte coordinate translation, and negation preservation. | 1,100 tests |
-| **`test_adversarial_ingest_comprehensive.py`** | Multi-byte coordinate translation (UTF-8, UTF-16 BE/LE BOMs, Latin-1 fallback), ANSI sequence stripping (TrueColor, 256-color, OSC window titles), null-byte resilience, and slice-level provenance bounds. | 77 tests |
-| **`test_parsers_deep_edge_cases.py`** | Defused XML entity expansion (`billion laughs`), deeply nested HTML/DOM trees, generic Rust/TypeScript syntax (`fn test<T>()`, `export type`), polyglot test logs (Vitest, Jest, Pytest, Go, Cargo), and RFC 822 email MIME boundaries. | 55 tests |
-| **`test_atoms_and_entities_deep.py`** | Exact extraction of technical atoms: IPv4/IPv6 addresses, AWS ARNs, UUIDs, Git commit hashes, CVE identifiers, latencies (`ms`, `µs`, `ns`), and spaced currencies (`$ 100`, `€ 50`). | 50 tests |
-| **`test_rewrite_and_protection_deep.py`** | Aho-Corasick overlapping pattern matching (preventing prefix masking on plurals like `seconds` vs `second`), backtick code block shielding, CLI flag protection (`--policy-document`), and transactional rollback on atom violation. | 33 tests |
-| **`test_budget_concurrency_and_stress.py`** | 8-thread concurrent compilation stress, budget sweep (20 to 220 tokens) verifying atomic floor constraints, and `BudgetUnsafeError` diagnostic payload integrity. | 25 tests |
-| **`test_parameterized_abbreviations_stress.py`** | Exhaustive boundary and casing stress (lowercase, titlecase) across all 120+ technical abbreviations. | 288 tests |
-| **Core Unit, Property & Differential** | Property-based testing via `Hypothesis`, sentence segmentation, PageRank sparse graph centrality, and Rust baseline differential parity. | 529 tests |
-
-### The 6 Quality & Security Gates
-
-Every commit must clear all 6 automated verification steps in [`scripts/gate.sh`](scripts/gate.sh):
-
-```bash
-./scripts/gate.sh
-```
-
-1. **Ruff Formatting**: Enforces uniform code formatting across all source and test files.
-2. **Ruff Linter**: Zero lint errors, strict import sorting, and dead-code detection.
-3. **Pyright Type Checking**: Strict static typing verification across all modules with zero type errors.
-4. **Bandit AST Security Scan**: Scans AST for security vulnerabilities (e.g., shell injections, insecure deserialization, defused XML handling).
-5. **pip-audit Supply-Chain Audit**: Verifies all dependencies against the PyPA vulnerability advisory database.
-6. **Pytest Coverage Gate**: Executes the full 2,157-test suite with a mandatory coverage threshold (currently operating at **95.14%**).
-
-### Mutation Testing with Mutmut
-
-To ensure tests don't just achieve high coverage but actively detect real-world logic bugs and boundary shifts, ContextCull runs mutation testing via **Mutmut**:
-- **4,366 mutants** generated across core engine modules (`src/contextcull/`).
-- **2,458 mutants killed** by the test harness.
-- **0 untested mutants** (100% of mutated code paths are exercised by tests).
-
-Developers can run mutation audits using:
-```bash
-uv run mutmut run
-```
-
----
 
 ## License
 
-MIT License. See [LICENSE](LICENSE) for details.
+The code is under the MIT License; see [LICENSE](LICENSE). The evaluation files keep their own
+licences, listed in `examples/eval/METADATA.json` and `examples/eval/multilingual/METADATA.json`.
+Wikipedia and Wikisource texts are CC BY-SA 4.0, and the Numenta NAB CSV is AGPL-3.0.

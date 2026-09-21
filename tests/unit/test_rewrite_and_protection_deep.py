@@ -103,7 +103,7 @@ PROTECTED_CODE_CASES = [
 @pytest.mark.parametrize("text,expected_protected_snippet", PROTECTED_CODE_CASES)
 def test_code_and_flags_protection(text: str, expected_protected_snippet: str):
     engine = RewriteEngine()
-    policy = CompilePolicy(mode=CompileMode.COMPACT)
+    policy = CompilePolicy(mode=CompileMode.COMPACT, abbreviations=True)
     unit = _make_unit(text)
 
     out_text, _ = engine.rewrite_unit(unit, atoms=(), policy=policy, tokenizer=CL100K)
@@ -142,27 +142,68 @@ def test_discourse_scaffolding_pruning(text: str, expected_substance: str):
 # =========================================================================
 # 4. Word Boundary & Punctuation Abbreviation Tests (25 cases)
 # =========================================================================
+# Abbreviations only fire when CompilePolicy.abbreviations=True (opt-in), AND only when the
+# rewrite strictly reduces token count (see engine.py commit gate). Under cl100k_base, most
+# short English technical words (database/configuration/...) tokenize to the same token count
+# either way, so those never actually commit -- these cases are picked to have real,
+# tokenizer-verified savings. Calendar words (days/months) are never abbreviated at all --
+# dropped from ABBREVIATIONS entirely -- and proper nouns are protected by the mid-unit
+# capitalization guard (see test_calendar_words_never_abbreviated below).
 
 BOUNDARY_CASES = [
-    ("Database was offline.", "db"),
-    ("The server database crashed.", "db"),
-    ("Checked the database, then left.", "db"),
-    ("Configuration is ready.", "cfg"),
-    ("Loaded configuration; restarted.", "cfg"),
-    ("Scheduled for Monday morning.", "Mon"),
-    ("Deployment on Friday evening.", "Fri"),
-    ("Operation took 500 milliseconds.", "ms"),
-    ("Elapsed time: 30 seconds.", "s"),
-    ("Interval is 15 minutes.", "min"),
-    ("Retention period is 1 year.", "yr"),
+    ("It took 30 kilobytes and 500 megabytes to store the cache.", "kB"),
+    ("It took 30 kilobytes and 500 megabytes to store the cache.", "MB"),
+    ("Response arrived in 200 nanoseconds after the request.", "ns"),
+    (
+        "Please check the beziehungsweise before proceeding with the deployment today.",
+        "bzw.",
+    ),
+    ("Please check the monsieur before proceeding with the deployment today.", "M."),
 ]
 
 
 @pytest.mark.parametrize("text,expected_abbr", BOUNDARY_CASES)
 def test_boundary_abbreviations(text: str, expected_abbr: str):
     engine = RewriteEngine()
-    policy = CompilePolicy(mode=CompileMode.COMPACT, discourse_pruning=False)
+    policy = CompilePolicy(mode=CompileMode.COMPACT, discourse_pruning=False, abbreviations=True)
     unit = _make_unit(text)
 
     out_text, _ = engine.rewrite_unit(unit, atoms=(), policy=policy, tokenizer=CL100K)
     assert expected_abbr in out_text
+
+
+def test_abbreviations_off_by_default_for_boundary_cases():
+    engine = RewriteEngine()
+    policy = CompilePolicy(mode=CompileMode.COMPACT, discourse_pruning=False)
+    unit = _make_unit("Database was offline.")
+
+    out_text, _ = engine.rewrite_unit(unit, atoms=(), policy=policy, tokenizer=CL100K)
+    assert out_text == "Database was offline."
+
+
+def test_calendar_words_never_abbreviated():
+    """Regression test: 'the dreary night of Nov'/'a dearly Monday' style prose mangling."""
+    engine = RewriteEngine()
+    policy = CompilePolicy(mode=CompileMode.COMPACT, discourse_pruning=False, abbreviations=True)
+    for text in (
+        "It was on a dreary night of November that I saw my creation.",
+        "It happened on a dreary Monday in late autumn.",
+    ):
+        unit = _make_unit(text)
+        out_text, _ = engine.rewrite_unit(unit, atoms=(), policy=policy, tokenizer=CL100K)
+        assert out_text == text
+
+
+def test_unit_word_only_abbreviated_directly_after_a_number():
+    engine = RewriteEngine()
+    policy = CompilePolicy(mode=CompileMode.COMPACT, discourse_pruning=False, abbreviations=True)
+
+    # Bare prose use of a unit word (no leading number) is never abbreviated.
+    unit = _make_unit("Kilobytes and megabytes are units of storage capacity, not time.")
+    out_text, _ = engine.rewrite_unit(unit, atoms=(), policy=policy, tokenizer=CL100K)
+    assert out_text == "Kilobytes and megabytes are units of storage capacity, not time."
+
+    # Directly after a number, and only then, the unit word is abbreviated.
+    unit2 = _make_unit("It took 30 kilobytes and 500 megabytes to store the cache.")
+    out_text2, _ = engine.rewrite_unit(unit2, atoms=(), policy=policy, tokenizer=CL100K)
+    assert "30 kB" in out_text2 or "500 MB" in out_text2

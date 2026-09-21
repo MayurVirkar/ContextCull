@@ -1,242 +1,425 @@
-"""Downloads and compiles 100% public domain, copyright-free multilingual evaluation datasets.
+"""Downloads and verifies genuine public-domain multilingual evaluation corpora.
 
-Covers the Top 10 languages of the world + English full books (literature and mathematics):
-1. English (Literature): Alice's Adventures in Wonderland by Lewis Carroll (Project Gutenberg #11, Public Domain)
-2. English (Mathematics): Calculus Made Easy by Silvanus P. Thompson (Project Gutenberg #35170, Public Domain)
-3. Mandarin Chinese: The Art of War by Sun Tzu (Project Gutenberg #2388, Public Domain)
-4. Hindi: Munshi Premchand Classic Collection (Public Domain)
-5. Spanish: Don Quijote de la Mancha by Miguel de Cervantes (Project Gutenberg #2000, Public Domain)
-6. French: Le Tour du monde en quatre-vingts jours by Jules Verne (Project Gutenberg #800, Public Domain)
-7. Arabic: Kalila wa Dimna & Alf Laylah wa Laylah (Public Domain)
-8. Bengali: Gitanjali & Selected Works by Rabindranath Tagore (Public Domain)
-9. Portuguese: Dom Casmurro by Machado de Assis (Project Gutenberg #55752, Public Domain)
-10. Russian: Sevastopol Sketches by Leo Tolstoy (Project Gutenberg #53434, Public Domain)
-11. Japanese: Kokoro by Natsume Soseki (Project Gutenberg #24816, Public Domain)
+Every corpus is fetched from Project Gutenberg (plain text or HTML) or Wikisource
+(via the MediaWiki API, which resolves ProofreadPage transclusion into real body
+text). Each download is verified before being written:
+  (a) the expected title/author string appears in the fetched text, and
+  (b) at least 80% of alphabetic characters belong to the target script.
+Long texts are truncated at a paragraph boundary to <= MAX_BYTES (Don Quijote is
+exempted per the eval spec and kept at full length). No corpus is synthesized:
+if a genuine source can't be found and verified, the language is dropped instead
+of being padded with generated filler.
+
+Run: .venv/bin/python scripts/download_multilingual_public_evals.py
 """
 
 from __future__ import annotations
 
+import hashlib
 import json
+import re
+import sys
 import urllib.request
+from dataclasses import dataclass, field
+from html.parser import HTMLParser
 from pathlib import Path
 
-DEST_DIR = Path("examples/eval/multilingual")
+DEST_DIR = Path(__file__).resolve().parent.parent / "examples" / "eval" / "multilingual"
 DEST_DIR.mkdir(parents=True, exist_ok=True)
+HEADERS = {"User-Agent": "Mozilla/5.0 (ContextCull Public Eval Ingest; research use)"}
+MAX_BYTES = 500_000
 
-GUTENBERG_URLS = {
-    "01_en_literature_alice.txt": "https://www.gutenberg.org/cache/epub/11/pg11.txt",
-    "02_en_math_calculus.txt": "https://www.gutenberg.org/cache/epub/35170/pg35170.txt",
-    "03_zh_art_of_war.txt": "https://www.gutenberg.org/cache/epub/2388/pg2388.txt",
-    "05_es_don_quijote.txt": "https://www.gutenberg.org/cache/epub/2000/pg2000.txt",
-    "06_fr_tour_du_monde.txt": "https://www.gutenberg.org/cache/epub/800/pg800.txt",
-    "09_pt_dom_casmurro.txt": "https://www.gutenberg.org/cache/epub/55752/pg55752.txt",
-    "10_ru_sevastopol_tolstoy.txt": "https://www.gutenberg.org/cache/epub/53434/pg53434.txt",
-    "11_ja_soseki_kokoro.txt": "https://www.gutenberg.org/cache/epub/24816/pg24816.txt",
+SCRIPT_RANGES = {
+    "latin": r"A-Za-zÀ-ÖØ-öø-ÿ",
+    "cjk": r"一-鿿",
+    "kana_cjk": r"぀-ヿ一-鿿ｦ-ﾟ",
+    "cyrillic": r"Ѐ-ӿ",
+    "devanagari": r"ऀ-ॿ",
+    "arabic": r"؀-ۿ",
+    "bengali": r"ঀ-৿",
+    "hebrew": r"֐-׿",
 }
 
 
-def download_file(url: str, dest_path: Path) -> bool:
-    """Downloads a file with standard user agent, stripping Gutenberg headers if present."""
-    try:
-        req = urllib.request.Request(
-            url, headers={"User-Agent": "Mozilla/5.0 (ContextCull Public Eval Ingest)"}
+def script_ratio(text: str, script: str) -> float:
+    letters = [c for c in text if c.isalpha()]
+    if not letters:
+        return 0.0
+    pattern = re.compile(f"[{SCRIPT_RANGES[script]}]")
+    hits = sum(1 for c in letters if pattern.match(c))
+    return hits / len(letters)
+
+
+def fetch(url: str, timeout: int = 40) -> bytes:
+    req = urllib.request.Request(url, headers=HEADERS)
+    with urllib.request.urlopen(req, timeout=timeout) as resp:  # noqa: S310 (public-domain text mirrors only)
+        return resp.read()
+
+
+def strip_gutenberg_boilerplate(text: str) -> str:
+    start = re.search(
+        r"\*\*\*\s*START OF (THE|THIS) PROJECT GUTENBERG EBOOK.*?\*\*\*", text, re.I | re.S
+    )
+    end = re.search(r"\*\*\*\s*END OF (THE|THIS) PROJECT GUTENBERG EBOOK", text, re.I)
+    body = text[start.end() : end.start()] if start and end else text
+    return body.strip()
+
+
+def truncate_at_paragraph(text: str, max_bytes: int = MAX_BYTES) -> tuple[str, bool]:
+    encoded = text.encode("utf-8")
+    if len(encoded) <= max_bytes:
+        return text, False
+    truncated = encoded[:max_bytes].decode("utf-8", errors="ignore")
+    idx = truncated.rfind("\n\n")
+    if idx <= 0:
+        idx = truncated.rfind("\n")
+    return (truncated[:idx] if idx > 0 else truncated).strip(), True
+
+
+class VisibleTextExtractor(HTMLParser):
+    """Minimal stdlib HTML -> text extractor. Skips script/style/nav/header/footer."""
+
+    SKIP = {"script", "style", "nav", "header", "footer", "noscript"}
+    BLOCK = {"p", "br", "div", "h1", "h2", "h3", "h4", "li", "tr"}
+
+    def __init__(self) -> None:
+        super().__init__()
+        self._skip_depth = 0
+        self.parts: list[str] = []
+
+    def handle_starttag(self, tag: str, attrs: list) -> None:
+        if tag in self.SKIP:
+            self._skip_depth += 1
+        if tag in self.BLOCK:
+            self.parts.append("\n")
+
+    def handle_endtag(self, tag: str) -> None:
+        if tag in self.SKIP and self._skip_depth > 0:
+            self._skip_depth -= 1
+
+    def handle_data(self, data: str) -> None:
+        if self._skip_depth == 0:
+            self.parts.append(data)
+
+
+def html_to_text(html: str) -> str:
+    p = VisibleTextExtractor()
+    p.feed(html)
+    text = "".join(p.parts)
+    text = re.sub(r"[ \t]+", " ", text)
+    text = re.sub(r"\n[ \t]*", "\n", text)
+    text = re.sub(r"\n{3,}", "\n\n", text)
+    return text.strip()
+
+
+def wikisource_page_text(lang: str, title: str) -> str:
+    """Fetch one Wikisource page's rendered body text (resolves transcluded scans)."""
+    from urllib.parse import quote
+
+    url = f"https://{lang}.wikisource.org/w/api.php?action=parse&page={quote(title)}&prop=text&format=json"
+    data = json.loads(fetch(url).decode("utf-8"))
+    html = data["parse"]["text"]["*"]
+    return html_to_text(html)
+
+
+def bengali_numeral(n: int) -> str:
+    return "".join(chr(0x09E6 + int(d)) for d in str(n))
+
+
+@dataclass
+class Corpus:
+    file: str
+    language: str
+    title: str
+    author: str
+    source_url: str
+    license: str
+    title_check: str
+    script: str
+    fetcher: str
+    keep_full: bool = False
+    extra: dict = field(default_factory=dict)
+
+
+CORPORA = [
+    Corpus(
+        file="01_en_literature_alice.txt",
+        language="en",
+        title="Alice's Adventures in Wonderland",
+        author="Lewis Carroll",
+        source_url="https://www.gutenberg.org/cache/epub/11/pg11.txt",
+        license="Public Domain (Project Gutenberg #11)",
+        title_check="Adventures in Wonderland",
+        script="latin",
+        fetcher="gutenberg_txt",
+    ),
+    Corpus(
+        file="02_en_math_calculus.txt",
+        language="en",
+        title="Calculus Made Easy",
+        author="Silvanus P. Thompson",
+        source_url="https://www.gutenberg.org/ebooks/33283.html.images",
+        license="Public Domain (Project Gutenberg #33283; no plain-text edition, extracted from HTML)",
+        title_check="Calculus Made Easy",
+        script="latin",
+        fetcher="gutenberg_html",
+    ),
+    Corpus(
+        file="03_zh_journey_to_the_west.txt",
+        language="zh",
+        title="西遊記 (Journey to the West)",
+        author="Wu Cheng'en",
+        source_url="https://www.gutenberg.org/cache/epub/23962/pg23962.txt",
+        license="Public Domain (Project Gutenberg #23962)",
+        title_check="西遊記",
+        script="cjk",
+        fetcher="gutenberg_txt",
+    ),
+    Corpus(
+        file="04_hi_premchand_stories.txt",
+        language="hi",
+        title="Idgah; A Night in the Fields; My Elder Brother (from Mansarovar I)",
+        author="Munshi Premchand",
+        source_url=(
+            "https://hi.wikisource.org/wiki/मानसरोवर_१/ईदगाह ; "
+            "https://hi.wikisource.org/wiki/मानसरोवर_१/पूस_की_रात ; "
+            "https://hi.wikisource.org/wiki/मानसरोवर_१/बड़े_भाई_साहब"
+        ),
+        license="Public Domain (author d. 1936); Wikisource transcription CC BY-SA 4.0",
+        title_check="प्रेमचंद",
+        script="devanagari",
+        fetcher="wikisource_multi",
+        extra={
+            "lang": "hi",
+            "pages": ["मानसरोवर १/ईदगाह", "मानसरोवर १/पूस की रात", "मानसरोवर १/बड़े भाई साहब"],
+        },
+    ),
+    Corpus(
+        file="05_es_don_quijote.txt",
+        language="es",
+        title="Don Quijote de la Mancha",
+        author="Miguel de Cervantes",
+        source_url="https://www.gutenberg.org/cache/epub/2000/pg2000.txt",
+        license="Public Domain (Project Gutenberg #2000)",
+        title_check="Don Quijote",
+        script="latin",
+        fetcher="gutenberg_txt",
+        keep_full=True,
+    ),
+    Corpus(
+        file="06_fr_tour_du_monde.txt",
+        language="fr",
+        title="Le Tour du monde en quatre-vingts jours",
+        author="Jules Verne",
+        source_url="https://www.gutenberg.org/cache/epub/800/pg800.txt",
+        license="Public Domain (Project Gutenberg #800)",
+        title_check="Le tour du monde",
+        script="latin",
+        fetcher="gutenberg_txt",
+    ),
+    Corpus(
+        file="07_ar_kalila_wa_dimna.txt",
+        language="ar",
+        title="كليلة ودمنة (Kalila wa Dimna)",
+        author="Ibn al-Muqaffa",
+        source_url=(
+            "https://ar.wikisource.org/wiki/كليلة_ودمنة/باب_مقدمة_الكتاب ; "
+            "https://ar.wikisource.org/wiki/كليلة_ودمنة/باب_بعثة_برزويه_إلى_بلاد_الهند"
+        ),
+        license="Public Domain (8th century text); Wikisource transcription CC BY-SA 4.0",
+        title_check="كليلة ودمنة",
+        script="arabic",
+        fetcher="wikisource_multi",
+        extra={
+            "lang": "ar",
+            "pages": [
+                "كليلة ودمنة/باب مقدمة الكتاب",
+                "كليلة ودمنة/باب بعثة برزويه إلى بلاد الهند",
+            ],
+        },
+    ),
+    Corpus(
+        file="08_bn_gitanjali.txt",
+        language="bn",
+        title="গীতাঞ্জলি (Gitanjali, 1913 Bengali original)",
+        author="Rabindranath Tagore",
+        source_url="https://bn.wikisource.org/wiki/গীতাঞ্জলি_(১৯১৩)",
+        license="Public Domain (author d. 1941); Wikisource transcription CC BY-SA 4.0",
+        title_check="রবীন্দ্রনাথ",
+        script="bengali",
+        fetcher="wikisource_multi",
+        extra={
+            "lang": "bn",
+            "pages": [f"গীতাঞ্জলি (১৯১৩)/{bengali_numeral(i)}" for i in range(1, 26)],
+            "join_titles": True,
+        },
+    ),
+    Corpus(
+        file="09_pt_dom_casmurro.txt",
+        language="pt",
+        title="Dom Casmurro",
+        author="Machado de Assis",
+        source_url="https://www.gutenberg.org/cache/epub/55752/pg55752.txt",
+        license="Public Domain (Project Gutenberg #55752)",
+        title_check="Dom Casmurro",
+        script="latin",
+        fetcher="gutenberg_txt",
+    ),
+    Corpus(
+        file="10_ru_rachinsky_arithmetic.txt",
+        language="ru",
+        title="1001 задача для умственного счета",
+        author="Sergei Rachinsky",
+        source_url="https://www.gutenberg.org/ebooks/16527.txt.utf-8",
+        license="Public Domain (Project Gutenberg #16527)",
+        title_check="умственного счета",
+        script="cyrillic",
+        fetcher="gutenberg_txt",
+    ),
+    Corpus(
+        file="11_ja_akutagawa_rashomon.txt",
+        language="ja",
+        title="羅生門 (Rashomon)",
+        author="Akutagawa Ryūnosuke",
+        source_url="https://www.gutenberg.org/cache/epub/1982/pg1982.txt",
+        license="Public Domain (Project Gutenberg #1982)",
+        title_check="羅生門",
+        script="kana_cjk",
+        fetcher="gutenberg_txt",
+    ),
+    Corpus(
+        file="12_he_bereshit_genesis.txt",
+        language="he",
+        title="Sefer Bereshit (Book of Genesis)",
+        author="Classical Hebrew (Masoretic Text)",
+        source_url="pre-existing file, not re-fetched; re-verified in place (title + script ratio) this pass",
+        license="Public Domain (Masoretic Text, unpointed consonantal transcription)",
+        title_check="בראשית",
+        script="hebrew",
+        fetcher="keep_existing",
+    ),
+]
+
+
+def do_fetch(corpus: Corpus) -> tuple[str, str]:
+    """Returns (title_check_text, body_text). title_check_text includes any
+    source metadata (e.g. the Gutenberg header line) that the boilerplate strip
+    would otherwise remove, so the title/author check isn't fooled by a body
+    that jumps straight into chapter 1 without repeating the title."""
+    if corpus.fetcher == "gutenberg_txt":
+        raw = fetch(corpus.source_url).decode("utf-8", errors="replace")
+        return raw, strip_gutenberg_boilerplate(raw)
+    if corpus.fetcher == "gutenberg_html":
+        raw = fetch(corpus.source_url).decode("utf-8", errors="replace")
+        text = html_to_text(raw)
+        return text, text
+    if corpus.fetcher == "wikisource_multi":
+        import time
+
+        lang = corpus.extra["lang"]
+        chunks = []
+        for title in corpus.extra["pages"]:
+            for attempt in range(3):
+                try:
+                    chunks.append(wikisource_page_text(lang, title))
+                    break
+                except Exception as exc:  # noqa: BLE001 - retry, then skip a missing sub-page
+                    if attempt == 2:
+                        print(f"    ! sub-page fetch failed for {title!r}: {exc}", file=sys.stderr)
+                    else:
+                        time.sleep(2.0 * (attempt + 1))
+            time.sleep(0.5)
+        text = "\n\n".join(c for c in chunks if c.strip())
+        return text, text
+    raise ValueError(f"unknown fetcher {corpus.fetcher}")
+
+
+def verify_and_write(corpus: Corpus) -> dict | None:
+    dest = DEST_DIR / corpus.file
+    print(f"[{corpus.language}] {corpus.title} <- {corpus.source_url.split(' ; ')[0]}")
+
+    if corpus.fetcher == "keep_existing":
+        if not dest.exists():
+            print(f"    ! DROPPED: {dest} does not exist and has no fetcher")
+            return None
+        text = dest.read_text(encoding="utf-8")
+        title_check_text = text
+        truncated = False
+    else:
+        try:
+            title_check_text, text = do_fetch(corpus)
+        except Exception as exc:  # noqa: BLE001
+            print(f"    ! DROPPED ({corpus.language}): fetch failed: {exc}")
+            return None
+        if not text.strip():
+            print(f"    ! DROPPED ({corpus.language}): empty body after extraction")
+            return None
+        max_bytes = None if corpus.keep_full else MAX_BYTES
+        if max_bytes is not None:
+            text, truncated = truncate_at_paragraph(text, max_bytes)
+        else:
+            truncated = False
+
+    ratio = script_ratio(text, corpus.script)
+    title_ok = corpus.title_check in title_check_text
+
+    if not title_ok:
+        print(
+            f"    ! DROPPED ({corpus.language}): title check {corpus.title_check!r} not found in body"
         )
-        with urllib.request.urlopen(req, timeout=30) as resp:
-            content = resp.read().decode("utf-8", errors="replace")
-            # If Gutenberg text, keep the full text or clean header
-            dest_path.write_text(content, encoding="utf-8")
-            print(
-                f"Downloaded {dest_path.name}: {len(content)} characters, {dest_path.stat().st_size} bytes"
-            )
-            return True
-    except Exception as exc:
-        print(f"Download failed for {dest_path.name} from {url}: {exc}")
-        return False
+        return None
+    if ratio < 0.80:
+        print(
+            f"    ! DROPPED ({corpus.language}): script ratio {ratio:.1%} < 80% for {corpus.script}"
+        )
+        return None
 
+    dest.write_text(text, encoding="utf-8")
+    size = dest.stat().st_size
+    sha256 = hashlib.sha256(dest.read_bytes()).hexdigest()
+    print(f"    OK: title verified, script ratio {ratio:.1%}, {size} bytes, truncated={truncated}")
 
-def generate_hindi_corpus(dest_path: Path) -> None:
-    """Generates authentic public-domain Hindi literature and technical exposition corpus."""
-    chapters = []
-    # Munshi Premchand public domain literature and technical incident report in Hindi
-    chapters.append("""मुंशी प्रेमचंद: ईदगाह (सार्वजनिक डोमेन)
-
-रमजान के पूरे तीस रोजों के बाद आज ईद आई है। कितना मनोहर, कितना सुहावना प्रभाव है। वृक्षों पर कुछ अजीब हरियाली है, खेतों में कुछ अजीब रौनक है, आसमान पर कुछ अजीब लालिमा है। आज का सूर्य देखो, कितना प्यारा, कितना शीतल है, मानो संसार को ईद की बधाई दे रहा है। गांव में कितनी हलचल है। मेले जाने की तैयारियां हो रही हैं। किसी के कुरते में बटन नहीं है, पड़ोस के घर से सुई-धागा लेने दौड़ा जा रहा है। किसी के जूते कड़े हो गए हैं, उनमें तेल डालने के लिए तेली के घर भागा जाता है। जल्दी-जल्दी बैलों को सानी-पानी दे दें। ईदगाह से लौटते-लौटते दोपहर हो जाएगी। तीन कोस का पैदल रास्ता, फिर सैकड़ों आदमियों से मिलना-भेंटना। दोपहर के पहले लौटना असंभव है।
-
-लड़के सबसे ज्यादा प्रसन्न हैं। किसी ने एक रोजा रखा है, वह भी दोपहर तक, किसी ने वह भी नहीं, लेकिन ईदगाह जाने की खुशी उनके हिस्से की चीज है। रोजे बड़े-बूढ़ों के लिए होंगे। इनके लिए तो ईद है। रोज ईद का नाम रटते थे, आज वह आ गई। अब जल्दी पड़ी है कि लोग ईदगाह क्यों नहीं चलते। इन्हें गृहस्थी की चिंताओं से क्या प्रयोजन? सेवैयों के लिए दूध और शक्कर घर में है या नहीं, इनकी बला से, ये तो सेवइयां खाएंगे। वह क्या जानें कि अब्बाजान क्यों बदहवास चौधरी कायमअली के घर दौड़े जा रहे हैं। उन्हें क्या मालूम कि अगर चौधरी आज आंखें बदल लें, तो यह सारी ईद मुहर्रम हो जाए। उनकी अपनी जेबों में तो कुबेर का धन भरा हुआ है। बार-बार जेब से अपना खजाना निकाल कर गिनते हैं और खुश होकर फिर रख लेते हैं।
-
-महमूद गिनता है, एक-दो, दस-बारह, उसके पास बारह पैसे हैं। मोहसिन के पास एक, दो, तीन, आठ, नौ, पंद्रह पैसे हैं। इन्हीं अनगिनती पैसों से अनगिनती चीजें लाएंगे—खिलौने, मिठाइयां, बिगुल, गेंद और न जाने क्या-क्या। और सबसे ज्यादा प्रसन्न है हामिद। वह चार-पांच साल का गरीब-सूरत, दुबला-पतला लड़का, जिसका बाप गत वर्ष हैजे की भेंट हो गया और मां न जाने क्यों पीली होती-होती एक दिन मर गई। किसी को पता न चला कि क्या बीमारी है। कहती भी तो कौन सुनने वाला था? दिल पर जो बीतती थी, वह दिल ही में सहती थी और जब न सहा गया तो संसार से विदा हो गई। अब हामिद अपनी बूढ़ी दादी अमीना की गोद में सोता है और उतना ही प्रसन्न है। उसके अब्बाजान रुपए कमाने गए हैं। बहुत-सी थैलियां लेकर आएंगे। अम्मीजान अल्लाहमियां के घर से उसके लिए बड़ी अच्छी-अच्छी चीजें लाने गई हैं। इसलिए हामिद प्रसन्न है। आशा तो बड़ी चीज है, और फिर बच्चों की आशा!""")
-
-    # Technical Hindi exposition with metrics and identifiers
-    for i in range(1, 40):
-        chapters.append(f"""अनुभाग {i}: डेटाबेस क्लस्टर निगरानी एवं सुरक्षा रिपोर्ट
-सर्वर 10.0.{i}.1 पर सीपीयू का भार 85.{i}% तक पहुंच गया। हमने पाया कि पॉड worker-node-{i} में विलंबता 45 ms दर्ज की गई। 
-सुरक्षा विश्लेषण में कोई डेटा हानि (zero data loss) नहीं पाई गई। सुरक्षा दल ने सीवीई CVE-2026-{2000 + i} का निवारण 14:0{i % 10}:00 UTC पर पूरा किया।
-सिस्टम प्रशासक ने सत्यापित किया कि क्लस्टर us-central-1 में सभी सेवाएं 99.9% अपटाइम के साथ सामान्य रूप से संचालित हो रही हैं।""")
-
-    dest_path.write_text("\n\n".join(chapters), encoding="utf-8")
-    print(f"Generated {dest_path.name}: {dest_path.stat().st_size} bytes")
-
-
-def generate_bengali_corpus(dest_path: Path) -> None:
-    """Generates authentic public-domain Bengali literature and technical exposition corpus."""
-    chapters = []
-    # Rabindranath Tagore public domain Gitanjali
-    chapters.append("""রবীন্দ্রনাথ ঠাকুর: গীতাঞ্জলি (পাবলিক ডোমেন)
-
-আমার মাথা নত করে দাও হে তোমার চরণধূলার তলে।
-সকল অহংকার হে আমার ডুবাও চোখের জলে॥
-নিজেরে করিতে গৌরব দান নিজেরে কেবলি করি অপমান,
-আপনারে শুধু ঘেরিয়া ঘেরিয়া ঘুরে মরি পলে পলে।
-সকল অহংকার হে আমার ডুবাও চোখের জলে॥
-আমারে না যেন করি প্রচার আমার আপন কাজে,
-তোমারি ইচ্ছা করো হে পূর্ণ আমার জীবনমাঝে।
-যাচি হে তোমার চরম শান্তি, পরানে তোমার পরম কান্তি,
-আমারে আড়াল করিয়া দাঁড়াও হৃদয়পদ্মদলে।
-সকল অহংকার হে আমার ডুবাও চোখের জলে॥
-
-যেতে নাহি দিব! হায়, লঘু পক্ষ বিহঙ্গের প্রায়
-উড়ে যায় জীবনের সুখ। সন্ধ্যা নামে দূর বনছায়,
-অশান্ত হৃদয় শুধু ডাকিয়া ডাকিয়া ফেরে তারে,
-অনন্ত কালের মাঝে নিমেষের দেখা যারে দ্বারে।""")
-
-    # Technical Bengali exposition with metrics and identifiers
-    for i in range(1, 40):
-        chapters.append(f"""বিভাগ {i}: ক্লাউড অবকাঠামো ও নিরাপত্তা নিরীক্ষা প্রতিবেদন
-সার্ভার 10.1.{i}.5 এ মেমোরি ব্যবহার 78.{i}% বৃদ্ধি পেয়েছে। ডাটাবেস পড data-worker-{i} এর প্রতিক্রিয়া সময় 32 ms এ স্থিতিশীল ছিল।
-প্রাথমিক তদন্তে নিশ্চিত করা হয়েছে যে কোনো তথ্য চুরি বা ক্ষতি (no data loss) সংঘটিত হয়নি।
-প্রকৌশলী দল CVE-2026-{3000 + i} ত্রুটি সফলভাবে সমাধান করেছেন। ক্লাস্টার ap-south-1 এ সার্বিক প্রাপ্যতা 99.95% বজায় রয়েছে।""")
-
-    dest_path.write_text("\n\n".join(chapters), encoding="utf-8")
-    print(f"Generated {dest_path.name}: {dest_path.stat().st_size} bytes")
-
-
-def generate_arabic_corpus(dest_path: Path) -> None:
-    """Generates authentic public-domain Arabic literature and technical exposition corpus."""
-    chapters = []
-    # Classical Arabic public domain literature
-    chapters.append("""كتاب كليلة ودمنة: ابن المقفع (الملكية العامة)
-
-قال الفيلسوف بيدبا لملك الهند دبشليم: إن أعظم الأمور وأشرفها حفظ المودة وإخلاص الإخاء بين الإخوان. 
-وإنما تنال المنزلة الرفيعة بصدق النية ووفاء العهد والابتعاد عن الغدر والخيانة.
-ومثل ذلك مثل الحمام المطوقة حين وقعت في الشبكة هي وصواحبها، فأرادت كل واحدة منهن أن تخلص نفسها، 
-فقالت المطوقة: لا تكن نفس إحداكن أهم إليها من نفس صاحبتها، ولكن نتعاون جميعاً ونطير كطائر واحد، 
-فتعاونّ وقلعن الشبكة وطرن بها في السماء، فنجون بفضل التعاون والاتحاد.
-
-وهكذا حال الأصدقاء إذا أخلصوا النية وثبتوا على العهد والوفاء، لا ينال منهم كيد العدو ولا تزعزعهم صروف الدهر.""")
-
-    # Technical Arabic exposition with metrics and identifiers
-    for i in range(1, 40):
-        chapters.append(f"""القسم {i}: تقرير تدقيق أمن البنية التحتية السحابية
-أظهر الخادم 10.2.{i}.10 استقراراً تاماً مع معدل استهلاك الذاكرة بنسبة 65.{i}%.
-سجلت عقدة التشغيل service-pod-{i} زمناً انتقالياً قدره 28 ms عبر الشبكة الداخلية.
-أكد الفريق التقني عدم حدوث أي اختراق أو تسريب للبيانات (zero data breach).
-تم تطبيق التحديث الأمني للثغرة CVE-2026-{4000 + i} بنجاح في تمام الساعة 11:{i % 10}0:00 UTC، 
-وظلت نسبة التوافر في المنطقة الشرقية عند 99.99% دون انقطاع.""")
-
-    dest_path.write_text("\n\n".join(chapters), encoding="utf-8")
-    print(f"Generated {dest_path.name}: {dest_path.stat().st_size} bytes")
+    return {
+        "file": corpus.file,
+        "language": corpus.language,
+        "author": corpus.author,
+        "title": corpus.title,
+        "source": corpus.source_url,
+        "license": corpus.license,
+        "script_ratio": round(ratio, 4),
+        "bytes": size,
+        "sha256": sha256,
+        "truncated_to_paragraph_boundary": truncated,
+    }
 
 
 def main() -> None:
-    print("=== Downloading Public Domain Multilingual Evaluation Datasets ===")
-    for filename, url in GUTENBERG_URLS.items():
-        dest = DEST_DIR / filename
-        if not dest.exists() or dest.stat().st_size < 1000:
-            download_file(url, dest)
+    print("=== Downloading & verifying genuine public-domain multilingual corpora ===")
+    datasets = []
+    dropped = []
+    for corpus in CORPORA:
+        record = verify_and_write(corpus)
+        if record is None:
+            dropped.append(corpus.language)
         else:
-            print(f"Already cached: {filename} ({dest.stat().st_size} bytes)")
+            datasets.append(record)
 
-    # Generate Hindi, Bengali, Arabic corpora
-    generate_hindi_corpus(DEST_DIR / "04_hi_premchand_stories.txt")
-    generate_bengali_corpus(DEST_DIR / "08_bn_gitanjali.txt")
-    generate_arabic_corpus(DEST_DIR / "07_ar_kalila_wa_dimna.txt")
-
-    # Write metadata manifest
     metadata = {
-        "description": "Authentic 100% public-domain multilingual evaluation datasets covering the top 10 world languages + full books.",
-        "license": "Public Domain (Project Gutenberg / Pre-1929 Literature / Public Records)",
-        "datasets": [
-            {
-                "file": "01_en_literature_alice.txt",
-                "language": "en",
-                "author": "Lewis Carroll",
-                "title": "Alice in Wonderland",
-                "source": "Project Gutenberg #11",
-            },
-            {
-                "file": "02_en_math_calculus.txt",
-                "language": "en",
-                "author": "Silvanus P. Thompson",
-                "title": "Calculus Made Easy",
-                "source": "Project Gutenberg #35170",
-            },
-            {
-                "file": "03_zh_art_of_war.txt",
-                "language": "zh",
-                "author": "Sun Tzu",
-                "title": "The Art of War",
-                "source": "Project Gutenberg #2388",
-            },
-            {
-                "file": "04_hi_premchand_stories.txt",
-                "language": "hi",
-                "author": "Munshi Premchand",
-                "title": "Idgah & Classic Stories",
-                "source": "Public Domain Hindi Literature",
-            },
-            {
-                "file": "05_es_don_quijote.txt",
-                "language": "es",
-                "author": "Miguel de Cervantes",
-                "title": "Don Quijote de la Mancha",
-                "source": "Project Gutenberg #2000",
-            },
-            {
-                "file": "06_fr_tour_du_monde.txt",
-                "language": "fr",
-                "author": "Jules Verne",
-                "title": "Le Tour du monde en 80 jours",
-                "source": "Project Gutenberg #800",
-            },
-            {
-                "file": "07_ar_kalila_wa_dimna.txt",
-                "language": "ar",
-                "author": "Ibn al-Muqaffa",
-                "title": "Kalila wa Dimna & Arabian Nights",
-                "source": "Public Domain Classical Arabic",
-            },
-            {
-                "file": "08_bn_gitanjali.txt",
-                "language": "bn",
-                "author": "Rabindranath Tagore",
-                "title": "Gitanjali & Selected Works",
-                "source": "Public Domain Bengali Literature",
-            },
-            {
-                "file": "09_pt_dom_casmurro.txt",
-                "language": "pt",
-                "author": "Machado de Assis",
-                "title": "Dom Casmurro",
-                "source": "Project Gutenberg #55752",
-            },
-            {
-                "file": "10_ru_sevastopol_tolstoy.txt",
-                "language": "ru",
-                "author": "Leo Tolstoy",
-                "title": "Sevastopol Sketches",
-                "source": "Project Gutenberg #53434",
-            },
-            {
-                "file": "11_ja_soseki_kokoro.txt",
-                "language": "ja",
-                "author": "Natsume Soseki",
-                "title": "Kokoro",
-                "source": "Project Gutenberg #24816",
-            },
-        ],
+        "description": (
+            "Genuine public-domain multilingual evaluation corpora, one real source text per "
+            "language, verified for title match and target-script letter ratio >= 80%. No "
+            "synthetic or generated filler text. Files > 500KB are truncated at a paragraph "
+            "boundary (Don Quijote is kept at full length per the eval spec)."
+        ),
+        "verification": "title substring match + script-ratio check, see scripts/download_multilingual_public_evals.py",
+        "dropped_languages": dropped,
+        "datasets": datasets,
     }
-    (DEST_DIR / "METADATA.json").write_text(json.dumps(metadata, indent=2), encoding="utf-8")
-    print(f"\nMetadata written to {DEST_DIR / 'METADATA.json'}")
+    (DEST_DIR / "METADATA.json").write_text(
+        json.dumps(metadata, indent=2, ensure_ascii=False), encoding="utf-8"
+    )
+    print(f"\n{len(datasets)} corpora verified and written, {len(dropped)} dropped: {dropped}")
+    print(f"Metadata written to {DEST_DIR / 'METADATA.json'}")
 
 
 if __name__ == "__main__":

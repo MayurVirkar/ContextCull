@@ -6,11 +6,52 @@ import hashlib
 import re
 from typing import NamedTuple
 
-from contextcull.errors import TepError
+from contextcull.errors import InputTooLargeError, UndecodableInputError
 from contextcull.ir.spans import ByteSpan, SourceMap
 
 # ANSI escape sequence regex pattern
 ANSI_ESCAPE_RE = re.compile(r"\x1B(?:[@-Z\\-_]|\[[0-?]*[ -/]*[@-~])")
+
+# ponytail: heuristic thresholds for BOM-less UTF-16 sniffing, tuned against the
+# adversarial fixture corpus. Upgrade to a real charset detector (e.g. charset-normalizer)
+# if a real-world corpus starts producing false positives/negatives.
+_UTF16_SNIFF_SAMPLE_BYTES = 8000
+_UTF16_NUL_RATIO_MIN = 0.15
+_UTF16_DOMINANT_RATIO_MIN = 0.6
+_UTF16_MINORITY_RATIO_MAX = 0.15
+
+
+def _detect_bomless_utf16(raw: bytes) -> str | None:
+    """Heuristically detects byte-order-mark-less UTF-16 text from the raw byte pattern.
+
+    Plain UTF-8 (and ASCII/Latin-1) text essentially never contains NUL bytes, while
+    text that is actually UTF-16 with mostly-BMP content is roughly half NUL bytes,
+    concentrated in every other byte position (the high byte of each 16-bit unit for
+    ASCII-range characters). Returns "utf-16-le" / "utf-16-be" when confident, the
+    sentinel "ambiguous" when the stream looks NUL-heavy but endianness can't be told
+    apart, or None when it doesn't look like UTF-16 at all.
+    """
+    sample = raw[:_UTF16_SNIFF_SAMPLE_BYTES]
+    if len(sample) % 2:
+        sample = sample[:-1]
+    n = len(sample)
+    if n < 4:
+        return None
+
+    nul_ratio = sample.count(0) / n
+    if nul_ratio < _UTF16_NUL_RATIO_MIN:
+        return None
+
+    zeros_even = sum(1 for i in range(0, n, 2) if sample[i] == 0)
+    zeros_odd = sum(1 for i in range(1, n, 2) if sample[i] == 0)
+    even_ratio = zeros_even / max(1, (n + 1) // 2)
+    odd_ratio = zeros_odd / max(1, n // 2)
+
+    if even_ratio > _UTF16_DOMINANT_RATIO_MIN and odd_ratio < _UTF16_MINORITY_RATIO_MAX:
+        return "utf-16-be"
+    if odd_ratio > _UTF16_DOMINANT_RATIO_MIN and even_ratio < _UTF16_MINORITY_RATIO_MAX:
+        return "utf-16-le"
+    return "ambiguous"
 
 
 class IngestionResult(NamedTuple):
@@ -35,7 +76,7 @@ def ingest_bytes(
     Builds an ANSI-free clean view with exact index mapping back to canonical decoded characters.
     """
     if len(raw_bytes) > max_bytes:
-        raise TepError(
+        raise InputTooLargeError(
             f"Input size {len(raw_bytes)} bytes exceeds maximum permitted size {max_bytes} bytes"
         )
 
@@ -49,14 +90,24 @@ def ingest_bytes(
         elif raw_bytes.startswith((b"\xff\xfe", b"\xfe\xff")):
             encoding = "utf-16"
         else:
-            try:
-                raw_bytes.decode("utf-8")
-            except UnicodeDecodeError:
+            bomless_utf16 = _detect_bomless_utf16(raw_bytes)
+            if bomless_utf16 == "ambiguous":
+                raise UndecodableInputError(
+                    "Input looks like UTF-16 text without a byte-order mark (heavy, "
+                    "evenly-spread NUL bytes), but endianness (LE vs BE) could not be "
+                    "determined reliably; refusing to silently mis-decode it as UTF-8"
+                )
+            elif bomless_utf16 is not None:
+                encoding = bomless_utf16
+            else:
                 try:
-                    raw_bytes.decode("latin-1")
-                    encoding = "latin-1"
-                except Exception:
-                    pass
+                    raw_bytes.decode("utf-8")
+                except UnicodeDecodeError:
+                    try:
+                        raw_bytes.decode("latin-1")
+                        encoding = "latin-1"
+                    except Exception:
+                        pass
 
     source_map = SourceMap.from_bytes(raw_bytes, document_id=document_id, encoding=encoding)
     decoded = source_map.decoded_text

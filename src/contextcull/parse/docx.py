@@ -14,6 +14,36 @@ from contextcull.ir.spans import ByteSpan
 W_NS = "http://schemas.openxmlformats.org/wordprocessingml/2006/main"
 NS_MAP = {"w": W_NS}
 
+# Cap decompressed word/document.xml size: matches ingest_bytes' default max_bytes ceiling.
+# A malicious DOCX can declare a small file but decompress to hundreds of MB (zip bomb);
+# check the declared size AND read in bounded chunks so a lying header can't blow memory.
+MAX_DOCX_XML_BYTES = 10_000_000
+_ZIP_READ_CHUNK = 65_536
+
+
+def _read_zip_member_bounded(z: zipfile.ZipFile, name: str, max_bytes: int) -> bytes | None:
+    """Reads a zip member in bounded chunks, refusing anything over max_bytes.
+
+    Checks the declared (central directory) size first as a cheap rejection, then still
+    enforces the cap while streaming, since a crafted zip's declared size can't be trusted.
+    """
+    info = z.getinfo(name)
+    if info.file_size > max_bytes:
+        return None
+
+    chunks: list[bytes] = []
+    total = 0
+    with z.open(name) as f:
+        while True:
+            chunk = f.read(_ZIP_READ_CHUNK)
+            if not chunk:
+                break
+            total += len(chunk)
+            if total > max_bytes:
+                return None
+            chunks.append(chunk)
+    return b"".join(chunks)
+
 
 def is_docx(raw_bytes: bytes) -> bool:
     """Detects whether raw bytes represent a valid DOCX zip archive."""
@@ -30,7 +60,9 @@ def extract_docx_blocks_and_text(raw_bytes: bytes, document_id: str) -> tuple[li
     """Extracts paragraphs, headings, and tables from a DOCX document."""
     try:
         with zipfile.ZipFile(io.BytesIO(raw_bytes)) as z:
-            doc_xml = z.read("word/document.xml")
+            doc_xml = _read_zip_member_bounded(z, "word/document.xml", MAX_DOCX_XML_BYTES)
+        if doc_xml is None:
+            return [], ""
         root = ET.fromstring(doc_xml)
     except Exception:
         return [], ""
